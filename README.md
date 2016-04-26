@@ -1,5 +1,4 @@
-# DW4RandoHacker
-Dragon Warrior 4 RandoHacker
+# Dragon Warrior 4 RandoHacker
 
 ## Features
 - An opportunity to adjust XP gains from 50% to 500%.
