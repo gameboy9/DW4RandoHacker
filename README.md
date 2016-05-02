@@ -23,6 +23,7 @@
 - An opportunity to rename the other 7 heroes.
 - Randomize monster patterns.  Maybe.
 - Figure out the Fairy Water so you can kill metal monsters with it like you can in the Japanese version.
+- Have a second variant of the "solo hero challenge" with the characters being NOT sharing the same HP/MP/inventory/etc.
 
 ## Special Thanks
 - Mcgrew, for his Dragon Warrior 1 Randomizer(https://github.com/mcgrew/dwrandomizer), giving me the inspiration to create this randomizer.  Twitch:  http://www.twitch.tv/mcgrew
