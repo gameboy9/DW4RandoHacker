@@ -44,36 +44,76 @@
             this.txtSeed = new System.Windows.Forms.TextBox();
             this.lblIntensityDesc = new System.Windows.Forms.Label();
             this.btnRandomize = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.txtDefault2 = new System.Windows.Forms.TextBox();
-            this.txtDefault3 = new System.Windows.Forms.TextBox();
-            this.txtDefault10 = new System.Windows.Forms.TextBox();
-            this.txtDefault11 = new System.Windows.Forms.TextBox();
-            this.txtDefault12 = new System.Windows.Forms.TextBox();
-            this.txtDefault9 = new System.Windows.Forms.TextBox();
-            this.txtDefault8 = new System.Windows.Forms.TextBox();
-            this.txtDefault7 = new System.Windows.Forms.TextBox();
-            this.txtDefault6 = new System.Windows.Forms.TextBox();
-            this.txtDefault5 = new System.Windows.Forms.TextBox();
-            this.txtDefault4 = new System.Windows.Forms.TextBox();
-            this.txtDefault1 = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.cboSoloHero = new System.Windows.Forms.ComboBox();
-            this.chkSoloHero = new System.Windows.Forms.CheckBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.btnMonsterOutput = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.chkSpeedUpBattles = new System.Windows.Forms.CheckBox();
+            this.chkRandomMonsters = new System.Windows.Forms.CheckBox();
+            this.chkGoldRandom = new System.Windows.Forms.CheckBox();
+            this.chkXPRandom = new System.Windows.Forms.CheckBox();
+            this.cboEncounterRate = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.cboGoldAdjustment = new System.Windows.Forms.ComboBox();
             this.cboXPAdjustment = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.btnMonsterOutput = new System.Windows.Forms.Button();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.chkC5Random = new System.Windows.Forms.CheckBox();
+            this.chkC14Random = new System.Windows.Forms.CheckBox();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.c1Hero = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.chkCh2AwardXPTournament = new System.Windows.Forms.CheckBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.c2Hero3 = new System.Windows.Forms.ComboBox();
+            this.c2Hero2 = new System.Windows.Forms.ComboBox();
+            this.c2Hero1 = new System.Windows.Forms.ComboBox();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.chkTunnel1 = new System.Windows.Forms.CheckBox();
+            this.chkShop25K = new System.Windows.Forms.CheckBox();
+            this.chkShop1 = new System.Windows.Forms.CheckBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.c3Hero = new System.Windows.Forms.ComboBox();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.label12 = new System.Windows.Forms.Label();
+            this.c4Hero1 = new System.Windows.Forms.ComboBox();
+            this.c4Hero2 = new System.Windows.Forms.ComboBox();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.label13 = new System.Windows.Forms.Label();
+            this.c5Hero2 = new System.Windows.Forms.ComboBox();
+            this.c5Hero3 = new System.Windows.Forms.ComboBox();
+            this.c5Hero4 = new System.Windows.Forms.ComboBox();
+            this.c5Hero7 = new System.Windows.Forms.ComboBox();
+            this.c5Hero8 = new System.Windows.Forms.ComboBox();
+            this.c5Hero6 = new System.Windows.Forms.ComboBox();
+            this.c5Hero5 = new System.Windows.Forms.ComboBox();
+            this.c5Hero1 = new System.Windows.Forms.ComboBox();
+            this.chkSoloCanEquipAll = new System.Windows.Forms.CheckBox();
+            this.cboSoloHero = new System.Windows.Forms.ComboBox();
+            this.chkSoloHero = new System.Windows.Forms.CheckBox();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.txtC1Name1 = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.txtC2Name2 = new System.Windows.Forms.TextBox();
+            this.txtC4Name1 = new System.Windows.Forms.TextBox();
+            this.txtC2Name3 = new System.Windows.Forms.TextBox();
+            this.txtC4Name2 = new System.Windows.Forms.TextBox();
+            this.txtC3Name1 = new System.Windows.Forms.TextBox();
+            this.txtC2Name1 = new System.Windows.Forms.TextBox();
             this.tabPage4.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tabControl2.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            this.tabPage6.SuspendLayout();
+            this.tabPage7.SuspendLayout();
+            this.tabPage8.SuspendLayout();
+            this.tabPage9.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCompareBrowse
@@ -218,188 +258,34 @@
             this.btnRandomize.UseVisualStyleBackColor = true;
             this.btnRandomize.Click += new System.EventHandler(this.btnRandomize_Click);
             // 
-            // tabControl1
+            // tabPage4
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Location = new System.Drawing.Point(15, 138);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(508, 327);
-            this.tabControl1.TabIndex = 41;
+            this.tabPage4.Controls.Add(this.btnMonsterOutput);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(500, 301);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Output";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
+            // btnMonsterOutput
             // 
-            this.tabPage1.Controls.Add(this.txtDefault2);
-            this.tabPage1.Controls.Add(this.txtDefault3);
-            this.tabPage1.Controls.Add(this.txtDefault10);
-            this.tabPage1.Controls.Add(this.txtDefault11);
-            this.tabPage1.Controls.Add(this.txtDefault12);
-            this.tabPage1.Controls.Add(this.txtDefault9);
-            this.tabPage1.Controls.Add(this.txtDefault8);
-            this.tabPage1.Controls.Add(this.txtDefault7);
-            this.tabPage1.Controls.Add(this.txtDefault6);
-            this.tabPage1.Controls.Add(this.txtDefault5);
-            this.tabPage1.Controls.Add(this.txtDefault4);
-            this.tabPage1.Controls.Add(this.txtDefault1);
-            this.tabPage1.Controls.Add(this.label6);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(500, 301);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Names";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // txtDefault2
-            // 
-            this.txtDefault2.Location = new System.Drawing.Point(89, 40);
-            this.txtDefault2.MaxLength = 8;
-            this.txtDefault2.Name = "txtDefault2";
-            this.txtDefault2.Size = new System.Drawing.Size(81, 20);
-            this.txtDefault2.TabIndex = 27;
-            // 
-            // txtDefault3
-            // 
-            this.txtDefault3.Location = new System.Drawing.Point(89, 67);
-            this.txtDefault3.MaxLength = 8;
-            this.txtDefault3.Name = "txtDefault3";
-            this.txtDefault3.Size = new System.Drawing.Size(81, 20);
-            this.txtDefault3.TabIndex = 28;
-            // 
-            // txtDefault10
-            // 
-            this.txtDefault10.Location = new System.Drawing.Point(401, 14);
-            this.txtDefault10.MaxLength = 8;
-            this.txtDefault10.Name = "txtDefault10";
-            this.txtDefault10.Size = new System.Drawing.Size(81, 20);
-            this.txtDefault10.TabIndex = 35;
-            // 
-            // txtDefault11
-            // 
-            this.txtDefault11.Location = new System.Drawing.Point(401, 40);
-            this.txtDefault11.MaxLength = 8;
-            this.txtDefault11.Name = "txtDefault11";
-            this.txtDefault11.Size = new System.Drawing.Size(81, 20);
-            this.txtDefault11.TabIndex = 36;
-            // 
-            // txtDefault12
-            // 
-            this.txtDefault12.Location = new System.Drawing.Point(401, 67);
-            this.txtDefault12.MaxLength = 8;
-            this.txtDefault12.Name = "txtDefault12";
-            this.txtDefault12.Size = new System.Drawing.Size(81, 20);
-            this.txtDefault12.TabIndex = 37;
-            // 
-            // txtDefault9
-            // 
-            this.txtDefault9.Location = new System.Drawing.Point(294, 67);
-            this.txtDefault9.MaxLength = 8;
-            this.txtDefault9.Name = "txtDefault9";
-            this.txtDefault9.Size = new System.Drawing.Size(81, 20);
-            this.txtDefault9.TabIndex = 34;
-            // 
-            // txtDefault8
-            // 
-            this.txtDefault8.Location = new System.Drawing.Point(295, 40);
-            this.txtDefault8.MaxLength = 8;
-            this.txtDefault8.Name = "txtDefault8";
-            this.txtDefault8.Size = new System.Drawing.Size(81, 20);
-            this.txtDefault8.TabIndex = 33;
-            // 
-            // txtDefault7
-            // 
-            this.txtDefault7.Location = new System.Drawing.Point(295, 14);
-            this.txtDefault7.MaxLength = 8;
-            this.txtDefault7.Name = "txtDefault7";
-            this.txtDefault7.Size = new System.Drawing.Size(81, 20);
-            this.txtDefault7.TabIndex = 32;
-            // 
-            // txtDefault6
-            // 
-            this.txtDefault6.Location = new System.Drawing.Point(192, 67);
-            this.txtDefault6.MaxLength = 8;
-            this.txtDefault6.Name = "txtDefault6";
-            this.txtDefault6.Size = new System.Drawing.Size(81, 20);
-            this.txtDefault6.TabIndex = 31;
-            // 
-            // txtDefault5
-            // 
-            this.txtDefault5.Location = new System.Drawing.Point(192, 40);
-            this.txtDefault5.MaxLength = 8;
-            this.txtDefault5.Name = "txtDefault5";
-            this.txtDefault5.Size = new System.Drawing.Size(81, 20);
-            this.txtDefault5.TabIndex = 30;
-            // 
-            // txtDefault4
-            // 
-            this.txtDefault4.Location = new System.Drawing.Point(192, 14);
-            this.txtDefault4.MaxLength = 8;
-            this.txtDefault4.Name = "txtDefault4";
-            this.txtDefault4.Size = new System.Drawing.Size(81, 20);
-            this.txtDefault4.TabIndex = 29;
-            // 
-            // txtDefault1
-            // 
-            this.txtDefault1.Location = new System.Drawing.Point(89, 14);
-            this.txtDefault1.MaxLength = 8;
-            this.txtDefault1.Name = "txtDefault1";
-            this.txtDefault1.Size = new System.Drawing.Size(81, 20);
-            this.txtDefault1.TabIndex = 26;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 15);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(77, 13);
-            this.label6.TabIndex = 38;
-            this.label6.Text = "Default Names";
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.cboSoloHero);
-            this.tabPage2.Controls.Add(this.chkSoloHero);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(500, 301);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Chapter Setup";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // cboSoloHero
-            // 
-            this.cboSoloHero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboSoloHero.FormattingEnabled = true;
-            this.cboSoloHero.Items.AddRange(new object[] {
-            "Ragnar",
-            "Alena",
-            "Cristo",
-            "Brey",
-            "Taloon",
-            "Nara",
-            "Mara",
-            "Hero"});
-            this.cboSoloHero.Location = new System.Drawing.Point(136, 15);
-            this.cboSoloHero.Name = "cboSoloHero";
-            this.cboSoloHero.Size = new System.Drawing.Size(121, 21);
-            this.cboSoloHero.TabIndex = 1;
-            // 
-            // chkSoloHero
-            // 
-            this.chkSoloHero.AutoSize = true;
-            this.chkSoloHero.Location = new System.Drawing.Point(7, 15);
-            this.chkSoloHero.Name = "chkSoloHero";
-            this.chkSoloHero.Size = new System.Drawing.Size(123, 17);
-            this.chkSoloHero.TabIndex = 0;
-            this.chkSoloHero.Text = "Solo Hero Challenge";
-            this.chkSoloHero.UseVisualStyleBackColor = true;
+            this.btnMonsterOutput.Location = new System.Drawing.Point(12, 14);
+            this.btnMonsterOutput.Name = "btnMonsterOutput";
+            this.btnMonsterOutput.Size = new System.Drawing.Size(112, 23);
+            this.btnMonsterOutput.TabIndex = 0;
+            this.btnMonsterOutput.Text = "Monster Output";
+            this.btnMonsterOutput.UseVisualStyleBackColor = true;
+            this.btnMonsterOutput.Click += new System.EventHandler(this.btnMonsterOutput_Click);
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.chkSpeedUpBattles);
+            this.tabPage3.Controls.Add(this.chkRandomMonsters);
+            this.tabPage3.Controls.Add(this.chkGoldRandom);
+            this.tabPage3.Controls.Add(this.chkXPRandom);
+            this.tabPage3.Controls.Add(this.cboEncounterRate);
+            this.tabPage3.Controls.Add(this.label14);
             this.tabPage3.Controls.Add(this.cboGoldAdjustment);
             this.tabPage3.Controls.Add(this.cboXPAdjustment);
             this.tabPage3.Controls.Add(this.label8);
@@ -411,10 +297,78 @@
             this.tabPage3.Text = "Adjustments";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // chkSpeedUpBattles
+            // 
+            this.chkSpeedUpBattles.AutoSize = true;
+            this.chkSpeedUpBattles.Location = new System.Drawing.Point(10, 127);
+            this.chkSpeedUpBattles.Name = "chkSpeedUpBattles";
+            this.chkSpeedUpBattles.Size = new System.Drawing.Size(106, 17);
+            this.chkSpeedUpBattles.TabIndex = 9;
+            this.chkSpeedUpBattles.Text = "Speed up battles";
+            this.chkSpeedUpBattles.UseVisualStyleBackColor = true;
+            // 
+            // chkRandomMonsters
+            // 
+            this.chkRandomMonsters.AutoSize = true;
+            this.chkRandomMonsters.Location = new System.Drawing.Point(10, 104);
+            this.chkRandomMonsters.Name = "chkRandomMonsters";
+            this.chkRandomMonsters.Size = new System.Drawing.Size(125, 17);
+            this.chkRandomMonsters.TabIndex = 8;
+            this.chkRandomMonsters.Text = "Randomize Monsters";
+            this.chkRandomMonsters.UseVisualStyleBackColor = true;
+            // 
+            // chkGoldRandom
+            // 
+            this.chkGoldRandom.AutoSize = true;
+            this.chkGoldRandom.Location = new System.Drawing.Point(267, 41);
+            this.chkGoldRandom.Name = "chkGoldRandom";
+            this.chkGoldRandom.Size = new System.Drawing.Size(79, 17);
+            this.chkGoldRandom.TabIndex = 7;
+            this.chkGoldRandom.Text = "Randomize";
+            this.chkGoldRandom.UseVisualStyleBackColor = true;
+            // 
+            // chkXPRandom
+            // 
+            this.chkXPRandom.AutoSize = true;
+            this.chkXPRandom.Location = new System.Drawing.Point(267, 14);
+            this.chkXPRandom.Name = "chkXPRandom";
+            this.chkXPRandom.Size = new System.Drawing.Size(79, 17);
+            this.chkXPRandom.TabIndex = 6;
+            this.chkXPRandom.Text = "Randomize";
+            this.chkXPRandom.UseVisualStyleBackColor = true;
+            // 
+            // cboEncounterRate
+            // 
+            this.cboEncounterRate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboEncounterRate.FormattingEnabled = true;
+            this.cboEncounterRate.Items.AddRange(new object[] {
+            "1/4",
+            "1/3",
+            "1/2",
+            "2/3",
+            "x1",
+            "x1.5",
+            "x2",
+            "x2.5",
+            "x3",
+            "x4"});
+            this.cboEncounterRate.Location = new System.Drawing.Point(129, 69);
+            this.cboEncounterRate.Name = "cboEncounterRate";
+            this.cboEncounterRate.Size = new System.Drawing.Size(121, 21);
+            this.cboEncounterRate.TabIndex = 5;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(8, 72);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(82, 13);
+            this.label14.TabIndex = 4;
+            this.label14.Text = "Encounter Rate";
+            // 
             // cboGoldAdjustment
             // 
             this.cboGoldAdjustment.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboGoldAdjustment.Enabled = false;
             this.cboGoldAdjustment.FormattingEnabled = true;
             this.cboGoldAdjustment.Items.AddRange(new object[] {
             "50%",
@@ -436,7 +390,9 @@
             "150%",
             "200%",
             "250%",
-            "300%"});
+            "300%",
+            "400%",
+            "500%"});
             this.cboXPAdjustment.Location = new System.Drawing.Point(129, 12);
             this.cboXPAdjustment.Name = "cboXPAdjustment";
             this.cboXPAdjustment.Size = new System.Drawing.Size(121, 21);
@@ -460,31 +416,637 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "Experience Adjustment";
             // 
-            // tabPage4
+            // tabPage2
             // 
-            this.tabPage4.Controls.Add(this.btnMonsterOutput);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(500, 301);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Output";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.tabPage2.Controls.Add(this.chkC5Random);
+            this.tabPage2.Controls.Add(this.chkC14Random);
+            this.tabPage2.Controls.Add(this.tabControl2);
+            this.tabPage2.Controls.Add(this.chkSoloCanEquipAll);
+            this.tabPage2.Controls.Add(this.cboSoloHero);
+            this.tabPage2.Controls.Add(this.chkSoloHero);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(500, 301);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Chapter Setup";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // btnMonsterOutput
+            // chkC5Random
             // 
-            this.btnMonsterOutput.Location = new System.Drawing.Point(12, 14);
-            this.btnMonsterOutput.Name = "btnMonsterOutput";
-            this.btnMonsterOutput.Size = new System.Drawing.Size(112, 23);
-            this.btnMonsterOutput.TabIndex = 0;
-            this.btnMonsterOutput.Text = "Monster Output";
-            this.btnMonsterOutput.UseVisualStyleBackColor = true;
-            this.btnMonsterOutput.Click += new System.EventHandler(this.btnMonsterOutput_Click);
+            this.chkC5Random.AutoSize = true;
+            this.chkC5Random.Location = new System.Drawing.Point(199, 40);
+            this.chkC5Random.Name = "chkC5Random";
+            this.chkC5Random.Size = new System.Drawing.Size(206, 17);
+            this.chkC5Random.TabIndex = 5;
+            this.chkC5Random.Text = "Chapter 5 hero acquisition randomized";
+            this.chkC5Random.UseVisualStyleBackColor = true;
+            // 
+            // chkC14Random
+            // 
+            this.chkC14Random.AutoSize = true;
+            this.chkC14Random.Location = new System.Drawing.Point(7, 40);
+            this.chkC14Random.Name = "chkC14Random";
+            this.chkC14Random.Size = new System.Drawing.Size(173, 17);
+            this.chkC14Random.TabIndex = 4;
+            this.chkC14Random.Text = "Chapter 1-4 heroes randomized";
+            this.chkC14Random.UseVisualStyleBackColor = true;
+            // 
+            // tabControl2
+            // 
+            this.tabControl2.Controls.Add(this.tabPage5);
+            this.tabControl2.Controls.Add(this.tabPage6);
+            this.tabControl2.Controls.Add(this.tabPage7);
+            this.tabControl2.Controls.Add(this.tabPage8);
+            this.tabControl2.Controls.Add(this.tabPage9);
+            this.tabControl2.Location = new System.Drawing.Point(7, 67);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(487, 228);
+            this.tabControl2.TabIndex = 3;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.c1Hero);
+            this.tabPage5.Controls.Add(this.label9);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(479, 202);
+            this.tabPage5.TabIndex = 0;
+            this.tabPage5.Text = "Chapter 1";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // c1Hero
+            // 
+            this.c1Hero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c1Hero.FormattingEnabled = true;
+            this.c1Hero.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c1Hero.Location = new System.Drawing.Point(74, 9);
+            this.c1Hero.Name = "c1Hero";
+            this.c1Hero.Size = new System.Drawing.Size(121, 21);
+            this.c1Hero.TabIndex = 2;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 12);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(62, 13);
+            this.label9.TabIndex = 0;
+            this.label9.Text = "Hero to use";
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.chkCh2AwardXPTournament);
+            this.tabPage6.Controls.Add(this.label10);
+            this.tabPage6.Controls.Add(this.c2Hero3);
+            this.tabPage6.Controls.Add(this.c2Hero2);
+            this.tabPage6.Controls.Add(this.c2Hero1);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(479, 202);
+            this.tabPage6.TabIndex = 1;
+            this.tabPage6.Text = "Chapter 2";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // chkCh2AwardXPTournament
+            // 
+            this.chkCh2AwardXPTournament.AutoSize = true;
+            this.chkCh2AwardXPTournament.Location = new System.Drawing.Point(235, 10);
+            this.chkCh2AwardXPTournament.Name = "chkCh2AwardXPTournament";
+            this.chkCh2AwardXPTournament.Size = new System.Drawing.Size(177, 17);
+            this.chkCh2AwardXPTournament.TabIndex = 6;
+            this.chkCh2AwardXPTournament.Text = "Award XP for Tournament bouts";
+            this.chkCh2AwardXPTournament.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(8, 9);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(73, 13);
+            this.label10.TabIndex = 5;
+            this.label10.Text = "Heroes to use";
+            // 
+            // c2Hero3
+            // 
+            this.c2Hero3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c2Hero3.FormattingEnabled = true;
+            this.c2Hero3.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c2Hero3.Location = new System.Drawing.Point(92, 60);
+            this.c2Hero3.Name = "c2Hero3";
+            this.c2Hero3.Size = new System.Drawing.Size(121, 21);
+            this.c2Hero3.TabIndex = 4;
+            // 
+            // c2Hero2
+            // 
+            this.c2Hero2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c2Hero2.FormattingEnabled = true;
+            this.c2Hero2.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c2Hero2.Location = new System.Drawing.Point(92, 33);
+            this.c2Hero2.Name = "c2Hero2";
+            this.c2Hero2.Size = new System.Drawing.Size(121, 21);
+            this.c2Hero2.TabIndex = 3;
+            // 
+            // c2Hero1
+            // 
+            this.c2Hero1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c2Hero1.FormattingEnabled = true;
+            this.c2Hero1.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c2Hero1.Location = new System.Drawing.Point(92, 6);
+            this.c2Hero1.Name = "c2Hero1";
+            this.c2Hero1.Size = new System.Drawing.Size(121, 21);
+            this.c2Hero1.TabIndex = 2;
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.chkTunnel1);
+            this.tabPage7.Controls.Add(this.chkShop25K);
+            this.tabPage7.Controls.Add(this.chkShop1);
+            this.tabPage7.Controls.Add(this.label11);
+            this.tabPage7.Controls.Add(this.c3Hero);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(479, 202);
+            this.tabPage7.TabIndex = 2;
+            this.tabPage7.Text = "Chapter 3";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // chkTunnel1
+            // 
+            this.chkTunnel1.AutoSize = true;
+            this.chkTunnel1.Location = new System.Drawing.Point(274, 65);
+            this.chkTunnel1.Name = "chkTunnel1";
+            this.chkTunnel1.Size = new System.Drawing.Size(167, 17);
+            this.chkTunnel1.TabIndex = 6;
+            this.chkTunnel1.Text = "Cost to build the tunnel = 1GP";
+            this.chkTunnel1.UseVisualStyleBackColor = true;
+            // 
+            // chkShop25K
+            // 
+            this.chkShop25K.AutoSize = true;
+            this.chkShop25K.Location = new System.Drawing.Point(274, 41);
+            this.chkShop25K.Name = "chkShop25K";
+            this.chkShop25K.Size = new System.Drawing.Size(188, 17);
+            this.chkShop25K.TabIndex = 5;
+            this.chkShop25K.Text = "Cost to build the shop = 25,000GP";
+            this.chkShop25K.UseVisualStyleBackColor = true;
+            this.chkShop25K.CheckedChanged += new System.EventHandler(this.chkShop25K_CheckedChanged);
+            // 
+            // chkShop1
+            // 
+            this.chkShop1.AutoSize = true;
+            this.chkShop1.Location = new System.Drawing.Point(274, 17);
+            this.chkShop1.Name = "chkShop1";
+            this.chkShop1.Size = new System.Drawing.Size(161, 17);
+            this.chkShop1.TabIndex = 4;
+            this.chkShop1.Text = "Cost to build the shop = 1GP";
+            this.chkShop1.UseVisualStyleBackColor = true;
+            this.chkShop1.CheckedChanged += new System.EventHandler(this.chkShop1_CheckedChanged);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(14, 18);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(62, 13);
+            this.label11.TabIndex = 3;
+            this.label11.Text = "Hero to use";
+            // 
+            // c3Hero
+            // 
+            this.c3Hero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c3Hero.FormattingEnabled = true;
+            this.c3Hero.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c3Hero.Location = new System.Drawing.Point(92, 15);
+            this.c3Hero.Name = "c3Hero";
+            this.c3Hero.Size = new System.Drawing.Size(121, 21);
+            this.c3Hero.TabIndex = 2;
+            // 
+            // tabPage8
+            // 
+            this.tabPage8.Controls.Add(this.label12);
+            this.tabPage8.Controls.Add(this.c4Hero1);
+            this.tabPage8.Controls.Add(this.c4Hero2);
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Size = new System.Drawing.Size(479, 202);
+            this.tabPage8.TabIndex = 3;
+            this.tabPage8.Text = "Chapter 4";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(8, 17);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(73, 13);
+            this.label12.TabIndex = 4;
+            this.label12.Text = "Heroes to use";
+            // 
+            // c4Hero1
+            // 
+            this.c4Hero1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c4Hero1.FormattingEnabled = true;
+            this.c4Hero1.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c4Hero1.Location = new System.Drawing.Point(110, 14);
+            this.c4Hero1.Name = "c4Hero1";
+            this.c4Hero1.Size = new System.Drawing.Size(121, 21);
+            this.c4Hero1.TabIndex = 3;
+            // 
+            // c4Hero2
+            // 
+            this.c4Hero2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c4Hero2.FormattingEnabled = true;
+            this.c4Hero2.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c4Hero2.Location = new System.Drawing.Point(110, 41);
+            this.c4Hero2.Name = "c4Hero2";
+            this.c4Hero2.Size = new System.Drawing.Size(121, 21);
+            this.c4Hero2.TabIndex = 2;
+            // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.label13);
+            this.tabPage9.Controls.Add(this.c5Hero2);
+            this.tabPage9.Controls.Add(this.c5Hero3);
+            this.tabPage9.Controls.Add(this.c5Hero4);
+            this.tabPage9.Controls.Add(this.c5Hero7);
+            this.tabPage9.Controls.Add(this.c5Hero8);
+            this.tabPage9.Controls.Add(this.c5Hero6);
+            this.tabPage9.Controls.Add(this.c5Hero5);
+            this.tabPage9.Controls.Add(this.c5Hero1);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Size = new System.Drawing.Size(479, 202);
+            this.tabPage9.TabIndex = 4;
+            this.tabPage9.Text = "Chapter 5";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // label13
+            // 
+            this.label13.Location = new System.Drawing.Point(14, 20);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(62, 18);
+            this.label13.TabIndex = 10;
+            this.label13.Text = "Hero order";
+            // 
+            // c5Hero2
+            // 
+            this.c5Hero2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c5Hero2.FormattingEnabled = true;
+            this.c5Hero2.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c5Hero2.Location = new System.Drawing.Point(125, 44);
+            this.c5Hero2.Name = "c5Hero2";
+            this.c5Hero2.Size = new System.Drawing.Size(121, 21);
+            this.c5Hero2.TabIndex = 9;
+            // 
+            // c5Hero3
+            // 
+            this.c5Hero3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c5Hero3.FormattingEnabled = true;
+            this.c5Hero3.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c5Hero3.Location = new System.Drawing.Point(252, 44);
+            this.c5Hero3.Name = "c5Hero3";
+            this.c5Hero3.Size = new System.Drawing.Size(121, 21);
+            this.c5Hero3.TabIndex = 8;
+            // 
+            // c5Hero4
+            // 
+            this.c5Hero4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c5Hero4.FormattingEnabled = true;
+            this.c5Hero4.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c5Hero4.Location = new System.Drawing.Point(125, 71);
+            this.c5Hero4.Name = "c5Hero4";
+            this.c5Hero4.Size = new System.Drawing.Size(121, 21);
+            this.c5Hero4.TabIndex = 7;
+            // 
+            // c5Hero7
+            // 
+            this.c5Hero7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c5Hero7.FormattingEnabled = true;
+            this.c5Hero7.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c5Hero7.Location = new System.Drawing.Point(252, 125);
+            this.c5Hero7.Name = "c5Hero7";
+            this.c5Hero7.Size = new System.Drawing.Size(121, 21);
+            this.c5Hero7.TabIndex = 6;
+            // 
+            // c5Hero8
+            // 
+            this.c5Hero8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c5Hero8.FormattingEnabled = true;
+            this.c5Hero8.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c5Hero8.Location = new System.Drawing.Point(125, 152);
+            this.c5Hero8.Name = "c5Hero8";
+            this.c5Hero8.Size = new System.Drawing.Size(121, 21);
+            this.c5Hero8.TabIndex = 5;
+            // 
+            // c5Hero6
+            // 
+            this.c5Hero6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c5Hero6.FormattingEnabled = true;
+            this.c5Hero6.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c5Hero6.Location = new System.Drawing.Point(125, 125);
+            this.c5Hero6.Name = "c5Hero6";
+            this.c5Hero6.Size = new System.Drawing.Size(121, 21);
+            this.c5Hero6.TabIndex = 4;
+            // 
+            // c5Hero5
+            // 
+            this.c5Hero5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c5Hero5.FormattingEnabled = true;
+            this.c5Hero5.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c5Hero5.Location = new System.Drawing.Point(125, 98);
+            this.c5Hero5.Name = "c5Hero5";
+            this.c5Hero5.Size = new System.Drawing.Size(121, 21);
+            this.c5Hero5.TabIndex = 3;
+            // 
+            // c5Hero1
+            // 
+            this.c5Hero1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.c5Hero1.FormattingEnabled = true;
+            this.c5Hero1.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.c5Hero1.Location = new System.Drawing.Point(125, 17);
+            this.c5Hero1.Name = "c5Hero1";
+            this.c5Hero1.Size = new System.Drawing.Size(121, 21);
+            this.c5Hero1.TabIndex = 2;
+            // 
+            // chkSoloCanEquipAll
+            // 
+            this.chkSoloCanEquipAll.AutoSize = true;
+            this.chkSoloCanEquipAll.Enabled = false;
+            this.chkSoloCanEquipAll.Location = new System.Drawing.Point(285, 15);
+            this.chkSoloCanEquipAll.Name = "chkSoloCanEquipAll";
+            this.chkSoloCanEquipAll.Size = new System.Drawing.Size(114, 17);
+            this.chkSoloCanEquipAll.TabIndex = 2;
+            this.chkSoloCanEquipAll.Text = "Can equip all items";
+            this.chkSoloCanEquipAll.UseVisualStyleBackColor = true;
+            // 
+            // cboSoloHero
+            // 
+            this.cboSoloHero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSoloHero.Enabled = false;
+            this.cboSoloHero.FormattingEnabled = true;
+            this.cboSoloHero.Items.AddRange(new object[] {
+            "Ragnar",
+            "Alena",
+            "Cristo",
+            "Brey",
+            "Taloon",
+            "Nara",
+            "Mara",
+            "Hero"});
+            this.cboSoloHero.Location = new System.Drawing.Point(136, 13);
+            this.cboSoloHero.Name = "cboSoloHero";
+            this.cboSoloHero.Size = new System.Drawing.Size(121, 21);
+            this.cboSoloHero.TabIndex = 1;
+            // 
+            // chkSoloHero
+            // 
+            this.chkSoloHero.AutoSize = true;
+            this.chkSoloHero.Location = new System.Drawing.Point(7, 15);
+            this.chkSoloHero.Name = "chkSoloHero";
+            this.chkSoloHero.Size = new System.Drawing.Size(123, 17);
+            this.chkSoloHero.TabIndex = 0;
+            this.chkSoloHero.Text = "Solo Hero Challenge";
+            this.chkSoloHero.UseVisualStyleBackColor = true;
+            this.chkSoloHero.CheckedChanged += new System.EventHandler(this.chkSoloHero_CheckedChanged);
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.txtC2Name1);
+            this.tabPage1.Controls.Add(this.txtC3Name1);
+            this.tabPage1.Controls.Add(this.txtC4Name2);
+            this.tabPage1.Controls.Add(this.txtC2Name3);
+            this.tabPage1.Controls.Add(this.txtC4Name1);
+            this.tabPage1.Controls.Add(this.txtC2Name2);
+            this.tabPage1.Controls.Add(this.txtC1Name1);
+            this.tabPage1.Controls.Add(this.label6);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(500, 301);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Names";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // txtC1Name1
+            // 
+            this.txtC1Name1.Enabled = false;
+            this.txtC1Name1.Location = new System.Drawing.Point(118, 15);
+            this.txtC1Name1.MaxLength = 8;
+            this.txtC1Name1.Name = "txtC1Name1";
+            this.txtC1Name1.Size = new System.Drawing.Size(81, 20);
+            this.txtC1Name1.TabIndex = 26;
+            this.txtC1Name1.Text = "Ragnar";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 15);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(106, 13);
+            this.label6.TabIndex = 38;
+            this.label6.Text = "Chapter Hero Names";
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Location = new System.Drawing.Point(15, 138);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(508, 327);
+            this.tabControl1.TabIndex = 41;
+            // 
+            // txtC2Name2
+            // 
+            this.txtC2Name2.Enabled = false;
+            this.txtC2Name2.Location = new System.Drawing.Point(221, 41);
+            this.txtC2Name2.MaxLength = 8;
+            this.txtC2Name2.Name = "txtC2Name2";
+            this.txtC2Name2.Size = new System.Drawing.Size(81, 20);
+            this.txtC2Name2.TabIndex = 30;
+            this.txtC2Name2.Text = "Cristo";
+            // 
+            // txtC4Name1
+            // 
+            this.txtC4Name1.Enabled = false;
+            this.txtC4Name1.Location = new System.Drawing.Point(118, 93);
+            this.txtC4Name1.MaxLength = 8;
+            this.txtC4Name1.Name = "txtC4Name1";
+            this.txtC4Name1.Size = new System.Drawing.Size(81, 20);
+            this.txtC4Name1.TabIndex = 31;
+            this.txtC4Name1.Text = "Nara";
+            // 
+            // txtC2Name3
+            // 
+            this.txtC2Name3.Enabled = false;
+            this.txtC2Name3.Location = new System.Drawing.Point(324, 41);
+            this.txtC2Name3.MaxLength = 8;
+            this.txtC2Name3.Name = "txtC2Name3";
+            this.txtC2Name3.Size = new System.Drawing.Size(81, 20);
+            this.txtC2Name3.TabIndex = 33;
+            this.txtC2Name3.Text = "Brey";
+            // 
+            // txtC4Name2
+            // 
+            this.txtC4Name2.Enabled = false;
+            this.txtC4Name2.Location = new System.Drawing.Point(221, 93);
+            this.txtC4Name2.MaxLength = 8;
+            this.txtC4Name2.Name = "txtC4Name2";
+            this.txtC4Name2.Size = new System.Drawing.Size(81, 20);
+            this.txtC4Name2.TabIndex = 34;
+            this.txtC4Name2.Text = "Mara";
+            // 
+            // txtC3Name1
+            // 
+            this.txtC3Name1.Enabled = false;
+            this.txtC3Name1.Location = new System.Drawing.Point(118, 67);
+            this.txtC3Name1.MaxLength = 8;
+            this.txtC3Name1.Name = "txtC3Name1";
+            this.txtC3Name1.Size = new System.Drawing.Size(81, 20);
+            this.txtC3Name1.TabIndex = 37;
+            this.txtC3Name1.Text = "Taloon";
+            // 
+            // txtC2Name1
+            // 
+            this.txtC2Name1.Enabled = false;
+            this.txtC2Name1.Location = new System.Drawing.Point(118, 41);
+            this.txtC2Name1.MaxLength = 8;
+            this.txtC2Name1.Name = "txtC2Name1";
+            this.txtC2Name1.Size = new System.Drawing.Size(81, 20);
+            this.txtC2Name1.TabIndex = 27;
+            this.txtC2Name1.Text = "Alena";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(982, 546);
+            this.ClientSize = new System.Drawing.Size(549, 546);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.lblIntensityDesc);
             this.Controls.Add(this.btnRandomize);
@@ -506,14 +1068,24 @@
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            this.tabControl2.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage6.PerformLayout();
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage7.PerformLayout();
+            this.tabPage8.ResumeLayout(false);
+            this.tabPage8.PerformLayout();
+            this.tabPage9.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -537,31 +1109,65 @@
         private System.Windows.Forms.TextBox txtSeed;
         private System.Windows.Forms.Label lblIntensityDesc;
         private System.Windows.Forms.Button btnRandomize;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TextBox txtDefault2;
-        private System.Windows.Forms.TextBox txtDefault3;
-        private System.Windows.Forms.TextBox txtDefault10;
-        private System.Windows.Forms.TextBox txtDefault11;
-        private System.Windows.Forms.TextBox txtDefault12;
-        private System.Windows.Forms.TextBox txtDefault9;
-        private System.Windows.Forms.TextBox txtDefault8;
-        private System.Windows.Forms.TextBox txtDefault7;
-        private System.Windows.Forms.TextBox txtDefault6;
-        private System.Windows.Forms.TextBox txtDefault5;
-        private System.Windows.Forms.TextBox txtDefault4;
-        private System.Windows.Forms.TextBox txtDefault1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox cboSoloHero;
-        private System.Windows.Forms.CheckBox chkSoloHero;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Button btnMonsterOutput;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.CheckBox chkRandomMonsters;
+        private System.Windows.Forms.CheckBox chkGoldRandom;
+        private System.Windows.Forms.CheckBox chkXPRandom;
+        private System.Windows.Forms.ComboBox cboEncounterRate;
+        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox cboGoldAdjustment;
         private System.Windows.Forms.ComboBox cboXPAdjustment;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.CheckBox chkC5Random;
+        private System.Windows.Forms.CheckBox chkC14Random;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.ComboBox c1Hero;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox c2Hero3;
+        private System.Windows.Forms.ComboBox c2Hero2;
+        private System.Windows.Forms.ComboBox c2Hero1;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.CheckBox chkTunnel1;
+        private System.Windows.Forms.CheckBox chkShop25K;
+        private System.Windows.Forms.CheckBox chkShop1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox c3Hero;
+        private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox c4Hero1;
+        private System.Windows.Forms.ComboBox c4Hero2;
+        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox c5Hero2;
+        private System.Windows.Forms.ComboBox c5Hero3;
+        private System.Windows.Forms.ComboBox c5Hero4;
+        private System.Windows.Forms.ComboBox c5Hero7;
+        private System.Windows.Forms.ComboBox c5Hero8;
+        private System.Windows.Forms.ComboBox c5Hero6;
+        private System.Windows.Forms.ComboBox c5Hero5;
+        private System.Windows.Forms.ComboBox c5Hero1;
+        private System.Windows.Forms.CheckBox chkSoloCanEquipAll;
+        private System.Windows.Forms.ComboBox cboSoloHero;
+        private System.Windows.Forms.CheckBox chkSoloHero;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TextBox txtC1Name1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.CheckBox chkCh2AwardXPTournament;
+        private System.Windows.Forms.CheckBox chkSpeedUpBattles;
+        private System.Windows.Forms.TextBox txtC2Name1;
+        private System.Windows.Forms.TextBox txtC3Name1;
+        private System.Windows.Forms.TextBox txtC4Name2;
+        private System.Windows.Forms.TextBox txtC2Name3;
+        private System.Windows.Forms.TextBox txtC4Name1;
+        private System.Windows.Forms.TextBox txtC2Name2;
     }
 }
 

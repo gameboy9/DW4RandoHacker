@@ -10,16 +10,7 @@ namespace DW4RandoHacker
     {
         byte[] romData;
         byte[] romData2;
-        byte[] monsterOrder = { 0x00, 0x01, 0x68, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e,
-                                0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e,
-                                0x1f, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x8a, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d,
-                                0x2e, 0x2f, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d,
-                                0x3e, 0x3f, 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d,
-                                0x4e, 0x4f, 0x50, 0x51, 0x52, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a, 0x5b, 0x5c, 0x5d, 0x5e,
-                                0x5f, 0x60, 0x61, 0x62, 0x63, 0x64, 0x66, 0x67, 0x53, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
-                                0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7a, 0x7b, 0x7c, 0x7d, 0x7e, 0x7f,
-                                0x80, 0x88, 0x89, 0x65, 0x84, 0x81, 0x82, 0x83 }; // 129 normal monsters, 7 bosses.  Skip Zoma, "frozen" Zoma, Ortega
-
+        
         public Form1()
         {
             InitializeComponent();
@@ -72,48 +63,72 @@ namespace DW4RandoHacker
                 {
                     txtFileName.Text = reader.ReadLine();
                     txtCompare.Text = reader.ReadLine();
-                    txtDefault1.Text = reader.ReadLine();
-                    txtDefault2.Text = reader.ReadLine();
-                    txtDefault3.Text = reader.ReadLine();
-                    txtDefault4.Text = reader.ReadLine();
-                    txtDefault5.Text = reader.ReadLine();
-                    txtDefault6.Text = reader.ReadLine();
-                    txtDefault7.Text = reader.ReadLine();
-                    txtDefault8.Text = reader.ReadLine();
-                    txtDefault9.Text = reader.ReadLine();
-                    txtDefault10.Text = reader.ReadLine();
-                    txtDefault11.Text = reader.ReadLine();
-                    txtDefault12.Text = reader.ReadLine();
+                    txtC1Name1.Text = reader.ReadLine();
+                    txtC2Name1.Text = reader.ReadLine();
+                    txtC2Name2.Text = reader.ReadLine();
+                    txtC2Name3.Text = reader.ReadLine();
+                    txtC3Name1.Text = reader.ReadLine();
+                    txtC4Name1.Text = reader.ReadLine();
+                    txtC4Name2.Text = reader.ReadLine();
+                    var waste = reader.ReadLine();
+                    waste = reader.ReadLine();
+                    waste = reader.ReadLine();
+                    waste = reader.ReadLine();
+
+                    chkSoloHero.Checked = (reader.ReadLine() == "T");
+                    cboSoloHero.SelectedItem = reader.ReadLine();
+                    chkSoloCanEquipAll.Checked = (reader.ReadLine() == "T");
+                    chkC14Random.Checked = (reader.ReadLine() == "T");
+                    chkC5Random.Checked = (reader.ReadLine() == "T");
+
+                    c1Hero.SelectedItem = reader.ReadLine();
+                    c2Hero1.SelectedItem = reader.ReadLine();
+                    c2Hero2.SelectedItem = reader.ReadLine();
+                    c2Hero3.SelectedItem = reader.ReadLine();
+                    chkCh2AwardXPTournament.Checked = (reader.ReadLine() == "T");
+                    c3Hero.SelectedItem = reader.ReadLine();
+                    chkShop1.Checked = (reader.ReadLine() == "T");
+                    chkShop25K.Checked = (reader.ReadLine() == "T");
+                    chkTunnel1.Checked = (reader.ReadLine() == "T");
+                    c4Hero1.SelectedItem = reader.ReadLine();
+                    c4Hero2.SelectedItem = reader.ReadLine();
+                    c5Hero1.SelectedItem = reader.ReadLine();
+                    c5Hero2.SelectedItem = reader.ReadLine();
+                    c5Hero3.SelectedItem = reader.ReadLine();
+                    c5Hero4.SelectedItem = reader.ReadLine();
+                    c5Hero5.SelectedItem = reader.ReadLine();
+                    c5Hero6.SelectedItem = reader.ReadLine();
+                    c5Hero7.SelectedItem = reader.ReadLine();
+                    c5Hero8.SelectedItem = reader.ReadLine();
+
+                    cboXPAdjustment.SelectedItem = reader.ReadLine();
+                    chkXPRandom.Checked = (reader.ReadLine() == "T");
+                    cboGoldAdjustment.SelectedItem = reader.ReadLine();
+                    chkGoldRandom.Checked = (reader.ReadLine() == "T");
+                    cboEncounterRate.SelectedItem = reader.ReadLine();
+                    chkRandomMonsters.Checked = (reader.ReadLine() == "T");
+                    txtSeed.Text = reader.ReadLine();
+                    chkSpeedUpBattles.Checked = (reader.ReadLine() == "T");
+
                     runChecksum();
                 }
             }
             catch
             {
                 // ignore error
-                txtDefault1.Text = "Brindar";
-                txtDefault2.Text = "Ragnar";
+                txtC1Name1.Text = "Brindar";
+                txtC2Name1.Text = "Ragnar";
                 txtDefault3.Text = "Adan";
                 txtDefault4.Text = "Glennard";
-                txtDefault5.Text = "Theson";
-                txtDefault6.Text = "Elucidus";
+                txtC2Name2.Text = "Theson";
+                txtC4Name1.Text = "Elucidus";
                 txtDefault7.Text = "Harley";
-                txtDefault8.Text = "Mathias";
-                txtDefault9.Text = "Sartris";
+                txtC2Name3.Text = "Mathias";
+                txtC4Name2.Text = "Sartris";
                 txtDefault10.Text = "Petrus";
                 txtDefault11.Text = "Hiram";
-                txtDefault12.Text = "Viron";
+                txtC3Name1.Text = "Viron";
             }
-
-            //radInsaneIntensity_CheckedChanged(null, null);
-            // Lower case letters start at 0x0b, Upper case letters start at 0x25.
-            // Is Q being skipped?!
-            // bcdef01234
-            // 567890abcd
-            // ef01234
-            // 56789abcde
-            // f012345678
-            // 9abcde
-
         }
 
         private void btnNewSeed_Click(object sender, EventArgs e)
@@ -133,42 +148,6 @@ namespace DW4RandoHacker
                 return;
 
             hackRom();
-            //if (txtSeed.Text == "test1")
-            //    halfExpAndGoldReq(true);
-            //else if (txtSeed.Text == "output")
-            //{
-            //    textOutput();
-            //    return;
-            //}
-            //else if (txtSeed.Text == "textGet")
-            //{
-            //    textGet();
-            //    return;
-            //}
-            //else
-            //{
-            //    //if (chkRandStores.Checked) forceItemSell();
-            //    //if (chkHalfExpGoldReq.Checked) halfExpAndGoldReq();
-            //    superRandomize();
-            //    //if (chkDoubleXP.Checked) doubleExp();
-            //}
-
-            // ALL ROM Hacks will have greatly increased battle speeds.
-            //romData[0x13a65] = 0x01;
-            //romData[0x13a66] = 0x04;
-            //romData[0x13a67] = 0x08;
-            //romData[0x13a68] = 0x0c;
-            //romData[0x13a69] = 0x10;
-            //romData[0x13a6a] = 0x18;
-            //romData[0x13a6b] = 0x20;
-            //romData[0x852] = 2; // instead of 16 - animation of transition into battle removed, saving 14 frames / start of battle.
-            //romData[0x8ce] = 1; // instead of 12 - flashes to start a battle, saving 11 frames / start of battle.
-            //romData[0x980d] = 1; // instead of 8 - Magic spell flashing, saving 7 or 14 frames / spell casted
-            //romData[0x9827] = 0xea; // NEXT 3 LINES:  1 flash -> 0 flashes
-            //romData[0x9828] = 0xea;
-            //romData[0x9829] = 0xea;
-            //romData[0x9882] = 2; // instead of 12 - Frames of shaking when YOU are hit... saving 10 frames / hit
-            //romData[0x9957] = 1; // Instead of 4 enemy flashes, saving at least 6 frames / hit... probably 12 or even 24 frames / hit.
 
             //// All ROM hacks will revive ALL characters on a ColdAsACod.
             //// There will be a temporary graphical error if you use less than four characters, but I'm going to leave it be.
@@ -237,18 +216,14 @@ namespace DW4RandoHacker
             //    }
             //}
 
-            //romData[0x3cc6a] = 0x4c; // Forces a jump out of the king scolding routine, saving at least 13 seconds / party wipe.  There are graphical errors, but I'll take it!
-
-            // Remove the golden claw 100/256 encounter rate - Can't because the king won't check if you have the black pepper.
-            //romData[0x185c] = 0x4c;
-            //romData[0x185d] = 0x5b;
-            //romData[0x185e] = 0x98;
-
             saveRom();
         }
 
         private void hackRom()
         {
+            for (int lnI = 0; lnI < 8; lnI++)
+                romData[0x49145 + lnI] = 0; // Make sure all characters are loaded right away; otherwise, Chapter 1 will most likely start with a ghost.
+
             if (chkSoloHero.Checked)
             {
                 byte power = 0;
@@ -260,14 +235,23 @@ namespace DW4RandoHacker
                 if ((string)cboSoloHero.SelectedItem == "Taloon") power = 5;
                 if ((string)cboSoloHero.SelectedItem == "Ragnar") power = 6;
                 if ((string)cboSoloHero.SelectedItem == "Alena") power = 7;
-                for (int lnI = 0; lnI < 80; lnI++)
-                    romData[0x40c75 + lnI] = (byte)Math.Pow(2, power); // Going to make sure the character gets to equip everything!
-                for (int lnI = 0; lnI < 8; lnI++)
-                    romData[0x49145 + lnI] = 0; // Make sure all characters are loaded right away
+                if (chkSoloCanEquipAll.Checked)
+                {
+                    for (int lnI = 0; lnI < 80; lnI++)
+                        romData[0x40c75 + lnI] = (byte)Math.Pow(2, power); // Going to make sure the character gets to equip everything!
+                }
+                else
+                { // still have to allow equipping of the Zenethian equipment so you can get through the tower and castle...
+                    romData[0x40c75 + 0x14] = (byte)Math.Pow(2, power);
+                    romData[0x40c75 + 0x21] = (byte)Math.Pow(2, power);
+                    romData[0x40c75 + 0x37] = (byte)Math.Pow(2, power);
+                    romData[0x40c75 + 0x44] = (byte)Math.Pow(2, power);
+                    romData[0x40c75 + 0x4b] = (byte)Math.Pow(2, power);
+                }
                 for (int lnI = 0; lnI < 5; lnI++)
                     romData[0x4914d + lnI] = (byte)(128 + power); // This will ensure the same character starts each chapter.
 
-                // This makes sure all item choices point to the right person's inventory.
+                // This makes sure all item choices point to the right person's inventory. (you get tripped up in that in Chapter 3's Armor charity in Bonmalmo at a minimum)
                 romData[0x41f93] = (byte)(1 + (30 * power));
                 romData[0x41f95] = (byte)(1 + (30 * power));
                 romData[0x41f97] = (byte)(1 + (30 * power));
@@ -278,14 +262,14 @@ namespace DW4RandoHacker
                 romData[0x41fa1] = (byte)(1 + (30 * power));
 
                 // Double the HP gain
-                romData[0x49e22] = 0x20;
+                romData[0x49e22] = 0x20; // JSR to an unused portion of the rom
                 romData[0x49e23] = 0x68;
                 romData[0x49e24] = 0xbf;
-                romData[0x4bf78] = 0x0a;
-                romData[0x4bf79] = 0x8d;
+                romData[0x4bf78] = 0x0a; // Arithmetic shift left... multipling the vitality gain by 4 instead of 2
+                romData[0x4bf79] = 0x8d; // Store accumulator absolute -> 6e09
                 romData[0x4bf7a] = 0x09;
                 romData[0x4bf7b] = 0x6e;
-                romData[0x4bf7c] = 0x60;
+                romData[0x4bf7c] = 0x60; // end subroutine
 
                 // Remove baseline - otherwise, you can't double HP(until I figure out how to double the HP baseline...)
                 romData[0x49df6] = 0xb0;
@@ -295,6 +279,10 @@ namespace DW4RandoHacker
                 romData[0x41338] = 0xea;
                 romData[0x41339] = 0xea;
 
+                romData[0x4af70] = 0xbf; // Make the medical herb super powerful out of battle...
+                romData[0x4f7f9] = 0xff; // ... and even more powerful in battle! (next 2 lines)
+                romData[0x4f7fa] = 0xff;
+
                 // Ensure that ? allies become the solo hero instead.
                 for (int lnI = 0; lnI < 6; lnI++)
                     romData[0x413ea + lnI] = 0xea;
@@ -303,20 +291,12 @@ namespace DW4RandoHacker
                 romData[0x413fd] = 0x9c;
                 romData[0x413fe] = 0x93;
 
-                // Make the Cristo and Brey join change to the solo hero joining twice instead.
+                // Make the Cristo and Brey join change to the solo hero joining twice instead in Chapter 2.
                 romData[0x79d44] = power;
                 romData[0x79d49] = power;
 
-                romData[0x4af70] = 0xbf; // Make the medical herb super powerful out of battle...
-                romData[0x4f7f9] = 0xff; // ... and even more powerful in battle! (next 2 lines)
-                romData[0x4f7fa] = 0xff;
-
-                // Make the shop one piece of gold... Chapter 3 sucks.
-                romData[0x5603c] = 0x00;
-                romData[0x56044] = 0x01;
-                // Always make the tunnel one piece of gold... Chapter 3 sucks.
-                romData[0x56641] = 0x00;
-                romData[0x56645] = 0x01;
+                // Force the solo hero to fight in Chapter 2's tournament.  This isn't completely neccessary, but it will smooth out processing.
+                romData[0x79074] = power;
 
                 // Turn Nara into the solo hero in Chapter 4!
                 romData[0x76b3c] = power;
@@ -367,10 +347,144 @@ namespace DW4RandoHacker
                 //romData[0x41ff1] = 0x00;
             }
 
-            // Now adjust XP for all monsters...
-            for (int lnI = 0; lnI < 0xc2; lnI++)
+            Random r1;
+            try
             {
-                int xp = (romData[0x60051 + (lnI * 22) + 6] * 255) + romData[0x60051 + (lnI * 22) + 5];
+                if (txtSeed.Text == "whoa") r1 = new Random((int)DateTime.Now.Ticks % 2147483647);
+                    else r1 = new Random(int.Parse(txtSeed.Text));
+            }
+            catch
+            {
+                MessageBox.Show("Invalid seed.  It must be a number from 0 to 2147483648.");
+                return;
+            }
+
+            int finalHero = 0;
+            if (chkC14Random.Checked)
+            {
+                // Randomize the starting character for each chapter...
+                // Come up with eight distinct numbers...
+                int[] heroes = { 0, 1, 2, 3, 4, 5, 6, 7 };
+                for (int lnI = 0; lnI < 100; lnI++)
+                {
+                    int numberToSwap1 = (r1.Next() % 8);
+                    int numberToSwap2 = (r1.Next() % 8);
+                    int swappy = heroes[numberToSwap1];
+                    heroes[numberToSwap1] = heroes[numberToSwap2];
+                    heroes[numberToSwap2] = swappy;
+                }
+
+                for (int lnI = 0; lnI < 5; lnI++)
+                    romData[0x4914d + lnI] = (byte)(128 + heroes[lnI]); // This will ensure the same character starts each chapter.
+
+                // Make the Cristo and Brey join change to the solo hero joining twice instead in Chapter 2.
+                romData[0x79d44] = (byte)heroes[5];
+                romData[0x79d49] = (byte)heroes[6];
+
+                // Force the hero acting as the chapter 2 "princess" to fight in Chapter 2's tournament.  
+                // This IS neccessary with random heroes... especially if Alena is acting as Cristo or Brey!
+                romData[0x79074] = (byte)heroes[1];
+
+                // Force the heroes acting as the chapter 4 "Nara and Mara" get out of Chapter 4 successfully.
+                romData[0x7907a] = (byte)heroes[3];
+                romData[0x7907b] = (byte)heroes[7];
+
+                // Turn Nara into the solo hero in Chapter 4!
+                romData[0x76b3c] = (byte)heroes[7];
+
+                finalHero = heroes[4];
+            }
+
+            if (chkC5Random.Checked)
+            {
+                // Randomize the starting character for each chapter...
+                // Come up with eight distinct numbers...
+                int[] heroes = { 0, 1, 2, 3, 4, 5, 6, 7 };
+
+                for (int lnI = 0; lnI < 100; lnI++)
+                {
+                    int numberToSwap1 = (r1.Next() % 8);
+                    int numberToSwap2 = (r1.Next() % 8);
+                    int swappy = heroes[numberToSwap1];
+                    heroes[numberToSwap1] = heroes[numberToSwap2];
+                    heroes[numberToSwap2] = swappy;
+                }
+
+                if (chkC14Random.Checked)
+                {
+                    for (int lnI = 0; lnI < 8; lnI++)
+                    {
+                        if (heroes[lnI] == finalHero)
+                        {
+                            int swappy = heroes[lnI];
+                            heroes[lnI] = heroes[0];
+                            heroes[0] = swappy;
+                        }
+                    }
+                }
+
+                // Force Nara to solo hero in Chapter 5
+                romData[0x77903] = (byte)heroes[1];
+                // Force Mara to solo hero in Chapter 5
+                romData[0x54ad7] = (byte)heroes[0]; // Otherwise, Mara will think that Nara isn't a part of the party...
+                romData[0x77909] = (byte)heroes[2];
+
+                // Dodge an issue with Chapter 5's Cave Of Betrayal
+                romData[0x41423] = 0xa0;
+                romData[0x41424] = 0x00; // LDY $#00 - This will force whoever is in the lead to survive "the drop"
+                romData[0x41425] = 0xea;
+
+                // Force Taloon to solo hero in Chapter 5
+                romData[0x732ad] = (byte)heroes[3];
+
+                // Force Alena, Brey, and Cristo to solo hero in Chapter 5
+                romData[0x739d9] = (byte)heroes[4];
+                romData[0x739de] = (byte)heroes[5];
+                romData[0x739e9] = (byte)heroes[6];
+
+                // A bunch of weird stuff preventing the Keeleon battle from occuring... (Ragnar demanding "the hero"...)
+                romData[0x54e08] = (byte)heroes[0];
+                romData[0x7724e] = (byte)heroes[0];
+                // ... and Ragnar joining...
+                romData[0x73634] = (byte)heroes[7];
+
+                // Give full control over all players in Chapter 5.  You lose the wagon control though.  I would LOVE to figure out how to get both though!  Maybe some nops?
+                romData[0x46e1e] = 0x7f; // You can make it any number higher than 04, chapter 5 I think... 
+            }
+
+            // Make Chapter 2 adjustments if requested.  This is 
+            if (chkCh2AwardXPTournament.Checked)
+            {
+                romData[0x60054 + (0xaf * 22) + 2] = 60;
+                romData[0x60054 + (0xb0 * 22) + 2] = 80;
+                romData[0x60054 + (0xb1 * 22) + 2] = 80;
+                romData[0x60054 + (0xb2 * 22) + 2] = 100;
+                romData[0x60054 + (0xba * 22) + 2] = 100;
+            }
+
+            // Make Chapter 3 adjustments if requested.
+            // Make the shop one piece of gold... I still think that Chapter 3 sucks.  :)
+            if (chkShop1.Checked)
+            {
+                romData[0x5603c] = 0x00;
+                romData[0x56044] = 0x01;
+            }
+            if (chkShop25K.Checked)
+            {
+                romData[0x5603c] = 0x61;
+                romData[0x56044] = 0xa8;
+            }
+            // This can make the tunnel one piece of gold...
+            if (chkTunnel1.Checked)
+            {
+                romData[0x56641] = 0x00;
+                romData[0x56645] = 0x01;
+            }
+
+            // Now adjust XP for all monsters...
+            for (int lnI = 0; lnI <= 0xc2; lnI++)
+            {
+                double xp = (romData[0x60054 + (lnI * 22) + 3] * 255) + romData[0x60054 + (lnI * 22) + 2];
                 if ((string)cboXPAdjustment.SelectedItem == "50%") xp = xp / 2;
                 if ((string)cboXPAdjustment.SelectedItem == "150%") xp = xp * 3 / 2;
                 if ((string)cboXPAdjustment.SelectedItem == "200%") xp = xp * 2;
@@ -378,13 +492,187 @@ namespace DW4RandoHacker
                 if ((string)cboXPAdjustment.SelectedItem == "300%") xp = xp * 3;
                 if ((string)cboXPAdjustment.SelectedItem == "400%") xp = xp * 4;
                 if ((string)cboXPAdjustment.SelectedItem == "500%") xp = xp * 5;
+                if (txtSeed.Text == "whoa") xp = 65000;
 
+                if (chkXPRandom.Checked && txtSeed.Text != "whoa")
+                    xp = (r1.Next() % (xp * 2));
+
+                int xpTrue = (int)Math.Round(xp);
+                //if (xp < 1) xp = 1;
                 if (xp > 65000) xp = 65000;
-                romData[0x60051 + (lnI * 22) + 6] = (byte)(xp / 256);
-                romData[0x60051 + (lnI * 22) + 5] = (byte)(xp % 256);
+                romData[0x60054 + (lnI * 22) + 3] = (byte)(xpTrue / 256);
+                romData[0x60054 + (lnI * 22) + 2] = (byte)(xpTrue % 256);
             }
 
+            // Then the gold for all monsters...
+            for (int lnI = 0; lnI <= 0xc2; lnI++)
+            {
+                double xp = ((romData[0x60054 + (lnI * 22) + 20] % 4) * 256) + (romData[0x60054 + (lnI * 22) + 9]);
+                if ((string)cboXPAdjustment.SelectedItem == "50%") xp = xp / 2;
+                if ((string)cboXPAdjustment.SelectedItem == "150%") xp = xp * 3 / 2;
+                if ((string)cboXPAdjustment.SelectedItem == "200%") xp = xp * 2;
+                if (txtSeed.Text == "whoa") xp = 1000;
 
+                if (chkXPRandom.Checked && txtSeed.Text != "whoa")
+                    xp = (r1.Next() % (xp * 2));
+
+                int xpTrue = (int)Math.Round(xp);
+                //if (xp < 1) xp = 1;
+                if (xp > 1000) xp = 1000;
+                romData[0x60054 + (lnI * 22) + 20] -= (byte)(romData[0x60054 + (lnI * 22) + 20] % 4);
+                romData[0x60054 + (lnI * 22) + 20] += (byte)(xpTrue / 256);
+                romData[0x60054 + (lnI * 22) + 9] = (byte)(xpTrue % 256);
+            }
+
+            // Finally, the encounter rate.  I've noticed that the encounter rate by default is VARIABLE!
+            // 25% of normal = Branca Castle, north to the Heroes' Hometown, the approach to Necrosaro itself, and the Gardenbur Cave.  (the later two is guaranteed 1/64)
+            // Part of the Zenithian Tower, Necrosaro's Castle, and Santeem Castle is 1/32 guaranteed.  (50% of normal)
+            // The other part of Zenithian Tower is 1/24 guaranteed.  (75% of normal)
+            // Frenor, the zones just outside of Colossus (not Dire Castle), Loch Tower (Chapter 1), Konenber to the Great Lighthouse, and Stancia all have a +25% encounter rate.
+            // This makes Loch Tower a guaranteed 1/12.8 encounter rate.
+            // Santeem and Endor in Chapter 2, and Lakanaba and the approach to the Cave Of Betrayal in Chapter 5 all have a +50% encounter rate.
+            // The area outside of Tempe in Chapter 2 has a +75% encounter rate.
+            // Finally, the big desert you must go through after acquiring the wagon has a +100% encounter rate.  This also may be why Fairy Water doesn't work through there.
+            // I believe that makes the encounter rate 1/6.4 through there!
+            for (int lnI = 0; lnI < 16; lnI++)
+            {
+                double encounterRate = (romData[0x6228b + lnI]);
+                if ((string)cboEncounterRate.SelectedItem == "1/4") encounterRate = Math.Round(encounterRate / 4);
+                if ((string)cboEncounterRate.SelectedItem == "1/3") encounterRate = Math.Round(encounterRate / 3);
+                if ((string)cboEncounterRate.SelectedItem == "1/2") encounterRate = Math.Round(encounterRate / 2);
+                if ((string)cboEncounterRate.SelectedItem == "2/3") encounterRate = Math.Round(encounterRate * 2 / 3);
+                if ((string)cboEncounterRate.SelectedItem == "x1.5") encounterRate = Math.Round(encounterRate * 3 / 2);
+                if ((string)cboEncounterRate.SelectedItem == "x2") encounterRate = Math.Round(encounterRate * 2);
+                if ((string)cboEncounterRate.SelectedItem == "x2.5") encounterRate = Math.Round(encounterRate * 5 / 2);
+                if ((string)cboEncounterRate.SelectedItem == "x3") encounterRate = Math.Round(encounterRate * 3);
+                if ((string)cboEncounterRate.SelectedItem == "x4") encounterRate = Math.Round(encounterRate * 4);
+                romData[0x6228b + lnI] = (byte)encounterRate;
+            }
+
+            if (chkRandomMonsters.Checked)
+            {
+                int[] monsterRank = // after 0x55, 0x??????, - bisonhawk unknown
+                {
+                    0x5c, 0x01, 0x00, 0x03, 0x02, 0x05, 0x04, 0x08, 0x07, 0x09, 0x06, 0x0b, 0x0e, 0x0a, 0x11, 0x0d, // 6
+                    0x0f, 0x14, 0x0c, 0x1c, 0x1a, 0x18, 0x13, 0x10, 0x1f, 0x26, 0x16, 0x1e, 0x19, 0x17, 0x24, 0x1b, // 15
+                    0x22, 0x23, 0x15, 0x1d, 0x2a, 0x20, 0x27, 0x25, 0x21, 0x43, 0x28, 0x2f, 0x31, 0x2c, 0x3c, 0x29, // 27
+                    0x3d, 0x2d, 0x36, 0x45, 0x2e, 0x38, 0x39, 0x33, 0x42, 0x3e, 0x58, 0x4d, 0x40, 0x4a, 0x32, 0x47, // 45
+                    0x2b, 0x35, 0x52, 0x48, 0x46, 0x37, 0x4c, 0xaf, 0x34, 0x5e, 0x3a, 0x4f, 0x66, 0xb3, 0x3b, 0x49, // 77
+                    0xb0, 0xb1, 0x56, 0x41, 0x51, 0x50, 0x55, 0x57, 0x44, 0x5a, 0x3f, 0xb2, 0xba, 0x30, 0x53, 0x60, // 104
+                    0x5b, 0x75, 0x5f, 0x4b, 0x68, 0x63, 0x5d, 0x54, 0x6b, 0x61, 0x67, 0x6e, 0x6a, 0x76, 0x12, 0x69,
+                    0x70, 0x59, 0x78, 0x72, 0xab, 0x7c, 0x7d, 0x73, 0x71, 0x6c, 0x6f, 0x7f, 0x77, 0x74, 0x64, 0x86,
+                    0x7a, 0x6d, 0x79, 0x7b, 0x80, 0x81, 0x7e, 0x87, 0x83, 0x88, 0x85, 0x82, 0x84, 0x62, 0x8c, 0x97,
+                    0x89, 0x8a, 0x8d, 0x8b, 0x93, 0x90, 0xc0, 0x9c, 0x8e, 0x98, 0x95, 0xb4, 0x96, 0x9f, 0x9a, 0x99,
+                    0x92, 0x9d, 0xa2, 0x94, 0x9e, 0x91, 0x8f, 0xa1, 0xa9, 0x9b, 0xa0, 0xa6, 0xaa, 0xac, 0x65, 0xa8,
+                    0xb8, 0xa3, 0xa4, 0xa5, 0xa7, 0xbf, 0xb9, 0xbe, 0xb7, 0xb6, 0xb5, 0xc1, 0xc2, 0xbc // 15000 - bosses start at 0xb5
+                };
+
+                int[] maxMonster = { 0xb4, 0xb4, 0xb4, 0xb4, // 0x00-0x03 - Sea(0x00), wasted (0x01-0x03)
+                    11, 21, 22, // 0x04-0x06 - Chapter 1
+                    13, 22, 27, 41, 41, 71, // 0x07-0x0c - Chapter 2
+                    11, 15, 24, 41, 45, 51, // 0x0d-0x12 - Chapter 4
+                    0xbc, // 0x13 - Zenithian Tower
+                    10, 15, 24, 31, // 0x14-0x17 - Chapter 3
+                    11, 21, 26, 39, 39, 45, // 0x18-0x1d - Chapter 5 -> Symbol Of Faith
+                    51, 55, 63, // 0x1e-0x20 - Chapter 5 -> Ship
+                    85, 85, 94, 94, // 0x21-0x24 - Chapter 5 -> Padequila Root
+                    0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, // 0x25-0x33 - Chapter 5 worldwide
+                    0xbc, 0xbc, 0xbd, // 0x34-0x36 - Evil Island/Dark side - need to change this to include nasty bosses
+                    0xbc, 0xbc, 0xbc, // 0x37-0x39 - Zenithian Tower - boss needs
+                    0xbd, 0xbd, 0xbd, // 0x3a-0x3c - Final Cave - boss needs
+                    0xbd, 0xbd, 0xbd, // 0x3d-0x3f - Necrosaro's Palace - boss needs
+                    11, 24, 50, 50, // 0x40-0x43 - Chapter 1 - Cave To Izmit, Old Well, Loch Tower(2 zones)
+                    33, 69, 69, 33, // 0x44-0x47 - Chapter 4 - Cave west of Kievs (1/4), Aktemto Mine (2/3)
+                    12, 12, 39, 39, // 0x48-0x4b - Chapter 3 - Cave north of Lakanaba(2 zones), Cave of Silver Statuette(2 zones)
+                    33, 33, 59, 59, // 0x4c-0x4f - Chapter 2 - Cave south of Frenor, Birdsong Tower
+                    0xbc, // 0x50 - Chapter 5 - World Tree - boss needs
+                    77, 77, // 0x51-0x52 - Chapter 5 - Great Lighthouse
+                    104, // 0x53 - Chapter 5 - Cave of the Padequila
+                    0xb2, 0xb2, // 0x54-0x55 - Chapter 5 - Cave West Of Kievs
+                    0xb2, // Santeem
+                    0xb2, 0xb2, // Cascade Cave
+                    0xb2, // Shrine of Breaking Waves
+                    0xb2, 0xb2, // Cave SE of Gardenbur
+                    0xb2, 0xb2, // Royal Crypt
+                    0xb2, 0xb2, 0xb2, // Colossus
+                    0xbc, 0xbc, // Aktemto Mine
+                    0xbc, 0xbc }; // World Tree
+
+                int[] minMonster =
+                {
+                    0, 0, 0, 0, // 0x00-0x03 - Sea(0x00), wasted (0x01-0x03)
+                    0, 0, 0, // 0x04-0x06 - Chapter 1
+                    0, 0, 0, 0, 0, 0, // 0x07-0x0c - Chapter 2
+                    0, 0, 0, 0, 0, 0, // 0x0d-0x12 - Chapter 4
+                    127, // 0x13 - Zenithian Tower
+                    0, 0, 0, 0, // 0x14-0x17 - Chapter 3
+                    0, 0, 0, 0, 0, 0, // 0x18-0x1d - Chapter 5 -> Symbol Of Faith
+                    0, 0, 0, // 0x1e-0x20 - Chapter 5 -> Ship
+                    0, 0, 0, 0, // 0x21-0x24 - Chapter 5 -> Padequila Root
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0x25-0x33 - Chapter 5 worldwide
+                    114, 114, 141, // 0x34-0x36 - Evil Island/Dark side - need to change this to include nasty bosses
+                    127, 127, 127, // 0x37-0x39 - Zenithian Tower
+                    135, 135, 135, // 0x3a-0x3c - Final Cave - boss needs
+                    148, 148, 148, // 0x3d-0x3f - Necrosaro's Palace - boss needs
+                    0, 0, 0, 0, // 0x40-0x43 - Chapter 1 - Cave To Izmit, Old Well, Loch Tower(2 zones)
+                    0, 0, 0, 0, // 0x44-0x47 - Chapter 4 - Cave west of Kievs (1/4), Aktemto Mine (2/3)
+                    0, 0, 0, 0, // 0x48-0x4b - Chapter 3 - Cave north of Lakanaba(2 zones), Cave of Silver Statuette(2 zones)
+                    0, 0, 0, 0, // 0x4c-0x4f - Chapter 2 - Cave south of Frenor, Birdsong Tower
+                    106, // 0x50 - Chapter 5 - World Tree - boss needs
+                    0, 0, // 0x51-0x52 - Chapter 5 - Great Lighthouse
+                    0, // 0x53 - Chapter 5 - Cave of the Padequila
+                    0, 0, // 0x54-0x55 - Chapter 5 - Cave West Of Kievs
+                    0, // Santeem
+                    64, 64, // Cascade Cave
+                    64, // Shrine of Breaking Waves
+                    0, 0, // Cave SE of Gardenbur
+                    80, 80, // Royal Crypt
+                    94, 94, 94, // Colossus
+                    106, 106, // Aktemto Mine
+                    106, 106 }; // World Tree
+
+                for (int lnI = 0; lnI <= 0x64; lnI++)
+                {
+                    int byteToUse = 0x612ba + (lnI * 16);
+                    // Byte 0 - Day/night monsters
+                    // Byte 1 - Minimum level to guarantee runaway (check this out someday)
+                    // Byte 2-13 - Actual monsters
+                    // Byte 14-15 - Special fights (make FF for now)
+                    for (int lnJ = 0; lnJ < 16; lnJ++)
+                    {
+                        if (lnJ == 0)
+                        {
+                            romData[byteToUse + lnJ] -= (byte)(romData[byteToUse + lnJ] % 32);
+                            romData[byteToUse + lnJ] += 0x1c; // This should ensure that we get to see nearly all of the monsters programmed.
+                            continue;
+                        }
+                        if (lnJ == 1) continue;
+                        romData[byteToUse + lnJ] = (byte)(monsterRank[(r1.Next() % (maxMonster[lnI] - minMonster[lnI])) + minMonster[lnI]]);
+                        if (lnJ >= 14) romData[byteToUse + lnJ] = 0xff;
+                    }
+                }
+            }
+
+            if (chkSpeedUpBattles.Checked)
+            {
+                romData[0x5033f] = 2; // instead of 8.  6 frames saved each enemy hit.
+                romData[0x50420] = 2; // instead of 12.  10 frames saved each time YOU are hit.
+                romData[0x63237] = 2; // instead of 12.  10 frames saved each time an encounter begins.  (flash)
+                romData[0x62eb8] = 1; // instead of 29.  28 frames saved each time an encounter begins.  (spiral)
+                // Speed up the message speed
+                romData[0x48624] = 0x01;
+                romData[0x48625] = 0x04;
+                romData[0x48626] = 0x08;
+                romData[0x48627] = 0x0f;
+                romData[0x48628] = 0x1f;
+                romData[0x48629] = 0x2f;
+                romData[0x4862a] = 0x3f;
+
+            }
+
+            // Weapon stores start at 0x6341f
+            // Armor stores start at 0x634a1
+            // Item stores start at 0x63537
         }
 
         private void textGet()
@@ -1872,27 +2160,27 @@ namespace DW4RandoHacker
 
                 compareComposeString("stores", writer, 0x36838, 248, 1, "g128");
 
-                for (int lnI = 0; lnI < 95; lnI++)
-                    compareComposeString("monsterZones" + lnI.ToString("X2"), writer, (0xaeb + (15 * lnI)), 15);
-                for (int lnI = 0; lnI < 20; lnI++)
-                    compareComposeString("monsterSpecial" + lnI.ToString("X2"), writer, (0x107a + (6 * lnI)), 6);
+                for (int lnI = 0; lnI < 100; lnI++)
+                    compareComposeString("monsterZones" + lnI.ToString("X2"), writer, (0x61000 + (16 * lnI)), 16);
+                //for (int lnI = 0; lnI < 20; lnI++)
+                //    compareComposeString("monsterSpecial" + lnI.ToString("X2"), writer, (0x107a + (6 * lnI)), 6);
                 //for (int lnI = 0; lnI < 13; lnI++)
                 //    compareComposeString("monsterBoss" + lnI.ToString("X2"), writer, (0x10356 + (4 * lnI)), 4);
                 //compareComposeString("statStart", writer, 0x13dd1, 12);
-                compareComposeString("statMult", writer, 0x281b, 10);
-                compareComposeString("statUpsStrength", writer, 0x290e + 0, 40);
-                compareComposeString("statUpsAgility", writer, 0x290e + 40, 40);
-                compareComposeString("statUpsVitality", writer, 0x290e + 80, 40);
-                compareComposeString("statUpsLuck", writer, 0x290e + 120, 40);
-                compareComposeString("statUpsIntelligence", writer, 0x290e + 160, 40);
+                //compareComposeString("statMult", writer, 0x281b, 10);
+                //compareComposeString("statUpsStrength", writer, 0x290e + 0, 40);
+                //compareComposeString("statUpsAgility", writer, 0x290e + 40, 40);
+                //compareComposeString("statUpsVitality", writer, 0x290e + 80, 40);
+                //compareComposeString("statUpsLuck", writer, 0x290e + 120, 40);
+                //compareComposeString("statUpsIntelligence", writer, 0x290e + 160, 40);
 
-                compareComposeString("spellLearningHero", writer, 0x29d6, 63);
-                compareComposeString("spellsLearnedHero", writer, 0x22E7, 32);
-                compareComposeString("spellLearningPilgrim", writer, 0x2A15, 63);
-                compareComposeString("spellsLearnedPilgrim", writer, 0x2307, 32);
-                compareComposeString("spellLearningWizard", writer, 0x2A54, 63);
-                compareComposeString("spellsLearnedWizard", writer, 0x2327, 32);
-                compareComposeString("spellLearningSage", writer, 0x2A93, 63);
+                //compareComposeString("spellLearningHero", writer, 0x29d6, 63);
+                //compareComposeString("spellsLearnedHero", writer, 0x22E7, 32);
+                //compareComposeString("spellLearningPilgrim", writer, 0x2A15, 63);
+                //compareComposeString("spellsLearnedPilgrim", writer, 0x2307, 32);
+                //compareComposeString("spellLearningWizard", writer, 0x2A54, 63);
+                //compareComposeString("spellsLearnedWizard", writer, 0x2327, 32);
+                //compareComposeString("spellLearningSage", writer, 0x2A93, 63);
                 //for (int lnI = 0; lnI < 28; lnI++)
                 //    compareComposeString("spellStats" + (lnI).ToString(), writer, 0x127d5 + (5 * lnI), 5);
                 //compareComposeString("spellCmd", writer, 0x13528, 28);
@@ -1984,18 +2272,50 @@ namespace DW4RandoHacker
                 {
                     writer.WriteLine(txtFileName.Text);
                     writer.WriteLine(txtCompare.Text);
-                    writer.WriteLine(txtDefault1.Text);
-                    writer.WriteLine(txtDefault2.Text);
+                    writer.WriteLine(txtC1Name1.Text);
+                    writer.WriteLine(txtC2Name1.Text);
                     writer.WriteLine(txtDefault3.Text);
                     writer.WriteLine(txtDefault4.Text);
-                    writer.WriteLine(txtDefault5.Text);
-                    writer.WriteLine(txtDefault6.Text);
+                    writer.WriteLine(txtC2Name2.Text);
+                    writer.WriteLine(txtC4Name1.Text);
                     writer.WriteLine(txtDefault7.Text);
-                    writer.WriteLine(txtDefault8.Text);
-                    writer.WriteLine(txtDefault9.Text);
+                    writer.WriteLine(txtC2Name3.Text);
+                    writer.WriteLine(txtC4Name2.Text);
                     writer.WriteLine(txtDefault10.Text);
                     writer.WriteLine(txtDefault11.Text);
-                    writer.WriteLine(txtDefault12.Text);
+                    writer.WriteLine(txtC3Name1.Text);
+                    writer.WriteLine(chkSoloHero.Checked ? "T" : "F");
+                    writer.WriteLine(cboSoloHero.SelectedItem);
+                    writer.WriteLine(chkSoloCanEquipAll.Checked ? "T" : "F");
+                    writer.WriteLine(chkC14Random.Checked ? "T" : "F");
+                    writer.WriteLine(chkC5Random.Checked ? "T" : "F");
+                    writer.WriteLine(c1Hero.SelectedItem);
+                    writer.WriteLine(c2Hero1.SelectedItem);
+                    writer.WriteLine(c2Hero2.SelectedItem);
+                    writer.WriteLine(c2Hero3.SelectedItem);
+                    writer.WriteLine(chkCh2AwardXPTournament.Checked ? "T" : "F");
+                    writer.WriteLine(c3Hero.SelectedItem);
+                    writer.WriteLine(chkShop1.Checked ? "T" : "F");
+                    writer.WriteLine(chkShop25K.Checked ? "T" : "F");
+                    writer.WriteLine(chkTunnel1.Checked ? "T" : "F");
+                    writer.WriteLine(c4Hero1.SelectedItem);
+                    writer.WriteLine(c4Hero2.SelectedItem);
+                    writer.WriteLine(c5Hero1.SelectedItem);
+                    writer.WriteLine(c5Hero2.SelectedItem);
+                    writer.WriteLine(c5Hero3.SelectedItem);
+                    writer.WriteLine(c5Hero4.SelectedItem);
+                    writer.WriteLine(c5Hero5.SelectedItem);
+                    writer.WriteLine(c5Hero6.SelectedItem);
+                    writer.WriteLine(c5Hero7.SelectedItem);
+                    writer.WriteLine(c5Hero8.SelectedItem);
+                    writer.WriteLine(cboXPAdjustment.SelectedItem);
+                    writer.WriteLine(chkXPRandom.Checked ? "T" : "F");
+                    writer.WriteLine(cboGoldAdjustment.SelectedItem);
+                    writer.WriteLine(chkGoldRandom.Checked ? "T" : "F");
+                    writer.WriteLine(cboEncounterRate.SelectedItem);
+                    writer.WriteLine(chkRandomMonsters.Checked ? "T" : "F");
+                    writer.WriteLine(txtSeed.Text);
+                    writer.WriteLine(chkSpeedUpBattles.Checked ? "T" : "F");
                 }
         }
 
@@ -2065,12 +2385,48 @@ namespace DW4RandoHacker
             using (StreamWriter writer = File.CreateText(Path.Combine(Path.GetDirectoryName(txtFileName.Text), "DW4MonsterOutput.txt")))
             {
                 for (int lnI = 0; lnI < 214; lnI++)
-                    outputComposeString("monsters" + (lnI).ToString("X2"), writer, (0x60051 + (22 * lnI)), 22);
+                    outputComposeString("monsters" + (lnI).ToString("X2"), writer, (0x60054 + (22 * lnI)), 22);
 
                 for (int lnI = 0; lnI < 101; lnI++)
                     outputComposeString("monstersZones" + (lnI).ToString("X2"), writer, (0x612ba + (16 * lnI)), 16);
+
+                for (int lnI = 0; lnI < 34; lnI++)
+                    outputComposeString("bossFights" + (lnI).ToString("X2"), writer, (0x6235c + (8 * lnI)), 8);
             }
             lblIntensityDesc.Text = "Text output complete!  (DW4MonsterOutput.txt)";
+        }
+
+        private void chkSoloHero_CheckedChanged(object sender, EventArgs e)
+        {
+            cboSoloHero.Enabled = chkSoloHero.Checked;
+            chkSoloCanEquipAll.Enabled = chkSoloHero.Checked;
+            c1Hero.Enabled = !chkSoloHero.Checked;
+            c2Hero1.Enabled = !chkSoloHero.Checked;
+            c2Hero2.Enabled = !chkSoloHero.Checked;
+            c2Hero3.Enabled = !chkSoloHero.Checked;
+            c3Hero.Enabled = !chkSoloHero.Checked;
+            c4Hero1.Enabled = !chkSoloHero.Checked;
+            c4Hero2.Enabled = !chkSoloHero.Checked;
+            c5Hero1.Enabled = !chkSoloHero.Checked;
+            c5Hero2.Enabled = !chkSoloHero.Checked;
+            c5Hero3.Enabled = !chkSoloHero.Checked;
+            c5Hero4.Enabled = !chkSoloHero.Checked;
+            c5Hero5.Enabled = !chkSoloHero.Checked;
+            c5Hero6.Enabled = !chkSoloHero.Checked;
+            c5Hero7.Enabled = !chkSoloHero.Checked;
+            c5Hero8.Enabled = !chkSoloHero.Checked;
+            chkC14Random.Enabled = !chkSoloHero.Checked;
+            chkC5Random.Enabled = !chkSoloHero.Checked;
+        }
+
+        private void chkShop1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkShop1.Checked) chkShop25K.Checked = false;
+        }
+
+        private void chkShop25K_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkShop25K.Checked) chkShop1.Checked = false;
         }
     }
 }
