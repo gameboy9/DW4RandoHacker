@@ -70,10 +70,6 @@ namespace DW4RandoHacker
                     txtC3Name1.Text = reader.ReadLine();
                     txtC4Name1.Text = reader.ReadLine();
                     txtC4Name2.Text = reader.ReadLine();
-                    var waste = reader.ReadLine();
-                    waste = reader.ReadLine();
-                    waste = reader.ReadLine();
-                    waste = reader.ReadLine();
 
                     chkSoloHero.Checked = (reader.ReadLine() == "T");
                     cboSoloHero.SelectedItem = reader.ReadLine();
@@ -116,18 +112,13 @@ namespace DW4RandoHacker
             catch
             {
                 // ignore error
-                txtC1Name1.Text = "Brindar";
-                txtC2Name1.Text = "Ragnar";
-                txtDefault3.Text = "Adan";
-                txtDefault4.Text = "Glennard";
-                txtC2Name2.Text = "Theson";
-                txtC4Name1.Text = "Elucidus";
-                txtDefault7.Text = "Harley";
-                txtC2Name3.Text = "Mathias";
-                txtC4Name2.Text = "Sartris";
-                txtDefault10.Text = "Petrus";
-                txtDefault11.Text = "Hiram";
-                txtC3Name1.Text = "Viron";
+                txtC1Name1.Text = "Ragnar";
+                txtC2Name1.Text = "Alena";
+                txtC2Name2.Text = "Cristo";
+                txtC2Name3.Text = "Brey";
+                txtC3Name1.Text = "Taloon";
+                txtC4Name1.Text = "Mara";
+                txtC4Name2.Text = "Nara";
             }
         }
 
@@ -498,8 +489,8 @@ namespace DW4RandoHacker
                     xp = (r1.Next() % (xp * 2));
 
                 int xpTrue = (int)Math.Round(xp);
-                //if (xp < 1) xp = 1;
-                if (xp > 65000) xp = 65000;
+                if (xpTrue < 1 && !chkXPRandom.Checked) xpTrue = 1;
+                if (xpTrue > 65000) xp = 65000;
                 romData[0x60054 + (lnI * 22) + 3] = (byte)(xpTrue / 256);
                 romData[0x60054 + (lnI * 22) + 2] = (byte)(xpTrue % 256);
             }
@@ -508,17 +499,17 @@ namespace DW4RandoHacker
             for (int lnI = 0; lnI <= 0xc2; lnI++)
             {
                 double xp = ((romData[0x60054 + (lnI * 22) + 20] % 4) * 256) + (romData[0x60054 + (lnI * 22) + 9]);
-                if ((string)cboXPAdjustment.SelectedItem == "50%") xp = xp / 2;
-                if ((string)cboXPAdjustment.SelectedItem == "150%") xp = xp * 3 / 2;
-                if ((string)cboXPAdjustment.SelectedItem == "200%") xp = xp * 2;
+                if ((string)cboGoldAdjustment.SelectedItem == "50%") xp = xp / 2;
+                if ((string)cboGoldAdjustment.SelectedItem == "150%") xp = xp * 3 / 2;
+                if ((string)cboGoldAdjustment.SelectedItem == "200%") xp = xp * 2;
                 if (txtSeed.Text == "whoa") xp = 1000;
 
-                if (chkXPRandom.Checked && txtSeed.Text != "whoa")
+                if (chkGoldRandom.Checked && txtSeed.Text != "whoa")
                     xp = (r1.Next() % (xp * 2));
 
                 int xpTrue = (int)Math.Round(xp);
-                //if (xp < 1) xp = 1;
-                if (xp > 1000) xp = 1000;
+                if (xpTrue < 1 && !chkGoldRandom.Checked) xpTrue = 1;
+                if (xpTrue > 1000) xp = 1000;
                 romData[0x60054 + (lnI * 22) + 20] -= (byte)(romData[0x60054 + (lnI * 22) + 20] % 4);
                 romData[0x60054 + (lnI * 22) + 20] += (byte)(xpTrue / 256);
                 romData[0x60054 + (lnI * 22) + 9] = (byte)(xpTrue % 256);
@@ -655,7 +646,8 @@ namespace DW4RandoHacker
 
             if (chkSpeedUpBattles.Checked)
             {
-                romData[0x5033f] = 2; // instead of 8.  6 frames saved each enemy hit.
+                romData[0x502ff] = 1; // instead of 4.  6 frames saved each enemy hit when there is one monster left.
+                romData[0x5033f] = 2; // instead of 8.  6 frames saved each enemy hit where there are two or more monsters left.
                 romData[0x50420] = 2; // instead of 12.  10 frames saved each time YOU are hit.
                 romData[0x63237] = 2; // instead of 12.  10 frames saved each time an encounter begins.  (flash)
                 romData[0x62eb8] = 1; // instead of 29.  28 frames saved each time an encounter begins.  (spiral)
@@ -2274,16 +2266,11 @@ namespace DW4RandoHacker
                     writer.WriteLine(txtCompare.Text);
                     writer.WriteLine(txtC1Name1.Text);
                     writer.WriteLine(txtC2Name1.Text);
-                    writer.WriteLine(txtDefault3.Text);
-                    writer.WriteLine(txtDefault4.Text);
                     writer.WriteLine(txtC2Name2.Text);
-                    writer.WriteLine(txtC4Name1.Text);
-                    writer.WriteLine(txtDefault7.Text);
                     writer.WriteLine(txtC2Name3.Text);
-                    writer.WriteLine(txtC4Name2.Text);
-                    writer.WriteLine(txtDefault10.Text);
-                    writer.WriteLine(txtDefault11.Text);
                     writer.WriteLine(txtC3Name1.Text);
+                    writer.WriteLine(txtC4Name1.Text);
+                    writer.WriteLine(txtC4Name2.Text);
                     writer.WriteLine(chkSoloHero.Checked ? "T" : "F");
                     writer.WriteLine(cboSoloHero.SelectedItem);
                     writer.WriteLine(chkSoloCanEquipAll.Checked ? "T" : "F");
