@@ -9,6 +9,7 @@
 - Can award XP for Chapter 2 tournament monsters.
 - Can change purchase costs of the shop to 1GP or 25000GP, as well as the purchase cost of the tunnel to 1GP in Chapter 3.
 - Can speed up battles, which is highly recommended!
+- Can rename the other 7 heroes, as well as Healie, Orin, etc.!
 - Can set up a "solo hero challenge", details of which are below.
 
 ### Solo Hero Challenge
@@ -20,7 +21,6 @@
 - You have an opportunity for the solo hero to equip everything, but it's not required.  However, all Zenithian equipment will be equippable by all solo heroes regardless so you can get through the Zenithian Tower and Castle.
 
 ## To Do/Wishlist
-- An opportunity to rename the other 7 heroes.
 - Randomize monster patterns.  Maybe.
 - Figure out the Fairy Water so you can kill metal monsters with it like you can in the Japanese version.
 - Have a second variant of the "solo hero challenge" with the characters being NOT sharing the same HP/MP/inventory/etc.
