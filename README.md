@@ -16,13 +16,13 @@
 - The character you select is the only character you get to play with the entire game.
 - If an NPC joins you, it will change to the character you selected.  (see above)
 - The character gains HP at twice the rate as usual, to give you chance... especially against Necrosaro.
-- To speed things up, the shop is only one piece of gold, and the tunnel is one piece of gold in Chapter 3.
 - To complete Chapter 4 successfully, the Magic Key is found in the first treasure chest of the Aktemto Mine.  (it usually has Mystic Acorns in it)
 - You have an opportunity for the solo hero to equip everything, but it's not required.  However, all Zenithian equipment will be equippable by all solo heroes regardless so you can get through the Zenithian Tower and Castle.
 
 ## To Do/Wishlist
 - Randomize monster patterns.  Maybe.
 - Figure out the Fairy Water so you can kill metal monsters with it like you can in the Japanese version.
+- Randomize stat gains.
 - Have a second variant of the "solo hero challenge" with the characters being NOT sharing the same HP/MP/inventory/etc.
 
 ## Special Thanks
