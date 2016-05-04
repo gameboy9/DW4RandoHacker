@@ -94,15 +94,23 @@
             this.cboSoloHero = new System.Windows.Forms.ComboBox();
             this.chkSoloHero = new System.Windows.Forms.CheckBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.txtC2Name1 = new System.Windows.Forms.TextBox();
+            this.txtC3Name1 = new System.Windows.Forms.TextBox();
+            this.txtC4Name2 = new System.Windows.Forms.TextBox();
+            this.txtC2Name3 = new System.Windows.Forms.TextBox();
+            this.txtC4Name1 = new System.Windows.Forms.TextBox();
+            this.txtC2Name2 = new System.Windows.Forms.TextBox();
             this.txtC1Name1 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.txtC2Name2 = new System.Windows.Forms.TextBox();
-            this.txtC4Name1 = new System.Windows.Forms.TextBox();
-            this.txtC2Name3 = new System.Windows.Forms.TextBox();
-            this.txtC4Name2 = new System.Windows.Forms.TextBox();
-            this.txtC3Name1 = new System.Windows.Forms.TextBox();
-            this.txtC2Name1 = new System.Windows.Forms.TextBox();
+            this.txtC1Name2 = new System.Windows.Forms.TextBox();
+            this.txtC3Name3 = new System.Windows.Forms.TextBox();
+            this.txtC3Name2 = new System.Windows.Forms.TextBox();
+            this.txtC4Name3 = new System.Windows.Forms.TextBox();
+            this.txtC5Name1 = new System.Windows.Forms.TextBox();
+            this.txtC5Name3 = new System.Windows.Forms.TextBox();
+            this.txtC5Name2 = new System.Windows.Forms.TextBox();
+            this.txtC5Name4 = new System.Windows.Forms.TextBox();
             this.tabPage4.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -935,6 +943,14 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.txtC5Name4);
+            this.tabPage1.Controls.Add(this.txtC5Name3);
+            this.tabPage1.Controls.Add(this.txtC5Name2);
+            this.tabPage1.Controls.Add(this.txtC5Name1);
+            this.tabPage1.Controls.Add(this.txtC4Name3);
+            this.tabPage1.Controls.Add(this.txtC3Name3);
+            this.tabPage1.Controls.Add(this.txtC3Name2);
+            this.tabPage1.Controls.Add(this.txtC1Name2);
             this.tabPage1.Controls.Add(this.txtC2Name1);
             this.tabPage1.Controls.Add(this.txtC3Name1);
             this.tabPage1.Controls.Add(this.txtC4Name2);
@@ -951,9 +967,62 @@
             this.tabPage1.Text = "Names";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // txtC2Name1
+            // 
+            this.txtC2Name1.Location = new System.Drawing.Point(118, 41);
+            this.txtC2Name1.MaxLength = 8;
+            this.txtC2Name1.Name = "txtC2Name1";
+            this.txtC2Name1.Size = new System.Drawing.Size(81, 20);
+            this.txtC2Name1.TabIndex = 27;
+            this.txtC2Name1.Text = "Alena";
+            // 
+            // txtC3Name1
+            // 
+            this.txtC3Name1.Location = new System.Drawing.Point(118, 67);
+            this.txtC3Name1.MaxLength = 8;
+            this.txtC3Name1.Name = "txtC3Name1";
+            this.txtC3Name1.Size = new System.Drawing.Size(81, 20);
+            this.txtC3Name1.TabIndex = 37;
+            this.txtC3Name1.Text = "Taloon";
+            // 
+            // txtC4Name2
+            // 
+            this.txtC4Name2.Location = new System.Drawing.Point(205, 93);
+            this.txtC4Name2.MaxLength = 8;
+            this.txtC4Name2.Name = "txtC4Name2";
+            this.txtC4Name2.Size = new System.Drawing.Size(81, 20);
+            this.txtC4Name2.TabIndex = 34;
+            this.txtC4Name2.Text = "Mara";
+            // 
+            // txtC2Name3
+            // 
+            this.txtC2Name3.Location = new System.Drawing.Point(292, 41);
+            this.txtC2Name3.MaxLength = 8;
+            this.txtC2Name3.Name = "txtC2Name3";
+            this.txtC2Name3.Size = new System.Drawing.Size(81, 20);
+            this.txtC2Name3.TabIndex = 33;
+            this.txtC2Name3.Text = "Brey";
+            // 
+            // txtC4Name1
+            // 
+            this.txtC4Name1.Location = new System.Drawing.Point(118, 93);
+            this.txtC4Name1.MaxLength = 8;
+            this.txtC4Name1.Name = "txtC4Name1";
+            this.txtC4Name1.Size = new System.Drawing.Size(81, 20);
+            this.txtC4Name1.TabIndex = 31;
+            this.txtC4Name1.Text = "Nara";
+            // 
+            // txtC2Name2
+            // 
+            this.txtC2Name2.Location = new System.Drawing.Point(205, 41);
+            this.txtC2Name2.MaxLength = 8;
+            this.txtC2Name2.Name = "txtC2Name2";
+            this.txtC2Name2.Size = new System.Drawing.Size(81, 20);
+            this.txtC2Name2.TabIndex = 30;
+            this.txtC2Name2.Text = "Cristo";
+            // 
             // txtC1Name1
             // 
-            this.txtC1Name1.Enabled = false;
             this.txtC1Name1.Location = new System.Drawing.Point(118, 15);
             this.txtC1Name1.MaxLength = 8;
             this.txtC1Name1.Name = "txtC1Name1";
@@ -982,65 +1051,77 @@
             this.tabControl1.Size = new System.Drawing.Size(508, 327);
             this.tabControl1.TabIndex = 41;
             // 
-            // txtC2Name2
+            // txtC1Name2
             // 
-            this.txtC2Name2.Enabled = false;
-            this.txtC2Name2.Location = new System.Drawing.Point(221, 41);
-            this.txtC2Name2.MaxLength = 8;
-            this.txtC2Name2.Name = "txtC2Name2";
-            this.txtC2Name2.Size = new System.Drawing.Size(81, 20);
-            this.txtC2Name2.TabIndex = 30;
-            this.txtC2Name2.Text = "Cristo";
+            this.txtC1Name2.Location = new System.Drawing.Point(205, 15);
+            this.txtC1Name2.MaxLength = 8;
+            this.txtC1Name2.Name = "txtC1Name2";
+            this.txtC1Name2.Size = new System.Drawing.Size(81, 20);
+            this.txtC1Name2.TabIndex = 39;
+            this.txtC1Name2.Text = "Healie";
             // 
-            // txtC4Name1
+            // txtC3Name3
             // 
-            this.txtC4Name1.Enabled = false;
-            this.txtC4Name1.Location = new System.Drawing.Point(118, 93);
-            this.txtC4Name1.MaxLength = 8;
-            this.txtC4Name1.Name = "txtC4Name1";
-            this.txtC4Name1.Size = new System.Drawing.Size(81, 20);
-            this.txtC4Name1.TabIndex = 31;
-            this.txtC4Name1.Text = "Nara";
+            this.txtC3Name3.Location = new System.Drawing.Point(292, 67);
+            this.txtC3Name3.MaxLength = 8;
+            this.txtC3Name3.Name = "txtC3Name3";
+            this.txtC3Name3.Size = new System.Drawing.Size(81, 20);
+            this.txtC3Name3.TabIndex = 41;
+            this.txtC3Name3.Text = "Laurent";
             // 
-            // txtC2Name3
+            // txtC3Name2
             // 
-            this.txtC2Name3.Enabled = false;
-            this.txtC2Name3.Location = new System.Drawing.Point(324, 41);
-            this.txtC2Name3.MaxLength = 8;
-            this.txtC2Name3.Name = "txtC2Name3";
-            this.txtC2Name3.Size = new System.Drawing.Size(81, 20);
-            this.txtC2Name3.TabIndex = 33;
-            this.txtC2Name3.Text = "Brey";
+            this.txtC3Name2.Location = new System.Drawing.Point(205, 67);
+            this.txtC3Name2.MaxLength = 8;
+            this.txtC3Name2.Name = "txtC3Name2";
+            this.txtC3Name2.Size = new System.Drawing.Size(81, 20);
+            this.txtC3Name2.TabIndex = 40;
+            this.txtC3Name2.Text = "Strom";
             // 
-            // txtC4Name2
+            // txtC4Name3
             // 
-            this.txtC4Name2.Enabled = false;
-            this.txtC4Name2.Location = new System.Drawing.Point(221, 93);
-            this.txtC4Name2.MaxLength = 8;
-            this.txtC4Name2.Name = "txtC4Name2";
-            this.txtC4Name2.Size = new System.Drawing.Size(81, 20);
-            this.txtC4Name2.TabIndex = 34;
-            this.txtC4Name2.Text = "Mara";
+            this.txtC4Name3.Location = new System.Drawing.Point(292, 93);
+            this.txtC4Name3.MaxLength = 8;
+            this.txtC4Name3.Name = "txtC4Name3";
+            this.txtC4Name3.Size = new System.Drawing.Size(81, 20);
+            this.txtC4Name3.TabIndex = 42;
+            this.txtC4Name3.Text = "Orin";
             // 
-            // txtC3Name1
+            // txtC5Name1
             // 
-            this.txtC3Name1.Enabled = false;
-            this.txtC3Name1.Location = new System.Drawing.Point(118, 67);
-            this.txtC3Name1.MaxLength = 8;
-            this.txtC3Name1.Name = "txtC3Name1";
-            this.txtC3Name1.Size = new System.Drawing.Size(81, 20);
-            this.txtC3Name1.TabIndex = 37;
-            this.txtC3Name1.Text = "Taloon";
+            this.txtC5Name1.Location = new System.Drawing.Point(118, 119);
+            this.txtC5Name1.MaxLength = 8;
+            this.txtC5Name1.Name = "txtC5Name1";
+            this.txtC5Name1.Size = new System.Drawing.Size(81, 20);
+            this.txtC5Name1.TabIndex = 43;
+            this.txtC5Name1.Text = "Hector";
             // 
-            // txtC2Name1
+            // txtC5Name3
             // 
-            this.txtC2Name1.Enabled = false;
-            this.txtC2Name1.Location = new System.Drawing.Point(118, 41);
-            this.txtC2Name1.MaxLength = 8;
-            this.txtC2Name1.Name = "txtC2Name1";
-            this.txtC2Name1.Size = new System.Drawing.Size(81, 20);
-            this.txtC2Name1.TabIndex = 27;
-            this.txtC2Name1.Text = "Alena";
+            this.txtC5Name3.Location = new System.Drawing.Point(292, 119);
+            this.txtC5Name3.MaxLength = 8;
+            this.txtC5Name3.Name = "txtC5Name3";
+            this.txtC5Name3.Size = new System.Drawing.Size(81, 20);
+            this.txtC5Name3.TabIndex = 45;
+            this.txtC5Name3.Text = "Lucia";
+            // 
+            // txtC5Name2
+            // 
+            this.txtC5Name2.Location = new System.Drawing.Point(205, 119);
+            this.txtC5Name2.MaxLength = 8;
+            this.txtC5Name2.Name = "txtC5Name2";
+            this.txtC5Name2.Size = new System.Drawing.Size(81, 20);
+            this.txtC5Name2.TabIndex = 44;
+            this.txtC5Name2.Text = "Panon";
+            // 
+            // txtC5Name4
+            // 
+            this.txtC5Name4.Location = new System.Drawing.Point(379, 119);
+            this.txtC5Name4.MaxLength = 8;
+            this.txtC5Name4.Name = "txtC5Name4";
+            this.txtC5Name4.Size = new System.Drawing.Size(81, 20);
+            this.txtC5Name4.TabIndex = 46;
+            this.txtC5Name4.Text = "Doran";
             // 
             // Form1
             // 
@@ -1168,6 +1249,14 @@
         private System.Windows.Forms.TextBox txtC2Name3;
         private System.Windows.Forms.TextBox txtC4Name1;
         private System.Windows.Forms.TextBox txtC2Name2;
+        private System.Windows.Forms.TextBox txtC5Name4;
+        private System.Windows.Forms.TextBox txtC5Name3;
+        private System.Windows.Forms.TextBox txtC5Name2;
+        private System.Windows.Forms.TextBox txtC5Name1;
+        private System.Windows.Forms.TextBox txtC4Name3;
+        private System.Windows.Forms.TextBox txtC3Name3;
+        private System.Windows.Forms.TextBox txtC3Name2;
+        private System.Windows.Forms.TextBox txtC1Name2;
     }
 }
 

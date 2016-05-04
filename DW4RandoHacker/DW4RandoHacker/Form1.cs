@@ -64,12 +64,20 @@ namespace DW4RandoHacker
                     txtFileName.Text = reader.ReadLine();
                     txtCompare.Text = reader.ReadLine();
                     txtC1Name1.Text = reader.ReadLine();
+                    txtC1Name2.Text = reader.ReadLine();
                     txtC2Name1.Text = reader.ReadLine();
                     txtC2Name2.Text = reader.ReadLine();
                     txtC2Name3.Text = reader.ReadLine();
                     txtC3Name1.Text = reader.ReadLine();
+                    txtC3Name2.Text = reader.ReadLine();
+                    txtC3Name3.Text = reader.ReadLine();
                     txtC4Name1.Text = reader.ReadLine();
                     txtC4Name2.Text = reader.ReadLine();
+                    txtC4Name3.Text = reader.ReadLine();
+                    txtC5Name1.Text = reader.ReadLine();
+                    txtC5Name2.Text = reader.ReadLine();
+                    txtC5Name3.Text = reader.ReadLine();
+                    txtC5Name4.Text = reader.ReadLine();
 
                     chkSoloHero.Checked = (reader.ReadLine() == "T");
                     cboSoloHero.SelectedItem = reader.ReadLine();
@@ -113,12 +121,20 @@ namespace DW4RandoHacker
             {
                 // ignore error
                 txtC1Name1.Text = "Ragnar";
+                txtC1Name2.Text = "Healie";
                 txtC2Name1.Text = "Alena";
                 txtC2Name2.Text = "Cristo";
                 txtC2Name3.Text = "Brey";
                 txtC3Name1.Text = "Taloon";
+                txtC3Name2.Text = "Laurent";
+                txtC3Name3.Text = "Strom";
                 txtC4Name1.Text = "Mara";
                 txtC4Name2.Text = "Nara";
+                txtC4Name3.Text = "Orin";
+                txtC5Name1.Text = "Hector";
+                txtC5Name2.Text = "Panon";
+                txtC5Name3.Text = "Lucia";
+                txtC5Name4.Text = "Doran";
             }
         }
 
@@ -171,41 +187,6 @@ namespace DW4RandoHacker
             //    romData[0x22b3 + lnI] = codData1[lnI];
             //for (int lnI = 0; lnI < codData2.Length; lnI++)
             //    romData[0x3fc2 + lnI] = codData2[lnI];
-
-            //// Rename the starting characters.
-            //for (int lnI = 0; lnI < 12; lnI++)
-            //{
-            //    string name = (lnI == 0 ? txtDefault1.Text :
-            //        lnI == 1 ? txtDefault2.Text :
-            //        lnI == 2 ? txtDefault3.Text :
-            //        lnI == 3 ? txtDefault4.Text :
-            //        lnI == 4 ? txtDefault5.Text :
-            //        lnI == 5 ? txtDefault6.Text :
-            //        lnI == 6 ? txtDefault7.Text :
-            //        lnI == 7 ? txtDefault8.Text :
-            //        lnI == 8 ? txtDefault9.Text :
-            //        lnI == 9 ? txtDefault10.Text :
-            //        lnI == 10 ? txtDefault11.Text :
-            //        txtDefault12.Text);
-            //    for (int lnJ = 0; lnJ < 8; lnJ++)
-            //    {
-            //        romData[0x1ed52 + (8 * lnI) + lnJ] = 0;
-            //        try
-            //        {
-            //            char character = Convert.ToChar(name.Substring(lnJ, 1));
-            //            if (character >= 0x30 && character <= 0x39)
-            //                romData[0x1ed52 + (8 * lnI) + lnJ] = (byte)(character - 47);
-            //            if (character >= 0x41 && character <= 0x5a)
-            //                romData[0x1ed52 + (8 * lnI) + lnJ] = (byte)(character - 28);
-            //            if (character >= 0x61 && character <= 0x7a)
-            //                romData[0x1ed52 + (8 * lnI) + lnJ] = (byte)(character - 86);
-            //        }
-            //        catch
-            //        {
-            //            romData[0x1ed52 + (8 * lnI) + lnJ] = 0; // no more characters to process - make the rest of the characters blank
-            //        }
-            //    }
-            //}
 
             saveRom();
         }
@@ -296,8 +277,8 @@ namespace DW4RandoHacker
                 // We'll replace the first treasure chest in the Aktemto Mine with the Magic Key.
                 romData[0x7bef1] = 0x72;
 
-                // Give full control over all players in Chapter 5.  You lose the wagon control though.  I would LOVE to figure out how to get both though!  Maybe some nops?
-                romData[0x46e1e] = 0x7f; // You can make it any number higher than 04, chapter 5 I think... 
+                //// Give full control over all players in Chapter 5.  You lose the wagon control though.  I would LOVE to figure out how to get both though!  Maybe some nops?
+                //romData[0x46e1e] = 0x7f; // You can make it any number higher than 04, chapter 5 I think... 
 
                 // Force Nara to solo hero in Chapter 5
                 romData[0x77903] = power;
@@ -438,9 +419,6 @@ namespace DW4RandoHacker
                 romData[0x7724e] = (byte)heroes[0];
                 // ... and Ragnar joining...
                 romData[0x73634] = (byte)heroes[7];
-
-                // Give full control over all players in Chapter 5.  You lose the wagon control though.  I would LOVE to figure out how to get both though!  Maybe some nops?
-                romData[0x46e1e] = 0x7f; // You can make it any number higher than 04, chapter 5 I think... 
             }
 
             // Make Chapter 2 adjustments if requested.  This is 
@@ -659,7 +637,106 @@ namespace DW4RandoHacker
                 romData[0x48628] = 0x1f;
                 romData[0x48629] = 0x2f;
                 romData[0x4862a] = 0x3f;
+            }
 
+            // Give full control over all players in Chapter 5.  You lose the wagon control though.  I would LOVE to figure out how to get both though!  Maybe some nops?
+            romData[0x46e1e] = 0x7f; // You can make it any number higher than 04, chapter 5 I think... 
+
+            // Rename all characters - this starts at 0x2fba0
+            string[] twoCharStrings = { "er", "on", "an", "or", "ar", "le", "ro", "al", "re", "st", "in", "ba", "ra", "ma", // 20s, starting at 22
+                " s", "he", "ea", "en", "th", "el", "n ", "te", "et", "e ", "mo", "of", "ng", "at", "de", "f ", // 30s
+                "rd", "ta", "ag", "me", " o", "ir", "ha", "la", "ni", "ce", "hi", "ic", "ll", "li", "sa", "nt", // 40s
+                "do", "ia", "no", "to", "ur", "es", "ou", "pe", "rm", "as", "il", "ri", " h", " m", "s ", "ab", // 50s
+                "be", "ee", "em", "go", "it", "l ", "ve", "dr", "ie", "ne", "r ", "wo", "ad", "ch", "ed", "nd", // 60s
+                "se", "sh", "tr", " a", "bl", "fe", "ld", "nc", "ol", "os", "rn", "si", "vi", " b", " d", "am", // 70s
+                "ge", "ig", "mi", "ot", "ti", "us", " c", "g ", "is", "lo", "od", "sw", "za", "ze", " r", "ac", // 80s
+                "cl", "co", "d ", "gh", "ho", "io", "ke", "oo", "op", "so", "un", "y ", "ai", "bi", "cr", "da", // 90s
+                "id", "im", "om", "pi", "po", "af", "ck", "ff", "gi", "gu", "ht", "iv", "rr", "sp", "ss", "t ", // a0s
+                "ab", "bo", "ec", "fu", "na", "sl", " p", " w", "|s", "ak", "di", "fi", "f ", "iz", "ki", "lu", // b0s
+                "mp", "nf", "rc", "av", "bb", "ca", "ef", "eo", "fa", "fl", "ga", "gr", "ly", "mb", "nu", "og", // c0s
+                "ow", "pa", "pl", "pp", "ry", "sk", "tt", "tu", "wi", " k", " n", " t", "ay", "az", "a ", "br", // d0s
+                "ds", "fo", "kn", "k ", "lm", "ns", "oa", "ob", "oi", "ph", "ty", "ul", "um", "ut", "wa", "au", // e0s
+                "dt", "c ", "d ", "eb", "ep", "ev", "ey", "e ", "ip", "ka", "ko", "nb", "pr", "rt", "sc", "ua"}; // f0s
+
+            int stringMarker = 0;
+            for (int lnI = 0; lnI < 15; lnI++)
+            {
+                string name = "";
+                name = (lnI == 0 ? txtC2Name2.Text : lnI == 1 ? txtC4Name2.Text :
+                    lnI == 2 ? txtC4Name1.Text : lnI == 3 ? txtC2Name3.Text : lnI == 4 ? txtC3Name1.Text :
+                    lnI == 5 ? txtC1Name1.Text : lnI == 6 ? txtC2Name1.Text : lnI == 7 ? txtC1Name2.Text :
+                    lnI == 8 ? txtC4Name3.Text : lnI == 9 ? txtC3Name2.Text : lnI == 10 ? txtC3Name3.Text :
+                    lnI == 11 ? txtC5Name1.Text : lnI == 12 ? txtC5Name2.Text : lnI == 13 ? txtC5Name3.Text : txtC5Name4.Text);
+
+                List<int> byteArray = new List<int>();
+                for (int lnJ = 0; lnJ < name.Length; lnJ++)
+                {
+                    if (lnJ != name.Length - 1)
+                    {
+                        int twoCharIndex = Array.IndexOf(twoCharStrings, name[lnJ] + name[lnJ + 1]);
+                        if (twoCharIndex != -1)
+                        {
+                            byteArray.Add(0x22 + twoCharIndex);
+                            lnJ++;
+                            continue;
+                        } else
+                        {
+                            char character = Convert.ToChar(name.Substring(lnJ, 1).ToLower());
+                            byteArray.Add(character - 97);
+                        }
+                    } else
+                    {
+                        char character = Convert.ToChar(name.Substring(lnJ, 1).ToLower());
+                        byteArray.Add(character - 97);
+                    }
+                }
+                romData[0x2fba0 + stringMarker] = (byte)byteArray.ToArray().Length;
+                stringMarker++;
+                foreach(int byteSingle in byteArray)
+                {
+                    romData[0x2fba0 + stringMarker] = (byte)byteSingle;
+                    stringMarker++;
+                }
+            }
+
+            if (stringMarker > 86)
+            {
+                // bad.
+                MessageBox.Show("Cannot continue hack; the names are too long to translate to rom hexadecimal.");
+                return;
+            }
+
+            romData[0x2fba0 + stringMarker + 0] = 4;
+            romData[0x2fba0 + stringMarker + 1] = 0x16;
+            romData[0x2fba0 + stringMarker + 2] = 0x32;
+            romData[0x2fba0 + stringMarker + 3] = 0xa4;
+            romData[0x2fba0 + stringMarker + 4] = 0xe5;
+            romData[0x2fba0 + stringMarker + 5] = 3;
+            romData[0x2fba0 + stringMarker + 6] = 0x26;
+            romData[0x2fba0 + stringMarker + 7] = 0x3a;
+            romData[0x2fba0 + stringMarker + 8] = 0x11;
+            romData[0x2fba0 + stringMarker + 9] = 4;
+            romData[0x2fba0 + stringMarker + 10] = 0x71;
+            romData[0x2fba0 + stringMarker + 11] = 0x68;
+            romData[0x2fba0 + stringMarker + 12] = 0x76;
+            romData[0x2fba0 + stringMarker + 13] = 0x12;
+            romData[0x2fba0 + stringMarker + 14] = 4;
+            romData[0x2fba0 + stringMarker + 15] = 0x31;
+            romData[0x2fba0 + stringMarker + 16] = 0xe4;
+            romData[0x2fba0 + stringMarker + 17] = 0x38;
+            romData[0x2fba0 + stringMarker + 18] = 0x12;
+            // Calculate difference from 86 and stringMarker.
+            int difference = 86 - stringMarker;
+            romData[0x2fba0 + stringMarker + 19] = 1;
+            romData[0x2fba0 + stringMarker + 20] = 1;
+            romData[0x2fba0 + stringMarker + 21] = 1;
+            romData[0x2fba0 + stringMarker + 22] = 1;
+            romData[0x2fba0 + stringMarker + 23] = 1;
+            romData[0x2fba0 + stringMarker + 24] = 1;
+            romData[0x2fba0 + stringMarker + 25] = (byte)difference;
+            for (int lnI = 0; lnI < difference; lnI++)
+            {
+                romData[0x2fba0 + stringMarker + 26 + lnI] = 1;
             }
 
             // Weapon stores start at 0x6341f
@@ -2265,12 +2342,21 @@ namespace DW4RandoHacker
                     writer.WriteLine(txtFileName.Text);
                     writer.WriteLine(txtCompare.Text);
                     writer.WriteLine(txtC1Name1.Text);
+                    writer.WriteLine(txtC1Name2.Text);
                     writer.WriteLine(txtC2Name1.Text);
                     writer.WriteLine(txtC2Name2.Text);
                     writer.WriteLine(txtC2Name3.Text);
                     writer.WriteLine(txtC3Name1.Text);
+                    writer.WriteLine(txtC3Name2.Text);
+                    writer.WriteLine(txtC3Name3.Text);
                     writer.WriteLine(txtC4Name1.Text);
                     writer.WriteLine(txtC4Name2.Text);
+                    writer.WriteLine(txtC4Name3.Text);
+                    writer.WriteLine(txtC5Name1.Text);
+                    writer.WriteLine(txtC5Name2.Text);
+                    writer.WriteLine(txtC5Name3.Text);
+                    writer.WriteLine(txtC5Name4.Text);
+
                     writer.WriteLine(chkSoloHero.Checked ? "T" : "F");
                     writer.WriteLine(cboSoloHero.SelectedItem);
                     writer.WriteLine(chkSoloCanEquipAll.Checked ? "T" : "F");
