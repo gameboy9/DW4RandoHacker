@@ -94,6 +94,14 @@
             this.cboSoloHero = new System.Windows.Forms.ComboBox();
             this.chkSoloHero = new System.Windows.Forms.CheckBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.txtC5Name4 = new System.Windows.Forms.TextBox();
+            this.txtC5Name3 = new System.Windows.Forms.TextBox();
+            this.txtC5Name2 = new System.Windows.Forms.TextBox();
+            this.txtC5Name1 = new System.Windows.Forms.TextBox();
+            this.txtC4Name3 = new System.Windows.Forms.TextBox();
+            this.txtC3Name3 = new System.Windows.Forms.TextBox();
+            this.txtC3Name2 = new System.Windows.Forms.TextBox();
+            this.txtC1Name2 = new System.Windows.Forms.TextBox();
             this.txtC2Name1 = new System.Windows.Forms.TextBox();
             this.txtC3Name1 = new System.Windows.Forms.TextBox();
             this.txtC4Name2 = new System.Windows.Forms.TextBox();
@@ -103,14 +111,11 @@
             this.txtC1Name1 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.txtC1Name2 = new System.Windows.Forms.TextBox();
-            this.txtC3Name3 = new System.Windows.Forms.TextBox();
-            this.txtC3Name2 = new System.Windows.Forms.TextBox();
-            this.txtC4Name3 = new System.Windows.Forms.TextBox();
-            this.txtC5Name1 = new System.Windows.Forms.TextBox();
-            this.txtC5Name3 = new System.Windows.Forms.TextBox();
-            this.txtC5Name2 = new System.Windows.Forms.TextBox();
-            this.txtC5Name4 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
             this.tabPage4.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -129,7 +134,7 @@
             this.btnCompareBrowse.Location = new System.Drawing.Point(448, 33);
             this.btnCompareBrowse.Name = "btnCompareBrowse";
             this.btnCompareBrowse.Size = new System.Drawing.Size(75, 23);
-            this.btnCompareBrowse.TabIndex = 29;
+            this.btnCompareBrowse.TabIndex = 4;
             this.btnCompareBrowse.Text = "Browse";
             this.btnCompareBrowse.UseVisualStyleBackColor = true;
             this.btnCompareBrowse.Click += new System.EventHandler(this.btnCompareBrowse_Click);
@@ -148,14 +153,14 @@
             this.txtCompare.Location = new System.Drawing.Point(122, 35);
             this.txtCompare.Name = "txtCompare";
             this.txtCompare.Size = new System.Drawing.Size(320, 20);
-            this.txtCompare.TabIndex = 28;
+            this.txtCompare.TabIndex = 3;
             // 
             // btnCompare
             // 
             this.btnCompare.Location = new System.Drawing.Point(448, 62);
             this.btnCompare.Name = "btnCompare";
             this.btnCompare.Size = new System.Drawing.Size(75, 23);
-            this.btnCompare.TabIndex = 31;
+            this.btnCompare.TabIndex = 5;
             this.btnCompare.Text = "Compare";
             this.btnCompare.UseVisualStyleBackColor = true;
             this.btnCompare.Click += new System.EventHandler(this.btnCompare_Click);
@@ -201,7 +206,7 @@
             this.btnBrowse.Location = new System.Drawing.Point(448, 7);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(75, 23);
-            this.btnBrowse.TabIndex = 26;
+            this.btnBrowse.TabIndex = 2;
             this.btnBrowse.Text = "Browse";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
@@ -220,14 +225,14 @@
             this.txtFileName.Location = new System.Drawing.Point(122, 9);
             this.txtFileName.Name = "txtFileName";
             this.txtFileName.Size = new System.Drawing.Size(320, 20);
-            this.txtFileName.TabIndex = 25;
+            this.txtFileName.TabIndex = 1;
             // 
             // btnNewSeed
             // 
             this.btnNewSeed.Location = new System.Drawing.Point(186, 109);
             this.btnNewSeed.Name = "btnNewSeed";
             this.btnNewSeed.Size = new System.Drawing.Size(75, 23);
-            this.btnNewSeed.TabIndex = 37;
+            this.btnNewSeed.TabIndex = 7;
             this.btnNewSeed.Text = "New Seed";
             this.btnNewSeed.UseVisualStyleBackColor = true;
             this.btnNewSeed.Click += new System.EventHandler(this.btnNewSeed_Click);
@@ -246,7 +251,7 @@
             this.txtSeed.Location = new System.Drawing.Point(69, 111);
             this.txtSeed.Name = "txtSeed";
             this.txtSeed.Size = new System.Drawing.Size(100, 20);
-            this.txtSeed.TabIndex = 36;
+            this.txtSeed.TabIndex = 6;
             // 
             // lblIntensityDesc
             // 
@@ -261,7 +266,7 @@
             this.btnRandomize.Location = new System.Drawing.Point(448, 484);
             this.btnRandomize.Name = "btnRandomize";
             this.btnRandomize.Size = new System.Drawing.Size(75, 23);
-            this.btnRandomize.TabIndex = 39;
+            this.btnRandomize.TabIndex = 9;
             this.btnRandomize.Text = "Hack!";
             this.btnRandomize.UseVisualStyleBackColor = true;
             this.btnRandomize.Click += new System.EventHandler(this.btnRandomize_Click);
@@ -943,6 +948,11 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label19);
+            this.tabPage1.Controls.Add(this.label18);
+            this.tabPage1.Controls.Add(this.label17);
+            this.tabPage1.Controls.Add(this.label16);
+            this.tabPage1.Controls.Add(this.label15);
             this.tabPage1.Controls.Add(this.txtC5Name4);
             this.tabPage1.Controls.Add(this.txtC5Name3);
             this.tabPage1.Controls.Add(this.txtC5Name2);
@@ -967,67 +977,139 @@
             this.tabPage1.Text = "Names";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // txtC5Name4
+            // 
+            this.txtC5Name4.Location = new System.Drawing.Point(378, 149);
+            this.txtC5Name4.MaxLength = 8;
+            this.txtC5Name4.Name = "txtC5Name4";
+            this.txtC5Name4.Size = new System.Drawing.Size(81, 20);
+            this.txtC5Name4.TabIndex = 15;
+            this.txtC5Name4.Text = "Doran";
+            // 
+            // txtC5Name3
+            // 
+            this.txtC5Name3.Location = new System.Drawing.Point(275, 150);
+            this.txtC5Name3.MaxLength = 8;
+            this.txtC5Name3.Name = "txtC5Name3";
+            this.txtC5Name3.Size = new System.Drawing.Size(81, 20);
+            this.txtC5Name3.TabIndex = 14;
+            this.txtC5Name3.Text = "Lucia";
+            // 
+            // txtC5Name2
+            // 
+            this.txtC5Name2.Location = new System.Drawing.Point(172, 150);
+            this.txtC5Name2.MaxLength = 8;
+            this.txtC5Name2.Name = "txtC5Name2";
+            this.txtC5Name2.Size = new System.Drawing.Size(81, 20);
+            this.txtC5Name2.TabIndex = 13;
+            this.txtC5Name2.Text = "Panon";
+            // 
+            // txtC5Name1
+            // 
+            this.txtC5Name1.Location = new System.Drawing.Point(69, 150);
+            this.txtC5Name1.MaxLength = 8;
+            this.txtC5Name1.Name = "txtC5Name1";
+            this.txtC5Name1.Size = new System.Drawing.Size(81, 20);
+            this.txtC5Name1.TabIndex = 12;
+            this.txtC5Name1.Text = "Hector";
+            // 
+            // txtC4Name3
+            // 
+            this.txtC4Name3.Location = new System.Drawing.Point(275, 124);
+            this.txtC4Name3.MaxLength = 8;
+            this.txtC4Name3.Name = "txtC4Name3";
+            this.txtC4Name3.Size = new System.Drawing.Size(81, 20);
+            this.txtC4Name3.TabIndex = 11;
+            this.txtC4Name3.Text = "Orin";
+            // 
+            // txtC3Name3
+            // 
+            this.txtC3Name3.Location = new System.Drawing.Point(275, 98);
+            this.txtC3Name3.MaxLength = 8;
+            this.txtC3Name3.Name = "txtC3Name3";
+            this.txtC3Name3.Size = new System.Drawing.Size(81, 20);
+            this.txtC3Name3.TabIndex = 8;
+            this.txtC3Name3.Text = "Laurent";
+            // 
+            // txtC3Name2
+            // 
+            this.txtC3Name2.Location = new System.Drawing.Point(172, 98);
+            this.txtC3Name2.MaxLength = 8;
+            this.txtC3Name2.Name = "txtC3Name2";
+            this.txtC3Name2.Size = new System.Drawing.Size(81, 20);
+            this.txtC3Name2.TabIndex = 7;
+            this.txtC3Name2.Text = "Strom";
+            // 
+            // txtC1Name2
+            // 
+            this.txtC1Name2.Location = new System.Drawing.Point(172, 46);
+            this.txtC1Name2.MaxLength = 8;
+            this.txtC1Name2.Name = "txtC1Name2";
+            this.txtC1Name2.Size = new System.Drawing.Size(81, 20);
+            this.txtC1Name2.TabIndex = 2;
+            this.txtC1Name2.Text = "Healie";
+            // 
             // txtC2Name1
             // 
-            this.txtC2Name1.Location = new System.Drawing.Point(118, 41);
+            this.txtC2Name1.Location = new System.Drawing.Point(69, 72);
             this.txtC2Name1.MaxLength = 8;
             this.txtC2Name1.Name = "txtC2Name1";
             this.txtC2Name1.Size = new System.Drawing.Size(81, 20);
-            this.txtC2Name1.TabIndex = 27;
+            this.txtC2Name1.TabIndex = 3;
             this.txtC2Name1.Text = "Alena";
             // 
             // txtC3Name1
             // 
-            this.txtC3Name1.Location = new System.Drawing.Point(118, 67);
+            this.txtC3Name1.Location = new System.Drawing.Point(69, 98);
             this.txtC3Name1.MaxLength = 8;
             this.txtC3Name1.Name = "txtC3Name1";
             this.txtC3Name1.Size = new System.Drawing.Size(81, 20);
-            this.txtC3Name1.TabIndex = 37;
+            this.txtC3Name1.TabIndex = 6;
             this.txtC3Name1.Text = "Taloon";
             // 
             // txtC4Name2
             // 
-            this.txtC4Name2.Location = new System.Drawing.Point(205, 93);
+            this.txtC4Name2.Location = new System.Drawing.Point(172, 124);
             this.txtC4Name2.MaxLength = 8;
             this.txtC4Name2.Name = "txtC4Name2";
             this.txtC4Name2.Size = new System.Drawing.Size(81, 20);
-            this.txtC4Name2.TabIndex = 34;
+            this.txtC4Name2.TabIndex = 10;
             this.txtC4Name2.Text = "Mara";
             // 
             // txtC2Name3
             // 
-            this.txtC2Name3.Location = new System.Drawing.Point(292, 41);
+            this.txtC2Name3.Location = new System.Drawing.Point(275, 72);
             this.txtC2Name3.MaxLength = 8;
             this.txtC2Name3.Name = "txtC2Name3";
             this.txtC2Name3.Size = new System.Drawing.Size(81, 20);
-            this.txtC2Name3.TabIndex = 33;
+            this.txtC2Name3.TabIndex = 5;
             this.txtC2Name3.Text = "Brey";
             // 
             // txtC4Name1
             // 
-            this.txtC4Name1.Location = new System.Drawing.Point(118, 93);
+            this.txtC4Name1.Location = new System.Drawing.Point(69, 124);
             this.txtC4Name1.MaxLength = 8;
             this.txtC4Name1.Name = "txtC4Name1";
             this.txtC4Name1.Size = new System.Drawing.Size(81, 20);
-            this.txtC4Name1.TabIndex = 31;
+            this.txtC4Name1.TabIndex = 9;
             this.txtC4Name1.Text = "Nara";
             // 
             // txtC2Name2
             // 
-            this.txtC2Name2.Location = new System.Drawing.Point(205, 41);
+            this.txtC2Name2.Location = new System.Drawing.Point(172, 72);
             this.txtC2Name2.MaxLength = 8;
             this.txtC2Name2.Name = "txtC2Name2";
             this.txtC2Name2.Size = new System.Drawing.Size(81, 20);
-            this.txtC2Name2.TabIndex = 30;
+            this.txtC2Name2.TabIndex = 4;
             this.txtC2Name2.Text = "Cristo";
             // 
             // txtC1Name1
             // 
-            this.txtC1Name1.Location = new System.Drawing.Point(118, 15);
+            this.txtC1Name1.Location = new System.Drawing.Point(69, 46);
             this.txtC1Name1.MaxLength = 8;
             this.txtC1Name1.Name = "txtC1Name1";
             this.txtC1Name1.Size = new System.Drawing.Size(81, 20);
-            this.txtC1Name1.TabIndex = 26;
+            this.txtC1Name1.TabIndex = 1;
             this.txtC1Name1.Text = "Ragnar";
             // 
             // label6
@@ -1049,79 +1131,52 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(508, 327);
-            this.tabControl1.TabIndex = 41;
+            this.tabControl1.TabIndex = 8;
             // 
-            // txtC1Name2
+            // label15
             // 
-            this.txtC1Name2.Location = new System.Drawing.Point(205, 15);
-            this.txtC1Name2.MaxLength = 8;
-            this.txtC1Name2.Name = "txtC1Name2";
-            this.txtC1Name2.Size = new System.Drawing.Size(81, 20);
-            this.txtC1Name2.TabIndex = 39;
-            this.txtC1Name2.Text = "Healie";
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 49);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(53, 13);
+            this.label15.TabIndex = 39;
+            this.label15.Text = "Chapter 1";
             // 
-            // txtC3Name3
+            // label16
             // 
-            this.txtC3Name3.Location = new System.Drawing.Point(292, 67);
-            this.txtC3Name3.MaxLength = 8;
-            this.txtC3Name3.Name = "txtC3Name3";
-            this.txtC3Name3.Size = new System.Drawing.Size(81, 20);
-            this.txtC3Name3.TabIndex = 41;
-            this.txtC3Name3.Text = "Laurent";
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 75);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(53, 13);
+            this.label16.TabIndex = 40;
+            this.label16.Text = "Chapter 2";
             // 
-            // txtC3Name2
+            // label17
             // 
-            this.txtC3Name2.Location = new System.Drawing.Point(205, 67);
-            this.txtC3Name2.MaxLength = 8;
-            this.txtC3Name2.Name = "txtC3Name2";
-            this.txtC3Name2.Size = new System.Drawing.Size(81, 20);
-            this.txtC3Name2.TabIndex = 40;
-            this.txtC3Name2.Text = "Strom";
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 101);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(53, 13);
+            this.label17.TabIndex = 41;
+            this.label17.Text = "Chapter 3";
             // 
-            // txtC4Name3
+            // label18
             // 
-            this.txtC4Name3.Location = new System.Drawing.Point(292, 93);
-            this.txtC4Name3.MaxLength = 8;
-            this.txtC4Name3.Name = "txtC4Name3";
-            this.txtC4Name3.Size = new System.Drawing.Size(81, 20);
-            this.txtC4Name3.TabIndex = 42;
-            this.txtC4Name3.Text = "Orin";
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(6, 127);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(53, 13);
+            this.label18.TabIndex = 42;
+            this.label18.Text = "Chapter 4";
             // 
-            // txtC5Name1
+            // label19
             // 
-            this.txtC5Name1.Location = new System.Drawing.Point(118, 119);
-            this.txtC5Name1.MaxLength = 8;
-            this.txtC5Name1.Name = "txtC5Name1";
-            this.txtC5Name1.Size = new System.Drawing.Size(81, 20);
-            this.txtC5Name1.TabIndex = 43;
-            this.txtC5Name1.Text = "Hector";
-            // 
-            // txtC5Name3
-            // 
-            this.txtC5Name3.Location = new System.Drawing.Point(292, 119);
-            this.txtC5Name3.MaxLength = 8;
-            this.txtC5Name3.Name = "txtC5Name3";
-            this.txtC5Name3.Size = new System.Drawing.Size(81, 20);
-            this.txtC5Name3.TabIndex = 45;
-            this.txtC5Name3.Text = "Lucia";
-            // 
-            // txtC5Name2
-            // 
-            this.txtC5Name2.Location = new System.Drawing.Point(205, 119);
-            this.txtC5Name2.MaxLength = 8;
-            this.txtC5Name2.Name = "txtC5Name2";
-            this.txtC5Name2.Size = new System.Drawing.Size(81, 20);
-            this.txtC5Name2.TabIndex = 44;
-            this.txtC5Name2.Text = "Panon";
-            // 
-            // txtC5Name4
-            // 
-            this.txtC5Name4.Location = new System.Drawing.Point(379, 119);
-            this.txtC5Name4.MaxLength = 8;
-            this.txtC5Name4.Name = "txtC5Name4";
-            this.txtC5Name4.Size = new System.Drawing.Size(81, 20);
-            this.txtC5Name4.TabIndex = 46;
-            this.txtC5Name4.Text = "Doran";
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 152);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(53, 13);
+            this.label19.TabIndex = 43;
+            this.label19.Text = "Chapter 5";
             // 
             // Form1
             // 
@@ -1257,6 +1312,11 @@
         private System.Windows.Forms.TextBox txtC3Name3;
         private System.Windows.Forms.TextBox txtC3Name2;
         private System.Windows.Forms.TextBox txtC1Name2;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label15;
     }
 }
 

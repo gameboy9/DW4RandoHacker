@@ -453,7 +453,7 @@ namespace DW4RandoHacker
             // Now adjust XP for all monsters...
             for (int lnI = 0; lnI <= 0xc2; lnI++)
             {
-                double xp = (romData[0x60054 + (lnI * 22) + 3] * 255) + romData[0x60054 + (lnI * 22) + 2];
+                double xp = (romData[0x60054 + (lnI * 22) + 3] * 256) + romData[0x60054 + (lnI * 22) + 2];
                 if ((string)cboXPAdjustment.SelectedItem == "50%") xp = xp / 2;
                 if ((string)cboXPAdjustment.SelectedItem == "150%") xp = xp * 3 / 2;
                 if ((string)cboXPAdjustment.SelectedItem == "200%") xp = xp * 2;
@@ -662,18 +662,19 @@ namespace DW4RandoHacker
             for (int lnI = 0; lnI < 15; lnI++)
             {
                 string name = "";
-                name = (lnI == 0 ? txtC2Name2.Text : lnI == 1 ? txtC4Name2.Text :
+                name = ((lnI == 0 ? txtC2Name2.Text : lnI == 1 ? txtC4Name2.Text :
                     lnI == 2 ? txtC4Name1.Text : lnI == 3 ? txtC2Name3.Text : lnI == 4 ? txtC3Name1.Text :
                     lnI == 5 ? txtC1Name1.Text : lnI == 6 ? txtC2Name1.Text : lnI == 7 ? txtC1Name2.Text :
                     lnI == 8 ? txtC4Name3.Text : lnI == 9 ? txtC3Name2.Text : lnI == 10 ? txtC3Name3.Text :
-                    lnI == 11 ? txtC5Name1.Text : lnI == 12 ? txtC5Name2.Text : lnI == 13 ? txtC5Name3.Text : txtC5Name4.Text);
+                    lnI == 11 ? txtC5Name1.Text : lnI == 12 ? txtC5Name2.Text : lnI == 13 ? txtC5Name3.Text : txtC5Name4.Text)).ToLower();
 
                 List<int> byteArray = new List<int>();
                 for (int lnJ = 0; lnJ < name.Length; lnJ++)
                 {
                     if (lnJ != name.Length - 1)
                     {
-                        int twoCharIndex = Array.IndexOf(twoCharStrings, name[lnJ] + name[lnJ + 1]);
+                        string twoCharStringToSample = name.Substring(lnJ, 1) + name.Substring(lnJ + 1, 1);
+                        int twoCharIndex = Array.IndexOf(twoCharStrings, twoCharStringToSample);
                         if (twoCharIndex != -1)
                         {
                             byteArray.Add(0x22 + twoCharIndex);
@@ -725,18 +726,22 @@ namespace DW4RandoHacker
             romData[0x2fba0 + stringMarker + 16] = 0xe4;
             romData[0x2fba0 + stringMarker + 17] = 0x38;
             romData[0x2fba0 + stringMarker + 18] = 0x12;
-            // Calculate difference from 86 and stringMarker.
-            int difference = 86 - stringMarker;
+            // Calculate difference from 85 and stringMarker.
+            int difference = 87 - stringMarker;
             romData[0x2fba0 + stringMarker + 19] = 1;
-            romData[0x2fba0 + stringMarker + 20] = 1;
+            romData[0x2fba0 + stringMarker + 20] = 0;
             romData[0x2fba0 + stringMarker + 21] = 1;
-            romData[0x2fba0 + stringMarker + 22] = 1;
+            romData[0x2fba0 + stringMarker + 22] = 0;
             romData[0x2fba0 + stringMarker + 23] = 1;
-            romData[0x2fba0 + stringMarker + 24] = 1;
-            romData[0x2fba0 + stringMarker + 25] = (byte)difference;
+            romData[0x2fba0 + stringMarker + 24] = 0;
+            romData[0x2fba0 + stringMarker + 25] = 1;
+            romData[0x2fba0 + stringMarker + 26] = 0;
+            romData[0x2fba0 + stringMarker + 27] = 1;
+            romData[0x2fba0 + stringMarker + 28] = 0;
+            romData[0x2fba0 + stringMarker + 29] = (byte)difference;
             for (int lnI = 0; lnI < difference; lnI++)
             {
-                romData[0x2fba0 + stringMarker + 26 + lnI] = 1;
+                romData[0x2fba0 + stringMarker + 30 + lnI] = 0;
             }
 
             // Weapon stores start at 0x6341f
@@ -814,44 +819,6 @@ namespace DW4RandoHacker
             File.WriteAllBytes(finalFile, romData);
             lblIntensityDesc.Text = "ROM hacking complete!  (" + finalFile + ")";
             txtCompare.Text = finalFile;
-        }
-
-        private void doubleExp()
-        {
-            //// Divide encounter rates by three, rounding as needed.
-            romData[0x944] = 2; // was 4
-            romData[0x945] = 5; // was 15
-            romData[0x946] = 4; // was 10
-            romData[0x947] = 5; // was 15
-            romData[0x948] = 6; // was 18
-            romData[0x949] = 8; // was 25
-            romData[0x94a] = 28; // was 84
-            romData[0x94b] = 6; // was 18
-            romData[0x94c] = 4; // was 10
-            romData[0x94d] = 2; // was 5
-            romData[0x94e] = 6; // was 19
-            romData[0x94f] = 4; // was 13
-            romData[0x950] = 6; // was 19
-            romData[0x951] = 7; // was 22
-            romData[0x952] = 10; // was 31 
-            romData[0x953] = 28; // was 84
-            romData[0x954] = 7; // was 22
-            romData[0x955] = 3; // was 10
-
-            // Replace monster data
-            for (int lnI = 0; lnI < 125; lnI++)
-            {
-                int byteValStart = 0x32e3 + (23 * lnI);
-
-                int xp = romData[byteValStart + 1] + (romData[byteValStart + 2] * 256);
-                if (lnI != 0x31 && lnI != 0x6c)
-                    xp = xp * 3 / 2;
-
-                xp = (xp > 64000 ? 64000 : xp);
-
-                romData[byteValStart + 1] = (byte)(xp % 256);
-                romData[byteValStart + 2] = (byte)(xp / 256);
-            }
         }
 
         private void forceItemSell()
