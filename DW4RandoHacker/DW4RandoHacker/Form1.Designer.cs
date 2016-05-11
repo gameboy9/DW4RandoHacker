@@ -94,6 +94,11 @@
             this.cboSoloHero = new System.Windows.Forms.ComboBox();
             this.chkSoloHero = new System.Windows.Forms.CheckBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
             this.txtC5Name4 = new System.Windows.Forms.TextBox();
             this.txtC5Name3 = new System.Windows.Forms.TextBox();
             this.txtC5Name2 = new System.Windows.Forms.TextBox();
@@ -111,11 +116,7 @@
             this.txtC1Name1 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
+            this.chkRandomHeroEquip = new System.Windows.Forms.CheckBox();
             this.tabPage4.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -293,6 +294,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.chkRandomHeroEquip);
             this.tabPage3.Controls.Add(this.chkSpeedUpBattles);
             this.tabPage3.Controls.Add(this.chkRandomMonsters);
             this.tabPage3.Controls.Add(this.chkGoldRandom);
@@ -313,7 +315,7 @@
             // chkSpeedUpBattles
             // 
             this.chkSpeedUpBattles.AutoSize = true;
-            this.chkSpeedUpBattles.Location = new System.Drawing.Point(10, 127);
+            this.chkSpeedUpBattles.Location = new System.Drawing.Point(10, 150);
             this.chkSpeedUpBattles.Name = "chkSpeedUpBattles";
             this.chkSpeedUpBattles.Size = new System.Drawing.Size(106, 17);
             this.chkSpeedUpBattles.TabIndex = 9;
@@ -977,6 +979,51 @@
             this.tabPage1.Text = "Names";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 152);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(53, 13);
+            this.label19.TabIndex = 43;
+            this.label19.Text = "Chapter 5";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(6, 127);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(53, 13);
+            this.label18.TabIndex = 42;
+            this.label18.Text = "Chapter 4";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 101);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(53, 13);
+            this.label17.TabIndex = 41;
+            this.label17.Text = "Chapter 3";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 75);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(53, 13);
+            this.label16.TabIndex = 40;
+            this.label16.Text = "Chapter 2";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 49);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(53, 13);
+            this.label15.TabIndex = 39;
+            this.label15.Text = "Chapter 1";
+            // 
             // txtC5Name4
             // 
             this.txtC5Name4.Location = new System.Drawing.Point(378, 149);
@@ -1133,50 +1180,15 @@
             this.tabControl1.Size = new System.Drawing.Size(508, 327);
             this.tabControl1.TabIndex = 8;
             // 
-            // label15
+            // chkRandomHeroEquip
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 49);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(53, 13);
-            this.label15.TabIndex = 39;
-            this.label15.Text = "Chapter 1";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(6, 75);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(53, 13);
-            this.label16.TabIndex = 40;
-            this.label16.Text = "Chapter 2";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 101);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(53, 13);
-            this.label17.TabIndex = 41;
-            this.label17.Text = "Chapter 3";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(6, 127);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(53, 13);
-            this.label18.TabIndex = 42;
-            this.label18.Text = "Chapter 4";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(6, 152);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(53, 13);
-            this.label19.TabIndex = 43;
-            this.label19.Text = "Chapter 5";
+            this.chkRandomHeroEquip.AutoSize = true;
+            this.chkRandomHeroEquip.Location = new System.Drawing.Point(10, 127);
+            this.chkRandomHeroEquip.Name = "chkRandomHeroEquip";
+            this.chkRandomHeroEquip.Size = new System.Drawing.Size(152, 17);
+            this.chkRandomHeroEquip.TabIndex = 10;
+            this.chkRandomHeroEquip.Text = "Randomize who can equip";
+            this.chkRandomHeroEquip.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -1317,6 +1329,7 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.CheckBox chkRandomHeroEquip;
     }
 }
 
