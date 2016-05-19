@@ -47,8 +47,15 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.btnMonsterOutput = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.optMonsterSilly = new System.Windows.Forms.RadioButton();
+            this.chkRandomTreasures = new System.Windows.Forms.CheckBox();
+            this.optMonsterHeavy = new System.Windows.Forms.RadioButton();
+            this.optMonsterMedium = new System.Windows.Forms.RadioButton();
+            this.optMonsterLight = new System.Windows.Forms.RadioButton();
+            this.chkRandomMonsterStats = new System.Windows.Forms.CheckBox();
+            this.chkRandomHeroEquip = new System.Windows.Forms.CheckBox();
             this.chkSpeedUpBattles = new System.Windows.Forms.CheckBox();
-            this.chkRandomMonsters = new System.Windows.Forms.CheckBox();
+            this.chkRandomMonsterZones = new System.Windows.Forms.CheckBox();
             this.chkGoldRandom = new System.Windows.Forms.CheckBox();
             this.chkXPRandom = new System.Windows.Forms.CheckBox();
             this.cboEncounterRate = new System.Windows.Forms.ComboBox();
@@ -116,7 +123,6 @@
             this.txtC1Name1 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.chkRandomHeroEquip = new System.Windows.Forms.CheckBox();
             this.tabPage4.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -294,9 +300,15 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.optMonsterSilly);
+            this.tabPage3.Controls.Add(this.chkRandomTreasures);
+            this.tabPage3.Controls.Add(this.optMonsterHeavy);
+            this.tabPage3.Controls.Add(this.optMonsterMedium);
+            this.tabPage3.Controls.Add(this.optMonsterLight);
+            this.tabPage3.Controls.Add(this.chkRandomMonsterStats);
             this.tabPage3.Controls.Add(this.chkRandomHeroEquip);
             this.tabPage3.Controls.Add(this.chkSpeedUpBattles);
-            this.tabPage3.Controls.Add(this.chkRandomMonsters);
+            this.tabPage3.Controls.Add(this.chkRandomMonsterZones);
             this.tabPage3.Controls.Add(this.chkGoldRandom);
             this.tabPage3.Controls.Add(this.chkXPRandom);
             this.tabPage3.Controls.Add(this.cboEncounterRate);
@@ -312,25 +324,97 @@
             this.tabPage3.Text = "Adjustments";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // optMonsterSilly
+            // 
+            this.optMonsterSilly.AutoSize = true;
+            this.optMonsterSilly.Location = new System.Drawing.Point(256, 126);
+            this.optMonsterSilly.Name = "optMonsterSilly";
+            this.optMonsterSilly.Size = new System.Drawing.Size(43, 17);
+            this.optMonsterSilly.TabIndex = 16;
+            this.optMonsterSilly.Text = "Silly";
+            this.optMonsterSilly.UseVisualStyleBackColor = true;
+            // 
+            // chkRandomTreasures
+            // 
+            this.chkRandomTreasures.AutoSize = true;
+            this.chkRandomTreasures.Location = new System.Drawing.Point(10, 150);
+            this.chkRandomTreasures.Name = "chkRandomTreasures";
+            this.chkRandomTreasures.Size = new System.Drawing.Size(129, 17);
+            this.chkRandomTreasures.TabIndex = 15;
+            this.chkRandomTreasures.Text = "Randomize Treasures";
+            this.chkRandomTreasures.UseVisualStyleBackColor = true;
+            // 
+            // optMonsterHeavy
+            // 
+            this.optMonsterHeavy.AutoSize = true;
+            this.optMonsterHeavy.Location = new System.Drawing.Point(385, 126);
+            this.optMonsterHeavy.Name = "optMonsterHeavy";
+            this.optMonsterHeavy.Size = new System.Drawing.Size(71, 17);
+            this.optMonsterHeavy.TabIndex = 14;
+            this.optMonsterHeavy.Text = "Ludicrous";
+            this.optMonsterHeavy.UseVisualStyleBackColor = true;
+            // 
+            // optMonsterMedium
+            // 
+            this.optMonsterMedium.AutoSize = true;
+            this.optMonsterMedium.Location = new System.Drawing.Point(305, 126);
+            this.optMonsterMedium.Name = "optMonsterMedium";
+            this.optMonsterMedium.Size = new System.Drawing.Size(74, 17);
+            this.optMonsterMedium.TabIndex = 13;
+            this.optMonsterMedium.Text = "Ridiculous";
+            this.optMonsterMedium.UseVisualStyleBackColor = true;
+            // 
+            // optMonsterLight
+            // 
+            this.optMonsterLight.AutoSize = true;
+            this.optMonsterLight.Checked = true;
+            this.optMonsterLight.Location = new System.Drawing.Point(202, 126);
+            this.optMonsterLight.Name = "optMonsterLight";
+            this.optMonsterLight.Size = new System.Drawing.Size(48, 17);
+            this.optMonsterLight.TabIndex = 12;
+            this.optMonsterLight.TabStop = true;
+            this.optMonsterLight.Text = "Light";
+            this.optMonsterLight.UseVisualStyleBackColor = true;
+            // 
+            // chkRandomMonsterStats
+            // 
+            this.chkRandomMonsterStats.AutoSize = true;
+            this.chkRandomMonsterStats.Location = new System.Drawing.Point(10, 127);
+            this.chkRandomMonsterStats.Name = "chkRandomMonsterStats";
+            this.chkRandomMonsterStats.Size = new System.Drawing.Size(188, 17);
+            this.chkRandomMonsterStats.TabIndex = 11;
+            this.chkRandomMonsterStats.Text = "Randomize Monster Stats/Attacks";
+            this.chkRandomMonsterStats.UseVisualStyleBackColor = true;
+            // 
+            // chkRandomHeroEquip
+            // 
+            this.chkRandomHeroEquip.AutoSize = true;
+            this.chkRandomHeroEquip.Location = new System.Drawing.Point(10, 174);
+            this.chkRandomHeroEquip.Name = "chkRandomHeroEquip";
+            this.chkRandomHeroEquip.Size = new System.Drawing.Size(152, 17);
+            this.chkRandomHeroEquip.TabIndex = 10;
+            this.chkRandomHeroEquip.Text = "Randomize who can equip";
+            this.chkRandomHeroEquip.UseVisualStyleBackColor = true;
+            // 
             // chkSpeedUpBattles
             // 
             this.chkSpeedUpBattles.AutoSize = true;
-            this.chkSpeedUpBattles.Location = new System.Drawing.Point(10, 150);
+            this.chkSpeedUpBattles.Location = new System.Drawing.Point(10, 197);
             this.chkSpeedUpBattles.Name = "chkSpeedUpBattles";
             this.chkSpeedUpBattles.Size = new System.Drawing.Size(106, 17);
             this.chkSpeedUpBattles.TabIndex = 9;
             this.chkSpeedUpBattles.Text = "Speed up battles";
             this.chkSpeedUpBattles.UseVisualStyleBackColor = true;
             // 
-            // chkRandomMonsters
+            // chkRandomMonsterZones
             // 
-            this.chkRandomMonsters.AutoSize = true;
-            this.chkRandomMonsters.Location = new System.Drawing.Point(10, 104);
-            this.chkRandomMonsters.Name = "chkRandomMonsters";
-            this.chkRandomMonsters.Size = new System.Drawing.Size(125, 17);
-            this.chkRandomMonsters.TabIndex = 8;
-            this.chkRandomMonsters.Text = "Randomize Monsters";
-            this.chkRandomMonsters.UseVisualStyleBackColor = true;
+            this.chkRandomMonsterZones.AutoSize = true;
+            this.chkRandomMonsterZones.Location = new System.Drawing.Point(10, 104);
+            this.chkRandomMonsterZones.Name = "chkRandomMonsterZones";
+            this.chkRandomMonsterZones.Size = new System.Drawing.Size(153, 17);
+            this.chkRandomMonsterZones.TabIndex = 8;
+            this.chkRandomMonsterZones.Text = "Randomize Monster Zones";
+            this.chkRandomMonsterZones.UseVisualStyleBackColor = true;
             // 
             // chkGoldRandom
             // 
@@ -1180,16 +1264,6 @@
             this.tabControl1.Size = new System.Drawing.Size(508, 327);
             this.tabControl1.TabIndex = 8;
             // 
-            // chkRandomHeroEquip
-            // 
-            this.chkRandomHeroEquip.AutoSize = true;
-            this.chkRandomHeroEquip.Location = new System.Drawing.Point(10, 127);
-            this.chkRandomHeroEquip.Name = "chkRandomHeroEquip";
-            this.chkRandomHeroEquip.Size = new System.Drawing.Size(152, 17);
-            this.chkRandomHeroEquip.TabIndex = 10;
-            this.chkRandomHeroEquip.Text = "Randomize who can equip";
-            this.chkRandomHeroEquip.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1260,7 +1334,7 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Button btnMonsterOutput;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.CheckBox chkRandomMonsters;
+        private System.Windows.Forms.CheckBox chkRandomMonsterZones;
         private System.Windows.Forms.CheckBox chkGoldRandom;
         private System.Windows.Forms.CheckBox chkXPRandom;
         private System.Windows.Forms.ComboBox cboEncounterRate;
@@ -1330,6 +1404,12 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.CheckBox chkRandomHeroEquip;
+        private System.Windows.Forms.RadioButton optMonsterLight;
+        private System.Windows.Forms.CheckBox chkRandomMonsterStats;
+        private System.Windows.Forms.RadioButton optMonsterHeavy;
+        private System.Windows.Forms.RadioButton optMonsterMedium;
+        private System.Windows.Forms.CheckBox chkRandomTreasures;
+        private System.Windows.Forms.RadioButton optMonsterSilly;
     }
 }
 
