@@ -3,9 +3,10 @@
 ## Features
 - Can adjust XP gains from 50% to 500%, and randomize those XP gains.
 - Can adjust gold gains from 50% to 200%, and randomize that as well.
-- Can randomize monsters
+- Can randomize monsters/boss fights(the main boss will still be there, but who joins him would be randomized.  The Chapter 2 Tournament is excluded from all randomization, however, for fairness purposes)
+- Can randomize who can equip what item.  The hero will still be able to equip the Zenithian equipment, however, so you can get through the tower.
 - Can change which hero plays in which chapter.  This can also be randomized.  For example, you can have Cristo participate in Chapter 1 instead of his usual Chapter 2.
-- Can also change when each hero joins in Chapter 5.  This can also be randomized.  For example, Alena and Brey can join in Endor instead of Nara and Mara.
+- Can also change when each hero joins in Chapter 5.  This can also be randomized.  For example, Alena and Brey can join in Endor instead of Nara and Mara at the beginning of the chapter.
 - Can award XP for Chapter 2 tournament monsters.
 - Can change purchase costs of the shop to 1GP or 25000GP, as well as the purchase cost of the tunnel to 1GP in Chapter 3.
 - Can speed up battles, which is highly recommended!
@@ -28,4 +29,4 @@
 ## Special Thanks
 - Mcgrew, for his Dragon Warrior 1 Randomizer(https://github.com/mcgrew/dwrandomizer), giving me the inspiration to create this randomizer.  Twitch:  http://www.twitch.tv/mcgrew
 - LemmyPi for his contributions toward where in the ROM is various stuff.
-- HighSpirits (Twitch:  http://www.twitch.tv/highspirits) and TheCowness (Twitch:  http://www.twitch.tv/thecowness) for testing.
+- HighSpirits (Twitch:  http://www.twitch.tv/highspirits), TheCowness (Twitch:  http://www.twitch.tv/thecowness), and SgtMetTool (Twitch:  http://www.twitch.tv/sgtmettool) for testing.
