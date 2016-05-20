@@ -654,9 +654,11 @@ namespace DW4RandoHacker
                                 // skip error and do not adjust the stat.  Crash on all other exceptions.
                             }
 
+                            if (lnJ == 2 && stat > 255) stat = 255;
+                            if (lnJ >= 4 && stat > 1020) stat = 1020;
                             romData[byteToUse + lnJ] = (byte)(stat % 256);
                             if (lnJ >= 4)
-                                romData[byteToUse + lnJ] = (byte)(romData[byteToUse + lnJ] - (romData[byteToUse + lnJ] % 4) + (stat / 256));
+                                romData[byteToUse + lnJ + 11] = (byte)(romData[byteToUse + lnJ + 11] - (romData[byteToUse + lnJ + 11] % 4) + (stat / 256));
                         }
 
                         // If ludicrous is selected, change chances of double and triple attacks.
@@ -710,12 +712,12 @@ namespace DW4RandoHacker
                 int[] c1p2Treasure = { 0x7bf47, 0x7bf48, 0x7bf49, 0x7bf4a, 0x7bf4b, 0x7bf4c }; // Loch Tower - End of C1 - 6
                 int[] c2p1Treasure = { 0x7bd0f, 0x7bd16, // Santeem
                     0x7bdc7, // Tempe
-                    0x7bf10, 0x7bf11, 0x7bf12, 0x7bf13, 0x7bf14, // Frenor
-                    0x7bd4e, 0x7bd55 }; // Bazaar - Thief's Key - 10
+                    0x7bf10, 0x7bf11, 0x7bf12, 0x7bf13, 0x7bf14, // Frenor 
+                    0x7bd4e, 0x7bd55 }; //  Bazaar - Thief's Key - 10
                 int[] c2p2Treasure = { 0x7bd08, // Santeem (Thief's Key)
                     0x7bf41, 0x7bf42, 0x7bf43, 0x7b8f3 }; // Birdsong Tower - Birdsong Nectar - 5
                 int[] c2p3Treasure = { 0x7bedc }; // Endor - End Of C2 - 1
-                int[] c3p1Treasure = { 0x7bd86, // Lakanaba
+                int[] c3p1Treasure = {  0x7bd86, // Lakanaba
                     0x7bf2a, 0x7bf2b, // Iron Safe Cave
                     0x560e8, // Foxville fox
                     0x7bf2d, 0x7bf2e, 0x7bf2f, 0x7bf30, 0x7bf31, 0x7bf32, 0x7bf33, 0x7bf34, 0x7bf35, 0x7bf36 }; // Silver Statuette Cave - Silver Statuette - 14
@@ -739,7 +741,7 @@ namespace DW4RandoHacker
                 int[] c5p4Treasure = { 0x7bdb0, 0x7bf0f }; // Cave West Of Kievs - Pre-Magic Key - 2
                 int[] c5p5Treasure = { 0x7becd, 0x7bece, 0x7becf, 0x7bed0, 0x7bed1, 0x7bed2, // Burland Castle
                     0x7beca, 0x7becb, 0x7becc, // Santeem Castle
-                    0x7beda, 0x7bedb, 0x7bedd, 0x7bede, 0x7bb2b, // Endor
+                    0x7beda, 0x7bedb, 0x7bedd, 0x7bede, 0x7bd2b, // Endor
                     0x7befb, 0x7befc, 0x7befd }; // Shrine Of Breaking Waves - Pre-Magma Staff - 17
                 int[] c5p6Treasure = { 0x7bd32, 0x7bd39, 0x7bee7, // Gardenbur Castle
                     0x7bf04, 0x7bf05, 0x7bf06, 0x7bf07, 0x7bf08, 0x7bf09 }; // Cave SE Of Gardenbur - Pre-Final Key - 9
@@ -1395,121 +1397,35 @@ namespace DW4RandoHacker
             if (!loadRom(true)) return;
             using (StreamWriter writer = File.CreateText(Path.Combine(Path.GetDirectoryName(txtFileName.Text), "DW3Compare.txt")))
             {
-                for (int lnI = 0; lnI < 0x8a; lnI++)
-                    compareComposeString("monsters" + lnI.ToString("X2"), writer, (0x32e3 + (23 * lnI)), 23);
+                //for (int lnI = 0; lnI < 0x8a; lnI++)
+                //    compareComposeString("monsters" + lnI.ToString("X2"), writer, (0x32e3 + (23 * lnI)), 23);
 
-                compareComposeString("itemPrice1", writer, 0x11be, 128);
-                compareComposeString("itemPrice2", writer, 0x123b, 128);
-                compareComposeString("weaponEffects", writer, 0x13280, 40);
 
-                compareComposeString("treasures-Promontory", writer, 0x29237, 3);
-                compareComposeString("treasures-NajimiBasement", writer, 0x2927B, 3);
-                compareComposeString("treasures-Najimi", writer, 0x292C4, 3);
-                compareComposeString("treasures-Thief'sKey", writer, 0x37DF1, 1);
-                compareComposeString("treasures-MagicBall", writer, 0x375AA, 1);
-                compareComposeString("treasures-Invitation", writer, 0x2927E, 2);
-                compareComposeString("treasures-Kanave", writer, 0x29234, 2);
-                compareComposeString("treasures-Champange1", writer, 0x29252, 1);
-                compareComposeString("treasures-Champange2", writer, 0x292D2, 1);
-                compareComposeString("treasures-Champange3", writer, 0x292E6, 1);
-                compareComposeString("treasures-Isis", writer, 0x2925C, 9);
-                compareComposeString("treasures-IsisWizards", writer, 0x31B9C, 1);
-                compareComposeString("treasures-GoldenClaw", writer, 0x317F4, 1);
-                compareComposeString("treasures-Pyramid1st", writer, 0x29249, 7);
-                compareComposeString("treasures-Pyramid3rd4th5th", writer, 0x292B4, 15);
-                compareComposeString("treasures-DreamCave1", writer, 0x2923A, 2);
-                compareComposeString("treasures-DreamCave2", writer, 0x29280, 8);
-                compareComposeString("treasures-WakeUpNPC", writer, 0x37786, 1);
-                compareComposeString("treasures-Aliahan", writer, 0x29255, 5);
-                compareComposeString("treasures-Portuga", writer, 0x29269, 3);
-                compareComposeString("treasures-RoyalScroll", writer, 0x37CB9, 1);
-                compareComposeString("treasures-Dwarf", writer, 0x2923C, 2);
-                compareComposeString("treasures-Kidnappers1", writer, 0x2923E, 6);
-                compareComposeString("treasures-Kidnappers2", writer, 0x2928B, 4);
-                compareComposeString("treasures-BlackPepperNPC", writer, 0x377D5, 1);
-                compareComposeString("treasures-Tedan1", writer, 0x31B94, 1);
-                compareComposeString("treasures-Tedan2", writer, 0x29270, 1);
-                compareComposeString("treasures-TedanGreenOrb", writer, 0x37828, 1);
-                compareComposeString("treasures-Garuna1", writer, 0x29251, 1);
-                compareComposeString("treasures-Garuna2", writer, 0x292C7, 4);
-                compareComposeString("treasures-NohMask", writer, 0x292E4, 1);
-                compareComposeString("treasures-PurpleOrb", writer, 0x292E7, 1);
-                compareComposeString("treasures-WaterBlaster", writer, 0x377FE, 1);
-                compareComposeString("treasures-PirateCove", writer, 0x29271, 3);
-                compareComposeString("treasures-Eginbear", writer, 0x2925B, 1);
-                compareComposeString("treasures-FinalKey", writer, 0x2922B, 1);
-                compareComposeString("treasures-ArpTower", writer, 0x292CB, 7);
-                compareComposeString("treasures-Soo", writer, 0x31B8C, 1);
-                compareComposeString("treasures-SamanaoCave", writer, 0x29291, 23);
-                compareComposeString("treasures-SamanaoCastle", writer, 0x292E5, 1);
-                compareComposeString("treasures-LancelCave1", writer, 0x29244, 5);
-                compareComposeString("treasures-LancelCave2", writer, 0x2928F, 2);
-                compareComposeString("treasures-Luzami", writer, 0x31B97, 1);
-                compareComposeString("treasures-NewTown1", writer, 0x2926C, 2);
-                compareComposeString("treasures-NewTownYellowOrb", writer, 0x31B80, 1);
-                compareComposeString("treasures-Sailor'sThighNPC", writer, 0x378A9, 1);
-                compareComposeString("treasures-GhostShip", writer, 0x29275, 6);
-                compareComposeString("treasures-SwordOfGaia", writer, 0x31B84, 1);
-                compareComposeString("treasures-Negrogund", writer, 0x29288, 3);
-                compareComposeString("treasures-SilverOrb", writer, 0x37907, 1);
-                compareComposeString("treasures-LeafOfWorld", writer, 0x31B9F, 1);
-                compareComposeString("treasures-SphereOfLight", writer, 0x37929, 1);
-                compareComposeString("treasures-Baramos", writer, 0x29228, 3);
-                compareComposeString("treasures-SwordOfIllusion", writer, 0x37a25, 1);
-                compareComposeString("treasures-Tantegel", writer, 0x29265, 4);
-                compareComposeString("treasures-Erdrick's", writer, 0x292A8, 5);
-                compareComposeString("treasures-SilverHarp", writer, 0x29274, 1);
-                compareComposeString("treasures-MountainCave", writer, 0x292DF, 5);
-                compareComposeString("treasures-Oricon", writer, 0x31B90, 1);
-                compareComposeString("treasures-FairyFlute", writer, 0x31B88, 1);
-                compareComposeString("treasures-KolTower1", writer, 0x29253, 2);
-                compareComposeString("treasures-KolTower2", writer, 0x292D5, 10);
-                compareComposeString("treasures-SacredAmulet", writer, 0x37D5A, 1);
-                compareComposeString("treasures-StaffOfRain", writer, 0x37D9D, 1);
-                compareComposeString("treasures-RainbowDrop", writer, 0x37D80, 1);
-                compareComposeString("treasures-Rimuldar", writer, 0x29233, 1);
-                compareComposeString("treasures-ZomaCastle", writer, 0x292AD, 7);
 
-                compareComposeString("stores", writer, 0x36838, 248, 1, "g128");
+                //compareComposeString("treasure-Burland-1", writer, 0x7bd1d, 1);
+                //compareComposeString("treasure-IzmitCave", writer, 0x7bf37, 2);
+                //compareComposeString("treasure-Izmit", writer, 0x7bd6a, 1);
+                //compareComposeString("treasure-OldWell", writer, 0x7bf15, 3);
+                //compareComposeString("treasure-OldWellp2", writer, 0x7bdb7, 1);
+                //compareComposeString("treasure-OldWellp3", writer, 0x7b935, 1);
+                //compareComposeString("treasure-Loch", writer, 0x7bf47, 6);
 
-                for (int lnI = 0; lnI < 100; lnI++)
-                    compareComposeString("monsterZones" + lnI.ToString("X2"), writer, (0x61000 + (16 * lnI)), 16);
-                //for (int lnI = 0; lnI < 20; lnI++)
-                //    compareComposeString("monsterSpecial" + lnI.ToString("X2"), writer, (0x107a + (6 * lnI)), 6);
-                //for (int lnI = 0; lnI < 13; lnI++)
-                //    compareComposeString("monsterBoss" + lnI.ToString("X2"), writer, (0x10356 + (4 * lnI)), 4);
-                //compareComposeString("statStart", writer, 0x13dd1, 12);
-                //compareComposeString("statMult", writer, 0x281b, 10);
-                //compareComposeString("statUpsStrength", writer, 0x290e + 0, 40);
-                //compareComposeString("statUpsAgility", writer, 0x290e + 40, 40);
-                //compareComposeString("statUpsVitality", writer, 0x290e + 80, 40);
-                //compareComposeString("statUpsLuck", writer, 0x290e + 120, 40);
-                //compareComposeString("statUpsIntelligence", writer, 0x290e + 160, 40);
+                //compareComposeString("treasure-Santeemp1", writer, 0x7bd0f, 1);
+                //compareComposeString("treasure-Santeemp2", writer, 0x7bd16, 1);
+                //compareComposeString("treasure-Santeemp3", writer, 0x7bd08, 1);
+                //compareComposeString("treasure-Santeem-5", writer, 0x7beca, 3);
+                //compareComposeString("treasure-Tempe", writer, 0x7bdc7, 1);
+                //compareComposeString("treasure-FrenorCave", writer, 0x7bf10, 5);
+                //compareComposeString("treasure-Bazaarp1", writer, 0x7bd4e, 1);
+                //compareComposeString("treasure-Bazaarp2", writer, 0x7bd55, 1);
+                //compareComposeString("treasure-Birdsongp1", writer, 0x7bf41, 3);
+                //compareComposeString("treasure-Birdsongp2", writer, 0x7b8f3, 1);
+                //compareComposeString("treasure-Endorp1", writer, 0x7beda, 5);
+                //compareComposeString("treasure-Endorp2", writer, 0x7bd2b, 1);
 
-                //compareComposeString("spellLearningHero", writer, 0x29d6, 63);
-                //compareComposeString("spellsLearnedHero", writer, 0x22E7, 32);
-                //compareComposeString("spellLearningPilgrim", writer, 0x2A15, 63);
-                //compareComposeString("spellsLearnedPilgrim", writer, 0x2307, 32);
-                //compareComposeString("spellLearningWizard", writer, 0x2A54, 63);
-                //compareComposeString("spellsLearnedWizard", writer, 0x2327, 32);
-                //compareComposeString("spellLearningSage", writer, 0x2A93, 63);
-                //for (int lnI = 0; lnI < 28; lnI++)
-                //    compareComposeString("spellStats" + (lnI).ToString(), writer, 0x127d5 + (5 * lnI), 5);
-                //compareComposeString("spellCmd", writer, 0x13528, 28);
-                //compareComposeString("spellFieldHeal", writer, 0x18be0, 16, 8);
-                //compareComposeString("spellFieldMedical", writer, 0x19602, 1);
 
-                //compareComposeString("start1", writer, 0x3c79f, 8);
-                //compareComposeString("start2", writer, 0x3c79f + 8, 8);
-                //compareComposeString("start3", writer, 0x3c79f + 16, 8);
-                //compareComposeString("weapons", writer, 0x13efb, 16);
-                //compareComposeString("weaponcost (2.3)", writer, 0x1a00e, 32);
-                //compareComposeString("armor", writer, 0x13efb + 16, 11);
-                //compareComposeString("armorcost (2.4)", writer, 0x1a00e + 32, 22);
-                //compareComposeString("shields", writer, 0x13efb + 27, 5);
-                //compareComposeString("shieldcost (2.8)", writer, 0x1a00e + 54, 10);
-                //compareComposeString("helmets", writer, 0x13efb + 32, 3);
-                //compareComposeString("helmetcost (3.0)", writer, 0x1a00e + 64, 6);
+
+                compareComposeString("treasure-Burland-5", writer, 0x7bd1d, 1);
 
             }
             lblIntensityDesc.Text = "Comparison complete!  (DW3Compare.txt)";
