@@ -47,6 +47,8 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.btnMonsterOutput = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.chkRandomMonsterResistances = new System.Windows.Forms.CheckBox();
+            this.chkRandomStores = new System.Windows.Forms.CheckBox();
             this.optMonsterSilly = new System.Windows.Forms.RadioButton();
             this.chkRandomTreasures = new System.Windows.Forms.CheckBox();
             this.optMonsterHeavy = new System.Windows.Forms.RadioButton();
@@ -300,6 +302,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.chkRandomMonsterResistances);
+            this.tabPage3.Controls.Add(this.chkRandomStores);
             this.tabPage3.Controls.Add(this.optMonsterSilly);
             this.tabPage3.Controls.Add(this.chkRandomTreasures);
             this.tabPage3.Controls.Add(this.optMonsterHeavy);
@@ -324,6 +328,26 @@
             this.tabPage3.Text = "Adjustments";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // chkRandomMonsterResistances
+            // 
+            this.chkRandomMonsterResistances.AutoSize = true;
+            this.chkRandomMonsterResistances.Location = new System.Drawing.Point(10, 150);
+            this.chkRandomMonsterResistances.Name = "chkRandomMonsterResistances";
+            this.chkRandomMonsterResistances.Size = new System.Drawing.Size(232, 17);
+            this.chkRandomMonsterResistances.TabIndex = 18;
+            this.chkRandomMonsterResistances.Text = "Randomize Monster Resistances per above";
+            this.chkRandomMonsterResistances.UseVisualStyleBackColor = true;
+            // 
+            // chkRandomStores
+            // 
+            this.chkRandomStores.AutoSize = true;
+            this.chkRandomStores.Location = new System.Drawing.Point(10, 196);
+            this.chkRandomStores.Name = "chkRandomStores";
+            this.chkRandomStores.Size = new System.Drawing.Size(112, 17);
+            this.chkRandomStores.TabIndex = 17;
+            this.chkRandomStores.Text = "Randomize Stores";
+            this.chkRandomStores.UseVisualStyleBackColor = true;
+            // 
             // optMonsterSilly
             // 
             this.optMonsterSilly.AutoSize = true;
@@ -337,7 +361,7 @@
             // chkRandomTreasures
             // 
             this.chkRandomTreasures.AutoSize = true;
-            this.chkRandomTreasures.Location = new System.Drawing.Point(10, 150);
+            this.chkRandomTreasures.Location = new System.Drawing.Point(10, 173);
             this.chkRandomTreasures.Name = "chkRandomTreasures";
             this.chkRandomTreasures.Size = new System.Drawing.Size(129, 17);
             this.chkRandomTreasures.TabIndex = 15;
@@ -389,7 +413,7 @@
             // chkRandomHeroEquip
             // 
             this.chkRandomHeroEquip.AutoSize = true;
-            this.chkRandomHeroEquip.Location = new System.Drawing.Point(10, 174);
+            this.chkRandomHeroEquip.Location = new System.Drawing.Point(10, 219);
             this.chkRandomHeroEquip.Name = "chkRandomHeroEquip";
             this.chkRandomHeroEquip.Size = new System.Drawing.Size(152, 17);
             this.chkRandomHeroEquip.TabIndex = 10;
@@ -399,7 +423,7 @@
             // chkSpeedUpBattles
             // 
             this.chkSpeedUpBattles.AutoSize = true;
-            this.chkSpeedUpBattles.Location = new System.Drawing.Point(10, 197);
+            this.chkSpeedUpBattles.Location = new System.Drawing.Point(10, 242);
             this.chkSpeedUpBattles.Name = "chkSpeedUpBattles";
             this.chkSpeedUpBattles.Size = new System.Drawing.Size(106, 17);
             this.chkSpeedUpBattles.TabIndex = 9;
@@ -1410,6 +1434,8 @@
         private System.Windows.Forms.RadioButton optMonsterMedium;
         private System.Windows.Forms.CheckBox chkRandomTreasures;
         private System.Windows.Forms.RadioButton optMonsterSilly;
+        private System.Windows.Forms.CheckBox chkRandomStores;
+        private System.Windows.Forms.CheckBox chkRandomMonsterResistances;
     }
 }
 

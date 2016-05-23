@@ -122,6 +122,8 @@ namespace DW4RandoHacker
                     optMonsterMedium.Checked = (reader.ReadLine() == "T");
                     optMonsterHeavy.Checked = (reader.ReadLine() == "T");
                     chkRandomTreasures.Checked = (reader.ReadLine() == "T");
+                    chkRandomMonsterResistances.Checked = (reader.ReadLine() == "T");
+                    chkRandomStores.Checked = (reader.ReadLine() == "T");
 
                     runChecksum();
                 }
@@ -606,34 +608,6 @@ namespace DW4RandoHacker
                     // If light is selected, maintain enemy resistances, HP, strength, defense, and agility.
                     if (!optMonsterLight.Checked)
                     {
-                        // If silly is selected, adjust enemy resistances +/- 1.
-                        // If ridiculous is selected, adjust enemy resistances +/- 2.
-                        // If ludicrous is selected, completely randomize enemy resistances.
-                        for (int lnJ = 0; lnJ < 5; lnJ++)
-                        {
-                            int res1 = (romData[byteToUse + 15 + lnJ] / 8) % 4;
-                            int res2 = romData[byteToUse + 15 + lnJ] / 64;
-                            if (optMonsterSilly.Checked)
-                            {
-                                res1 += (r1.Next() % 3) - 1;
-                                res2 += (r1.Next() % 3) - 1;
-                            }
-                            if (optMonsterMedium.Checked)
-                            {
-                                res1 += (r1.Next() % 5) - 2;
-                                res2 += (r1.Next() % 5) - 2;
-                            }
-                            if (optMonsterHeavy.Checked)
-                            {
-                                res1 = (r1.Next() % 4);
-                                res2 = (r1.Next() % 4);
-                            }
-                            res1 = (res1 < 0 ? 0 : res1 > 3 ? 3 : res1);
-                            res2 = (res2 < 0 ? 0 : res2 > 3 ? 3 : res2);
-
-                            romData[byteToUse + 15 + lnJ] = (byte)((romData[byteToUse + 15 + lnJ] % 4) + (res1 * 8) + (res2 * 64));
-                        }
-
                         // If silly is selected, adjust HP, strength, defense, and agility by +/- 25%.
                         // If ridiculous is selected, adjust HP, strength, defense, and agility by +/- 50%.
                         // If ludicrous is selected, adjust HP, strength, defense, and agility by +/- 100%.
@@ -703,12 +677,54 @@ namespace DW4RandoHacker
                 }
             }
 
+            if (chkRandomMonsterResistances.Checked)
+            {
+                for (int lnI = 0; lnI <= 0xc2; lnI++)
+                {
+                    // do not randomize Necrosaro.
+                    if (lnI == 0xae) continue;
+
+                    int byteToUse = 0x60056 + (lnI * 22);
+
+                    // If silly is selected, adjust enemy resistances +/- 1.
+                    // If ridiculous is selected, adjust enemy resistances +/- 2.
+                    // If ludicrous is selected, completely randomize enemy resistances.
+                    for (int lnJ = 0; lnJ < 5; lnJ++)
+                    {
+                        int res1 = (romData[byteToUse + 15 + lnJ] / 8) % 4;
+                        int res2 = romData[byteToUse + 15 + lnJ] / 64;
+                        if (optMonsterSilly.Checked)
+                        {
+                            res1 += (r1.Next() % 3) - 1;
+                            res2 += (r1.Next() % 3) - 1;
+                        }
+                        if (optMonsterMedium.Checked)
+                        {
+                            if (r1.Next() % 3 != 0)
+                            {
+                                res1 += (r1.Next() % 5) - 2;
+                                res2 += (r1.Next() % 5) - 2;
+                            }
+                        }
+                        if (optMonsterHeavy.Checked)
+                        {
+                            res1 = (r1.Next() % 4);
+                            res2 = (r1.Next() % 4);
+                        }
+                        res1 = (res1 < 0 ? 0 : res1 > 3 ? 3 : res1);
+                        res2 = (res2 < 0 ? 0 : res2 > 3 ? 3 : res2);
+
+                        romData[byteToUse + 15 + lnJ] = (byte)((romData[byteToUse + 15 + lnJ] % 4) + (res1 * 8) + (res2 * 64));
+                    }
+                }
+            }
+
             if (chkRandomTreasures.Checked)
             {
                 int[] c1p1Treasure = { 0x7bd1d, // Burland
                     0x7bf38, 0x7bf37, // Cave To Izmit
                     0x7bd6a, // Izmit
-                    0x7bf15, 0x7bf16, 0x7bf17, 0x7bfb7, 0x7b935 }; // Old Well - Flying Shoes - 9
+                    0x7bf15, 0x7bf16, 0x7bf17, 0x7bfb7, 0x7b936 }; // Old Well - Flying Shoes - 9
                 int[] c1p2Treasure = { 0x7bf47, 0x7bf48, 0x7bf49, 0x7bf4a, 0x7bf4b, 0x7bf4c }; // Loch Tower - End of C1 - 6
                 int[] c2p1Treasure = { 0x7bd0f, 0x7bd16, // Santeem
                     0x7bdc7, // Tempe
@@ -806,6 +822,7 @@ namespace DW4RandoHacker
                 // Then assign key items, overwriting the randomized treasures.
                 int[] keyItems = { 0x6c,
                     0x71, 0x75,
+                    0x6d,
                     0x5d, 0x70,
                     0x6f, 0x7c, 0x7b, 0x72, 0x1e, 0x68, 0x5c, 0x7d, 0x14, 0x37, 0x44, 0x4b, 0x52, 0x60 };
                 List<int> keyItemList = new List<int> { };
@@ -813,10 +830,12 @@ namespace DW4RandoHacker
 
                 int[] minItemZones = { 0,
                     15, 15,
+                    30,
                     45, 45,
                     58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 0 };
                 int[] maxItemZones = { 9,
                     25, 30,
+                    45,
                     58, 58,
                     64, 74, 87, 89, 106, 138, 153, 153, 159, 159, 159, 159, 184, 184 };
 
@@ -1225,9 +1244,71 @@ namespace DW4RandoHacker
                 romData[0x2fba0 + stringMarker + 30 + lnI] = 0;
             }
 
-            // Weapon stores start at 0x6341f
-            // Armor stores start at 0x634a1
-            // Item stores start at 0x63537
+            if (chkRandomStores.Checked)
+            {
+                int[] lowGradeStores = { 0x6341f, 0x634a1, 0x63537, 0x63425, 0x634a9, 0x6353C,
+                    0x63496, 0x634b1, 0x6345a, 0x63541, 0x6342c, 0x63549, 0x63433, 0x634b9, 0x63551, 0x634c1, 0x63558, 0x6343a, 0x63560,
+                    0x63441, 0x634c9, 0x63569, 0x6356f, 0x63573, 0x63446, 0x634e8, 0x635c8,
+                    0x6344d, 0x634d1, 0X63579, 0x63453, 0x634d8, 0x63581,
+                    0x63462, 0x634e0, 0x63590, 0x63468, 0x634f0, 0x63596, 0x63470, 0x634f8, 0x6359d }; // 42
+                int[] highGradeStores = { 0x63564, 0x63477, 0x6348f, 0x63524, 0x635b3, 0x635ae, 0X63483, 0x63507, 0x635aa,
+                    0x63530, 0x635ba, 0x6347f, 0x634ff, 0x635a4, 0x6350e, 0x63489, 0x63515, 0x6352c, 0x6351d, 0x635c0, 0x63588, 0x6349b}; // 22
+
+                byte[] legalLowGradeStoreItems = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x19,
+                    0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2b, 0x2c, 0x2d, 0x2f, 0x30,
+                    0x3d, 0x3e, 0x3f, 0x46, 0x47, 0x4a, 0x53, 0x54, 0x55, 0x56, 0x58, 0x5a, 0x74 };
+                byte[] legalHighGradeStoreItems = { 0x06, 0x07, 0x0c, 0x0e, 0x0f, 0x10, 0x11, 0x15, 0x16, 0x17, 0x18, 0x1a, 0x1b, 0x1c, 0x1d, 0x20, 0x22, 0x23,
+                    0x2a, 0x2e, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x38, 0x39, 0x3b,
+                    0x40, 0x41, 0x42, 0x43, 0x45, 0x48, 0x49, 0x4d, 0x4e, 0x4f,
+                    0x53, 0x54, 0x55, 0x56, 0x58, 0x59, 0x5a, 0x5b, 0x5e, 0x61, 0x62, 0x63, 0x64, 0x65, 0x69, 0x74 };
+                
+                for (int lnI = 0; lnI < lowGradeStores.Length; lnI++)
+                {
+                    List<int> store = new List<int> { };
+                    bool lastItem = false;
+                    int byteToUse = lowGradeStores[lnI];
+                    int lnJ = 0;
+                    do
+                    {
+                        if (byteToUse == 0x63573 && lnJ == 0)
+                        {
+                            romData[byteToUse] = 0x56;
+                            lnJ++;
+                            continue;
+                        }
+                        if (romData[byteToUse + lnJ] >= 128)
+                            lastItem = true;
+                        romData[byteToUse + lnJ] = legalLowGradeStoreItems[r1.Next() % legalLowGradeStoreItems.Length];
+                        bool failure = false;
+                        for (int lnK = 0; lnK < lnJ; lnK++)
+                            if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
+                                failure = true;
+                        if (failure) continue;
+                        if (lastItem)
+                            romData[byteToUse + lnJ] += 128;
+                        lnJ++;
+                    } while (!lastItem);
+                }
+                for (int lnI = 0; lnI < highGradeStores.Length; lnI++)
+                {
+                    List<int> store = new List<int> { };
+                    bool lastItem = false;
+                    int byteToUse = highGradeStores[lnI];
+                    int lnJ = 0;
+                    do
+                    {
+                        if (romData[byteToUse + lnJ] >= 128)
+                            lastItem = true;
+                        romData[byteToUse + lnJ] = legalHighGradeStoreItems[r1.Next() % legalHighGradeStoreItems.Length];
+                        for (int lnK = 0; lnK < lnJ; lnK++)
+                            if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
+                                continue;
+                        if (lastItem)
+                            romData[byteToUse + lnJ] += 128;
+                        lnJ++;
+                    } while (!lastItem);
+                }
+            }
             return true;
         }
 
@@ -1555,6 +1636,8 @@ namespace DW4RandoHacker
                     writer.WriteLine(optMonsterMedium.Checked ? "T" : "F");
                     writer.WriteLine(optMonsterHeavy.Checked ? "T" : "F");
                     writer.WriteLine(chkRandomTreasures.Checked ? "T" : "F");
+                    writer.WriteLine(chkRandomMonsterResistances.Checked ? "T" : "F");
+                    writer.WriteLine(chkRandomStores.Checked ? "T" : "F");
                 }
         }
 
