@@ -44,7 +44,7 @@
             this.txtSeed = new System.Windows.Forms.TextBox();
             this.lblIntensityDesc = new System.Windows.Forms.Label();
             this.btnRandomize = new System.Windows.Forms.Button();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabShortcuts = new System.Windows.Forms.TabPage();
             this.btnMonsterOutput = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.chkRandomMonsterResistances = new System.Windows.Forms.CheckBox();
@@ -125,7 +125,7 @@
             this.txtC1Name1 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage4.SuspendLayout();
+            this.tabShortcuts.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -280,15 +280,15 @@
             this.btnRandomize.UseVisualStyleBackColor = true;
             this.btnRandomize.Click += new System.EventHandler(this.btnRandomize_Click);
             // 
-            // tabPage4
+            // tabShortcuts
             // 
-            this.tabPage4.Controls.Add(this.btnMonsterOutput);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(500, 301);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Output";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.tabShortcuts.Controls.Add(this.btnMonsterOutput);
+            this.tabShortcuts.Location = new System.Drawing.Point(4, 22);
+            this.tabShortcuts.Name = "tabShortcuts";
+            this.tabShortcuts.Size = new System.Drawing.Size(500, 301);
+            this.tabShortcuts.TabIndex = 3;
+            this.tabShortcuts.Text = "Shortcuts/Misc";
+            this.tabShortcuts.UseVisualStyleBackColor = true;
             // 
             // btnMonsterOutput
             // 
@@ -1281,7 +1281,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabShortcuts);
             this.tabControl1.Location = new System.Drawing.Point(15, 138);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -1314,7 +1314,7 @@
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.tabPage4.ResumeLayout(false);
+            this.tabShortcuts.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -1355,7 +1355,7 @@
         private System.Windows.Forms.TextBox txtSeed;
         private System.Windows.Forms.Label lblIntensityDesc;
         private System.Windows.Forms.Button btnRandomize;
-        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage tabShortcuts;
         private System.Windows.Forms.Button btnMonsterOutput;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.CheckBox chkRandomMonsterZones;
