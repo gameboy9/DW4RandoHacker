@@ -17,7 +17,6 @@
 - The character you select is the only character you get to play with the entire game.
 - If an NPC joins you, it will change to the character you selected.  (see above)
 - The character gains HP at twice the rate as usual, to give you chance... especially against Necrosaro.
-- To complete Chapter 4 successfully, the Magic Key is found in the first treasure chest of the Aktemto Mine.  (it usually has Mystic Acorns in it)
 - You have an opportunity for the solo hero to equip everything, but it's not required.  However, all Zenithian equipment will be equippable by all solo heroes regardless so you can get through the Zenithian Tower and Castle.
 
 ## To Do/Wishlist
@@ -29,4 +28,4 @@
 ## Special Thanks
 - Mcgrew, for his Dragon Warrior 1 Randomizer(https://github.com/mcgrew/dwrandomizer), giving me the inspiration to create this randomizer.  Twitch:  http://www.twitch.tv/mcgrew
 - LemmyPi for his contributions toward where in the ROM is various stuff.
-- HighSpirits (Twitch:  http://www.twitch.tv/highspirits), TheCowness (Twitch:  http://www.twitch.tv/thecowness), and SgtMetTool (Twitch:  http://www.twitch.tv/sgtmettool) for testing.
+- HighSpirits (Twitch:  https://www.twitch.tv/highspirits), TheCowness (Twitch:  https://www.twitch.tv/thecowness), SgtMetTool (Twitch:  https://www.twitch.tv/sgtmettool), hyrule1989(Twitch:  https://www.twitch.tv/hyrule1989), and deranged_squirrel_fighter(Twitch:  https://www.twitch.tv/deranged_squirrel_fighter) for testing.
