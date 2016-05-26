@@ -513,7 +513,7 @@ namespace DW4RandoHacker
                     xp = (r1.Next() % (xp * 2));
 
                 int xpTrue = (int)Math.Round(xp);
-                if (xpTrue < 1 && origXP >= 1 && !chkXPRandom.Checked) xpTrue = 1;
+                if (xpTrue < 1 && origXP >= 1) xpTrue = 1;
                 if (xpTrue > 65000) xpTrue = 65000;
                 romData[0x60056 + (lnI * 22) + 1] = (byte)(xpTrue / 256);
                 romData[0x60056 + (lnI * 22) + 0] = (byte)(xpTrue % 256);
@@ -533,7 +533,7 @@ namespace DW4RandoHacker
                     xp = (r1.Next() % (xp * 2));
 
                 int xpTrue = (int)Math.Round(xp);
-                if (xpTrue < 1 && origXP >= 1 && !chkGoldRandom.Checked) xpTrue = 1;
+                if (xpTrue < 1 && origXP >= 1) xpTrue = 1;
                 if (xpTrue > 1000) xpTrue = 1000;
                 romData[0x60056 + (lnI * 22) + 18] -= (byte)(romData[0x60054 + (lnI * 22) + 20] % 4);
                 romData[0x60056 + (lnI * 22) + 18] += (byte)(xpTrue / 256);
