@@ -1321,13 +1321,13 @@ namespace DW4RandoHacker
                         for (int lnK = 0; lnK < lnJ; lnK++)
                             if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
                                 failure = true;
+                        if (lastItem)
+                            romData[byteToUse + lnJ] += 128;
                         if (failure)
                         {
                             lastItem = false;
                             continue;
                         }
-                        if (lastItem)
-                            romData[byteToUse + lnJ] += 128;
                         lnJ++;
                     } while (!lastItem);
                 }
