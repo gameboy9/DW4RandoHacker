@@ -571,6 +571,11 @@ namespace DW4RandoHacker
                     if (optMonsterHeavy.Checked)
                         randomType = 3;
 
+                    // Force early chapter bosses to have no worse than level 2 moves. (part 1)
+                    if (randomType == 3 && (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || 
+                        monsterRank[lnI] == 0xb0 || monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
+                        randomType = 2;
+
                     if (randomType == 0)
                         continue;
                     if (randomType == 1)
@@ -586,6 +591,11 @@ namespace DW4RandoHacker
                     if (randomType == 2)
                     {
                         int moveLevel = (lnI < 38 ? 0 : lnI < 76 ? 1 : lnI < 114 ? 2 : lnI < 152 ? 3 : 4);
+                        // Force early chapter bosses to have no worse than level 2 moves. (part 2)
+                        if (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 || 
+                            monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4)
+                            moveLevel = 1;
+
                         for (int lnJ = 0; lnJ < 6; lnJ++)
                             romData[byteToUse + 9 + lnJ] = (byte)(moveLevel == 0 ? level1Moves[r1.Next() % level1Moves.Length] :
                                                                   moveLevel == 1 ? level2Moves[r1.Next() % level2Moves.Length] :
@@ -667,7 +677,9 @@ namespace DW4RandoHacker
                         }
 
                         // If ludicrous is selected, change chances of double and triple attacks.
-                        if (optMonsterHeavy.Checked)
+                        // But do not allow this if it's an early chapter boss monster.
+                        if (optMonsterHeavy.Checked && !(monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
+                            monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
                         {
                             romData[byteToUse + 11] = (byte)(romData[byteToUse + 11] % 128);
                             romData[byteToUse + 12] = (byte)(romData[byteToUse + 12] % 128);
@@ -1130,7 +1142,7 @@ namespace DW4RandoHacker
                     0, 106, 0, 0, 0, 106, 106, 148, 148, 148, 148, 148, 20, // 13
                     0, 106, 106, 106, 106, 106, 0 }; // 7
                 int[] firstMonster = { 0x62, 0x91, 0x12, 0xbb, 0xb4, 0xb3, 0x91, 0xaf, 0xb0, 0xb1, 0xb2, 0xba, 0xc0, 0xbf,
-                    0xb3, -2, 0xb5, 0xc1, 0xc2, 0x9b, 0xbc, 0xb9, 0xb8, 0xb7, 0xb6, 0xae, -2,
+                    0xbe, -2, 0xb5, 0xc1, 0xc2, 0x9b, 0xbc, 0xb9, 0xb8, 0xb7, 0xb6, 0xae, -2,
                     0x59, -2, -2, -2, -2, -2, -2 };
                 for (int lnI = 0; lnI < 34; lnI++)
                 {
