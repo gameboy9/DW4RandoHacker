@@ -734,7 +734,7 @@ namespace DW4RandoHacker
                     {
                         int res1 = (romData[byteToUse + 15 + lnJ] / 8) % 4;
                         int res2 = romData[byteToUse + 15 + lnJ] / 64;
-                        if (chkC14Random.Checked && (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
+                        if ((chkC14Random.Checked || chkSoloHero.Checked) && (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
                             monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
                         {
                             res1 = res2 = 0;
