@@ -125,6 +125,7 @@
             this.txtC1Name1 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.cmdStatOutput = new System.Windows.Forms.Button();
             this.tabShortcuts.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -282,6 +283,7 @@
             // 
             // tabShortcuts
             // 
+            this.tabShortcuts.Controls.Add(this.cmdStatOutput);
             this.tabShortcuts.Controls.Add(this.btnMonsterOutput);
             this.tabShortcuts.Location = new System.Drawing.Point(4, 22);
             this.tabShortcuts.Name = "tabShortcuts";
@@ -1288,6 +1290,16 @@
             this.tabControl1.Size = new System.Drawing.Size(508, 327);
             this.tabControl1.TabIndex = 8;
             // 
+            // cmdStatOutput
+            // 
+            this.cmdStatOutput.Location = new System.Drawing.Point(12, 43);
+            this.cmdStatOutput.Name = "cmdStatOutput";
+            this.cmdStatOutput.Size = new System.Drawing.Size(112, 23);
+            this.cmdStatOutput.TabIndex = 1;
+            this.cmdStatOutput.Text = "Stat Output";
+            this.cmdStatOutput.UseVisualStyleBackColor = true;
+            this.cmdStatOutput.Click += new System.EventHandler(this.cmdStatOutput_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1436,6 +1448,7 @@
         private System.Windows.Forms.RadioButton optMonsterSilly;
         private System.Windows.Forms.CheckBox chkRandomStores;
         private System.Windows.Forms.CheckBox chkRandomMonsterResistances;
+        private System.Windows.Forms.Button cmdStatOutput;
     }
 }
 

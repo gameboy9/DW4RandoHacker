@@ -254,10 +254,8 @@ namespace DW4RandoHacker
                 if ((string)cboSoloHero.SelectedItem == "Ragnar") power = 6;
                 if ((string)cboSoloHero.SelectedItem == "Alena") power = 7;
                 if (chkSoloCanEquipAll.Checked)
-                {
                     for (int lnI = 0; lnI < 80; lnI++)
                         romData[0x40c75 + lnI] = (byte)Math.Pow(2, power); // Going to make sure the character gets to equip everything!
-                }
                 else
                 { // still have to allow equipping of the Zenethian equipment so you can get through the tower and castle...
                     romData[0x40c75 + 0x14] = (byte)Math.Pow(2, power);
@@ -736,12 +734,17 @@ namespace DW4RandoHacker
                     {
                         int res1 = (romData[byteToUse + 15 + lnJ] / 8) % 4;
                         int res2 = romData[byteToUse + 15 + lnJ] / 64;
-                        if (optMonsterSilly.Checked)
+                        if (chkC14Random.Checked && (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
+                            monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
+                        {
+                            res1 = res2 = 0;
+                        }
+                        else if (optMonsterSilly.Checked)
                         {
                             res1 += (r1.Next() % 3) - 1;
                             res2 += (r1.Next() % 3) - 1;
                         }
-                        if (optMonsterMedium.Checked)
+                        else if (optMonsterMedium.Checked)
                         {
                             if (r1.Next() % 3 != 0)
                             {
@@ -749,7 +752,7 @@ namespace DW4RandoHacker
                                 res2 += (r1.Next() % 5) - 2;
                             }
                         }
-                        if (optMonsterHeavy.Checked)
+                        else if (optMonsterHeavy.Checked)
                         {
                             res1 = (r1.Next() % 4);
                             res2 = (r1.Next() % 4);
@@ -1548,8 +1551,6 @@ namespace DW4RandoHacker
                 //for (int lnI = 0; lnI < 0x8a; lnI++)
                 //    compareComposeString("monsters" + lnI.ToString("X2"), writer, (0x32e3 + (23 * lnI)), 23);
 
-
-
                 //compareComposeString("treasure-Burland-1", writer, 0x7bd1d, 1);
                 //compareComposeString("treasure-IzmitCave", writer, 0x7bf37, 2);
                 //compareComposeString("treasure-Izmit", writer, 0x7bd6a, 1);
@@ -1570,8 +1571,6 @@ namespace DW4RandoHacker
                 //compareComposeString("treasure-Birdsongp2", writer, 0x7b8f3, 1);
                 //compareComposeString("treasure-Endorp1", writer, 0x7beda, 5);
                 //compareComposeString("treasure-Endorp2", writer, 0x7bd2b, 1);
-
-
 
                 compareComposeString("treasure-Burland-5", writer, 0x7bd1d, 1);
 
@@ -1817,5 +1816,39 @@ namespace DW4RandoHacker
         {
             if (chkShop25K.Checked) chkShop1.Checked = false;
         }
+
+        private void cmdStatOutput_Click(object sender, EventArgs e)
+        {
+            loadRom(false);
+            using (StreamWriter writer = File.CreateText(Path.Combine(Path.GetDirectoryName(txtFileName.Text), "DW4StatOutput.txt")))
+            {
+                for (int lnI = 0; lnI < 6; lnI++)
+                    for (int lnJ = 0; lnJ < 8; lnJ++)
+                        outputStatString("stats" + lnI.ToString() + "-" + lnJ.ToString(), writer, (0x4a15b + (48 * lnI) + (6 * lnJ)), 6);
+            }
+            lblIntensityDesc.Text = "Text output complete!  (DW4MonsterOutput.txt)";
+        }
+
+        private StreamWriter outputStatString(string intro, StreamWriter writer, int startAddress, int length, int skip = 1, int duplicate = 0)
+        {
+            int level = 1;
+            int multiplier = romData[startAddress] % 128;
+            multiplier = (multiplier >= 96 ? 3 : multiplier >= 64 ? 2 : multiplier >= 32 ? 1 : 0);
+            string final = "";
+            for (int lnI = 0; lnI < 5; lnI += skip)
+            {
+                if (romData[startAddress + lnI] == 99) level = 99;
+                level += (romData[startAddress + lnI] % 32);
+                if (level > 99) level = 99;
+                final += level.ToString() + "-";
+            }
+            final += "B" + romData[startAddress + 5] + "-M" + multiplier;
+
+            writer.WriteLine(intro);
+            writer.WriteLine(final);
+            writer.WriteLine();
+            return writer;
+        }
+
     }
 }
