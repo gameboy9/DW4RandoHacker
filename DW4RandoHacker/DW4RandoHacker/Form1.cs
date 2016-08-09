@@ -10,7 +10,24 @@ namespace DW4RandoHacker
     {
         byte[] romData;
         byte[] romData2;
-        
+
+        int[] monsterRank = // after 0x55, 0x??????, - bisonhawk unknown
+            {
+                    0x5c, 0x01, 0x00, 0x03, 0x02, 0x05, 0x08, 0x07, 0x09, 0x06, 0x0b, 0x0e, 0x0a, 0x11, 0x0d, 0x0f, // 6
+                    0x14, 0x0c, 0x1c, 0x1a, 0x18, 0x13, 0x10, 0x1f, 0x26, 0x16, 0x1e, 0x19, 0x17, 0x24, 0x1b, 0x22, // 15
+                    0x23, 0x15, 0x1d, 0x2a, 0x20, 0x27, 0x25, 0x21, 0x43, 0x28, 0x2f, 0x04, 0x31, 0x2c, 0x3c, 0x29, // 27
+                    0x3d, 0x2d, 0x36, 0x45, 0x2e, 0x38, 0x39, 0x33, 0x42, 0x3e, 0x58, 0x4d, 0x40, 0x4a, 0x32, 0x47, // 45
+                    0x2b, 0x35, 0x52, 0x48, 0x46, 0x37, 0x4c, 0xaf, 0x34, 0x5e, 0x3a, 0x4f, 0x66, 0xb3, 0x3b, 0x49, // 77
+                    0xb0, 0xb1, 0x56, 0x41, 0x51, 0x50, 0x55, 0x57, 0x44, 0x5a, 0x3f, 0xb2, 0xba, 0x30, 0x53, 0x60, // 104
+                    0x5b, 0x75, 0x5f, 0x4b, 0x68, 0x63, 0x5d, 0x54, 0x6b, 0x61, 0x67, 0x6e, 0x6a, 0x76, 0x12, 0x69,
+                    0x70, 0x59, 0x78, 0x72, 0xab, 0x7c, 0x7d, 0x73, 0x71, 0x6c, 0x6f, 0x7f, 0x77, 0x74, 0x64, 0x86,
+                    0x7a, 0x6d, 0x79, 0x7b, 0x80, 0x81, 0x7e, 0x87, 0x83, 0x88, 0x85, 0x82, 0x84, 0x62, 0x8c, 0x97,
+                    0x89, 0x8a, 0x8d, 0x8b, 0x93, 0x90, 0xc0, 0x9c, 0x8e, 0x98, 0x95, 0xb4, 0x96, 0x9f, 0x9a, 0x99,
+                    0x92, 0x9d, 0xa2, 0x94, 0x9e, 0x91, 0x8f, 0xa1, 0xa9, 0x9b, 0xa0, 0xa6, 0xaa, 0xac, 0x65, 0xa8,
+                    0xb8, 0xa3, 0xa4, 0xa5, 0xa7, 0xbf, 0xb9, 0xbe, 0xb7, 0xb6, 0xb5, 0xc1, 0xc2, 0xbc // 15000 - bosses start at 0xb5
+            };
+
+
         public Form1()
         {
             InitializeComponent();
@@ -124,6 +141,11 @@ namespace DW4RandoHacker
                     chkRandomTreasures.Checked = (reader.ReadLine() == "T");
                     chkRandomMonsterResistances.Checked = (reader.ReadLine() == "T");
                     chkRandomStores.Checked = (reader.ReadLine() == "T");
+                    chkRandomHeroStats.Checked = (reader.ReadLine() == "T");
+                    optHeroLight.Checked = (reader.ReadLine() == "T");
+                    optHeroSilly.Checked = (reader.ReadLine() == "T");
+                    optHeroMedium.Checked = (reader.ReadLine() == "T");
+                    optHeroHeavy.Checked = (reader.ReadLine() == "T");
 
                     runChecksum();
                 }
@@ -223,22 +245,6 @@ namespace DW4RandoHacker
                 return false;
             }
 
-            int[] monsterRank = // after 0x55, 0x??????, - bisonhawk unknown
-            {
-                    0x5c, 0x01, 0x00, 0x03, 0x02, 0x05, 0x08, 0x07, 0x09, 0x06, 0x0b, 0x0e, 0x0a, 0x11, 0x0d, 0x0f, // 6
-                    0x14, 0x0c, 0x1c, 0x1a, 0x18, 0x13, 0x10, 0x1f, 0x26, 0x16, 0x1e, 0x19, 0x17, 0x24, 0x1b, 0x22, // 15
-                    0x23, 0x15, 0x1d, 0x2a, 0x20, 0x27, 0x25, 0x21, 0x43, 0x28, 0x2f, 0x04, 0x31, 0x2c, 0x3c, 0x29, // 27
-                    0x3d, 0x2d, 0x36, 0x45, 0x2e, 0x38, 0x39, 0x33, 0x42, 0x3e, 0x58, 0x4d, 0x40, 0x4a, 0x32, 0x47, // 45
-                    0x2b, 0x35, 0x52, 0x48, 0x46, 0x37, 0x4c, 0xaf, 0x34, 0x5e, 0x3a, 0x4f, 0x66, 0xb3, 0x3b, 0x49, // 77
-                    0xb0, 0xb1, 0x56, 0x41, 0x51, 0x50, 0x55, 0x57, 0x44, 0x5a, 0x3f, 0xb2, 0xba, 0x30, 0x53, 0x60, // 104
-                    0x5b, 0x75, 0x5f, 0x4b, 0x68, 0x63, 0x5d, 0x54, 0x6b, 0x61, 0x67, 0x6e, 0x6a, 0x76, 0x12, 0x69,
-                    0x70, 0x59, 0x78, 0x72, 0xab, 0x7c, 0x7d, 0x73, 0x71, 0x6c, 0x6f, 0x7f, 0x77, 0x74, 0x64, 0x86,
-                    0x7a, 0x6d, 0x79, 0x7b, 0x80, 0x81, 0x7e, 0x87, 0x83, 0x88, 0x85, 0x82, 0x84, 0x62, 0x8c, 0x97,
-                    0x89, 0x8a, 0x8d, 0x8b, 0x93, 0x90, 0xc0, 0x9c, 0x8e, 0x98, 0x95, 0xb4, 0x96, 0x9f, 0x9a, 0x99,
-                    0x92, 0x9d, 0xa2, 0x94, 0x9e, 0x91, 0x8f, 0xa1, 0xa9, 0x9b, 0xa0, 0xa6, 0xaa, 0xac, 0x65, 0xa8,
-                    0xb8, 0xa3, 0xa4, 0xa5, 0xa7, 0xbf, 0xb9, 0xbe, 0xb7, 0xb6, 0xb5, 0xc1, 0xc2, 0xbc // 15000 - bosses start at 0xb5
-            };
-
             for (int lnI = 0; lnI < 8; lnI++)
                 romData[0x49145 + lnI] = 0; // Make sure all characters are loaded right away; otherwise, Chapter 1 will most likely start with a ghost.
 
@@ -313,6 +319,10 @@ namespace DW4RandoHacker
 
                 // Force the solo hero to fight in Chapter 2's tournament.  This isn't completely neccessary, but it will smooth out processing.
                 romData[0x79074] = power;
+
+                // Make the armor shop and the Endor owned shop point to the Chapter 3 heroes inventory.  This isn't neccessary, but it will smooth out processing.
+                romData[0x55ee9] = power;
+                romData[0x5654e] = power;
 
                 // Turn Nara into the solo hero in Chapter 4!
                 romData[0x76b3c] = power;
@@ -393,6 +403,10 @@ namespace DW4RandoHacker
                 // Force the hero acting as the chapter 2 "princess" to fight in Chapter 2's tournament.  
                 // This IS neccessary with random heroes... especially if Alena is acting as Cristo or Brey!
                 romData[0x79074] = (byte)heroes[1];
+
+                // Make the armor shop and the Endor owned shop point to the Chapter 3 heroes inventory.
+                romData[0x55ee9] = (byte)heroes[2];
+                romData[0x5654e] = (byte)heroes[2];
 
                 // Force the heroes acting as the chapter 4 "Nara and Mara" get out of Chapter 4 successfully.
                 romData[0x7907a] = (byte)heroes[3];
@@ -539,386 +553,13 @@ namespace DW4RandoHacker
             }
 
             if (chkRandomMonsterStats.Checked)
-            {
-                int[] level1Moves = { 0x00, 0x07, 0x16, 0x1c, 0x1e, 0x25, 0x2a, 0x2d, 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x36, 0x47, 0x48 };
-                int[] level2Moves = { 0x00, 0x03, 0x07, 0x0a, 0x10, 0x12, 0x13, 0x16, 0x17, 0x1c, 0x1d, 0x1e, 0x22, 0x25, 0x2a, 0x2d, 0x30, 0x32, 0x32, 0x32, 0x32, 0x34, 0x35, 0x36, 0x38, 0x3c, 0x3f, 0x42, 0x43, 0x47, 0x48, 0x4b, 0x4c, 0x57, 0x58, 0x5f, 0x64 };
-                int[] level3Moves = { 0x00, 0x01, 0x03, 0x04, 0x07, 0x08, 0x0a, 0x0b, 0x0d, 0x10, 0x11, 0x12, 0x13, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x25, 0x26, 0x2d, 0x2e, 0x30, 0x32, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3c, 0x3d, 0x3f, 0x40, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x4f, 0x56, 0x58, 0x5d, 0x5e, 0x62, 0x63, 0x66 };
-                int[] level4Moves = { 0x01, 0x02, 0x04, 0x05, 0x08, 0x09, 0x0b, 0x0c, 0x0d, 0x0e, 0x10, 0x14, 0x17, 0x1a, 0x1d, 0x1f, 0x20, 0x21, 0x23, 0x24, 0x26, 0x27, 0x28, 0x2e, 0x31, 0x32, 0x34, 0x37, 0x39, 0x3a, 0x3d, 0x3e, 0x40, 0x41, 0x42, 0x44, 0x45, 0x49, 0x4a, 0x4d, 0x50, 0x51, 0x53, 0x54, 0x56, 0x58, 0x59, 0x5a, 0x5d, 0x60, 0x62, 0x63 };
-                int[] level5Moves = { 0x02, 0x05, 0x06, 0x09, 0x0c, 0x0e, 0x10, 0x17, 0x1a, 0x1d, 0x24, 0x27, 0x28, 0x29, 0x31, 0x32, 0x34, 0x37, 0x3a, 0x3e, 0x41, 0x44, 0x49, 0x4a, 0x52, 0x53, 0x56, 0x59, 0x5a, 0x60 };
-                int[] weirdAttackMoves = { 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37 };
-
-                // If light is selected, 50% chance of maintaining same enemy pattern.  25% chance of changing it to attack only.  25% chance of the level moves above.
-                // If silly is selected, 25% chance of maintaining same enemy pattern, 25% chance of attack only, 25% chance of level moves above, 25% of completely random.
-                // If ridiculous is selected, 25% chance of attack only, 25% chance of level moves above, 50% chance of completely random.
-                // If ludicrous is selected, 100% chance of completely random.
-
-                for (int lnI = 0; lnI < monsterRank.Length; lnI++) // 0xc2 is not used; Necrosaro
-                {
-                    //// do not randomize Necrosaro.
-                    //if (lnI == 0xae) continue;
-
-                    int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
-                    int randomType = 0;
-                    int randomRandom = (r1.Next() % 4);
-                    if (optMonsterLight.Checked)
-                        randomType = (randomRandom == 0 || randomRandom == 1 ? 0 : randomRandom == 2 ? 1 : 2);
-                    if (optMonsterSilly.Checked)
-                        randomType = randomRandom;
-                    if (optMonsterMedium.Checked)
-                        randomType = (randomRandom == 0 ? 1 : randomRandom == 1 ? 2 : 3);
-                    if (optMonsterHeavy.Checked)
-                        randomType = 3;
-
-                    // Force early chapter bosses to have no worse than level 2 moves. (part 1)
-                    if (randomType == 3 && (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || 
-                        monsterRank[lnI] == 0xb0 || monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
-                        randomType = 2;
-
-                    if (randomType == 0)
-                        continue;
-                    if (randomType == 1)
-                    {
-                        if (r1.Next() % 2 == 1)
-                            // weird attack pattern
-                            for (int lnJ = 0; lnJ < 6; lnJ++)
-                                romData[byteToUse + 9 + lnJ] = (byte)weirdAttackMoves[r1.Next() % weirdAttackMoves.Length];
-                        else
-                            for (int lnJ = 0; lnJ < 6; lnJ++)
-                                romData[byteToUse + 9 + lnJ] = 0x32;
-                    }
-                    if (randomType == 2)
-                    {
-                        int moveLevel = (lnI < 38 ? 0 : lnI < 76 ? 1 : lnI < 114 ? 2 : lnI < 152 ? 3 : 4);
-                        // Force early chapter bosses to have no worse than level 2 moves. (part 2)
-                        if (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 || 
-                            monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4)
-                            moveLevel = 1;
-
-                        for (int lnJ = 0; lnJ < 6; lnJ++)
-                            romData[byteToUse + 9 + lnJ] = (byte)(moveLevel == 0 ? level1Moves[r1.Next() % level1Moves.Length] :
-                                                                  moveLevel == 1 ? level2Moves[r1.Next() % level2Moves.Length] :
-                                                                  moveLevel == 2 ? level3Moves[r1.Next() % level3Moves.Length] :
-                                                                  moveLevel == 3 ? level4Moves[r1.Next() % level4Moves.Length] :
-                                                                  level5Moves[r1.Next() % level5Moves.Length]);
-                    }
-                    if (randomType == 3)
-                    {
-                        for (int lnJ = 0; lnJ < 6; lnJ++)
-                        {
-                            if (r1.Next() % 2 == 1)
-                                romData[byteToUse + 9 + lnJ] = (byte)(r1.Next() % 0x67);
-                            else
-                                romData[byteToUse + 9 + lnJ] = 0x32;
-                            if (romData[byteToUse + 9 + lnJ] == 0x15 || romData[byteToUse + 9 + lnJ] == 0x55)
-                                lnJ--; // redo randomization.  Transform and super slime is a bad idea to use here.
-                        }
-                        if (lnI == 0x42 || lnI == 0x58)
-                        {
-
-                        }
-                    }
-
-                    byte pct25Attack = 0x00;
-                    for (int lnJ = 0; lnJ < 6; lnJ++)
-                    {
-                        if (romData[byteToUse + 9 + lnJ] == 0x0f || romData[byteToUse + 9 + lnJ] == 0x21 || romData[byteToUse + 9 + lnJ] == 0x29 || romData[byteToUse + 9 + lnJ] == 0x58 ||
-                            romData[byteToUse + 9 + lnJ] == 0x59 || romData[byteToUse + 9 + lnJ] == 0x5a)
-                        {
-                            pct25Attack = romData[byteToUse + 9 + lnJ];
-                            break;
-                        }
-                    }
-                    if (pct25Attack != 0x00)
-                    {
-                        // Force pattern change at 25% HP.
-                        romData[byteToUse + 9 + 0] = pct25Attack;
-                        romData[byteToUse + 9 + 1] = (byte)(pct25Attack + 128);
-
-                        for (int lnJ = 2; lnJ < 6; lnJ++)
-                        {
-                            if (romData[byteToUse + 9 + lnJ] == 0x0f || romData[byteToUse + 9 + lnJ] == 0x21 || romData[byteToUse + 9 + lnJ] == 0x29 || romData[byteToUse + 9 + lnJ] == 0x58 ||
-                                romData[byteToUse + 9 + lnJ] == 0x59 || romData[byteToUse + 9 + lnJ] == 0x5a)
-                            {
-                                romData[byteToUse + 9 + lnJ] = 0x32; // change mutation pattern to basic attack
-                            }
-                        }
-                    }
-
-                    // If light is selected, maintain enemy resistances, HP, strength, defense, and agility.
-                    if (!optMonsterLight.Checked)
-                    {
-                        // If silly is selected, adjust HP, strength, defense, and agility by +/- 25%.
-                        // If ridiculous is selected, adjust HP, strength, defense, and agility by +/- 50%.
-                        // If ludicrous is selected, adjust HP, strength, defense, and agility by +/- 100%.
-                        for (int lnJ = 2; lnJ <= 6; lnJ++)
-                        {
-                            if (lnJ == 3) lnJ++;
-                            int stat = romData[byteToUse + lnJ] + (lnJ >= 4 ? (romData[byteToUse + lnJ + 11] % 4) * 256 : 0);
-                            int randomModifier = (r1.Next() % 3);
-                            try
-                            {
-                                if (randomModifier == 0)
-                                    stat -= (r1.Next() % (stat / (optMonsterSilly.Checked ? 4 : optMonsterMedium.Checked ? 2 : 1)));
-                                else if (randomModifier == 2)
-                                    stat += (r1.Next() % (stat / (optMonsterSilly.Checked ? 4 : optMonsterMedium.Checked ? 2 : 1)));
-                            }
-                            catch (DivideByZeroException)
-                            {
-                                // skip error and do not adjust the stat.  Crash on all other exceptions.
-                            }
-
-                            if (lnJ == 2 && stat > 255) stat = 255;
-                            if (lnJ >= 4 && stat > 1020) stat = 1020;
-                            romData[byteToUse + lnJ] = (byte)(stat % 256);
-                            if (lnJ >= 4)
-                                romData[byteToUse + lnJ + 11] = (byte)(romData[byteToUse + lnJ + 11] - (romData[byteToUse + lnJ + 11] % 4) + (stat / 256));
-                        }
-
-                        // If ludicrous is selected, change chances of double and triple attacks.
-                        // But do not allow this if it's an early chapter boss monster.
-                        if (optMonsterHeavy.Checked && !(monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
-                            monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
-                        {
-                            romData[byteToUse + 11] = (byte)(romData[byteToUse + 11] % 128);
-                            romData[byteToUse + 12] = (byte)(romData[byteToUse + 12] % 128);
-
-                            if (r1.Next() % 1000 <= lnI)
-                            {
-                                romData[byteToUse + 11] += 128;
-                                romData[byteToUse + 12] += 128;
-                            }
-                            else if (r1.Next() % 1000 <= lnI)
-                            {
-                                romData[byteToUse + 12] += 128;
-                            }
-                            else if (r1.Next() % 1000 <= lnI)
-                            {
-                                romData[byteToUse + 11] += 128;
-                            }
-    
-                            // If ludicrous is selected, change chances of regeneration.
-                            romData[byteToUse + 13] = (byte)(romData[byteToUse + 13] % 128);
-                            romData[byteToUse + 14] = (byte)(romData[byteToUse + 14] % 128);
-
-                            if (r1.Next() % 1000 <= lnI)
-                            {
-                                romData[byteToUse + 13] += 128;
-                                romData[byteToUse + 14] += 128;
-                            }
-                            else if (r1.Next() % 1000 <= lnI)
-                            {
-                                romData[byteToUse + 14] += 128;
-                            }
-                            else if (r1.Next() % 1000 <= lnI)
-                            {
-                                romData[byteToUse + 13] += 128;
-                            }
-                        }
-                    }
-                }
-            }
+                randomizeMonsterStats(r1);
 
             if (chkRandomMonsterResistances.Checked)
-            {
-                for (int lnI = 0; lnI <= 0xc2; lnI++)
-                {
-                    // do not randomize Necrosaro.
-                    if (lnI == 0xae) continue;
-
-                    int byteToUse = 0x60056 + (lnI * 22);
-
-                    // If silly is selected, adjust enemy resistances +/- 1.
-                    // If ridiculous is selected, adjust enemy resistances +/- 2.
-                    // If ludicrous is selected, completely randomize enemy resistances.
-                    for (int lnJ = 0; lnJ < 5; lnJ++)
-                    {
-                        int res1 = (romData[byteToUse + 15 + lnJ] / 8) % 4;
-                        int res2 = romData[byteToUse + 15 + lnJ] / 64;
-                        if ((chkC14Random.Checked || chkSoloHero.Checked) && (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
-                            monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
-                        {
-                            res1 = res2 = 0;
-                        }
-                        else if (optMonsterSilly.Checked)
-                        {
-                            res1 += (r1.Next() % 3) - 1;
-                            res2 += (r1.Next() % 3) - 1;
-                        }
-                        else if (optMonsterMedium.Checked)
-                        {
-                            if (r1.Next() % 3 != 0)
-                            {
-                                res1 += (r1.Next() % 5) - 2;
-                                res2 += (r1.Next() % 5) - 2;
-                            }
-                        }
-                        else if (optMonsterHeavy.Checked)
-                        {
-                            res1 = (r1.Next() % 4);
-                            res2 = (r1.Next() % 4);
-                        }
-                        res1 = (res1 < 0 ? 0 : res1 > 3 ? 3 : res1);
-                        res2 = (res2 < 0 ? 0 : res2 > 3 ? 3 : res2);
-
-                        romData[byteToUse + 15 + lnJ] = (byte)((romData[byteToUse + 15 + lnJ] % 4) + (res1 * 8) + (res2 * 64));
-                    }
-                }
-            }
+                randomizeMonsterResistances(r1);
 
             if (chkRandomTreasures.Checked)
-            {
-                int[] c1p1Treasure = { 0x7bd1d, // Burland
-                    0x7bf38, 0x7bf37, // Cave To Izmit
-                    0x7bd6a, // Izmit
-                    0x7bf15, 0x7bf16, 0x7bf17, 0x7bfb7, 0x7b936 }; // Old Well - Flying Shoes - 9
-                int[] c1p2Treasure = { 0x7bf47, 0x7bf48, 0x7bf49, 0x7bf4a, 0x7bf4b, 0x7bf4c }; // Loch Tower - End of C1 - 6 (15)
-                int[] c2p1Treasure = { 0x7bd0f, 0x7bd16, // Santeem
-                    0x7bdc7, // Tempe
-                    0x7bf10, 0x7bf11, 0x7bf12, 0x7bf13, 0x7bf14, // Frenor 
-                    0x7bd4e, 0x7bd55 }; //  Bazaar - Thief's Key - 10 (25)
-                int[] c2p2Treasure = { 0x7bd08, // Santeem (Thief's Key)
-                    0x7bf41, 0x7bf42, 0x7bf43, 0x7b8f3 }; // Birdsong Tower - Birdsong Nectar - 5 (30)
-                int[] c2p3Treasure = { 0x7bedc }; // Endor - End Of C2 - 1 (31)
-                int[] c3p1Treasure = {  0x7bd86, // Lakanaba
-                    0x7bf2a, 0x7bf2b, // Iron Safe Cave
-                    0x560e8, // Foxville fox
-                    0x7bf2d, 0x7bf2e, 0x7bf2f, 0x7bf30, 0x7bf31, 0x7bf32, 0x7bf33, 0x7bf34, 0x7bf35, 0x7bf36 }; // Silver Statuette Cave - Silver Statuette - 14 (45)
-                int[] c4p1Treasure = { 0x7bd7f, 0x7bd78, 0x7bd7a, // Monbaraba
-                    0x7bd8d, 0x7beee, // Kievs
-                    0x7bf0a, 0x7bf0b, 0x7bf0c, 0x7ba05, 0x7bf0e, // Cave West of Kievs (couple 0x7ba05 with 0x7ba0a)
-                    0x7bef0, 0x7bef1, 0x7bef2 }; // Aktemto Mine - Gunpowder Jar and Sphere Of Silence - 13 (58)
-                int[] c5p1Treasure = { 0x7bd71, 0x7bdc9, // Hometown
-                    0x7b96a, 0x7b983, // Woodman's Shack
-                    0x7bf2c, // Cave Of Betrayal
-                    0x7beef }; // Desert Inn - Symbol Of Faith - 6 (64)
-                int[] c5p2Treasure = { 0x7bdc8, // Aneaux
-                    0x7bf4d, 0x7bf4e, 0x7bf4f, 0x7bf50, 0x7bf51, 0x7bf52, 0x7bf53, 0x7bf54, 0x7bf55 }; // Great Lighthouse - Fire Of Serenity - 10 (74)
-                int[] c5p3Treasure = { 0x7bdc6, // Mintos
-                    0x7bdcc, // Shrine East Of Mintos
-                    0x7befe, 0x7beff, 0x7bf00, 0x7bf01, 0x7bf02, 0x7bf03, // Cave Of The Padequia
-                    0x7bda9, // Old Man's Island House
-                    0x7bdcb, 0x7b94b, // Seaside Village
-                    0x7bd40, 0x7bd47, // Stancia Castle
-                    0x7bdc5 }; // Riverton - Padequia Root - 13 (87)
-                int[] c5p4Treasure = { 0x7bdb0, 0x7bf0f }; // Cave West Of Kievs - Pre-Magic Key - 2 (89)
-                int[] c5p5Treasure = { 0x7becd, 0x7bece, 0x7becf, 0x7bed0, 0x7bed1, 0x7bed2, // Burland Castle
-                    0x7beca, 0x7becb, 0x7becc, // Santeem Castle
-                    0x7beda, 0x7bedb, 0x7bedd, 0x7bede, 0x7bd2b, // Endor
-                    0x7befb, 0x7befc, 0x7befd }; // Shrine Of Breaking Waves - Pre-Magma Staff - 17 (106)
-                int[] c5p6Treasure = { 0x7bd32, 0x7bd39, 0x7bee7, // Gardenbur Castle
-                    0x7bf04, 0x7bf05, 0x7bf06, 0x7bf07, 0x7bf08, 0x7bf09 }; // Cave SE Of Gardenbur - Pre-Final Key - 9 (115)
-                int[] c5p7Treasure = { 0x7beeb, 0x7beec, 0x7beed, // Lakanaba
-                    0x7bee3, 0x7bee4, 0x7bee5, // Branca Castle
-                    0x7bf56, // Konenber
-                    0x7bee6, // Gardenbur Castle
-                    0x7bf39, 0x7bf3a, 0x7bf3b, // Royal Crypt
-                    0x7bd63, 0x7bd5c, // Haville
-                    0x7bf18, 0x7bf19, 0x7bf1a, 0x7bf1b, 0x7bf1c, // Cascade Cave
-                    0x7bf64, 0x7bf65, 0x7bf66, 0x7bf67, 0x7bf68 }; // Colossus - Pre-Staff Of Transform - 23 (138)
-                int[] c5p8Treasure = { 0x7bd24, 0x7bdc3, 0x7bed3, 0x7bed4, 0x7bed5, 0x7bed6, // Dire Palace
-                    0x7bdc4, 0x7bef3, 0x7bef4, 0x7bef5, 0x7bef6, 0x7bef7, 0x7bef8, 0x7bef9, 0x7befa }; // Aktemto Bonus Round - Gas Canister - 15 (153)
-                int[] c5p9Treasure = { 0x7bf44, 0x7bf45, 0x7bf46, // World Tree
-                    0x7bd94, // Gottside
-                    0x7bf61, 0x7bf63 }; // Shrine Of Horn - All Zenithian equipment - 6 (159)
-                int[] c5p10Treasure = { 0x7bf3c, 0x7bf3d, 0x7bf3e, 0x7bf3f, 0x7bf40, // Zenithian Tower
-                    0x7bd01, // Zenithian Castle
-                    0x7bf1d, 0x7bf1e, 0x7bf1f, 0x7bf20, 0x7bf21, 0x7bf22, 0x7bf23, 0x7bf24, 0x7bf25, 0x7bf26, 0x7bf27, 0x7bf28, 0x7bf29, // Final Cave
-                    0x7bdcd, // Gigademon Area
-                    0x7bf5c, // Radimvice Area
-                    0x7bf5d, 0x7bf5d, 0x7bf5d, 0x7bf60 }; // Necrosaro's Palace - Baron's Horn & End Of Game - 25 (184)
-                int[] c5DeadZone = { 0x7bda2, 0x7bd9b }; // Konenber ships -> lost forevers - 2 (186)
-
-                List<int> allTreasureList = new List<int>();
-                allTreasureList = addTreasure(allTreasureList, c1p1Treasure);
-                allTreasureList = addTreasure(allTreasureList, c1p2Treasure);
-                allTreasureList = addTreasure(allTreasureList, c2p1Treasure);
-                allTreasureList = addTreasure(allTreasureList, c2p2Treasure);
-                allTreasureList = addTreasure(allTreasureList, c2p3Treasure);
-                allTreasureList = addTreasure(allTreasureList, c3p1Treasure);
-                allTreasureList = addTreasure(allTreasureList, c4p1Treasure);
-                allTreasureList = addTreasure(allTreasureList, c5p1Treasure);
-                allTreasureList = addTreasure(allTreasureList, c5p2Treasure);
-                allTreasureList = addTreasure(allTreasureList, c5p3Treasure);
-                allTreasureList = addTreasure(allTreasureList, c5p4Treasure);
-                allTreasureList = addTreasure(allTreasureList, c5p5Treasure);
-                allTreasureList = addTreasure(allTreasureList, c5p6Treasure);
-                allTreasureList = addTreasure(allTreasureList, c5p7Treasure);
-                allTreasureList = addTreasure(allTreasureList, c5p8Treasure);
-                allTreasureList = addTreasure(allTreasureList, c5p9Treasure);
-                allTreasureList = addTreasure(allTreasureList, c5p10Treasure);
-                allTreasureList = addTreasure(allTreasureList, c5DeadZone);
-
-                int[] allTreasure = allTreasureList.ToArray();
-
-                int[] legalTreasures = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-                                         0x10, 0x11, 0x12, 0x13, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1f,
-                                         0x20, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
-                                         0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f,
-                                         0x40, 0x41, 0x42, 0x43, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4c, 0x4d, 0x4e, 0x4f,
-                                         0x50, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a, 0x5b, 0x5e, 0x5f,
-                                         0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x69, 0x6a, 0x6b, 0x6e,
-                                         0x74, 0x79 };
-
-                // Completely randomize treasures first.
-                foreach (int treasure in allTreasureList)
-                {
-                    romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
-                }
-
-                // Then assign key items, overwriting the randomized treasures.
-                int[] keyItems = { 0x6c,
-                    0x71, 0x75,
-                    0x6d,
-                    0x5d, 0x70,
-                    0x6f, 0x7c, 0x7b, 0x72, 0x1e, 0x68, 0x5c, 0x7d, 0x14, 0x37, 0x44, 0x4b, 0x52, 0x60 };
-                List<int> keyItemList = new List<int> { };
-                addTreasure(keyItemList, keyItems);
-
-                int[] minItemZones = { 0,
-                    15, 15,
-                    30,
-                    45, 45,
-                    58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 0 };
-                int[] maxItemZones = { 9,
-                    25, 30,
-                    45,
-                    58, 58,
-                    64, 74, 87, 89, 106, 138, 153, 153, 159, 159, 159, 159, 184, 184 };
-
-                for (int lnJ = 0; lnJ < keyItems.Length; lnJ++)
-                {
-                    int treasureLocation = allTreasure[minItemZones[lnJ] + (r1.Next() % (maxItemZones[lnJ] - minItemZones[lnJ]))];
-                    if (keyItemList.Contains(romData[treasureLocation]))
-                    {
-                        lnJ--;
-                        continue;
-                    }
-                    romData[treasureLocation] = (byte)keyItems[lnJ];
-                }
-
-                using (StreamWriter writer = File.CreateText(Path.Combine(Path.GetDirectoryName(txtFileName.Text), "DW4TreasureOutput.txt")))
-                {
-                    treasureOutput(writer, "c1p1", c1p1Treasure);
-                    treasureOutput(writer, "c1p2", c1p2Treasure);
-                    treasureOutput(writer, "c2p1", c2p1Treasure);
-                    treasureOutput(writer, "c2p2", c2p2Treasure);
-                    treasureOutput(writer, "c2p3", c2p3Treasure);
-                    treasureOutput(writer, "c3p1", c3p1Treasure);
-                    treasureOutput(writer, "c4p1", c4p1Treasure);
-                    treasureOutput(writer, "c5p1", c5p1Treasure);
-                    treasureOutput(writer, "c5p2", c5p2Treasure);
-                    treasureOutput(writer, "c5p3", c5p3Treasure);
-                    treasureOutput(writer, "c5p4", c5p4Treasure);
-                    treasureOutput(writer, "c5p5", c5p5Treasure);
-                    treasureOutput(writer, "c5p6", c5p6Treasure);
-                    treasureOutput(writer, "c5p7", c5p7Treasure);
-                    treasureOutput(writer, "c5p8", c5p8Treasure);
-                    treasureOutput(writer, "c5p9", c5p9Treasure);
-                    treasureOutput(writer, "c5p10", c5p10Treasure);
-                    treasureOutput(writer, "c5dead", c5DeadZone);
-
-                }
-            }
+                randomizeTreasures(r1);
 
             // Finally, the encounter rate.  I've noticed that the encounter rate by default is VARIABLE!
             // 25% of normal = Branca Castle, north to the Heroes' Hometown, the approach to Necrosaro itself, and the Gardenbur Cave.  (the later two is guaranteed 1/64)
@@ -946,233 +587,17 @@ namespace DW4RandoHacker
             }
 
             if (chkRandomHeroEquip.Checked)
-            {
-                int[] minWeapon = { 255, 255, 255, 255, 255, 255, 255, 255 };
-                int[] minArmor = { 255, 255, 255, 255, 255, 255, 255, 255 };
-                int[] totalChances = { 35, 25, 9, 10 };
-                int[,] equipChances = { { 17, 17, 7, 7 }, { 16, 11, 6, 6 }, { 17, 14, 4, 7 }, { 12, 12, 1, 5 }, { 10, 7, 3, 3 }, { 13, 9, 4, 5 }, { 19, 13, 7, 6 }, { 7, 12, 0, 5 } };
-
-                for (int lnI = 0; lnI < 80; lnI++)
-                    romData[0x40c75 + lnI] = 0;
-
-                for (int lnI = 0; lnI < 80; lnI++)
-                {
-                    if (lnI == 0x21)
-                        continue;
-                    // Totals - 35/25/9/10
-                    //if ((string)cboSoloHero.SelectedItem == "Hero") power = 0; - 18/18/8/8 - subtract 1 from each because of Zenithian equipment
-                    //if ((string)cboSoloHero.SelectedItem == "Cristo") power = 1; - 16/11/6/6
-                    //if ((string)cboSoloHero.SelectedItem == "Nara") power = 2; - 17/14/4/7
-                    //if ((string)cboSoloHero.SelectedItem == "Mara") power = 3; - 12/12/1/5
-                    //if ((string)cboSoloHero.SelectedItem == "Brey") power = 4; - 10/7/3/3
-                    //if ((string)cboSoloHero.SelectedItem == "Taloon") power = 5; - 13/9/4/5
-                    //if ((string)cboSoloHero.SelectedItem == "Ragnar") power = 6; - 19/13/7/6
-                    //if ((string)cboSoloHero.SelectedItem == "Alena") power = 7; - 7/12/0/5
-
-                    for (int lnJ = 0; lnJ < 8; lnJ++)
-                    {
-                        int lnK = (lnI < 36 ? 0 : lnI < 61 ? 1 : lnI < 70 ? 2 : 3);
-                        bool equippable = false;
-                        // Hero must be able to equip the Zenithian equipment
-                        if (lnJ == 0 && (lnI == 0x14 || lnI == 0x37 || lnI == 0x44 || lnI == 0x4b))
-                            equippable = true;
-                        else if (r1.Next() % totalChances[lnK] < (equipChances[lnJ, lnK] * (lnI == 0x00 || lnI == 0x01 || lnI == 0x02 || 
-                                                                                            lnI == 0x24 || lnI == 0x25 || lnI == 0x26 || 
-                                                                                            lnI == 0x3d || lnI == 0x3e ||
-                                                                                            lnI == 0x46 || lnI == 0x47 ? 2 : 1)))
-                            equippable = true;
-                        else
-                            equippable = false;
-
-                        if (equippable)
-                        {
-                            romData[0x40c75 + lnI] += (byte)Math.Pow(2, lnJ);
-                            // If you can equip the weak Zenithian Sword, you can equip the strong Zenithian Sword.
-                            if (lnI == 0x14)
-                                romData[0x40c75 + 0x21] += (byte)Math.Pow(2, lnJ);
-                            if (minWeapon[lnJ] == 255 && lnK == 0)
-                            {
-                                minWeapon[lnJ] = lnI;
-                                romData[0x491a1 + (lnJ * 8) + 0] = (byte)(0x80 + lnI);
-                            }
-                            if (minArmor[lnJ] == 255 && lnK == 1)
-                            {
-                                minArmor[lnJ] = lnI;
-                                romData[0x491a1 + (lnJ * 8) + 1] = (byte)(0x80 + lnI);
-                            }
-                        }
-                    }
-                }
-
-                for (int lnI = 0; lnI < 8; lnI++)
-                {
-                    if (minWeapon[lnI] != 0x00 && minWeapon[lnI] != 0x01 && minWeapon[lnI] != 0x02)
-                    {
-                        int rEquip = r1.Next() % 100;
-                        if (rEquip >= 55)
-                        {
-                            romData[0x491a1 + (lnI * 8) + 0] = 0x80;
-                            romData[0x40c75 + 0x00] += (byte)Math.Pow(2, lnI);
-                        } else if (rEquip >= 20)
-                        {
-                            romData[0x491a1 + (lnI * 8) + 0] = 0x81;
-                            romData[0x40c75 + 0x01] += (byte)Math.Pow(2, lnI);
-                        } else
-                        {
-                            romData[0x491a1 + (lnI * 8) + 0] = 0x82;
-                            romData[0x40c75 + 0x02] += (byte)Math.Pow(2, lnI);
-                        }
-                    }
-                    if (minArmor[lnI] != 0x24 && minArmor[lnI] != 0x25 && minArmor[lnI] != 0x26)
-                    {
-                        int rEquip = r1.Next() % 100;
-                        if (rEquip >= 55)
-                        {
-                            romData[0x491a1 + (lnI * 8) + 1] = 0xa4;
-                            romData[0x40c75 + 0x24] += (byte)Math.Pow(2, lnI);
-                        }
-                        else if (rEquip >= 20)
-                        {
-                            romData[0x491a1 + (lnI * 8) + 1] = 0xa5;
-                            romData[0x40c75 + 0x25] += (byte)Math.Pow(2, lnI);
-                        }
-                        else
-                        {
-                            romData[0x491a1 + (lnI * 8) + 1] = 0xa6;
-                            romData[0x40c75 + 0x26] += (byte)Math.Pow(2, lnI);
-                        }
-                    }
-                }
-            }
+                randomizeHeroEquipment(r1);
 
             if (chkRandomMonsterZones.Checked)
+                randomizeMonsterZones(r1);
+
+            if (chkRandomStores.Checked)
+                randomizeStores(r1);
+
+            if (chkRandomHeroStats.Checked)
             {
-                int[] maxMonster = { 0xb4, 0xb4, 0xb4, 0xb4, // 0x00-0x03 - Sea(0x00), wasted (0x01-0x03)
-                    11, 21, 22, // 0x04-0x06 - Chapter 1
-                    13, 22, 27, 41, 41, 71, // 0x07-0x0c - Chapter 2
-                    11, 15, 24, 41, 45, 51, // 0x0d-0x12 - Chapter 4
-                    0xbc, // 0x13 - Zenithian Tower
-                    10, 15, 24, 31, // 0x14-0x17 - Chapter 3
-                    11, 21, 26, 39, 39, 45, // 0x18-0x1d - Chapter 5 -> Symbol Of Faith
-                    51, 55, 63, // 0x1e-0x20 - Chapter 5 -> Ship
-                    85, 85, 94, 94, // 0x21-0x24 - Chapter 5 -> Padequila Root
-                    0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, // 0x25-0x33 - Chapter 5 worldwide
-                    0xbc, 0xbc, 0xbd, // 0x34-0x36 - Evil Island/Dark side - need to change this to include nasty bosses
-                    0xbc, 0xbc, 0xbc, // 0x37-0x39 - Zenithian Tower - boss needs
-                    0xbd, 0xbd, 0xbd, // 0x3a-0x3c - Final Cave - boss needs
-                    0xbd, 0xbd, 0xbd, // 0x3d-0x3f - Necrosaro's Palace - boss needs
-                    11, 24, 50, 50, // 0x40-0x43 - Chapter 1 - Cave To Izmit, Old Well, Loch Tower(2 zones)
-                    33, 69, 69, 33, // 0x44-0x47 - Chapter 4 - Cave west of Kievs (1/4), Aktemto Mine (2/3)
-                    12, 12, 39, 39, // 0x48-0x4b - Chapter 3 - Cave north of Lakanaba(2 zones), Cave of Silver Statuette(2 zones)
-                    33, 33, 59, 59, // 0x4c-0x4f - Chapter 2 - Cave south of Frenor, Birdsong Tower
-                    0xbc, // 0x50 - Chapter 5 - World Tree - boss needs
-                    77, 77, // 0x51-0x52 - Chapter 5 - Great Lighthouse
-                    104, // 0x53 - Chapter 5 - Cave of the Padequila
-                    0xb2, 0xb2, // 0x54-0x55 - Chapter 5 - Cave West Of Kievs
-                    0xb2, // Santeem
-                    0xb2, 0xb2, // Cascade Cave
-                    0xb2, // Shrine of Breaking Waves
-                    0xb2, 0xb2, // Cave SE of Gardenbur
-                    0xb2, 0xb2, // Royal Crypt
-                    0xb2, 0xb2, 0xb2, // Colossus
-                    0xbc, 0xbc, // Aktemto Mine
-                    0xbc, 0xbc }; // World Tree
-
-                int[] minMonster =
-                {
-                    0, 0, 0, 0, // 0x00-0x03 - Sea(0x00), wasted (0x01-0x03)
-                    0, 0, 0, // 0x04-0x06 - Chapter 1
-                    0, 0, 0, 0, 0, 0, // 0x07-0x0c - Chapter 2
-                    0, 0, 0, 0, 0, 0, // 0x0d-0x12 - Chapter 4
-                    127, // 0x13 - Zenithian Tower
-                    0, 0, 0, 0, // 0x14-0x17 - Chapter 3
-                    0, 0, 0, 0, 0, 0, // 0x18-0x1d - Chapter 5 -> Symbol Of Faith
-                    0, 0, 0, // 0x1e-0x20 - Chapter 5 -> Ship
-                    0, 0, 0, 0, // 0x21-0x24 - Chapter 5 -> Padequila Root
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0x25-0x33 - Chapter 5 worldwide
-                    114, 114, 141, // 0x34-0x36 - Evil Island/Dark side - need to change this to include nasty bosses
-                    127, 127, 127, // 0x37-0x39 - Zenithian Tower
-                    135, 135, 135, // 0x3a-0x3c - Final Cave - boss needs
-                    148, 148, 148, // 0x3d-0x3f - Necrosaro's Palace - boss needs
-                    0, 0, 0, 0, // 0x40-0x43 - Chapter 1 - Cave To Izmit, Old Well, Loch Tower(2 zones)
-                    0, 0, 0, 0, // 0x44-0x47 - Chapter 4 - Cave west of Kievs (1/4), Aktemto Mine (2/3)
-                    0, 0, 0, 0, // 0x48-0x4b - Chapter 3 - Cave north of Lakanaba(2 zones), Cave of Silver Statuette(2 zones)
-                    0, 0, 0, 0, // 0x4c-0x4f - Chapter 2 - Cave south of Frenor, Birdsong Tower
-                    106, // 0x50 - Chapter 5 - World Tree - boss needs
-                    0, 0, // 0x51-0x52 - Chapter 5 - Great Lighthouse
-                    0, // 0x53 - Chapter 5 - Cave of the Padequila
-                    0, 0, // 0x54-0x55 - Chapter 5 - Cave West Of Kievs
-                    0, // Santeem
-                    64, 64, // Cascade Cave
-                    64, // Shrine of Breaking Waves
-                    0, 0, // Cave SE of Gardenbur
-                    80, 80, // Royal Crypt
-                    94, 94, 94, // Colossus
-                    106, 106, // Aktemto Mine
-                    106, 106 }; // World Tree
-
-                for (int lnI = 0; lnI <= 0x64; lnI++)
-                {
-                    int byteToUse = 0x612ba + (lnI * 16);
-                    // Byte 0 - Day/night monsters
-                    // Byte 1 - Minimum level to guarantee runaway (check this out someday)
-                    // Byte 2-13 - Actual monsters
-                    // Byte 14-15 - Special fights (make FF for now)
-                    for (int lnJ = 0; lnJ < 16; lnJ++)
-                    {
-                        if (lnJ == 0)
-                        {
-                            romData[byteToUse + lnJ] -= (byte)(romData[byteToUse + lnJ] % 32);
-                            romData[byteToUse + lnJ] += 0x1c; // This should ensure that we get to see nearly all of the monsters programmed.
-                            continue;
-                        }
-                        if (lnJ == 1) continue;
-                        romData[byteToUse + lnJ] = (byte)(monsterRank[(r1.Next() % (maxMonster[lnI] - minMonster[lnI])) + minMonster[lnI]]);
-                        // Redo randomization if Linguar or Imposter are in the proceedings, due to graphical glitches, except the last byte... the solo encounter.
-                        if (lnJ != 13 && (romData[byteToUse + lnJ] == 0xba || romData[byteToUse + lnJ] == 0x99)) lnJ--;
-                        if (lnJ >= 14) romData[byteToUse + lnJ] = 0xff;
-                    }
-                }
-
-                // Also rearrange boss battles.
-                // Mimic, Clay Doll, Chamelion Humanoid, Keeleon I, Balzack I, Saro's Shadow, Clay Doll, Hun, Roric, Vivian, Sampson, Linguar, Tricksy Urchin, Lighthouse Bengal, (14)
-                // Keeleon II, Minidemon, Balzack II, Saroknight, Bakor, Rhinoking/Bengal, Esturk, Gigademon, Anderoug(3), Infernus Shadow, Radimvice, Necrosaro, Liclick, (13)
-                // Man-eater chest, Rhinoband, Imposter, Leaonar, Necrodain, Minidemon, Bengal (7)
-                int[] maxBossLimit = { 0xb4, 0xbd, 27, 0xbd, 69, 50, 0xbd, -1, -1, -1, -1, -1, 33, 104, // 14
-                    0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xbc, 0xbc, 0xbc, 0xbc, 0xbc, 0xbc, 0xbc, 60, // 13
-                    0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4 }; // 7
-                int[] minBossLimit = { 0, 148, 5, 148, 20, 15, 148, -1, -1, -1, -1, -1, 10, 20, // 14
-                    0, 106, 0, 0, 0, 106, 106, 148, 148, 148, 148, 148, 20, // 13
-                    0, 106, 106, 106, 106, 106, 0 }; // 7
-                int[] firstMonster = { 0x62, 0x91, 0x12, 0xbb, 0xb4, 0xb3, 0x91, 0xaf, 0xb0, 0xb1, 0xb2, 0xba, 0xc0, 0xbf,
-                    0xbe, -2, 0xb5, 0xc1, 0xc2, 0x9b, 0xbc, 0xb9, 0xb8, 0xb7, 0xb6, 0xae, -2,
-                    0x59, -2, -2, -2, -2, -2, -2 };
-                for (int lnI = 0; lnI < 34; lnI++)
-                {
-                    if (maxBossLimit[lnI] == -1)
-                        continue;
-                    int byteToUse = 0x6235c + (8 * lnI);
-
-                    // 10% chance to keep the battle the way it is now... if there is more than one group involved.
-                    if (romData[byteToUse + 4 + 1] >= 1 && r1.Next() % 10 == 0)
-                        continue;
-
-                    for (int lnJ = 0; lnJ < 4; lnJ++)
-                        romData[byteToUse + lnJ] = 255;
-                    for (int lnJ = 4; lnJ < 8; lnJ++)
-                        romData[byteToUse + lnJ] = 0;
-
-                    // Figure out how many groups of monsters will be involved.
-                    int groups = (r1.Next() % 4);
-                    for (int lnJ = 0; lnJ < groups + 1; lnJ++)
-                    {
-                        if (lnJ == 0 && firstMonster[lnI] >= 0)
-                            romData[byteToUse + 0] = (byte)firstMonster[lnI];
-                        else
-                            romData[byteToUse + lnJ] = (byte)(monsterRank[r1.Next() % (maxBossLimit[lnI] - minBossLimit[lnI]) + minBossLimit[lnI]]);
-                        romData[byteToUse + lnJ + 4] = (byte)(lnJ == groups ? 8 : 1);
-                    }
-                }
+                randomizeHeroStats(r1);
             }
 
             if (chkSpeedUpBattles.Checked)
@@ -1297,76 +722,780 @@ namespace DW4RandoHacker
                 romData[0x2fba0 + stringMarker + 30 + lnI] = 0;
             }
 
-            if (chkRandomStores.Checked)
+            return true;
+        }
+
+        private void randomizeHeroStats(Random r1)
+        {
+            // Max array:  [7, 5]
+            int[,] heroL41Gains = new int[,] { 
+                { 156, 73, 155, 55, 82, 186 },
+                { 46, 112, 119, 70, 118, 151 },
+                { 69, 57, 75, 88, 109, 151 },
+                { 27, 123, 105, 120, 169, 241 },
+                { 24, 131, 97, 118, 164, 208 },
+                { 93, 71, 121, 53, 46, 0 },
+                { 194, 28, 229, 22, 36, 0 },
+                { 195, 212, 170, 28, 164, 0 }
+            };
+
+            //heroL41Gains[8, 0] = 0;
+            // Randomize the four multipliers from 8 to 32.  Each multiplier has six bytes.
+            for (int lnI = 0; lnI < 4; lnI++)
+                for (int lnJ = 0; lnJ < 6; lnJ++)
+                {
+                    int byteToUse = 0x4a281 + (lnI * 6) + lnJ;
+                    romData[byteToUse] = (byte)(((r1.Next() % 4) + 1) * 8);
+                }
+
+            // Randomize the levels to the next multiplier from 0 to 24.(First 4 bytes)  Always make the 5th byte "99" (63 hex).
+            // Calculate the base gain based on the four multipliers.  Try to get as close to the target gain for each stat as possible.
+            for (int lnI = 0; lnI < 5; lnI++)
             {
-                int[] lowGradeStores = { 0x6341f, 0x634a1, 0x63537, 0x63425, 0x634a9, 0x6353C,
+                for (int lnJ = 0; lnJ < 8; lnJ++)
+                {
+                    // Do NOT run this randomization for the MP calculations of Taloon, Ragnar, and Alena.
+                    if (lnI == 4 && lnJ >= 5)
+                        continue;
+
+                    if (optHeroSilly.Checked || optHeroMedium.Checked)
+                    {
+                        int randomDir = (r1.Next() % 3);
+                        int difference = heroL41Gains[lnJ, lnI] / (optHeroSilly.Checked ? 4 : 2);
+                        if (randomDir == 0)
+                            heroL41Gains[lnJ, lnI] -= (r1.Next() % difference);
+                        if (randomDir == 1)
+                            heroL41Gains[lnJ, lnI] += (r1.Next() % difference);
+                    }
+                    if (optHeroHeavy.Checked)
+                        heroL41Gains[lnJ, lnI] = (r1.Next() % (lnI == 3 ? 175 : 225)) + (lnI == 3 ? 75 : 25);
+
+                    int byteToUse = 0x4a15b + (48 * lnI) + (6 * lnJ);
+
+                    int[] levels = { 0, 0, 0, 0 };
+                    for (int lnK = 0; lnK < 4; lnK++)
+                        levels[lnK] = (byte)(r1.Next() % 50);
+                    Array.Sort(levels);
+                    for (int lnK = 0; lnK < 4; lnK++)
+                        romData[byteToUse + lnK] = (byte)(levels[lnK]);
+
+                    romData[byteToUse + 4] = 99;
+                    // Now to figure out the multiplier to use (+ 0) and the base multiplier (+ 5)
+                    double[] diffs = { 0.0, 0.0, 0.0, 0.0 };
+                    int[] baseMult = { 0, 0, 0, 0 };
+                    for (int lnK = 0; lnK < 4; lnK++)
+                    {
+                        int byteToUse2 = 0x4a281 + (lnK * 6);
+                        double stat = 0.0;
+                        int multLevel = 0;
+                        for (int lnL = 2; lnL <= 40; lnL++)
+                        {
+                            if (lnL > romData[byteToUse + multLevel])
+                                multLevel++;
+                            double toAdd = romData[byteToUse2 + multLevel] / 16.0;
+                            stat += romData[byteToUse2 + multLevel] / 16.0;
+                        }
+                        baseMult[lnK] = (int)Math.Round(heroL41Gains[lnJ, lnI] / stat);
+                        diffs[lnK] = Math.Abs((stat * baseMult[lnK]) - heroL41Gains[lnJ, lnI]);
+                    }
+
+                    double lowDiff = 9999;
+                    int lowMult = 0;
+                    int ultiBaseMult = 0;
+                    for (int lnK = 0; lnK < 4; lnK++)
+                    {
+                        if (diffs[lnK] < lowDiff)
+                        {
+                            lowDiff = diffs[lnK];
+                            lowMult = lnK;
+                            ultiBaseMult = baseMult[lnK];
+                        }
+                    }
+                    romData[byteToUse] += (byte)(32 * lowMult);
+                    romData[byteToUse + 5] = (byte)ultiBaseMult;
+                }
+            }
+        }
+
+        private void randomizeMonsterStats(Random r1)
+        {
+            int[] level1Moves = { 0x00, 0x07, 0x16, 0x1c, 0x1e, 0x25, 0x2a, 0x2d, 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x36, 0x47, 0x48 };
+            int[] level2Moves = { 0x00, 0x03, 0x07, 0x0a, 0x10, 0x12, 0x13, 0x16, 0x17, 0x1c, 0x1d, 0x1e, 0x22, 0x25, 0x2a, 0x2d, 0x30, 0x32, 0x32, 0x32, 0x32, 0x34, 0x35, 0x36, 0x38, 0x3c, 0x3f, 0x42, 0x43, 0x47, 0x48, 0x4b, 0x4c, 0x57, 0x58, 0x5f, 0x64 };
+            int[] level3Moves = { 0x00, 0x01, 0x03, 0x04, 0x07, 0x08, 0x0a, 0x0b, 0x0d, 0x10, 0x11, 0x12, 0x13, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x25, 0x26, 0x2d, 0x2e, 0x30, 0x32, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3c, 0x3d, 0x3f, 0x40, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x4f, 0x56, 0x58, 0x5d, 0x5e, 0x62, 0x63, 0x66 };
+            int[] level4Moves = { 0x01, 0x02, 0x04, 0x05, 0x08, 0x09, 0x0b, 0x0c, 0x0d, 0x0e, 0x10, 0x14, 0x17, 0x1a, 0x1d, 0x1f, 0x20, 0x21, 0x23, 0x24, 0x26, 0x27, 0x28, 0x2e, 0x31, 0x32, 0x34, 0x37, 0x39, 0x3a, 0x3d, 0x3e, 0x40, 0x41, 0x42, 0x44, 0x45, 0x49, 0x4a, 0x4d, 0x50, 0x51, 0x53, 0x54, 0x56, 0x58, 0x59, 0x5a, 0x5d, 0x60, 0x62, 0x63 };
+            int[] level5Moves = { 0x02, 0x05, 0x06, 0x09, 0x0c, 0x0e, 0x10, 0x17, 0x1a, 0x1d, 0x24, 0x27, 0x28, 0x29, 0x31, 0x32, 0x34, 0x37, 0x3a, 0x3e, 0x41, 0x44, 0x49, 0x4a, 0x52, 0x53, 0x56, 0x59, 0x5a, 0x60 };
+            int[] weirdAttackMoves = { 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37 };
+
+            // If light is selected, 50% chance of maintaining same enemy pattern.  25% chance of changing it to attack only.  25% chance of the level moves above.
+            // If silly is selected, 25% chance of maintaining same enemy pattern, 25% chance of attack only, 25% chance of level moves above, 25% of completely random.
+            // If ridiculous is selected, 25% chance of attack only, 25% chance of level moves above, 50% chance of completely random.
+            // If ludicrous is selected, 100% chance of completely random.
+
+            for (int lnI = 0; lnI < monsterRank.Length; lnI++) // 0xc2 is not used; Necrosaro
+            {
+                //// do not randomize Necrosaro.
+                //if (lnI == 0xae) continue;
+
+                int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
+                int randomType = 0;
+                int randomRandom = (r1.Next() % 4);
+                if (optMonsterLight.Checked)
+                    randomType = (randomRandom == 0 || randomRandom == 1 ? 0 : randomRandom == 2 ? 1 : 2);
+                if (optMonsterSilly.Checked)
+                    randomType = randomRandom;
+                if (optMonsterMedium.Checked)
+                    randomType = (randomRandom == 0 ? 1 : randomRandom == 1 ? 2 : 3);
+                if (optMonsterHeavy.Checked)
+                    randomType = 3;
+
+                // Force early chapter bosses to have no worse than level 2 moves. (part 1)
+                if (randomType == 3 && (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf ||
+                    monsterRank[lnI] == 0xb0 || monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
+                    randomType = 2;
+
+                if (randomType == 0)
+                    continue;
+                if (randomType == 1)
+                {
+                    if (r1.Next() % 2 == 1)
+                        // weird attack pattern
+                        for (int lnJ = 0; lnJ < 6; lnJ++)
+                            romData[byteToUse + 9 + lnJ] = (byte)weirdAttackMoves[r1.Next() % weirdAttackMoves.Length];
+                    else
+                        for (int lnJ = 0; lnJ < 6; lnJ++)
+                            romData[byteToUse + 9 + lnJ] = 0x32;
+                }
+                if (randomType == 2)
+                {
+                    int moveLevel = (lnI < 38 ? 0 : lnI < 76 ? 1 : lnI < 114 ? 2 : lnI < 152 ? 3 : 4);
+                    // Force early chapter bosses to have no worse than level 2 moves. (part 2)
+                    if (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
+                        monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4)
+                        moveLevel = 1;
+
+                    for (int lnJ = 0; lnJ < 6; lnJ++)
+                        romData[byteToUse + 9 + lnJ] = (byte)(moveLevel == 0 ? level1Moves[r1.Next() % level1Moves.Length] :
+                                                              moveLevel == 1 ? level2Moves[r1.Next() % level2Moves.Length] :
+                                                              moveLevel == 2 ? level3Moves[r1.Next() % level3Moves.Length] :
+                                                              moveLevel == 3 ? level4Moves[r1.Next() % level4Moves.Length] :
+                                                              level5Moves[r1.Next() % level5Moves.Length]);
+                }
+                if (randomType == 3)
+                {
+                    for (int lnJ = 0; lnJ < 6; lnJ++)
+                    {
+                        if (r1.Next() % 2 == 1)
+                            romData[byteToUse + 9 + lnJ] = (byte)(r1.Next() % 0x67);
+                        else
+                            romData[byteToUse + 9 + lnJ] = 0x32;
+                        if (romData[byteToUse + 9 + lnJ] == 0x15 || romData[byteToUse + 9 + lnJ] == 0x55)
+                            lnJ--; // redo randomization.  Transform and super slime is a bad idea to use here.
+                    }
+                    if (lnI == 0x42 || lnI == 0x58)
+                    {
+
+                    }
+                }
+
+                byte pct25Attack = 0x00;
+                for (int lnJ = 0; lnJ < 6; lnJ++)
+                {
+                    if (romData[byteToUse + 9 + lnJ] == 0x0f || romData[byteToUse + 9 + lnJ] == 0x21 || romData[byteToUse + 9 + lnJ] == 0x29 || romData[byteToUse + 9 + lnJ] == 0x58 ||
+                        romData[byteToUse + 9 + lnJ] == 0x59 || romData[byteToUse + 9 + lnJ] == 0x5a)
+                    {
+                        pct25Attack = romData[byteToUse + 9 + lnJ];
+                        break;
+                    }
+                }
+                if (pct25Attack != 0x00)
+                {
+                    // Force pattern change at 25% HP.
+                    romData[byteToUse + 9 + 0] = pct25Attack;
+                    romData[byteToUse + 9 + 1] = (byte)(pct25Attack + 128);
+
+                    for (int lnJ = 2; lnJ < 6; lnJ++)
+                    {
+                        if (romData[byteToUse + 9 + lnJ] == 0x0f || romData[byteToUse + 9 + lnJ] == 0x21 || romData[byteToUse + 9 + lnJ] == 0x29 || romData[byteToUse + 9 + lnJ] == 0x58 ||
+                            romData[byteToUse + 9 + lnJ] == 0x59 || romData[byteToUse + 9 + lnJ] == 0x5a)
+                        {
+                            romData[byteToUse + 9 + lnJ] = 0x32; // change mutation pattern to basic attack
+                        }
+                    }
+                }
+
+                // If light is selected, maintain enemy resistances, HP, strength, defense, and agility.
+                if (!optMonsterLight.Checked)
+                {
+                    // If silly is selected, adjust HP, strength, defense, and agility by +/- 25%.
+                    // If ridiculous is selected, adjust HP, strength, defense, and agility by +/- 50%.
+                    // If ludicrous is selected, adjust HP, strength, defense, and agility by +/- 100%.
+                    for (int lnJ = 2; lnJ <= 6; lnJ++)
+                    {
+                        if (lnJ == 3) lnJ++;
+                        int stat = romData[byteToUse + lnJ] + (lnJ >= 4 ? (romData[byteToUse + lnJ + 11] % 4) * 256 : 0);
+                        int randomModifier = (r1.Next() % 3);
+                        try
+                        {
+                            if (randomModifier == 0)
+                                stat -= (r1.Next() % (stat / (optMonsterSilly.Checked ? 4 : optMonsterMedium.Checked ? 2 : 1)));
+                            else if (randomModifier == 2)
+                                stat += (r1.Next() % (stat / (optMonsterSilly.Checked ? 4 : optMonsterMedium.Checked ? 2 : 1)));
+                        }
+                        catch (DivideByZeroException)
+                        {
+                            // skip error and do not adjust the stat.  Crash on all other exceptions.
+                        }
+
+                        if (lnJ == 2 && stat > 255) stat = 255;
+                        if (lnJ >= 4 && stat > 1020) stat = 1020;
+                        romData[byteToUse + lnJ] = (byte)(stat % 256);
+                        if (lnJ >= 4)
+                            romData[byteToUse + lnJ + 11] = (byte)(romData[byteToUse + lnJ + 11] - (romData[byteToUse + lnJ + 11] % 4) + (stat / 256));
+                    }
+
+                    // If ludicrous is selected, change chances of double and triple attacks.
+                    // But do not allow this if it's an early chapter boss monster.
+                    if (optMonsterHeavy.Checked && !(monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
+                        monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
+                    {
+                        romData[byteToUse + 11] = (byte)(romData[byteToUse + 11] % 128);
+                        romData[byteToUse + 12] = (byte)(romData[byteToUse + 12] % 128);
+
+                        if (r1.Next() % 1000 <= lnI)
+                        {
+                            romData[byteToUse + 11] += 128;
+                            romData[byteToUse + 12] += 128;
+                        }
+                        else if (r1.Next() % 1000 <= lnI)
+                        {
+                            romData[byteToUse + 12] += 128;
+                        }
+                        else if (r1.Next() % 1000 <= lnI)
+                        {
+                            romData[byteToUse + 11] += 128;
+                        }
+
+                        // If ludicrous is selected, change chances of regeneration.
+                        romData[byteToUse + 13] = (byte)(romData[byteToUse + 13] % 128);
+                        romData[byteToUse + 14] = (byte)(romData[byteToUse + 14] % 128);
+
+                        if (r1.Next() % 1000 <= lnI)
+                        {
+                            romData[byteToUse + 13] += 128;
+                            romData[byteToUse + 14] += 128;
+                        }
+                        else if (r1.Next() % 1000 <= lnI)
+                        {
+                            romData[byteToUse + 14] += 128;
+                        }
+                        else if (r1.Next() % 1000 <= lnI)
+                        {
+                            romData[byteToUse + 13] += 128;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void randomizeTreasures(Random r1)
+        {
+            int[] c1p1Treasure = { 0x7bd1d, // Burland
+                    0x7bf38, 0x7bf37, // Cave To Izmit
+                    0x7bd6a, // Izmit
+                    0x7bf15, 0x7bf16, 0x7bf17, 0x7bfb7, 0x7b936 }; // Old Well - Flying Shoes - 9
+            int[] c1p2Treasure = { 0x7bf47, 0x7bf48, 0x7bf49, 0x7bf4a, 0x7bf4b, 0x7bf4c }; // Loch Tower - End of C1 - 6 (15)
+            int[] c2p1Treasure = { 0x7bd0f, 0x7bd16, // Santeem
+                    0x7bdc7, // Tempe
+                    0x7bf10, 0x7bf11, 0x7bf12, 0x7bf13, 0x7bf14, // Frenor 
+                    0x7bd4e, 0x7bd55 }; //  Bazaar - Thief's Key - 10 (25)
+            int[] c2p2Treasure = { 0x7bd08, // Santeem (Thief's Key)
+                    0x7bf41, 0x7bf42, 0x7bf43, 0x7b8f3 }; // Birdsong Tower - Birdsong Nectar - 5 (30)
+            int[] c3p1Treasure = {  0x7bd86, // Lakanaba
+                    0x7bf2a, 0x7bf2b, // Iron Safe Cave
+                    0x560e8, // Foxville fox
+                    0x7bf2d, 0x7bf2e, 0x7bf2f, 0x7bf30, 0x7bf31, 0x7bf32, 0x7bf33, 0x7bf34, 0x7bf35, 0x7bf36 }; // Silver Statuette Cave - Silver Statuette - 14 (44)
+            int[] c4p1Treasure = { 0x7bd7f, 0x7bd78, 0x7bd7a, // Monbaraba
+                    0x7bd8d, 0x7beee, // Kievs
+                    0x7bf0a, 0x7bf0b, 0x7bf0c, 0x7ba05, 0x7bf0e, // Cave West of Kievs (couple 0x7ba05 with 0x7ba0a)
+                    0x7bef0, 0x7bef1, 0x7bef2 }; // Aktemto Mine - Gunpowder Jar and Sphere Of Silence - 13 (57)
+            int[] c5p1Treasure = { 0x7bd71, 0x7bdc9, // Hometown
+                    0x7bf2c, // Cave Of Betrayal
+                    0x7beef }; // Desert Inn - Symbol Of Faith - 4 (61)
+            int[] c5p2Treasure = { 0x7bdc8, // Aneaux
+                    0x7bf4d, 0x7bf4e, 0x7bf4f, 0x7bf50, 0x7bf51, 0x7bf52, 0x7bf53, 0x7bf54, 0x7bf55 }; // Great Lighthouse - Fire Of Serenity - 10 (71)
+            int[] c5p3Treasure = { 0x7bdc6, // Mintos
+                    0x7bdcc, // Shrine East Of Mintos
+                    0x7befe, 0x7beff, 0x7bf00, 0x7bf01, 0x7bf02, 0x7bf03, // Cave Of The Padequia
+                    0x7bda9, // Old Man's Island House
+                    0x7bdcb, 0x7b94b, // Seaside Village
+                    0x7bd40, 0x7bd47, // Stancia Castle
+                    0x7bdc5 }; // Riverton - Padequia Root - 14 (85)
+            int[] c5p4Treasure = { 0x7bdb0, 0x7bf0f }; // Cave West Of Kievs - Pre-Magic Key - 2 (87)
+            int[] c5p5Treasure = { 0x7becd, 0x7bece, 0x7becf, 0x7bed0, 0x7bed1, 0x7bed2, // Burland Castle
+                    0x7beca, 0x7becb, 0x7becc, // Santeem Castle
+                    0x7beda, 0x7bedb, 0x7bedd, 0x7bede, 0x7bd2b, // Endor
+                    0x7befb, 0x7befc, 0x7befd }; // Shrine Of Breaking Waves - Pre-Magma Staff - 17 (104)
+            int[] c5p6Treasure = { 0x7bd32, 0x7bd39, 0x7bee7, // Gardenbur Castle
+                    0x7bf04, 0x7bf05, 0x7bf06, 0x7bf07, 0x7bf08, 0x7bf09 }; // Cave SE Of Gardenbur - Pre-Final Key - 9 (113)
+            int[] c5p7Treasure = { 0x7beeb, 0x7beec, 0x7beed, // Lakanaba
+                    0x7bee3, 0x7bee4, 0x7bee5, // Branca Castle
+                    0x7bf56, // Konenber
+                    0x7bee6, // Gardenbur Castle
+                    0x7bf39, 0x7bf3a, 0x7bf3b, // Royal Crypt
+                    0x7bd63, 0x7bd5c, // Haville
+                    0x7bf18, 0x7bf19, 0x7bf1a, 0x7bf1b, 0x7bf1c, // Cascade Cave
+                    0x7bf64, 0x7bf65, 0x7bf66, 0x7bf67, 0x7bf68 }; // Colossus - Pre-Staff Of Transform - 23 (136)
+            int[] c5p8Treasure = { 0x7bd24, 0x7bdc3, 0x7bed3, 0x7bed4, 0x7bed5, 0x7bed6, // Dire Palace
+                    0x7bdc4, 0x7bef3, 0x7bef4, 0x7bef5, 0x7bef6, 0x7bef7, 0x7bef8, 0x7bef9, 0x7befa }; // Aktemto Bonus Round - Gas Canister - 15 (151)
+            int[] c5p9Treasure = { 0x7bf44, 0x7bf45, 0x7bf46, // World Tree
+                    0x7bd94, // Gottside
+                    0x7bf61, 0x7bf63 }; // Shrine Of Horn - All Zenithian equipment - 6 (157)
+            int[] c5p10Treasure = { 0x7bf3c, 0x7bf3d, 0x7bf3e, 0x7bf3f, 0x7bf40, // Zenithian Tower
+                    0x7bd01, // Zenithian Castle
+                    0x7bf1d, 0x7bf1e, 0x7bf1f, 0x7bf20, 0x7bf21, 0x7bf22, 0x7bf23, 0x7bf24, 0x7bf25, 0x7bf26, 0x7bf27, 0x7bf28, 0x7bf29, // Final Cave
+                    0x7bdcd, // Gigademon Area
+                    0x7bf5c, // Radimvice Area
+                    0x7bf5d, 0x7bf5d, 0x7bf5d, 0x7bf60 }; // Necrosaro's Palace - Baron's Horn & End Of Game - 25 (182)
+            int[] c5DeadZone = { 0x7b96a, 0x7b983, // Woodman's Shack
+                                 0x7bda2, 0x7bd9b, // Konenber ships -> lost forevers,
+                                 0x7bedc }; // Endor (Chapter 2/3) - 5 (187)
+
+            List<int> allTreasureList = new List<int>();
+            allTreasureList = addTreasure(allTreasureList, c1p1Treasure);
+            allTreasureList = addTreasure(allTreasureList, c1p2Treasure);
+            allTreasureList = addTreasure(allTreasureList, c2p1Treasure);
+            allTreasureList = addTreasure(allTreasureList, c2p2Treasure);
+            allTreasureList = addTreasure(allTreasureList, c3p1Treasure);
+            allTreasureList = addTreasure(allTreasureList, c4p1Treasure);
+            allTreasureList = addTreasure(allTreasureList, c5p1Treasure);
+            allTreasureList = addTreasure(allTreasureList, c5p2Treasure);
+            allTreasureList = addTreasure(allTreasureList, c5p3Treasure);
+            allTreasureList = addTreasure(allTreasureList, c5p4Treasure);
+            allTreasureList = addTreasure(allTreasureList, c5p5Treasure);
+            allTreasureList = addTreasure(allTreasureList, c5p6Treasure);
+            allTreasureList = addTreasure(allTreasureList, c5p7Treasure);
+            allTreasureList = addTreasure(allTreasureList, c5p8Treasure);
+            allTreasureList = addTreasure(allTreasureList, c5p9Treasure);
+            allTreasureList = addTreasure(allTreasureList, c5p10Treasure);
+            allTreasureList = addTreasure(allTreasureList, c5DeadZone);
+
+            int[] allTreasure = allTreasureList.ToArray();
+
+            int[] legalTreasures = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
+                                         0x10, 0x11, 0x12, 0x13, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1f,
+                                         0x20, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
+                                         0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f,
+                                         0x40, 0x41, 0x42, 0x43, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4c, 0x4d, 0x4e, 0x4f,
+                                         0x50, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a, 0x5b, 0x5e, 0x5f,
+                                         0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x69, 0x6a, 0x6b,
+                                         0x74, 0x79 };
+
+            // Completely randomize treasures first.
+            foreach (int treasure in allTreasureList)
+            {
+                romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
+            }
+
+            // Then assign key items, overwriting the randomized treasures.
+            int[] keyItems = { 0x6c,
+                    0x76, 0x75,
+                    0x6b, 0x6d,
+                    0x5d, 0x70,
+                    0x6f, 0x7c, 0x7b, 0x72, 0x1e, 0x68, 0x5c, 0x7d, 0x14, 0x37, 0x44, 0x4b, 0x52, 0x60, 0x67, 0x6e };
+            List<int> keyItemList = new List<int> { };
+            addTreasure(keyItemList, keyItems);
+
+            int[] minItemZones = { 0,
+                    15, 15,
+                    30, 30,
+                    44, 44,
+                    57, 57, 57, 61, 61, 61, 61, 61, 61, 71, 71, 71, 71, 0, 0, 0 };
+            int[] maxItemZones = { 9,
+                    25, 30,
+                    44, 44,
+                    57, 57,
+                    61, 71, 85, 87, 104, 136, 151, 151, 157, 157, 157, 157, 182, 182, 182, 182 };
+
+            for (int lnJ = 0; lnJ < keyItems.Length; lnJ++)
+            {
+                int treasureLocation = allTreasure[minItemZones[lnJ] + (r1.Next() % (maxItemZones[lnJ] - minItemZones[lnJ]))];
+                if (keyItemList.Contains(romData[treasureLocation]))
+                {
+                    lnJ--;
+                    continue;
+                }
+                romData[treasureLocation] = (byte)keyItems[lnJ];
+            }
+
+            using (StreamWriter writer = File.CreateText(Path.Combine(Path.GetDirectoryName(txtFileName.Text), "DW4TreasureOutput.txt")))
+            {
+                treasureOutput(writer, "c1p1", c1p1Treasure);
+                treasureOutput(writer, "c1p2", c1p2Treasure);
+                treasureOutput(writer, "c2p1", c2p1Treasure);
+                treasureOutput(writer, "c2p2", c2p2Treasure);
+                treasureOutput(writer, "c3p1", c3p1Treasure);
+                treasureOutput(writer, "c4p1", c4p1Treasure);
+                treasureOutput(writer, "c5p1", c5p1Treasure);
+                treasureOutput(writer, "c5p2", c5p2Treasure);
+                treasureOutput(writer, "c5p3", c5p3Treasure);
+                treasureOutput(writer, "c5p4", c5p4Treasure);
+                treasureOutput(writer, "c5p5", c5p5Treasure);
+                treasureOutput(writer, "c5p6", c5p6Treasure);
+                treasureOutput(writer, "c5p7", c5p7Treasure);
+                treasureOutput(writer, "c5p8", c5p8Treasure);
+                treasureOutput(writer, "c5p9", c5p9Treasure);
+                treasureOutput(writer, "c5p10", c5p10Treasure);
+                treasureOutput(writer, "c5dead", c5DeadZone);
+            }
+        }
+
+        private void randomizeStores(Random r1)
+        {
+            int[] lowGradeStores = { 0x6341f, 0x634a1, 0x63537, 0x63425, 0x634a9, 0x6353C,
                     0x63496, 0x634b1, 0x6345a, 0x63541, 0x6342c, 0x63549, 0x63433, 0x634b9, 0x63551, 0x634c1, 0x63558, 0x6343a, 0x63560,
                     0x63441, 0x634c9, 0x63569, 0x6356f, 0x63573, 0x63446, 0x634e8, 0x635c8,
                     0x6344d, 0x634d1, 0X63579, 0x63453, 0x634d8, 0x63581,
                     0x63462, 0x634e0, 0x63590, 0x63468, 0x634f0, 0x63596, 0x63470, 0x634f8, 0x6359d }; // 42
-                int[] highGradeStores = { 0x63564, 0x63477, 0x6348f, 0x63524, 0x635b3, 0x635ae, 0X63483, 0x63507, 0x635aa,
+            int[] highGradeStores = { 0x63564, 0x63477, 0x6348f, 0x63524, 0x635b3, 0x635ae, 0X63483, 0x63507, 0x635aa,
                     0x63530, 0x635ba, 0x6347f, 0x634ff, 0x635a4, 0x6350e, 0x63489, 0x63515, 0x6352c, 0x6351d, 0x635c0, 0x63588, 0x6349b}; // 22
 
-                byte[] legalLowGradeStoreItems = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x19,
+            byte[] legalLowGradeStoreItems = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x19,
                     0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2b, 0x2c, 0x2d, 0x2f, 0x30,
                     0x3d, 0x3e, 0x3f, 0x46, 0x47, 0x4a, 0x53, 0x54, 0x55, 0x56, 0x58, 0x5a, 0x74 };
-                byte[] legalHighGradeStoreItems = { 0x06, 0x07, 0x0c, 0x0e, 0x0f, 0x10, 0x11, 0x15, 0x16, 0x17, 0x18, 0x1a, 0x1b, 0x1c, 0x1d, 0x20, 0x22, 0x23,
+            byte[] legalHighGradeStoreItems = { 0x06, 0x07, 0x0c, 0x0e, 0x0f, 0x10, 0x11, 0x15, 0x16, 0x17, 0x18, 0x1a, 0x1b, 0x1c, 0x1d, 0x20, 0x22, 0x23,
                     0x2a, 0x2e, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x38, 0x39, 0x3b,
                     0x40, 0x41, 0x42, 0x43, 0x45, 0x48, 0x49, 0x4d, 0x4e, 0x4f,
                     0x53, 0x54, 0x55, 0x56, 0x58, 0x59, 0x5a, 0x5b, 0x5e, 0x61, 0x62, 0x63, 0x64, 0x65, 0x69, 0x74 };
-                
-                for (int lnI = 0; lnI < lowGradeStores.Length; lnI++)
+
+            for (int lnI = 0; lnI < lowGradeStores.Length; lnI++)
+            {
+                List<int> store = new List<int> { };
+                bool lastItem = false;
+                int byteToUse = lowGradeStores[lnI];
+                int lnJ = 0;
+                do
                 {
-                    List<int> store = new List<int> { };
-                    bool lastItem = false;
-                    int byteToUse = lowGradeStores[lnI];
-                    int lnJ = 0;
-                    do
+                    if (byteToUse == 0x63573 && lnJ == 0)
                     {
-                        if (byteToUse == 0x63573 && lnJ == 0)
-                        {
-                            romData[byteToUse] = 0x56;
-                            lnJ++;
-                            continue;
-                        }
-                        if (romData[byteToUse + lnJ] >= 128)
-                            lastItem = true;
-                        romData[byteToUse + lnJ] = legalLowGradeStoreItems[r1.Next() % legalLowGradeStoreItems.Length];
-                        bool failure = false;
-                        for (int lnK = 0; lnK < lnJ; lnK++)
-                            if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
-                                failure = true;
-                        if (lastItem)
-                            romData[byteToUse + lnJ] += 128;
-                        if (failure)
-                        {
-                            lastItem = false;
-                            continue;
-                        }
+                        romData[byteToUse] = 0x56;
                         lnJ++;
-                    } while (!lastItem);
-                }
-                for (int lnI = 0; lnI < highGradeStores.Length; lnI++)
+                        continue;
+                    }
+                    if (romData[byteToUse + lnJ] >= 128)
+                        lastItem = true;
+                    romData[byteToUse + lnJ] = legalLowGradeStoreItems[r1.Next() % legalLowGradeStoreItems.Length];
+                    bool failure = false;
+                    for (int lnK = 0; lnK < lnJ; lnK++)
+                        if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
+                            failure = true;
+                    if (lastItem)
+                        romData[byteToUse + lnJ] += 128;
+                    if (failure)
+                    {
+                        lastItem = false;
+                        continue;
+                    }
+                    lnJ++;
+                } while (!lastItem);
+            }
+            for (int lnI = 0; lnI < highGradeStores.Length; lnI++)
+            {
+                List<int> store = new List<int> { };
+                bool lastItem = false;
+                int byteToUse = highGradeStores[lnI];
+                int lnJ = 0;
+                do
                 {
-                    List<int> store = new List<int> { };
-                    bool lastItem = false;
-                    int byteToUse = highGradeStores[lnI];
-                    int lnJ = 0;
-                    do
+                    if (romData[byteToUse + lnJ] >= 128)
+                        lastItem = true;
+                    romData[byteToUse + lnJ] = legalHighGradeStoreItems[r1.Next() % legalHighGradeStoreItems.Length];
+                    for (int lnK = 0; lnK < lnJ; lnK++)
+                        if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
+                            continue;
+                    if (lastItem)
+                        romData[byteToUse + lnJ] += 128;
+                    lnJ++;
+                } while (!lastItem);
+            }
+        }
+
+        private void randomizeHeroEquipment(Random r1)
+        {
+            int[] minWeapon = { 255, 255, 255, 255, 255, 255, 255, 255 };
+            int[] minArmor = { 255, 255, 255, 255, 255, 255, 255, 255 };
+            int[] totalChances = { 35, 25, 9, 10 };
+            int[,] equipChances = { { 17, 17, 7, 7 }, { 16, 11, 6, 6 }, { 17, 14, 4, 7 }, { 12, 12, 1, 5 }, { 10, 7, 3, 3 }, { 13, 9, 4, 5 }, { 19, 13, 7, 6 }, { 7, 12, 0, 5 } };
+
+            for (int lnI = 0; lnI < 80; lnI++)
+                romData[0x40c75 + lnI] = 0;
+
+            for (int lnI = 0; lnI < 80; lnI++)
+            {
+                if (lnI == 0x21)
+                    continue;
+                // Totals - 35/25/9/10
+                //if ((string)cboSoloHero.SelectedItem == "Hero") power = 0; - 18/18/8/8 - subtract 1 from each because of Zenithian equipment
+                //if ((string)cboSoloHero.SelectedItem == "Cristo") power = 1; - 16/11/6/6
+                //if ((string)cboSoloHero.SelectedItem == "Nara") power = 2; - 17/14/4/7
+                //if ((string)cboSoloHero.SelectedItem == "Mara") power = 3; - 12/12/1/5
+                //if ((string)cboSoloHero.SelectedItem == "Brey") power = 4; - 10/7/3/3
+                //if ((string)cboSoloHero.SelectedItem == "Taloon") power = 5; - 13/9/4/5
+                //if ((string)cboSoloHero.SelectedItem == "Ragnar") power = 6; - 19/13/7/6
+                //if ((string)cboSoloHero.SelectedItem == "Alena") power = 7; - 7/12/0/5
+
+                for (int lnJ = 0; lnJ < 8; lnJ++)
+                {
+                    int lnK = (lnI < 36 ? 0 : lnI < 61 ? 1 : lnI < 70 ? 2 : 3);
+                    bool equippable = false;
+                    // Hero must be able to equip the Zenithian equipment
+                    if (lnJ == 0 && (lnI == 0x14 || lnI == 0x37 || lnI == 0x44 || lnI == 0x4b))
+                        equippable = true;
+                    else if (r1.Next() % totalChances[lnK] < (equipChances[lnJ, lnK] * (lnI == 0x00 || lnI == 0x01 || lnI == 0x02 ||
+                                                                                        lnI == 0x24 || lnI == 0x25 || lnI == 0x26 ||
+                                                                                        lnI == 0x3d || lnI == 0x3e ||
+                                                                                        lnI == 0x46 || lnI == 0x47 ? 2 : 1)))
+                        equippable = true;
+                    else
+                        equippable = false;
+
+                    if (equippable)
                     {
-                        if (romData[byteToUse + lnJ] >= 128)
-                            lastItem = true;
-                        romData[byteToUse + lnJ] = legalHighGradeStoreItems[r1.Next() % legalHighGradeStoreItems.Length];
-                        for (int lnK = 0; lnK < lnJ; lnK++)
-                            if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
-                                continue;
-                        if (lastItem)
-                            romData[byteToUse + lnJ] += 128;
-                        lnJ++;
-                    } while (!lastItem);
+                        romData[0x40c75 + lnI] += (byte)Math.Pow(2, lnJ);
+                        // If you can equip the weak Zenithian Sword, you can equip the strong Zenithian Sword.
+                        if (lnI == 0x14)
+                            romData[0x40c75 + 0x21] += (byte)Math.Pow(2, lnJ);
+                        if (minWeapon[lnJ] == 255 && lnK == 0)
+                        {
+                            minWeapon[lnJ] = lnI;
+                            romData[0x491a1 + (lnJ * 8) + 0] = (byte)(0x80 + lnI);
+                        }
+                        if (minArmor[lnJ] == 255 && lnK == 1)
+                        {
+                            minArmor[lnJ] = lnI;
+                            romData[0x491a1 + (lnJ * 8) + 1] = (byte)(0x80 + lnI);
+                        }
+                    }
                 }
             }
-            return true;
+
+            for (int lnI = 0; lnI < 8; lnI++)
+            {
+                if (minWeapon[lnI] != 0x00 && minWeapon[lnI] != 0x01 && minWeapon[lnI] != 0x02)
+                {
+                    int rEquip = r1.Next() % 100;
+                    if (rEquip >= 55)
+                    {
+                        romData[0x491a1 + (lnI * 8) + 0] = 0x80;
+                        romData[0x40c75 + 0x00] += (byte)Math.Pow(2, lnI);
+                    }
+                    else if (rEquip >= 20)
+                    {
+                        romData[0x491a1 + (lnI * 8) + 0] = 0x81;
+                        romData[0x40c75 + 0x01] += (byte)Math.Pow(2, lnI);
+                    }
+                    else
+                    {
+                        romData[0x491a1 + (lnI * 8) + 0] = 0x82;
+                        romData[0x40c75 + 0x02] += (byte)Math.Pow(2, lnI);
+                    }
+                }
+                if (minArmor[lnI] != 0x24 && minArmor[lnI] != 0x25 && minArmor[lnI] != 0x26)
+                {
+                    int rEquip = r1.Next() % 100;
+                    if (rEquip >= 55)
+                    {
+                        romData[0x491a1 + (lnI * 8) + 1] = 0xa4;
+                        romData[0x40c75 + 0x24] += (byte)Math.Pow(2, lnI);
+                    }
+                    else if (rEquip >= 20)
+                    {
+                        romData[0x491a1 + (lnI * 8) + 1] = 0xa5;
+                        romData[0x40c75 + 0x25] += (byte)Math.Pow(2, lnI);
+                    }
+                    else
+                    {
+                        romData[0x491a1 + (lnI * 8) + 1] = 0xa6;
+                        romData[0x40c75 + 0x26] += (byte)Math.Pow(2, lnI);
+                    }
+                }
+            }
+        }
+
+        private void randomizeMonsterZones(Random r1)
+        {
+            int[] maxMonster = { 0xb4, 0xb4, 0xb4, 0xb4, // 0x00-0x03 - Sea(0x00), wasted (0x01-0x03)
+                    11, 21, 22, // 0x04-0x06 - Chapter 1
+                    13, 22, 27, 41, 41, 71, // 0x07-0x0c - Chapter 2
+                    11, 15, 24, 41, 45, 51, // 0x0d-0x12 - Chapter 4
+                    0xbc, // 0x13 - Zenithian Tower
+                    10, 15, 24, 31, // 0x14-0x17 - Chapter 3
+                    11, 21, 26, 39, 39, 45, // 0x18-0x1d - Chapter 5 -> Symbol Of Faith
+                    51, 55, 63, // 0x1e-0x20 - Chapter 5 -> Ship
+                    85, 85, 94, 94, // 0x21-0x24 - Chapter 5 -> Padequila Root
+                    0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, // 0x25-0x33 - Chapter 5 worldwide
+                    0xbc, 0xbc, 0xbd, // 0x34-0x36 - Evil Island/Dark side - need to change this to include nasty bosses
+                    0xbc, 0xbc, 0xbc, // 0x37-0x39 - Zenithian Tower - boss needs
+                    0xbd, 0xbd, 0xbd, // 0x3a-0x3c - Final Cave - boss needs
+                    0xbd, 0xbd, 0xbd, // 0x3d-0x3f - Necrosaro's Palace - boss needs
+                    11, 24, 50, 50, // 0x40-0x43 - Chapter 1 - Cave To Izmit, Old Well, Loch Tower(2 zones)
+                    33, 69, 69, 33, // 0x44-0x47 - Chapter 4 - Cave west of Kievs (1/4), Aktemto Mine (2/3)
+                    12, 12, 39, 39, // 0x48-0x4b - Chapter 3 - Cave north of Lakanaba(2 zones), Cave of Silver Statuette(2 zones)
+                    33, 33, 59, 59, // 0x4c-0x4f - Chapter 2 - Cave south of Frenor, Birdsong Tower
+                    0xbc, // 0x50 - Chapter 5 - World Tree - boss needs
+                    77, 77, // 0x51-0x52 - Chapter 5 - Great Lighthouse
+                    104, // 0x53 - Chapter 5 - Cave of the Padequila
+                    0xb2, 0xb2, // 0x54-0x55 - Chapter 5 - Cave West Of Kievs
+                    0xb2, // Santeem
+                    0xb2, 0xb2, // Cascade Cave
+                    0xb2, // Shrine of Breaking Waves
+                    0xb2, 0xb2, // Cave SE of Gardenbur
+                    0xb2, 0xb2, // Royal Crypt
+                    0xb2, 0xb2, 0xb2, // Colossus
+                    0xbc, 0xbc, // Aktemto Mine
+                    0xbc, 0xbc }; // World Tree
+
+            int[] minMonster =
+            {
+                    0, 0, 0, 0, // 0x00-0x03 - Sea(0x00), wasted (0x01-0x03)
+                    0, 0, 0, // 0x04-0x06 - Chapter 1
+                    0, 0, 0, 0, 0, 0, // 0x07-0x0c - Chapter 2
+                    0, 0, 0, 0, 0, 0, // 0x0d-0x12 - Chapter 4
+                    127, // 0x13 - Zenithian Tower
+                    0, 0, 0, 0, // 0x14-0x17 - Chapter 3
+                    0, 0, 0, 0, 0, 0, // 0x18-0x1d - Chapter 5 -> Symbol Of Faith
+                    0, 0, 0, // 0x1e-0x20 - Chapter 5 -> Ship
+                    0, 0, 0, 0, // 0x21-0x24 - Chapter 5 -> Padequila Root
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0x25-0x33 - Chapter 5 worldwide
+                    114, 114, 141, // 0x34-0x36 - Evil Island/Dark side - need to change this to include nasty bosses
+                    127, 127, 127, // 0x37-0x39 - Zenithian Tower
+                    135, 135, 135, // 0x3a-0x3c - Final Cave - boss needs
+                    148, 148, 148, // 0x3d-0x3f - Necrosaro's Palace - boss needs
+                    0, 0, 0, 0, // 0x40-0x43 - Chapter 1 - Cave To Izmit, Old Well, Loch Tower(2 zones)
+                    0, 0, 0, 0, // 0x44-0x47 - Chapter 4 - Cave west of Kievs (1/4), Aktemto Mine (2/3)
+                    0, 0, 0, 0, // 0x48-0x4b - Chapter 3 - Cave north of Lakanaba(2 zones), Cave of Silver Statuette(2 zones)
+                    0, 0, 0, 0, // 0x4c-0x4f - Chapter 2 - Cave south of Frenor, Birdsong Tower
+                    106, // 0x50 - Chapter 5 - World Tree - boss needs
+                    0, 0, // 0x51-0x52 - Chapter 5 - Great Lighthouse
+                    0, // 0x53 - Chapter 5 - Cave of the Padequila
+                    0, 0, // 0x54-0x55 - Chapter 5 - Cave West Of Kievs
+                    0, // Santeem
+                    64, 64, // Cascade Cave
+                    64, // Shrine of Breaking Waves
+                    0, 0, // Cave SE of Gardenbur
+                    80, 80, // Royal Crypt
+                    94, 94, 94, // Colossus
+                    106, 106, // Aktemto Mine
+                    106, 106 }; // World Tree
+
+            for (int lnI = 0; lnI <= 0x64; lnI++)
+            {
+                int byteToUse = 0x612ba + (lnI * 16);
+                // Byte 0 - Day/night monsters
+                // Byte 1 - Minimum level to guarantee runaway (check this out someday)
+                // Byte 2-13 - Actual monsters
+                // Byte 14-15 - Special fights (make FF for now)
+                for (int lnJ = 0; lnJ < 16; lnJ++)
+                {
+                    if (lnJ == 0)
+                    {
+                        romData[byteToUse + lnJ] -= (byte)(romData[byteToUse + lnJ] % 32);
+                        romData[byteToUse + lnJ] += 0x1c; // This should ensure that we get to see nearly all of the monsters programmed.
+                        continue;
+                    }
+                    if (lnJ == 1) continue;
+                    romData[byteToUse + lnJ] = (byte)(monsterRank[(r1.Next() % (maxMonster[lnI] - minMonster[lnI])) + minMonster[lnI]]);
+                    // Redo randomization if Linguar or Imposter are in the proceedings, due to graphical glitches, except the last byte... the solo encounter.
+                    if (lnJ != 13 && (romData[byteToUse + lnJ] == 0xba || romData[byteToUse + lnJ] == 0x99)) lnJ--;
+                    if (lnJ >= 14) romData[byteToUse + lnJ] = 0xff;
+                }
+            }
+
+            // Also rearrange boss battles.
+            // Mimic, Clay Doll, Chamelion Humanoid, Keeleon I, Balzack I, Saro's Shadow, Clay Doll, Hun, Roric, Vivian, Sampson, Linguar, Tricksy Urchin, Lighthouse Bengal, (14)
+            // Keeleon II, Minidemon, Balzack II, Saroknight, Bakor, Rhinoking/Bengal, Esturk, Gigademon, Anderoug(3), Infernus Shadow, Radimvice, Necrosaro, Liclick, (13)
+            // Man-eater chest, Rhinoband, Imposter, Leaonar, Necrodain, Minidemon, Bengal (7)
+            int[] maxBossLimit = { 0xb4, 0xbd, 27, 0xbd, 69, 50, 0xbd, -1, -1, -1, -1, -1, 33, 104, // 14
+                    0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xbc, 0xbc, 0xbc, 0xbc, 0xbc, 0xbc, 0xbc, 60, // 13
+                    0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4 }; // 7
+            int[] minBossLimit = { 0, 148, 5, 148, 20, 15, 148, -1, -1, -1, -1, -1, 10, 20, // 14
+                    0, 106, 0, 0, 0, 106, 106, 148, 148, 148, 148, 148, 20, // 13
+                    0, 106, 106, 106, 106, 106, 0 }; // 7
+            int[] firstMonster = { 0x62, 0x91, 0x12, 0xbb, 0xb4, 0xb3, 0x91, 0xaf, 0xb0, 0xb1, 0xb2, 0xba, 0xc0, 0xbf,
+                    0xbe, -2, 0xb5, 0xc1, 0xc2, 0x9b, 0xbc, 0xb9, 0xb8, 0xb7, 0xb6, 0xae, -2,
+                    0x59, -2, -2, -2, -2, -2, -2 };
+            for (int lnI = 0; lnI < 34; lnI++)
+            {
+                if (maxBossLimit[lnI] == -1)
+                    continue;
+                int byteToUse = 0x6235c + (8 * lnI);
+
+                // 10% chance to keep the battle the way it is now... if there is more than one group involved.
+                if (romData[byteToUse + 4 + 1] >= 1 && r1.Next() % 10 == 0)
+                    continue;
+
+                for (int lnJ = 0; lnJ < 4; lnJ++)
+                    romData[byteToUse + lnJ] = 255;
+                for (int lnJ = 4; lnJ < 8; lnJ++)
+                    romData[byteToUse + lnJ] = 0;
+
+                // Figure out how many groups of monsters will be involved.
+                int groups = (r1.Next() % 4);
+                for (int lnJ = 0; lnJ < groups + 1; lnJ++)
+                {
+                    if (lnJ == 0 && firstMonster[lnI] >= 0)
+                        romData[byteToUse + 0] = (byte)firstMonster[lnI];
+                    else
+                        romData[byteToUse + lnJ] = (byte)(monsterRank[r1.Next() % (maxBossLimit[lnI] - minBossLimit[lnI]) + minBossLimit[lnI]]);
+                    romData[byteToUse + lnJ + 4] = (byte)(lnJ == groups ? 8 : 1);
+                }
+            }
+        }
+
+        private void randomizeMonsterResistances(Random r1)
+        {
+            for (int lnI = 0; lnI < 190; lnI++) // <= 0xc2
+            {
+                // do not randomize Necrosaro.
+                if (lnI == 0xae) continue;
+
+                int byteToUse = 0x60056 + (lnI * 22);
+
+                // If silly is selected, adjust enemy resistances +/- 1.
+                // If ridiculous is selected, adjust enemy resistances +/- 2.
+                // If ludicrous is selected, completely randomize enemy resistances.
+                for (int lnJ = 0; lnJ < 5; lnJ++)
+                {
+                    int res1 = (romData[byteToUse + 15 + lnJ] / 8) % 4;
+                    int res2 = romData[byteToUse + 15 + lnJ] / 64;
+                    if ((chkC14Random.Checked || chkSoloHero.Checked) && (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
+                        monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
+                    {
+                        res1 = res2 = 0;
+                    }
+                    else if (optMonsterSilly.Checked)
+                    {
+                        res1 += (r1.Next() % 3) - 1;
+                        res2 += (r1.Next() % 3) - 1;
+                    }
+                    else if (optMonsterMedium.Checked)
+                    {
+                        if (r1.Next() % 3 != 0)
+                        {
+                            res1 += (r1.Next() % 5) - 2;
+                            res2 += (r1.Next() % 5) - 2;
+                        }
+                    }
+                    else if (optMonsterHeavy.Checked)
+                    {
+                        res1 = (r1.Next() % 4);
+                        res2 = (r1.Next() % 4);
+                    }
+                    res1 = (res1 < 0 ? 0 : res1 > 3 ? 3 : res1);
+                    res2 = (res2 < 0 ? 0 : res2 > 3 ? 3 : res2);
+
+                    romData[byteToUse + 15 + lnJ] = (byte)((romData[byteToUse + 15 + lnJ] % 4) + (res1 * 8) + (res2 * 64));
+                }
+            }
         }
 
         private StreamWriter treasureOutput(StreamWriter writer, string name, int[] intArray)
@@ -1704,6 +1833,11 @@ namespace DW4RandoHacker
                     writer.WriteLine(chkRandomTreasures.Checked ? "T" : "F");
                     writer.WriteLine(chkRandomMonsterResistances.Checked ? "T" : "F");
                     writer.WriteLine(chkRandomStores.Checked ? "T" : "F");
+                    writer.WriteLine(chkRandomHeroStats.Checked ? "T" : "F");
+                    writer.WriteLine(optHeroLight.Checked ? "T" : "F");
+                    writer.WriteLine(optHeroSilly.Checked ? "T" : "F");
+                    writer.WriteLine(optHeroMedium.Checked ? "T" : "F");
+                    writer.WriteLine(optHeroHeavy.Checked ? "T" : "F");
                 }
         }
 
