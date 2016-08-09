@@ -771,15 +771,41 @@ namespace DW4RandoHacker
                         heroL41Gains[lnJ, lnI] = (r1.Next() % (lnI == 3 ? 175 : 225)) + (lnI == 3 ? 75 : 25);
 
                     int byteToUse = 0x4a15b + (48 * lnI) + (6 * lnJ);
+                    int baseStat = 0;
+                    for (int lnK = 0; lnK < 4; lnK++)
+                    {
+                        if (romData[byteToUse + lnK] >= 128)
+                            baseStat += (lnK == 0 ? 1 : lnK == 1 ? 2 : lnK == 2 ? 4 : lnK == 3 ? 8 : 16);
+                    }
+                    if (optHeroSilly.Checked || optHeroMedium.Checked)
+                    {
+                        int randomDir = (r1.Next() % 3);
+                        int difference = baseStat / (optHeroSilly.Checked ? 2 : 1);
+                        if (randomDir == 0 && difference >= 2)
+                            baseStat -= (r1.Next() % difference);
+                        if (randomDir == 1 && difference >= 2)
+                            baseStat += (r1.Next() % difference);
+                    }
+                    if (optHeroHeavy.Checked)
+                        baseStat = r1.Next() % 32;
 
                     int[] levels = { 0, 0, 0, 0 };
                     for (int lnK = 0; lnK < 4; lnK++)
                         levels[lnK] = (byte)(r1.Next() % 50);
                     Array.Sort(levels);
                     for (int lnK = 0; lnK < 4; lnK++)
-                        romData[byteToUse + lnK] = (byte)(levels[lnK]);
+                    {
+                        if ((lnK == 0 && baseStat % 2 == 1) || (lnK == 1 && baseStat % 4 >= 2) || (lnK == 2 && baseStat % 8 >= 4) || (lnK == 3 && baseStat % 16 >= 8))
+                            romData[byteToUse + lnK] = (byte)(128 + levels[lnK]);
+                        else
+                            romData[byteToUse + lnK] = (byte)(levels[lnK]);
+                    }
 
-                    romData[byteToUse + 4] = 99;
+                    if (baseStat >= 16)
+                        romData[byteToUse + 4] = 99 + 128;
+                    else
+                        romData[byteToUse + 4] = 99;
+
                     // Now to figure out the multiplier to use (+ 0) and the base multiplier (+ 5)
                     double[] diffs = { 0.0, 0.0, 0.0, 0.0 };
                     int[] baseMult = { 0, 0, 0, 0 };
