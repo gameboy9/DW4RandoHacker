@@ -1235,6 +1235,10 @@ namespace DW4RandoHacker
                     if (romData[byteToUse + lnJ] >= 128)
                         lastItem = true;
                     romData[byteToUse + lnJ] = legalHighGradeStoreItems[r1.Next() % legalHighGradeStoreItems.Length];
+                    if (byteToUse == 0x63588)
+                    {
+                        romData[0x5735d + (lnJ * 3)] = romData[byteToUse + lnJ];
+                    }
                     for (int lnK = 0; lnK < lnJ; lnK++)
                         if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
                             continue;
