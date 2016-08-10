@@ -405,7 +405,7 @@ namespace DW4RandoHacker
                 romData[0x79074] = (byte)heroes[1];
 
                 // Make the armor shop and the Endor owned shop point to the Chapter 3 heroes inventory.
-                romData[0x55ee9] = (byte)heroes[2];
+                romData[0x55ee9] = romData[0x56562] = (byte)heroes[2];
                 romData[0x5654e] = (byte)heroes[2];
 
                 // Force the heroes acting as the chapter 4 "Nara and Mara" get out of Chapter 4 successfully.
@@ -744,33 +744,36 @@ namespace DW4RandoHacker
             for (int lnI = 0; lnI < 4; lnI++)
                 for (int lnJ = 0; lnJ < 6; lnJ++)
                 {
-                    int byteToUse = 0x4a281 + (lnI * 6) + lnJ;
-                    romData[byteToUse] = (byte)(((r1.Next() % 4) + 1) * 8);
+                    int byteToUse2 = 0x4a281 + (lnI * 6) + lnJ;
+                    romData[byteToUse2] = (byte)(((r1.Next() % 4) + 1) * 8);
                 }
 
             // Randomize the levels to the next multiplier from 0 to 24.(First 4 bytes)  Always make the 5th byte "99" (63 hex).
             // Calculate the base gain based on the four multipliers.  Try to get as close to the target gain for each stat as possible.
-            for (int lnI = 0; lnI < 5; lnI++)
+            int byteToUse = 0x4a15b;
+            for (int lnI = 0; lnI < 8; lnI++)
             {
-                for (int lnJ = 0; lnJ < 8; lnJ++)
+                for (int lnJ = 0; lnJ < 6; lnJ++)
                 {
                     // Do NOT run this randomization for the MP calculations of Taloon, Ragnar, and Alena.
-                    if (lnI == 4 && lnJ >= 5)
+                    if (lnI == 5 && lnI >= 5)
                         continue;
+
+                    byteToUse += 6;
 
                     if (optHeroSilly.Checked || optHeroMedium.Checked)
                     {
                         int randomDir = (r1.Next() % 3);
-                        int difference = heroL41Gains[lnJ, lnI] / (optHeroSilly.Checked ? 4 : 2);
+                        int difference = heroL41Gains[lnI, lnJ] / (optHeroSilly.Checked ? 4 : 2);
                         if (randomDir == 0)
-                            heroL41Gains[lnJ, lnI] -= (r1.Next() % difference);
+                            heroL41Gains[lnI, lnJ] -= (r1.Next() % difference);
                         if (randomDir == 1)
-                            heroL41Gains[lnJ, lnI] += (r1.Next() % difference);
+                            heroL41Gains[lnI, lnJ] += (r1.Next() % difference);
                     }
                     if (optHeroHeavy.Checked)
-                        heroL41Gains[lnJ, lnI] = (r1.Next() % (lnI == 3 ? 175 : 225)) + (lnI == 3 ? 75 : 25);
+                        heroL41Gains[lnI, lnJ] = (r1.Next() % (lnI == 3 ? 175 : 225)) + (lnI == 3 ? 75 : 25);
 
-                    int byteToUse = 0x4a15b + (48 * lnI) + (6 * lnJ);
+                    //int byteToUse = 0x4a15b + (48 * lnI) + (6 * lnJ);
                     int baseStat = 0;
                     for (int lnK = 0; lnK < 4; lnK++)
                     {
@@ -821,8 +824,8 @@ namespace DW4RandoHacker
                             double toAdd = romData[byteToUse2 + multLevel] / 16.0;
                             stat += romData[byteToUse2 + multLevel] / 16.0;
                         }
-                        baseMult[lnK] = (int)Math.Round(heroL41Gains[lnJ, lnI] / stat);
-                        diffs[lnK] = Math.Abs((stat * baseMult[lnK]) - heroL41Gains[lnJ, lnI]);
+                        baseMult[lnK] = (int)Math.Round(heroL41Gains[lnI, lnJ] / stat);
+                        diffs[lnK] = Math.Abs((stat * baseMult[lnK]) - heroL41Gains[lnI, lnJ]);
                     }
 
                     double lowDiff = 9999;
@@ -1035,7 +1038,7 @@ namespace DW4RandoHacker
                     0x7bf10, 0x7bf11, 0x7bf12, 0x7bf13, 0x7bf14, // Frenor 
                     0x7bd4e, 0x7bd55 }; //  Bazaar - Thief's Key - 10 (25)
             int[] c2p2Treasure = { 0x7bd08, // Santeem (Thief's Key)
-                    0x7bf41, 0x7bf42, 0x7bf43, 0x7b8f3 }; // Birdsong Tower - Birdsong Nectar - 5 (30)
+                    0x7bf41, 0x7bf42, 0x7bf43, 0x7b901 }; // Birdsong Tower - Birdsong Nectar(0x7b8f4?) - 5 (30)
             int[] c3p1Treasure = {  0x7bd86, // Lakanaba
                     0x7bf2a, 0x7bf2b, // Iron Safe Cave
                     0x560e8, // Foxville fox
@@ -1112,8 +1115,8 @@ namespace DW4RandoHacker
                                          0x20, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
                                          0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f,
                                          0x40, 0x41, 0x42, 0x43, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4c, 0x4d, 0x4e, 0x4f,
-                                         0x50, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a, 0x5b, 0x5e, 0x5f,
-                                         0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x69, 0x6a, 0x6b,
+                                         0x50, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a, 0x5b, 0x5e,
+                                         0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x69, 
                                          0x74, 0x79 };
 
             // Completely randomize treasures first.
@@ -1127,7 +1130,8 @@ namespace DW4RandoHacker
                     0x76, 0x75,
                     0x6b, 0x6d,
                     0x5d, 0x70,
-                    0x6f, 0x7c, 0x7b, 0x72, 0x1e, 0x68, 0x5c, 0x7d, 0x14, 0x37, 0x44, 0x4b, 0x52, 0x60, 0x67, 0x6e };
+                    0x6f, 0x7c, 0x7b, 0x72, 0x1e, 0x68, 0x5c, 0x7d, 0x14, 0x37, 0x44, 0x4b, 0x52,
+                    0x60, 0x67, 0x6e, 0x5f, 0x6a };
             List<int> keyItemList = new List<int> { };
             addTreasure(keyItemList, keyItems);
 
@@ -1135,12 +1139,14 @@ namespace DW4RandoHacker
                     15, 15,
                     30, 30,
                     44, 44,
-                    57, 57, 57, 61, 61, 61, 61, 61, 61, 71, 71, 71, 71, 0, 0, 0 };
+                    57, 57, 57, 61, 61, 61, 61, 61, 61, 71, 71, 71, 71,
+                    0, 0, 0, 0, 0 };
             int[] maxItemZones = { 9,
                     25, 30,
                     44, 44,
                     57, 57,
-                    61, 71, 85, 87, 104, 136, 151, 151, 157, 157, 157, 157, 182, 182, 182, 182 };
+                    61, 71, 85, 87, 104, 136, 151, 151, 157, 157, 157, 157, 182,
+                    182, 182, 182, 182, 182 };
 
             for (int lnJ = 0; lnJ < keyItems.Length; lnJ++)
             {
