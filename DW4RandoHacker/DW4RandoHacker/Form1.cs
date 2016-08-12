@@ -104,25 +104,10 @@ namespace DW4RandoHacker
                     chkC14Random.Checked = (reader.ReadLine() == "T");
                     chkC5Random.Checked = (reader.ReadLine() == "T");
 
-                    c1Hero.SelectedItem = reader.ReadLine();
-                    c2Hero1.SelectedItem = reader.ReadLine();
-                    c2Hero2.SelectedItem = reader.ReadLine();
-                    c2Hero3.SelectedItem = reader.ReadLine();
                     chkCh2AwardXPTournament.Checked = (reader.ReadLine() == "T");
-                    c3Hero.SelectedItem = reader.ReadLine();
                     chkShop1.Checked = (reader.ReadLine() == "T");
                     chkShop25K.Checked = (reader.ReadLine() == "T");
                     chkTunnel1.Checked = (reader.ReadLine() == "T");
-                    c4Hero1.SelectedItem = reader.ReadLine();
-                    c4Hero2.SelectedItem = reader.ReadLine();
-                    c5Hero1.SelectedItem = reader.ReadLine();
-                    c5Hero2.SelectedItem = reader.ReadLine();
-                    c5Hero3.SelectedItem = reader.ReadLine();
-                    c5Hero4.SelectedItem = reader.ReadLine();
-                    c5Hero5.SelectedItem = reader.ReadLine();
-                    c5Hero6.SelectedItem = reader.ReadLine();
-                    c5Hero7.SelectedItem = reader.ReadLine();
-                    c5Hero8.SelectedItem = reader.ReadLine();
 
                     cboXPAdjustment.SelectedItem = reader.ReadLine();
                     chkXPRandom.Checked = (reader.ReadLine() == "T");
@@ -146,6 +131,7 @@ namespace DW4RandoHacker
                     optHeroSilly.Checked = (reader.ReadLine() == "T");
                     optHeroMedium.Checked = (reader.ReadLine() == "T");
                     optHeroHeavy.Checked = (reader.ReadLine() == "T");
+                    chkC5ControlAllChars.Checked = (reader.ReadLine() == "T");
 
                     runChecksum();
                 }
@@ -320,8 +306,8 @@ namespace DW4RandoHacker
                 // Force the solo hero to fight in Chapter 2's tournament.  This isn't completely neccessary, but it will smooth out processing.
                 romData[0x79074] = power;
 
-                // Make the armor shop and the Endor owned shop point to the Chapter 3 heroes inventory.  This isn't neccessary, but it will smooth out processing.
-                romData[0x55ee9] = power;
+                // Make the Bonmalmo armor shop and the Endor owned shop point to the Chapter 3 heroes inventory.  This isn't neccessary, but it will smooth out processing.
+                romData[0x55ee9] = romData[0x56562] = romData[0x565d5] = power;
                 romData[0x5654e] = power;
 
                 // Turn Nara into the solo hero in Chapter 4!
@@ -331,9 +317,6 @@ namespace DW4RandoHacker
                 // We'll replace the first treasure chest in the Aktemto Mine with the Magic Key.
                 //romData[0x7bef1] = 0x72;
                 romData[0x7b399] = power;
-
-                //// Give full control over all players in Chapter 5.  You lose the wagon control though.  I would LOVE to figure out how to get both though!  Maybe some nops?
-                //romData[0x46e1e] = 0x7f; // You can make it any number higher than 04, chapter 5 I think... 
 
                 // Force Nara to solo hero in Chapter 5
                 romData[0x77903] = power;
@@ -404,8 +387,8 @@ namespace DW4RandoHacker
                 // This IS neccessary with random heroes... especially if Alena is acting as Cristo or Brey!
                 romData[0x79074] = (byte)heroes[1];
 
-                // Make the armor shop and the Endor owned shop point to the Chapter 3 heroes inventory.
-                romData[0x55ee9] = romData[0x56562] = (byte)heroes[2];
+                // Make the Bonmalmo armor shop and the Endor owned shop point to the Chapter 3 heroes inventory.
+                romData[0x55ee9] = romData[0x56562] = romData[0x565d5] = (byte)heroes[2];
                 romData[0x5654e] = (byte)heroes[2];
 
                 // Force the heroes acting as the chapter 4 "Nara and Mara" get out of Chapter 4 successfully.
@@ -618,7 +601,8 @@ namespace DW4RandoHacker
             }
 
             // Give full control over all players in Chapter 5.  You lose the wagon control though.  I would LOVE to figure out how to get both though!  Maybe some nops?
-            romData[0x46e1e] = 0x7f; // You can make it any number higher than 04, chapter 5 I think... 
+            if (chkC5ControlAllChars.Checked)
+                romData[0x46e1e] = 0x7f; // You can make it any number higher than 04, chapter 5 I think... 
 
             // Rename all characters - this starts at 0x2fba0
             string[] twoCharStrings = { "er", "on", "an", "or", "ar", "le", "ro", "al", "re", "st", "in", "ba", "ra", "ma", // 20s, starting at 22
@@ -771,9 +755,8 @@ namespace DW4RandoHacker
                             heroL41Gains[lnI, lnJ] += (r1.Next() % difference);
                     }
                     if (optHeroHeavy.Checked)
-                        heroL41Gains[lnI, lnJ] = (r1.Next() % (lnI == 3 ? 175 : 225)) + (lnI == 3 ? 75 : 25);
+                        heroL41Gains[lnI, lnJ] = (r1.Next() % (lnJ == 3 ? 175 : 225)) + (lnJ == 3 ? 75 : 25);
 
-                    //int byteToUse = 0x4a15b + (48 * lnI) + (6 * lnJ);
                     int baseStat = 0;
                     for (int lnK = 0; lnK < 4; lnK++)
                     {
@@ -884,7 +867,7 @@ namespace DW4RandoHacker
 
                 if (randomType == 0)
                     continue;
-                if (randomType == 1)
+                if (randomType == 1 && monsterRank[lnI] != 0x5c && monsterRank[lnI] != 0x75)
                 {
                     if (r1.Next() % 2 == 1)
                         // weird attack pattern
@@ -903,17 +886,24 @@ namespace DW4RandoHacker
                         moveLevel = 1;
 
                     for (int lnJ = 0; lnJ < 6; lnJ++)
-                        romData[byteToUse + 9 + lnJ] = (byte)(moveLevel == 0 ? level1Moves[r1.Next() % level1Moves.Length] :
-                                                              moveLevel == 1 ? level2Moves[r1.Next() % level2Moves.Length] :
-                                                              moveLevel == 2 ? level3Moves[r1.Next() % level3Moves.Length] :
-                                                              moveLevel == 3 ? level4Moves[r1.Next() % level4Moves.Length] :
-                                                              level5Moves[r1.Next() % level5Moves.Length]);
+                    {
+                        if (lnJ >= 0 && lnJ <= 1 && (monsterRank[lnI] == 0x5c || monsterRank[lnI] == 0x75))
+                            romData[byteToUse + 9 + lnJ] = 0x47;
+                        else
+                            romData[byteToUse + 9 + lnJ] = (byte)(moveLevel == 0 ? level1Moves[r1.Next() % level1Moves.Length] :
+                                                                  moveLevel == 1 ? level2Moves[r1.Next() % level2Moves.Length] :
+                                                                  moveLevel == 2 ? level3Moves[r1.Next() % level3Moves.Length] :
+                                                                  moveLevel == 3 ? level4Moves[r1.Next() % level4Moves.Length] :
+                                                                  level5Moves[r1.Next() % level5Moves.Length]);
+                    }
                 }
                 if (randomType == 3)
                 {
                     for (int lnJ = 0; lnJ < 6; lnJ++)
                     {
-                        if (r1.Next() % 2 == 1)
+                        if (lnJ >= 0 && lnJ <= 1 && (monsterRank[lnI] == 0x5c || monsterRank[lnI] == 0x75))
+                            romData[byteToUse + 9 + lnJ] = 0x47;
+                        else if (r1.Next() % 2 == 1)
                             romData[byteToUse + 9 + lnJ] = (byte)(r1.Next() % 0x67);
                         else
                             romData[byteToUse + 9 + lnJ] = 0x32;
@@ -952,8 +942,8 @@ namespace DW4RandoHacker
                     }
                 }
 
-                // If light is selected, maintain enemy resistances, HP, strength, defense, and agility.
-                if (!optMonsterLight.Checked)
+                // If light is selected, maintain enemy resistances, HP, strength, defense, and agility.  Do not do this if a metal monster is involved...
+                if (!optMonsterLight.Checked && monsterRank[lnI] != 0x5c && monsterRank[lnI] != 0x75)
                 {
                     // If silly is selected, adjust HP, strength, defense, and agility by +/- 25%.
                     // If ridiculous is selected, adjust HP, strength, defense, and agility by +/- 50%.
@@ -1031,7 +1021,7 @@ namespace DW4RandoHacker
             int[] c1p1Treasure = { 0x7bd1d, // Burland
                     0x7bf38, 0x7bf37, // Cave To Izmit
                     0x7bd6a, // Izmit
-                    0x7bf15, 0x7bf16, 0x7bf17, 0x7bfb7, 0x7b936 }; // Old Well - Flying Shoes - 9
+                    0x7bf15, 0x7bf16, 0x7bf17, 0x7bdb7, 0x7b936 }; // Old Well - Flying Shoes - 9
             int[] c1p2Treasure = { 0x7bf47, 0x7bf48, 0x7bf49, 0x7bf4a, 0x7bf4b, 0x7bf4c }; // Loch Tower - End of C1 - 6 (15)
             int[] c2p1Treasure = { 0x7bd0f, 0x7bd16, // Santeem
                     0x7bdc7, // Tempe
@@ -1043,51 +1033,51 @@ namespace DW4RandoHacker
                     0x7bf2a, 0x7bf2b, // Iron Safe Cave
                     0x560e8, // Foxville fox
                     0x7bf2d, 0x7bf2e, 0x7bf2f, 0x7bf30, 0x7bf31, 0x7bf32, 0x7bf33, 0x7bf34, 0x7bf35, 0x7bf36 }; // Silver Statuette Cave - Silver Statuette - 14 (44)
-            int[] c4p1Treasure = { 0x7bd7f, 0x7bd78, 0x7bd7a, // Monbaraba
+            int[] c4p1Treasure = { 0x7bd7f, 0x7bd78, 0x7bdca, // Monbaraba
                     0x7bd8d, 0x7beee, // Kievs
                     0x7bf0a, 0x7bf0b, 0x7bf0c, 0x7ba05, 0x7bf0e, // Cave West of Kievs (couple 0x7ba05 with 0x7ba0a)
                     0x7bef0, 0x7bef1, 0x7bef2 }; // Aktemto Mine - Gunpowder Jar and Sphere Of Silence - 13 (57)
             int[] c5p1Treasure = { 0x7bd71, 0x7bdc9, // Hometown
-                    0x7bf2c, // Cave Of Betrayal
-                    0x7beef }; // Desert Inn - Symbol Of Faith - 4 (61)
+                    0x7b96a, 0x7b983, // Woodman's Shack
+                    //0x7bf2c, // Cave Of Betrayal - Can't change this due to the way the cave works
+                    0x7beef }; // Desert Inn - Symbol Of Faith - 5 (62)
             int[] c5p2Treasure = { 0x7bdc8, // Aneaux
-                    0x7bf4d, 0x7bf4e, 0x7bf4f, 0x7bf50, 0x7bf51, 0x7bf52, 0x7bf53, 0x7bf54, 0x7bf55 }; // Great Lighthouse - Fire Of Serenity - 10 (71)
+                    0x7bf4d, 0x7bf4e, 0x7bf4f, 0x7bf50, 0x7bf51, 0x7bf52, 0x7bf53, 0x7bf54, 0x7bf55 }; // Great Lighthouse - Fire Of Serenity - 10 (72)
             int[] c5p3Treasure = { 0x7bdc6, // Mintos
                     0x7bdcc, // Shrine East Of Mintos
                     0x7befe, 0x7beff, 0x7bf00, 0x7bf01, 0x7bf02, 0x7bf03, // Cave Of The Padequia
                     0x7bda9, // Old Man's Island House
                     0x7bdcb, 0x7b94b, // Seaside Village
                     0x7bd40, 0x7bd47, // Stancia Castle
-                    0x7bdc5 }; // Riverton - Padequia Root - 14 (85)
-            int[] c5p4Treasure = { 0x7bdb0, 0x7bf0f }; // Cave West Of Kievs - Pre-Magic Key - 2 (87)
+                    0x7bdc5 }; // Riverton - Padequia Root - 14 (86)
+            int[] c5p4Treasure = { 0x7bdb0, 0x7bf0f }; // Cave West Of Kievs - Pre-Magic Key - 2 (88)
             int[] c5p5Treasure = { 0x7becd, 0x7bece, 0x7becf, 0x7bed0, 0x7bed1, 0x7bed2, // Burland Castle
                     0x7beca, 0x7becb, 0x7becc, // Santeem Castle
                     0x7beda, 0x7bedb, 0x7bedd, 0x7bede, 0x7bd2b, // Endor
-                    0x7befb, 0x7befc, 0x7befd }; // Shrine Of Breaking Waves - Pre-Magma Staff - 17 (104)
+                    0x7befb, 0x7befc, 0x7befd }; // Shrine Of Breaking Waves - Pre-Magma Staff - 17 (105)
             int[] c5p6Treasure = { 0x7bd32, 0x7bd39, 0x7bee7, // Gardenbur Castle
-                    0x7bf04, 0x7bf05, 0x7bf06, 0x7bf07, 0x7bf08, 0x7bf09 }; // Cave SE Of Gardenbur - Pre-Final Key - 9 (113)
+                    0x7bf04, 0x7bf05, 0x7bf06, 0x7bf07, 0x7bf08, 0x7bf09 }; // Cave SE Of Gardenbur - Pre-Final Key - 9 (114)
             int[] c5p7Treasure = { 0x7beeb, 0x7beec, 0x7beed, // Lakanaba
                     0x7bee3, 0x7bee4, 0x7bee5, // Branca Castle
                     0x7bf56, // Konenber
                     0x7bee6, // Gardenbur Castle
                     0x7bf39, 0x7bf3a, 0x7bf3b, // Royal Crypt
                     0x7bd63, 0x7bd5c, // Haville
-                    0x7bf18, 0x7bf19, 0x7bf1a, 0x7bf1b, 0x7bf1c, // Cascade Cave
-                    0x7bf64, 0x7bf65, 0x7bf66, 0x7bf67, 0x7bf68 }; // Colossus - Pre-Staff Of Transform - 23 (136)
+                    0x7bf64, 0x7bf65, 0x7bf66, 0x7bf67, 0x7bf68 }; // Colossus - Pre-Staff Of Transform - 18 (132)
             int[] c5p8Treasure = { 0x7bd24, 0x7bdc3, 0x7bed3, 0x7bed4, 0x7bed5, 0x7bed6, // Dire Palace
-                    0x7bdc4, 0x7bef3, 0x7bef4, 0x7bef5, 0x7bef6, 0x7bef7, 0x7bef8, 0x7bef9, 0x7befa }; // Aktemto Bonus Round - Gas Canister - 15 (151)
+                    0x7bdc4, 0x7bef3, 0x7bef4, 0x7bef5, 0x7bef6, 0x7bef7, 0x7bef8, 0x7bef9, 0x7befa }; // Aktemto Bonus Round - Gas Canister & Stone Of Drought - 15 (147)
             int[] c5p9Treasure = { 0x7bf44, 0x7bf45, 0x7bf46, // World Tree
                     0x7bd94, // Gottside
-                    0x7bf61, 0x7bf63 }; // Shrine Of Horn - All Zenithian equipment - 6 (157)
+                    0x7bf18, 0x7bf19, 0x7bf1a, 0x7bf1b, 0x7bf1c, // Cascade Cave
+                    0x7bf61, 0x7bf63 }; // Shrine Of Horn - All Zenithian equipment - 11 (158)
             int[] c5p10Treasure = { 0x7bf3c, 0x7bf3d, 0x7bf3e, 0x7bf3f, 0x7bf40, // Zenithian Tower
                     0x7bd01, // Zenithian Castle
                     0x7bf1d, 0x7bf1e, 0x7bf1f, 0x7bf20, 0x7bf21, 0x7bf22, 0x7bf23, 0x7bf24, 0x7bf25, 0x7bf26, 0x7bf27, 0x7bf28, 0x7bf29, // Final Cave
                     0x7bdcd, // Gigademon Area
                     0x7bf5c, // Radimvice Area
-                    0x7bf5d, 0x7bf5d, 0x7bf5d, 0x7bf60 }; // Necrosaro's Palace - Baron's Horn & End Of Game - 25 (182)
-            int[] c5DeadZone = { 0x7b96a, 0x7b983, // Woodman's Shack
-                                 0x7bda2, 0x7bd9b, // Konenber ships -> lost forevers,
-                                 0x7bedc }; // Endor (Chapter 2/3) - 5 (187)
+                    0x7bf5d, 0x7bf5d, 0x7bf5d, 0x7bf60 }; // Necrosaro's Palace - Baron's Horn & End Of Game - 25 (183)
+            int[] c5DeadZone = { 0x7bda2, 0x7bd9b, // Konenber ships -> lost forevers,
+                                 0x7bedc }; // Endor (Chapter 2/3) - 3 (186)
 
             List<int> allTreasureList = new List<int>();
             allTreasureList = addTreasure(allTreasureList, c1p1Treasure);
@@ -1123,6 +1113,8 @@ namespace DW4RandoHacker
             foreach (int treasure in allTreasureList)
             {
                 romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
+                if (treasure == 0x7b901)
+                    romData[0x7b8f4] = romData[treasure];
             }
 
             // Then assign key items, overwriting the randomized treasures.
@@ -1130,7 +1122,7 @@ namespace DW4RandoHacker
                     0x76, 0x75,
                     0x6b, 0x6d,
                     0x5d, 0x70,
-                    0x6f, 0x7c, 0x7b, 0x72, 0x1e, 0x68, 0x5c, 0x7d, 0x14, 0x37, 0x44, 0x4b, 0x52,
+                    0x7c, 0x7b, 0x72, 0x1e, 0x68, 0x5c, 0x7d, 0x14, 0x37, 0x44, 0x4b, 0x52,
                     0x60, 0x67, 0x6e, 0x5f, 0x6a };
             List<int> keyItemList = new List<int> { };
             addTreasure(keyItemList, keyItems);
@@ -1139,14 +1131,14 @@ namespace DW4RandoHacker
                     15, 15,
                     30, 30,
                     44, 44,
-                    57, 57, 57, 61, 61, 61, 61, 61, 61, 71, 71, 71, 71,
-                    0, 0, 0, 0, 0 };
+                    57, 57, 57, 57, 57, 57, 72, 72, 72, 72, 72, 72,
+                    0, 0, 0, 0, 72 };
             int[] maxItemZones = { 9,
                     25, 30,
                     44, 44,
                     57, 57,
-                    61, 71, 85, 87, 104, 136, 151, 151, 157, 157, 157, 157, 182,
-                    182, 182, 182, 182, 182 };
+                    72, 86, 88, 105, 132, 147, 147, 158, 158, 158, 158, 183,
+                    183, 183, 183, 183, 147 };
 
             for (int lnJ = 0; lnJ < keyItems.Length; lnJ++)
             {
@@ -1157,6 +1149,8 @@ namespace DW4RandoHacker
                     continue;
                 }
                 romData[treasureLocation] = (byte)keyItems[lnJ];
+                if (treasureLocation == 0x7b901)
+                    romData[0x7b8f4] = (byte)keyItems[lnJ];
             }
 
             using (StreamWriter writer = File.CreateText(Path.Combine(Path.GetDirectoryName(txtFileName.Text), "DW4TreasureOutput.txt")))
@@ -1242,9 +1236,9 @@ namespace DW4RandoHacker
                         lastItem = true;
                     romData[byteToUse + lnJ] = legalHighGradeStoreItems[r1.Next() % legalHighGradeStoreItems.Length];
                     if (byteToUse == 0x63588)
-                    {
                         romData[0x5735d + (lnJ * 3)] = romData[byteToUse + lnJ];
-                    }
+                    if (byteToUse == 0x6349b && lnJ <= 2)
+                        romData[0x5730b + (lnJ * 8)] = romData[byteToUse + lnJ];
                     for (int lnK = 0; lnK < lnJ; lnK++)
                         if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
                             continue;
@@ -1491,8 +1485,8 @@ namespace DW4RandoHacker
         {
             for (int lnI = 0; lnI < 190; lnI++) // <= 0xc2
             {
-                // do not randomize Necrosaro.
-                if (lnI == 0xae) continue;
+                // do not randomize Necrosaro or the metal monsters.
+                if (lnI == 0xae || lnI == 0x5c || lnI == 0x75) continue;
 
                 int byteToUse = 0x60056 + (lnI * 22);
 
@@ -1833,25 +1827,10 @@ namespace DW4RandoHacker
                     writer.WriteLine(chkSoloCanEquipAll.Checked ? "T" : "F");
                     writer.WriteLine(chkC14Random.Checked ? "T" : "F");
                     writer.WriteLine(chkC5Random.Checked ? "T" : "F");
-                    writer.WriteLine(c1Hero.SelectedItem);
-                    writer.WriteLine(c2Hero1.SelectedItem);
-                    writer.WriteLine(c2Hero2.SelectedItem);
-                    writer.WriteLine(c2Hero3.SelectedItem);
                     writer.WriteLine(chkCh2AwardXPTournament.Checked ? "T" : "F");
-                    writer.WriteLine(c3Hero.SelectedItem);
                     writer.WriteLine(chkShop1.Checked ? "T" : "F");
                     writer.WriteLine(chkShop25K.Checked ? "T" : "F");
                     writer.WriteLine(chkTunnel1.Checked ? "T" : "F");
-                    writer.WriteLine(c4Hero1.SelectedItem);
-                    writer.WriteLine(c4Hero2.SelectedItem);
-                    writer.WriteLine(c5Hero1.SelectedItem);
-                    writer.WriteLine(c5Hero2.SelectedItem);
-                    writer.WriteLine(c5Hero3.SelectedItem);
-                    writer.WriteLine(c5Hero4.SelectedItem);
-                    writer.WriteLine(c5Hero5.SelectedItem);
-                    writer.WriteLine(c5Hero6.SelectedItem);
-                    writer.WriteLine(c5Hero7.SelectedItem);
-                    writer.WriteLine(c5Hero8.SelectedItem);
                     writer.WriteLine(cboXPAdjustment.SelectedItem);
                     writer.WriteLine(chkXPRandom.Checked ? "T" : "F");
                     writer.WriteLine(cboGoldAdjustment.SelectedItem);
@@ -1874,6 +1853,7 @@ namespace DW4RandoHacker
                     writer.WriteLine(optHeroSilly.Checked ? "T" : "F");
                     writer.WriteLine(optHeroMedium.Checked ? "T" : "F");
                     writer.WriteLine(optHeroHeavy.Checked ? "T" : "F");
+                    writer.WriteLine(chkC5ControlAllChars.Checked ? "T" : "F");
                 }
         }
 
@@ -1958,21 +1938,6 @@ namespace DW4RandoHacker
         {
             cboSoloHero.Enabled = chkSoloHero.Checked;
             chkSoloCanEquipAll.Enabled = chkSoloHero.Checked;
-            c1Hero.Enabled = !chkSoloHero.Checked;
-            c2Hero1.Enabled = !chkSoloHero.Checked;
-            c2Hero2.Enabled = !chkSoloHero.Checked;
-            c2Hero3.Enabled = !chkSoloHero.Checked;
-            c3Hero.Enabled = !chkSoloHero.Checked;
-            c4Hero1.Enabled = !chkSoloHero.Checked;
-            c4Hero2.Enabled = !chkSoloHero.Checked;
-            c5Hero1.Enabled = !chkSoloHero.Checked;
-            c5Hero2.Enabled = !chkSoloHero.Checked;
-            c5Hero3.Enabled = !chkSoloHero.Checked;
-            c5Hero4.Enabled = !chkSoloHero.Checked;
-            c5Hero5.Enabled = !chkSoloHero.Checked;
-            c5Hero6.Enabled = !chkSoloHero.Checked;
-            c5Hero7.Enabled = !chkSoloHero.Checked;
-            c5Hero8.Enabled = !chkSoloHero.Checked;
             chkC14Random.Enabled = !chkSoloHero.Checked;
             chkC5Random.Enabled = !chkSoloHero.Checked;
         }
