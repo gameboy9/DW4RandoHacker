@@ -8,6 +8,7 @@ namespace DW4RandoHacker
 {
     public partial class Form1 : Form
     {
+        bool loading = true;
         byte[] romData;
         byte[] romData2;
 
@@ -98,42 +99,12 @@ namespace DW4RandoHacker
                     txtC5Name4.Text = reader.ReadLine();
                     namesRead = true;
 
-                    chkSoloHero.Checked = (reader.ReadLine() == "T");
-                    cboSoloHero.SelectedItem = reader.ReadLine();
-                    chkSoloCanEquipAll.Checked = (reader.ReadLine() == "T");
-                    chkC14Random.Checked = (reader.ReadLine() == "T");
-                    chkC5Random.Checked = (reader.ReadLine() == "T");
-
-                    chkCh2AwardXPTournament.Checked = (reader.ReadLine() == "T");
-                    chkShop1.Checked = (reader.ReadLine() == "T");
-                    chkShop25K.Checked = (reader.ReadLine() == "T");
-                    chkTunnel1.Checked = (reader.ReadLine() == "T");
-
-                    cboXPAdjustment.SelectedItem = reader.ReadLine();
-                    chkXPRandom.Checked = (reader.ReadLine() == "T");
-                    cboGoldAdjustment.SelectedItem = reader.ReadLine();
-                    chkGoldRandom.Checked = (reader.ReadLine() == "T");
-                    cboEncounterRate.SelectedItem = reader.ReadLine();
-                    chkRandomMonsterZones.Checked = (reader.ReadLine() == "T");
                     txtSeed.Text = reader.ReadLine();
-                    chkSpeedUpBattles.Checked = (reader.ReadLine() == "T");
-                    chkRandomHeroEquip.Checked = (reader.ReadLine() == "T");
-                    chkRandomMonsterStats.Checked = (reader.ReadLine() == "T");
-                    optMonsterLight.Checked = (reader.ReadLine() == "T");
-                    optMonsterSilly.Checked = (reader.ReadLine() == "T");
-                    optMonsterMedium.Checked = (reader.ReadLine() == "T");
-                    optMonsterHeavy.Checked = (reader.ReadLine() == "T");
-                    chkRandomTreasures.Checked = (reader.ReadLine() == "T");
-                    chkRandomMonsterResistances.Checked = (reader.ReadLine() == "T");
-                    chkRandomStores.Checked = (reader.ReadLine() == "T");
-                    chkRandomHeroStats.Checked = (reader.ReadLine() == "T");
-                    optHeroLight.Checked = (reader.ReadLine() == "T");
-                    optHeroSilly.Checked = (reader.ReadLine() == "T");
-                    optHeroMedium.Checked = (reader.ReadLine() == "T");
-                    optHeroHeavy.Checked = (reader.ReadLine() == "T");
-                    chkC5ControlAllChars.Checked = (reader.ReadLine() == "T");
+                    txtFlags.Text = reader.ReadLine();
+                    determineChecks(null, null);
 
                     runChecksum();
+                    loading = false;
                 }
             }
             catch
@@ -402,13 +373,10 @@ namespace DW4RandoHacker
 
                 // Give the Thief's Key to the Chapter 5 hero to prevent a potential unwinnable condition.
                 // romData[0x4911e] = (byte)heroes[7]; <------------ ... maybe...
-            }
 
-            if (chkC5Random.Checked && !chkSoloHero.Checked)
-            {
                 // Randomize the starting character for each chapter...
                 // Come up with eight distinct numbers...
-                int[] heroes = { 0, 1, 2, 3, 4, 5, 6, 7 };
+                //int[] heroes = { 0, 1, 2, 3, 4, 5, 6, 7 };
 
                 for (int lnI = 0; lnI < 100; lnI++)
                 {
@@ -419,18 +387,18 @@ namespace DW4RandoHacker
                     heroes[numberToSwap2] = swappy;
                 }
 
-                if (chkC14Random.Checked)
+                //if (chkC14Random.Checked)
+                //{
+                for (int lnI = 0; lnI < 8; lnI++)
                 {
-                    for (int lnI = 0; lnI < 8; lnI++)
+                    if (heroes[lnI] == finalHero)
                     {
-                        if (heroes[lnI] == finalHero)
-                        {
-                            int swappy = heroes[lnI];
-                            heroes[lnI] = heroes[0];
-                            heroes[0] = swappy;
-                        }
+                        int swappy = heroes[lnI];
+                        heroes[lnI] = heroes[0];
+                        heroes[0] = swappy;
                     }
                 }
+                //}
 
                 // Force Nara to solo hero in Chapter 5
                 romData[0x77903] = (byte)heroes[1];
@@ -459,7 +427,35 @@ namespace DW4RandoHacker
 
                 // Give the Thief's Key to the Chapter 5 hero to prevent a potential unwinnable condition.
                 romData[0x4911e] = (byte)heroes[0];
+
+                // Randomize NPCs
+                for (int lnI = 0; lnI < 100; lnI++)
+                {
+                    int numberToSwap1 = (r1.Next() % 8);
+                    int numberToSwap2 = (r1.Next() % 8);
+                    int swappy = heroes[numberToSwap1];
+                    heroes[numberToSwap1] = heroes[numberToSwap2];
+                    heroes[numberToSwap2] = swappy;
+                }
+
+                // 0x778df (8), 0x778f1 (9), 0x778f7 (a), 0x778fd (b), 0x73678 (c), 0x7364d (d), 0x735de (e), 0x73325 (f)
+                // Just do the first four for now.  The last four is VERY complex... 
+                // (acquisition is fine, but Hector leaving, Panon leaving, Panon joking, Lucia leaving, and the Doran monster detection are the tough parts)
+                int[] npcs = { 0x778df, 0x778f1, 0x778f7, 0x778fd };
+                int npcMark = 0;
+                for (int lnI = 0; lnI <= heroes.Length; lnI++)
+                {
+                    if (heroes[lnI] <= 3)
+                    {
+                        romData[npcs[npcMark]] = (byte)(heroes[lnI] + 8);
+                        npcMark++;
+                    }
+                }
             }
+
+            //if (chkC5Random.Checked && !chkSoloHero.Checked)
+            //{
+            //}
 
             // Make Chapter 2 adjustments if requested.
             if (chkCh2AwardXPTournament.Checked)
@@ -538,6 +534,9 @@ namespace DW4RandoHacker
             if (chkRandomMonsterStats.Checked)
                 randomizeMonsterStats(r1);
 
+            if (chkRandomMonsterAttacks.Checked)
+                randomizeMonsterAttacks(r1);
+
             if (chkRandomMonsterResistances.Checked)
                 randomizeMonsterResistances(r1);
 
@@ -579,9 +578,7 @@ namespace DW4RandoHacker
                 randomizeStores(r1);
 
             if (chkRandomHeroStats.Checked)
-            {
                 randomizeHeroStats(r1);
-            }
 
             if (chkSpeedUpBattles.Checked)
             {
@@ -734,27 +731,27 @@ namespace DW4RandoHacker
 
             // Randomize the levels to the next multiplier from 0 to 24.(First 4 bytes)  Always make the 5th byte "99" (63 hex).
             // Calculate the base gain based on the four multipliers.  Try to get as close to the target gain for each stat as possible.
+            // Char byteToUse - 0x4a15b, 0x4a17f, 0x4a1a3, 0x4a1c7, 0x4a1eb, 0x4a20f, 0x4a22d, 0x4a24b
             int byteToUse = 0x4a15b;
-            for (int lnI = 0; lnI < 8; lnI++)
+            // 48 bytes for strength, 48 bytes for agility, 48 bytes for intelligence, 48 bytes for luck, 30 bytes for mp, in that order.  NOT in character order, statistic order!
+            for (int lnJ = 0; lnJ < 6; lnJ++)
             {
-                for (int lnJ = 0; lnJ < 6; lnJ++)
+                for (int lnI = 0; lnI < 8; lnI++)
                 {
                     // Do NOT run this randomization for the MP calculations of Taloon, Ragnar, and Alena.
-                    if (lnI == 5 && lnI >= 5)
+                    if (lnJ == 5 && lnI >= 5)
                         continue;
 
-                    byteToUse += 6;
-
-                    if (optHeroSilly.Checked || optHeroMedium.Checked)
+                    if (optMonsterSilly.Checked || optMonsterMedium.Checked)
                     {
                         int randomDir = (r1.Next() % 3);
-                        int difference = heroL41Gains[lnI, lnJ] / (optHeroSilly.Checked ? 4 : 2);
+                        int difference = heroL41Gains[lnI, lnJ] / (optMonsterSilly.Checked ? 4 : 2);
                         if (randomDir == 0)
                             heroL41Gains[lnI, lnJ] -= (r1.Next() % difference);
                         if (randomDir == 1)
                             heroL41Gains[lnI, lnJ] += (r1.Next() % difference);
                     }
-                    if (optHeroHeavy.Checked)
+                    if (optMonsterHeavy.Checked)
                         heroL41Gains[lnI, lnJ] = (r1.Next() % (lnJ == 3 ? 175 : 225)) + (lnJ == 3 ? 75 : 25);
 
                     int baseStat = 0;
@@ -763,16 +760,16 @@ namespace DW4RandoHacker
                         if (romData[byteToUse + lnK] >= 128)
                             baseStat += (lnK == 0 ? 1 : lnK == 1 ? 2 : lnK == 2 ? 4 : lnK == 3 ? 8 : 16);
                     }
-                    if (optHeroSilly.Checked || optHeroMedium.Checked)
+                    if (optMonsterSilly.Checked || optMonsterMedium.Checked)
                     {
                         int randomDir = (r1.Next() % 3);
-                        int difference = baseStat / (optHeroSilly.Checked ? 2 : 1);
+                        int difference = baseStat / (optMonsterSilly.Checked ? 2 : 1);
                         if (randomDir == 0 && difference >= 2)
                             baseStat -= (r1.Next() % difference);
                         if (randomDir == 1 && difference >= 2)
                             baseStat += (r1.Next() % difference);
                     }
-                    if (optHeroHeavy.Checked)
+                    if (optMonsterHeavy.Checked)
                         baseStat = r1.Next() % 32;
 
                     int[] levels = { 0, 0, 0, 0 };
@@ -792,23 +789,29 @@ namespace DW4RandoHacker
                     else
                         romData[byteToUse + 4] = 99;
 
+                    // Averages:  8-16 = .6/level, 24-32 = 1.6/level, 40-48 = 2.6/level, 56-64 = 3.6/level, 72-80 = 4.6/level, 88-96 = 5.6/level, 104-112 = 6.6/level
+                    // Maximize base stat at 12 (5.6/level at 8 multiplier)
                     // Now to figure out the multiplier to use (+ 0) and the base multiplier (+ 5)
                     double[] diffs = { 0.0, 0.0, 0.0, 0.0 };
                     int[] baseMult = { 0, 0, 0, 0 };
                     for (int lnK = 0; lnK < 4; lnK++)
                     {
-                        int byteToUse2 = 0x4a281 + (lnK * 6);
-                        double stat = 0.0;
-                        int multLevel = 0;
-                        for (int lnL = 2; lnL <= 40; lnL++)
+                        for (baseMult[lnK] = 1; baseMult[lnK] <= 12; baseMult[lnK]++)
                         {
-                            if (lnL > romData[byteToUse + multLevel])
-                                multLevel++;
-                            double toAdd = romData[byteToUse2 + multLevel] / 16.0;
-                            stat += romData[byteToUse2 + multLevel] / 16.0;
+                            int byteToUse2 = 0x4a281 + (lnK * 6); // multipliers
+                            double stat = 0.0;
+                            int multLevel = 0;
+
+                            for (int lnL = 2; lnL <= 40; lnL++)
+                            {
+                                if (lnL > (romData[byteToUse + multLevel] % 128))
+                                    multLevel++;
+                                stat += Math.Floor((((double)baseMult[lnK] * romData[byteToUse2 + multLevel]) - 8) / 16) + 0.6;
+                            }
+                            //baseMult[lnK] = (int)Math.Round(heroL41Gains[lnI, lnJ] / stat);
+                            diffs[lnK] = Math.Abs(stat - heroL41Gains[lnI, lnJ]);
+                            if (stat > heroL41Gains[lnI, lnJ]) break;
                         }
-                        baseMult[lnK] = (int)Math.Round(heroL41Gains[lnI, lnJ] / stat);
-                        diffs[lnK] = Math.Abs((stat * baseMult[lnK]) - heroL41Gains[lnI, lnJ]);
                     }
 
                     double lowDiff = 9999;
@@ -825,11 +828,45 @@ namespace DW4RandoHacker
                     }
                     romData[byteToUse] += (byte)(32 * lowMult);
                     romData[byteToUse + 5] = (byte)ultiBaseMult;
+
+                    byteToUse += 6;
                 }
             }
+            //int asdf = 1234;
+            //overrideStats();
         }
 
-        private void randomizeMonsterStats(Random r1)
+        //private void overrideStats()
+        //{
+        //    for (int lnI = 0; lnI < 4; lnI++)
+        //        for (int lnJ = 0; lnJ < 6; lnJ++)
+        //        {
+        //            int byteToUse2 = 0x4a281 + (lnI * 6) + lnJ;
+        //            romData[byteToUse2] = 24;
+        //        }
+
+        //    int byteToUse = 0x4a15b;
+        //    // 48 bytes for strength, 48 bytes for agility, 48 bytes for intelligence, 48 bytes for luck, 30 bytes for mp, in that order.  NOT in character order, statistic order!
+        //    for (int lnJ = 0; lnJ < 6; lnJ++)
+        //    {
+        //        for (int lnI = 0; lnI < 8; lnI++)
+        //        {
+        //            // Do NOT run this randomization for the MP calculations of Taloon, Ragnar, and Alena.
+        //            if (lnJ == 5 && lnI >= 5)
+        //                continue;
+
+        //            romData[byteToUse + 0] = 144;
+        //            romData[byteToUse + 1] = 16;
+        //            romData[byteToUse + 2] = 16;
+        //            romData[byteToUse + 3] = 16;
+        //            romData[byteToUse + 4] = 99;
+        //            romData[byteToUse + 5] = 1;
+        //            byteToUse += 6;
+        //        }
+        //    }
+        //}
+
+        private void randomizeMonsterAttacks(Random r1)
         {
             int[] level1Moves = { 0x00, 0x07, 0x16, 0x1c, 0x1e, 0x25, 0x2a, 0x2d, 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x36, 0x47, 0x48 };
             int[] level2Moves = { 0x00, 0x03, 0x07, 0x0a, 0x10, 0x12, 0x13, 0x16, 0x17, 0x1c, 0x1d, 0x1e, 0x22, 0x25, 0x2a, 0x2d, 0x30, 0x32, 0x32, 0x32, 0x32, 0x34, 0x35, 0x36, 0x38, 0x3c, 0x3f, 0x42, 0x43, 0x47, 0x48, 0x4b, 0x4c, 0x57, 0x58, 0x5f, 0x64 };
@@ -838,16 +875,8 @@ namespace DW4RandoHacker
             int[] level5Moves = { 0x02, 0x05, 0x06, 0x09, 0x0c, 0x0e, 0x10, 0x17, 0x1a, 0x1d, 0x24, 0x27, 0x28, 0x29, 0x31, 0x32, 0x34, 0x37, 0x3a, 0x3e, 0x41, 0x44, 0x49, 0x4a, 0x52, 0x53, 0x56, 0x59, 0x5a, 0x60 };
             int[] weirdAttackMoves = { 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37 };
 
-            // If light is selected, 50% chance of maintaining same enemy pattern.  25% chance of changing it to attack only.  25% chance of the level moves above.
-            // If silly is selected, 25% chance of maintaining same enemy pattern, 25% chance of attack only, 25% chance of level moves above, 25% of completely random.
-            // If ridiculous is selected, 25% chance of attack only, 25% chance of level moves above, 50% chance of completely random.
-            // If ludicrous is selected, 100% chance of completely random.
-
             for (int lnI = 0; lnI < monsterRank.Length; lnI++) // 0xc2 is not used; Necrosaro
             {
-                //// do not randomize Necrosaro.
-                //if (lnI == 0xae) continue;
-
                 int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
                 int randomType = 0;
                 int randomRandom = (r1.Next() % 4);
@@ -895,6 +924,13 @@ namespace DW4RandoHacker
                                                                   moveLevel == 2 ? level3Moves[r1.Next() % level3Moves.Length] :
                                                                   moveLevel == 3 ? level4Moves[r1.Next() % level4Moves.Length] :
                                                                   level5Moves[r1.Next() % level5Moves.Length]);
+
+                        // Chapter 1-4 Boss monsters should not have a chance to crit nor be able to call for more bosses.  If they come up, redo the randomization.
+                        if ((romData[byteToUse + 9 + lnJ] == 0x48 || romData[byteToUse + 9 + lnJ] == 0x34) && ((monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf ||
+                            monsterRank[lnI] == 0xb0 || monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4)))
+                        {
+                            lnJ--;
+                        }
                     }
                 }
                 if (randomType == 3)
@@ -941,6 +977,23 @@ namespace DW4RandoHacker
                         }
                     }
                 }
+            }
+        }
+
+        private void randomizeMonsterStats(Random r1)
+        {
+
+            // If light is selected, 50% chance of maintaining same enemy pattern.  25% chance of changing it to attack only.  25% chance of the level moves above.
+            // If silly is selected, 25% chance of maintaining same enemy pattern, 25% chance of attack only, 25% chance of level moves above, 25% of completely random.
+            // If ridiculous is selected, 25% chance of attack only, 25% chance of level moves above, 50% chance of completely random.
+            // If ludicrous is selected, 100% chance of completely random.
+
+            for (int lnI = 0; lnI < monsterRank.Length; lnI++) // 0xc2 is not used; Necrosaro
+            {
+                //// do not randomize Necrosaro.
+                //if (lnI == 0xae) continue;
+
+                int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
 
                 // If light is selected, maintain enemy resistances, HP, strength, defense, and agility.  Do not do this if a metal monster is involved...
                 if (!optMonsterLight.Checked && monsterRank[lnI] != 0x5c && monsterRank[lnI] != 0x75)
@@ -1100,19 +1153,31 @@ namespace DW4RandoHacker
 
             int[] allTreasure = allTreasureList.ToArray();
 
+            // 33 percent chance of a common treasure.
+            // 33 percent chance after that for gold.
+            // After that, present the rest of the items, including man eater chest and mimics.
+
             int[] legalTreasures = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
                                          0x10, 0x11, 0x12, 0x13, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1f,
                                          0x20, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
                                          0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f,
                                          0x40, 0x41, 0x42, 0x43, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4c, 0x4d, 0x4e, 0x4f,
-                                         0x50, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a, 0x5b, 0x5e,
-                                         0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x69, 
-                                         0x74, 0x79 };
+                                         0x50, 0x57, 0x59, 0x5b,
+                                         0x66, 0x69,
+                                         0x79, 0xfd, 0xfe };
+            int[] legalTreasures2 = { 0x53, 0x54, 0x55, 0x56, 0x58, 0x5a, 0x5e, 0x61, 0x62, 0x63, 0x64, 0x65, 0x74 };
+
 
             // Completely randomize treasures first.
             foreach (int treasure in allTreasureList)
             {
-                romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
+                if (r1.Next() % 3 == 0)
+                    romData[treasure] = (byte)legalTreasures2[r1.Next() % legalTreasures2.Length];
+                else if (r1.Next() % 3 == 0)
+                    romData[treasure] = (byte)(r1.Next() % 124 + 128);
+                else
+                    romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
+                //romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
                 if (treasure == 0x7b901)
                     romData[0x7b8f4] = romData[treasure];
             }
@@ -1177,6 +1242,30 @@ namespace DW4RandoHacker
 
         private void randomizeStores(Random r1)
         {
+            // We first need to adjust the prices of all the items so that the casino and medal king stores sell at a proper price.
+            int[] prices = { 10, 30, 100, 1500, 550, 880, 2000, 5500, 500, 200, 1250, 350, 1600, 620, 50000, 1400,
+                             2500, 20000, 600, 3300, 0, 50000, 7500, 4300, 8000, 750, 10000, 20000, 30000, 4000, 0, 4000,
+                             6000, 0, 4000, 3500, 10, 70, 180, 350, 1200, 1500, 2300, 110, 400, 700, 15000, 600,
+                             250, 6300, 5200, 3000, 4400, 15000, 7500, 0, 9800, 6000, 870, 8800, 1000, 90, 180, 650,
+                             13000, 9000, 4700, 7100, 0, 50000, 65, 120, 1100, 3500, 280, 0, 8, 540, 15000, 50000,
+                             5000, 1000, 0, 8, 10, 20, 25, 10000, 30, 6000, 500, 10000, 0, 0, 150, 0,
+                             0, 2000, 1500, 700, 2000, 3000, 5, 5, 0, 4000, 0, 0, 0, 0, 1000, 0,
+                             0, 0, 0, 0, 10, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0 };
+
+            // Go through the prices and plug into the ROM.  If the price is 0, make sure that 0x10 is set in the first segment.
+            for (int lnI = 0; lnI <= prices.Length; lnI++)
+            {
+                int oldValue = romData[0x40cf4 + lnI];
+                bool noThrow = (oldValue % 32 >= 16);
+                if (noThrow && prices[lnI] >= 1)
+                    oldValue -= 16;
+                oldValue -= (oldValue % 4);
+                oldValue += (prices[lnI] >= 100 ? 1 : prices[lnI] >= 1000 ? 2 : prices[lnI] >= 10000 ? 3 : 0);
+                romData[0x40cf4 + lnI] = (byte)oldValue;
+
+                romData[0x40d73 + lnI] = (byte)(prices[lnI] / (prices[lnI] >= 100 ? 10 : prices[lnI] >= 1000 ? 100 : prices[lnI] >= 10000 ? 1000 : 1));
+            }
+
             int[] lowGradeStores = { 0x6341f, 0x634a1, 0x63537, 0x63425, 0x634a9, 0x6353C,
                     0x63496, 0x634b1, 0x6345a, 0x63541, 0x6342c, 0x63549, 0x63433, 0x634b9, 0x63551, 0x634c1, 0x63558, 0x6343a, 0x63560,
                     0x63441, 0x634c9, 0x63569, 0x6356f, 0x63573, 0x63446, 0x634e8, 0x635c8,
@@ -1235,10 +1324,30 @@ namespace DW4RandoHacker
                     if (romData[byteToUse + lnJ] >= 128)
                         lastItem = true;
                     romData[byteToUse + lnJ] = legalHighGradeStoreItems[r1.Next() % legalHighGradeStoreItems.Length];
+                    // Casino adjustment
                     if (byteToUse == 0x63588)
+                    {
                         romData[0x5735d + (lnJ * 3)] = romData[byteToUse + lnJ];
-                    if (byteToUse == 0x6349b && lnJ <= 2)
-                        romData[0x5730b + (lnJ * 8)] = romData[byteToUse + lnJ];
+                        int casinoCoins = prices[romData[byteToUse + lnJ]] / 20;
+                        romData[0x5735d + (lnJ * 3) + 1] = (byte)(casinoCoins % 256);
+                        romData[0x5735d + (lnJ * 3) + 2] = (byte)(casinoCoins / 256);
+                    }
+
+                    // Small Medal King adjustment
+                    if (byteToUse == 0x6349b)
+                    {
+                        if (lnJ <= 2)
+                        {
+                            romData[0x5730b + (lnJ * 8)] = romData[byteToUse + lnJ];
+                            romData[0x5730b + (lnJ * 8) + 4] = (byte)(prices[romData[byteToUse + lnJ]] / 4000);
+                            if (romData[0x5730b + (lnJ * 8) + 4] == 0x00) romData[0x5730b + (lnJ * 8) + 4] = 0x01;
+                        } else
+                        {
+                            romData[0x57323] = (byte)(prices[romData[byteToUse + lnJ]] / 4000);
+                            if (romData[0x57323] == 0x00) romData[0x57323] = 0x01;
+                        }
+                    }
+
                     for (int lnK = 0; lnK < lnJ; lnK++)
                         if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
                             continue;
@@ -1822,38 +1931,8 @@ namespace DW4RandoHacker
                     writer.WriteLine(txtC5Name3.Text);
                     writer.WriteLine(txtC5Name4.Text);
 
-                    writer.WriteLine(chkSoloHero.Checked ? "T" : "F");
-                    writer.WriteLine(cboSoloHero.SelectedItem);
-                    writer.WriteLine(chkSoloCanEquipAll.Checked ? "T" : "F");
-                    writer.WriteLine(chkC14Random.Checked ? "T" : "F");
-                    writer.WriteLine(chkC5Random.Checked ? "T" : "F");
-                    writer.WriteLine(chkCh2AwardXPTournament.Checked ? "T" : "F");
-                    writer.WriteLine(chkShop1.Checked ? "T" : "F");
-                    writer.WriteLine(chkShop25K.Checked ? "T" : "F");
-                    writer.WriteLine(chkTunnel1.Checked ? "T" : "F");
-                    writer.WriteLine(cboXPAdjustment.SelectedItem);
-                    writer.WriteLine(chkXPRandom.Checked ? "T" : "F");
-                    writer.WriteLine(cboGoldAdjustment.SelectedItem);
-                    writer.WriteLine(chkGoldRandom.Checked ? "T" : "F");
-                    writer.WriteLine(cboEncounterRate.SelectedItem);
-                    writer.WriteLine(chkRandomMonsterZones.Checked ? "T" : "F");
                     writer.WriteLine(txtSeed.Text);
-                    writer.WriteLine(chkSpeedUpBattles.Checked ? "T" : "F");
-                    writer.WriteLine(chkRandomHeroEquip.Checked ? "T" : "F");
-                    writer.WriteLine(chkRandomMonsterStats.Checked ? "T" : "F");
-                    writer.WriteLine(optMonsterLight.Checked ? "T" : "F");
-                    writer.WriteLine(optMonsterSilly.Checked ? "T" : "F");
-                    writer.WriteLine(optMonsterMedium.Checked ? "T" : "F");
-                    writer.WriteLine(optMonsterHeavy.Checked ? "T" : "F");
-                    writer.WriteLine(chkRandomTreasures.Checked ? "T" : "F");
-                    writer.WriteLine(chkRandomMonsterResistances.Checked ? "T" : "F");
-                    writer.WriteLine(chkRandomStores.Checked ? "T" : "F");
-                    writer.WriteLine(chkRandomHeroStats.Checked ? "T" : "F");
-                    writer.WriteLine(optHeroLight.Checked ? "T" : "F");
-                    writer.WriteLine(optHeroSilly.Checked ? "T" : "F");
-                    writer.WriteLine(optHeroMedium.Checked ? "T" : "F");
-                    writer.WriteLine(optHeroHeavy.Checked ? "T" : "F");
-                    writer.WriteLine(chkC5ControlAllChars.Checked ? "T" : "F");
+                    writer.WriteLine(txtFlags.Text);
                 }
         }
 
@@ -1939,17 +2018,19 @@ namespace DW4RandoHacker
             cboSoloHero.Enabled = chkSoloHero.Checked;
             chkSoloCanEquipAll.Enabled = chkSoloHero.Checked;
             chkC14Random.Enabled = !chkSoloHero.Checked;
-            chkC5Random.Enabled = !chkSoloHero.Checked;
+            determineFlags(null, null);
         }
 
         private void chkShop1_CheckedChanged(object sender, EventArgs e)
         {
             if (chkShop1.Checked) chkShop25K.Checked = false;
+            determineFlags(null, null);
         }
 
         private void chkShop25K_CheckedChanged(object sender, EventArgs e)
         {
             if (chkShop25K.Checked) chkShop1.Checked = false;
+            determineFlags(null, null);
         }
 
         private void cmdStatOutput_Click(object sender, EventArgs e)
@@ -1985,5 +2066,143 @@ namespace DW4RandoHacker
             return writer;
         }
 
+        public void determineFlags(object sender, EventArgs e)
+        {
+            if (loading) return;
+
+            string flags = "";
+
+            if (chkSoloHero.Checked)
+            {
+                flags += "O";
+                flags += ((string)cboSoloHero.SelectedItem == "Hero" ? 0 :
+                          (string)cboSoloHero.SelectedItem == "Cristo" ? 1 :
+                          (string)cboSoloHero.SelectedItem == "Nara" ? 2 :
+                          (string)cboSoloHero.SelectedItem == "Mara" ? 3 :
+                          (string)cboSoloHero.SelectedItem == "Brey" ? 4 :
+                          (string)cboSoloHero.SelectedItem == "Taloon" ? 5 :
+                          (string)cboSoloHero.SelectedItem == "Ragnar" ? 6 : 7);
+            }
+            flags += (chkSoloCanEquipAll.Checked ? "o" : "");
+            flags += (chkC14Random.Checked ? "H" : "");
+            if ((string)cboXPAdjustment.SelectedItem != "100%" && (string)cboXPAdjustment.SelectedItem != "")
+            {
+                flags += "X";
+                flags += ((string)cboXPAdjustment.SelectedItem == "50 %" ? 0 :
+                    (string)cboXPAdjustment.SelectedItem == "100 %" ? 1 :
+                    (string)cboXPAdjustment.SelectedItem == "150 %" ? 2 :
+                    (string)cboXPAdjustment.SelectedItem == "200 %" ? 3 :
+                    (string)cboXPAdjustment.SelectedItem == "300 %" ? 4 :
+                    (string)cboXPAdjustment.SelectedItem == "400 %" ? 5 : 6);
+            }
+            flags += (chkXPRandom.Checked ? "x" : "");
+            if ((string)cboGoldAdjustment.SelectedItem != "100%" && (string)cboGoldAdjustment.SelectedItem != "")
+            {
+                flags += "G";
+                flags += ((string)cboGoldAdjustment.SelectedItem == "50 %" ? 0 :
+                    (string)cboGoldAdjustment.SelectedItem == "100 %" ? 1 :
+                    (string)cboGoldAdjustment.SelectedItem == "150 %" ? 2 : 3);
+            }
+            flags += (chkGoldRandom.Checked ? "g" : "");
+            if ((string)cboEncounterRate.SelectedItem != "x1" && (string)cboEncounterRate.SelectedItem != "")
+            {
+                flags += "E";
+                flags += ((string)cboEncounterRate.SelectedItem == "1/4" ? 0 :
+                    (string)cboEncounterRate.SelectedItem == "1/2" ? 1 :
+                    (string)cboEncounterRate.SelectedItem == "3/4" ? 2 :
+                    (string)cboEncounterRate.SelectedItem == "x1" ? 3 :
+                    (string)cboEncounterRate.SelectedItem == "x1.5" ? 4 :
+                    (string)cboEncounterRate.SelectedItem == "x2" ? 5 :
+                    (string)cboEncounterRate.SelectedItem == "x3" ? 6 : 7);
+            }
+            flags += (chkRandomMonsterZones.Checked ? "Z" : "");
+            flags += (chkSpeedUpBattles.Checked ? "B" : "");
+            flags += (chkRandomHeroEquip.Checked ? "E" : "");
+            flags += (chkRandomMonsterStats.Checked ? "s" : "");
+            flags += (chkRandomTreasures.Checked ? "T" : "");
+            flags += (chkRandomMonsterResistances.Checked ? "R" : "");
+            flags += (chkRandomStores.Checked ? "M" : "");
+            flags += (chkRandomHeroStats.Checked ? "S" : "");
+            flags += (chkC5ControlAllChars.Checked ? "C" : "");
+            flags += (chkRandomMonsterAttacks.Checked ? "A" : "");
+
+            flags += (optMonsterLight.Checked ? "_r1" : "");
+            flags += (optMonsterSilly.Checked ? "_r2" : "");
+            flags += (optMonsterMedium.Checked ? "_r3" : "");
+            flags += (optMonsterHeavy.Checked ? "_r4" : "");
+            if (chkCh2AwardXPTournament.Checked)
+            {
+                flags += "_2";
+                flags += (chkCh2AwardXPTournament.Checked ? "T" : "");
+            }
+            if (chkShop1.Checked || chkShop25K.Checked || chkTunnel1.Checked)
+            {
+                flags += "_3";
+                flags += (chkShop1.Checked ? "s" : "");
+                flags += (chkShop25K.Checked ? "S" : "");
+                flags += (chkTunnel1.Checked ? "T" : "");
+            }
+
+            txtFlags.Text = flags;
+        }
+
+        private void determineChecks(object sender, EventArgs e)
+        {
+            string[] flags = txtFlags.Text.Split('_');
+
+            foreach (string flag in flags)
+            {
+                if (flag.Substring(0, 1).Contains("1"))
+                {
+                    // nothing implemented yet
+                } else if (flag.Substring(0, 1).Contains("2"))
+                {
+                    chkCh2AwardXPTournament.Checked = flag.Contains("T");
+                }
+                else if (flag.Substring(0, 1).Contains("3"))
+                {
+                    chkShop1.Checked = flag.Contains("s");
+                    chkShop25K.Checked = flag.Contains("S");
+                    chkTunnel1.Checked = flag.Contains("T");
+                }
+                else if (flag.Substring(0, 1).Contains("4"))
+                {
+                    // nothing implemented yet
+                }
+                else if (flag.Substring(0, 1).Contains("r"))
+                {
+                    optMonsterLight.Checked = flag.Contains("r1");
+                    optMonsterSilly.Checked = flag.Contains("r2");
+                    optMonsterMedium.Checked = flag.Contains("r3");
+                    optMonsterHeavy.Checked = flag.Contains("r4");
+                }
+                else
+                {
+                    // everything else!
+                    chkSoloHero.Checked = flag.Contains("O");
+                    cboSoloHero.SelectedItem = (flag.Contains("O0") ? "Hero" : flag.Contains("O0") ? "Cristo" : flag.Contains("O0") ? "Nara" : 
+                        flag.Contains("O0") ? "Mara" : flag.Contains("O0") ? "Brey" : flag.Contains("O0") ? "Taloon" : flag.Contains("O0") ? "Ragnar" : "Alena");
+                    chkSoloCanEquipAll.Checked = flag.Contains("o");
+                    chkC14Random.Checked = flag.Contains("H");
+                    cboXPAdjustment.SelectedItem = (flag.Contains("X0") ? "50 %" : flag.Contains("X2") ? "150 %" : flag.Contains("X3") ? "200 %" :
+                        flag.Contains("X4") ? "300 %" : flag.Contains("X5") ? "400 %" : flag.Contains("X6") ? "500 %" : "100 %");
+                    chkXPRandom.Checked = flag.Contains("x");
+                    cboGoldAdjustment.SelectedItem = (flag.Contains("G0") ? "50 %" : flag.Contains("G2") ? "150 %" : flag.Contains("G3") ? "200 %" : "100 %");
+                    chkGoldRandom.Checked = flag.Contains("g");
+                    cboEncounterRate.SelectedItem = (flag.Contains("E0") ? "1/4" : flag.Contains("E1") ? "1/2" : flag.Contains("E2") ? "3/4" :
+                        flag.Contains("E4") ? "x1.5" : flag.Contains("E5") ? "x2" : flag.Contains("E6") ? "x3" : flag.Contains("E7") ? "x4" : "x1");
+                    chkRandomMonsterZones.Checked = flag.Contains("Z");
+                    chkSpeedUpBattles.Checked = flag.Contains("B");
+                    chkRandomHeroEquip.Checked = flag.Contains("E");
+                    chkRandomMonsterStats.Checked = flag.Contains("s");
+                    chkRandomTreasures.Checked = flag.Contains("T");
+                    chkRandomMonsterResistances.Checked = flag.Contains("R");
+                    chkRandomStores.Checked = flag.Contains("M");
+                    chkRandomHeroStats.Checked = flag.Contains("S");
+                    chkC5ControlAllChars.Checked = flag.Contains("C");
+                    chkRandomMonsterAttacks.Checked = flag.Contains("A");
+                }
+            }
+        }
     }
 }
