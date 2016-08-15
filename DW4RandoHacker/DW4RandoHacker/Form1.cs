@@ -443,7 +443,7 @@ namespace DW4RandoHacker
                 // (acquisition is fine, but Hector leaving, Panon leaving, Panon joking, Lucia leaving, and the Doran monster detection are the tough parts)
                 int[] npcs = { 0x778df, 0x778f1, 0x778f7, 0x778fd };
                 int npcMark = 0;
-                for (int lnI = 0; lnI <= heroes.Length; lnI++)
+                for (int lnI = 0; lnI < heroes.Length; lnI++)
                 {
                     if (heroes[lnI] <= 3)
                     {
@@ -1253,7 +1253,7 @@ namespace DW4RandoHacker
                              0, 0, 0, 0, 10, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0 };
 
             // Go through the prices and plug into the ROM.  If the price is 0, make sure that 0x10 is set in the first segment.
-            for (int lnI = 0; lnI <= prices.Length; lnI++)
+            for (int lnI = 0; lnI < prices.Length; lnI++)
             {
                 int oldValue = romData[0x40cf4 + lnI];
                 bool noThrow = (oldValue % 32 >= 16);
