@@ -350,6 +350,12 @@ namespace DW4RandoHacker
                 for (int lnI = 0; lnI < 5; lnI++)
                     romData[0x4914d + lnI] = (byte)(128 + heroes[lnI]); // This will ensure the same character starts each chapter.
 
+                // Make Taloon sane in the first 4 chapters, not just in Chapter 3.
+                if (heroes[0] == 5) romData[0x47309] = 0;
+                else if (heroes[1] == 5 || heroes[5] == 5 || heroes[6] == 5) romData[0x47309] = 1;
+                else if (heroes[2] == 5) romData[0x47309] = 2;
+                else romData[0x47309] = 3;
+
                 // Make the Cristo and Brey join change to the solo hero joining twice instead in Chapter 2.
                 romData[0x79d44] = (byte)heroes[5];
                 romData[0x79d49] = (byte)heroes[6];
@@ -448,6 +454,8 @@ namespace DW4RandoHacker
                     if (heroes[lnI] <= 3)
                     {
                         romData[npcs[npcMark]] = (byte)(heroes[lnI] + 8);
+                        if (npcs[npcMark] == 0x778f1)
+                            romData[0x7b399] = (byte)(heroes[lnI] + 8);
                         npcMark++;
                     }
                 }
@@ -901,7 +909,14 @@ namespace DW4RandoHacker
                     if (r1.Next() % 2 == 1)
                         // weird attack pattern
                         for (int lnJ = 0; lnJ < 6; lnJ++)
+                        {
                             romData[byteToUse + 9 + lnJ] = (byte)weirdAttackMoves[r1.Next() % weirdAttackMoves.Length];
+                            // Chapter 1-4 Bosses should not critical hit or paralyze
+                            if ((romData[byteToUse + 9 + lnJ] == 0x33 || romData[byteToUse + 9 + lnJ] == 0x34 || romData[byteToUse + 9 + lnJ] == 0x37) &&
+                                (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
+                                  monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
+                                lnJ--;
+                        }
                     else
                         for (int lnJ = 0; lnJ < 6; lnJ++)
                             romData[byteToUse + 9 + lnJ] = 0x32;
@@ -1173,7 +1188,7 @@ namespace DW4RandoHacker
             {
                 if (r1.Next() % 3 == 0)
                     romData[treasure] = (byte)legalTreasures2[r1.Next() % legalTreasures2.Length];
-                else if (r1.Next() % 3 == 0)
+                else if (r1.Next() % 3 == 0 && treasure >= 0x7bd01 && treasure <= 0x7bfff)
                     romData[treasure] = (byte)(r1.Next() % 124 + 128);
                 else
                     romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
@@ -1260,10 +1275,10 @@ namespace DW4RandoHacker
                 if (noThrow && prices[lnI] >= 1)
                     oldValue -= 16;
                 oldValue -= (oldValue % 4);
-                oldValue += (prices[lnI] >= 100 ? 1 : prices[lnI] >= 1000 ? 2 : prices[lnI] >= 10000 ? 3 : 0);
+                oldValue += (prices[lnI] >= 10000 ? 3 : prices[lnI] >= 1000 ? 2 : prices[lnI] >= 100 ? 1 : 0);
                 romData[0x40cf4 + lnI] = (byte)oldValue;
 
-                romData[0x40d73 + lnI] = (byte)(prices[lnI] / (prices[lnI] >= 100 ? 10 : prices[lnI] >= 1000 ? 100 : prices[lnI] >= 10000 ? 1000 : 1));
+                romData[0x40df2 + lnI] = (byte)(prices[lnI] / (prices[lnI] >= 10000 ? 1000 : prices[lnI] >= 1000 ? 100 : prices[lnI] >= 100 ? 10 : 1));
             }
 
             int[] lowGradeStores = { 0x6341f, 0x634a1, 0x63537, 0x63425, 0x634a9, 0x6353C,
@@ -1716,7 +1731,7 @@ namespace DW4RandoHacker
             //options += (chkRandStores.Checked ? "7" : "");
             //options += (chkRandStores.Checked ? "8" : "");
             //options += (optNoIntensity.Checked ? "_none" : radSlightIntensity.Checked ? "_slight" : radModerateIntensity.Checked ? "_moderate" : radHeavyIntensity.Checked ? "_heavy" : "_insane");
-            string finalFile = Path.Combine(Path.GetDirectoryName(txtFileName.Text), "DW4RH_" + txtSeed.Text + options + ".nes");
+            string finalFile = Path.Combine(Path.GetDirectoryName(txtFileName.Text), "DW4RH_" + txtSeed.Text + "_" + txtFlags.Text + ".nes");
             File.WriteAllBytes(finalFile, romData);
             lblIntensityDesc.Text = "ROM hacking complete!  (" + finalFile + ")";
             txtCompare.Text = finalFile;
@@ -2088,20 +2103,20 @@ namespace DW4RandoHacker
             if ((string)cboXPAdjustment.SelectedItem != "100%" && (string)cboXPAdjustment.SelectedItem != "")
             {
                 flags += "X";
-                flags += ((string)cboXPAdjustment.SelectedItem == "50 %" ? 0 :
-                    (string)cboXPAdjustment.SelectedItem == "100 %" ? 1 :
-                    (string)cboXPAdjustment.SelectedItem == "150 %" ? 2 :
-                    (string)cboXPAdjustment.SelectedItem == "200 %" ? 3 :
-                    (string)cboXPAdjustment.SelectedItem == "300 %" ? 4 :
-                    (string)cboXPAdjustment.SelectedItem == "400 %" ? 5 : 6);
+                flags += ((string)cboXPAdjustment.SelectedItem == "50%" ? 0 :
+                    (string)cboXPAdjustment.SelectedItem == "100%" ? 1 :
+                    (string)cboXPAdjustment.SelectedItem == "150%" ? 2 :
+                    (string)cboXPAdjustment.SelectedItem == "200%" ? 3 :
+                    (string)cboXPAdjustment.SelectedItem == "300%" ? 4 :
+                    (string)cboXPAdjustment.SelectedItem == "400%" ? 5 : 6);
             }
             flags += (chkXPRandom.Checked ? "x" : "");
             if ((string)cboGoldAdjustment.SelectedItem != "100%" && (string)cboGoldAdjustment.SelectedItem != "")
             {
                 flags += "G";
-                flags += ((string)cboGoldAdjustment.SelectedItem == "50 %" ? 0 :
-                    (string)cboGoldAdjustment.SelectedItem == "100 %" ? 1 :
-                    (string)cboGoldAdjustment.SelectedItem == "150 %" ? 2 : 3);
+                flags += ((string)cboGoldAdjustment.SelectedItem == "50%" ? 0 :
+                    (string)cboGoldAdjustment.SelectedItem == "100%" ? 1 :
+                    (string)cboGoldAdjustment.SelectedItem == "150%" ? 2 : 3);
             }
             flags += (chkGoldRandom.Checked ? "g" : "");
             if ((string)cboEncounterRate.SelectedItem != "x1" && (string)cboEncounterRate.SelectedItem != "")
@@ -2184,10 +2199,10 @@ namespace DW4RandoHacker
                         flag.Contains("O0") ? "Mara" : flag.Contains("O0") ? "Brey" : flag.Contains("O0") ? "Taloon" : flag.Contains("O0") ? "Ragnar" : "Alena");
                     chkSoloCanEquipAll.Checked = flag.Contains("o");
                     chkC14Random.Checked = flag.Contains("H");
-                    cboXPAdjustment.SelectedItem = (flag.Contains("X0") ? "50 %" : flag.Contains("X2") ? "150 %" : flag.Contains("X3") ? "200 %" :
-                        flag.Contains("X4") ? "300 %" : flag.Contains("X5") ? "400 %" : flag.Contains("X6") ? "500 %" : "100 %");
+                    cboXPAdjustment.SelectedItem = (flag.Contains("X0") ? "50%" : flag.Contains("X2") ? "150%" : flag.Contains("X3") ? "200%" :
+                        flag.Contains("X4") ? "300%" : flag.Contains("X5") ? "400%" : flag.Contains("X6") ? "500%" : "100%");
                     chkXPRandom.Checked = flag.Contains("x");
-                    cboGoldAdjustment.SelectedItem = (flag.Contains("G0") ? "50 %" : flag.Contains("G2") ? "150 %" : flag.Contains("G3") ? "200 %" : "100 %");
+                    cboGoldAdjustment.SelectedItem = (flag.Contains("G0") ? "50%" : flag.Contains("G2") ? "150%" : flag.Contains("G3") ? "200%" : "100%");
                     chkGoldRandom.Checked = flag.Contains("g");
                     cboEncounterRate.SelectedItem = (flag.Contains("E0") ? "1/4" : flag.Contains("E1") ? "1/2" : flag.Contains("E2") ? "3/4" :
                         flag.Contains("E4") ? "x1.5" : flag.Contains("E5") ? "x2" : flag.Contains("E6") ? "x3" : flag.Contains("E7") ? "x4" : "x1");
