@@ -444,18 +444,26 @@ namespace DW4RandoHacker
                     heroes[numberToSwap2] = swappy;
                 }
 
-                // 0x778df (8), 0x778f1 (9), 0x778f7 (a), 0x778fd (b), 0x73678 (c), 0x7364d (d), 0x735de (e), 0x73325 (f)
-                // Just do the first four for now.  The last four is VERY complex... 
-                // (acquisition is fine, but Hector leaving, Panon leaving, Panon joking, Lucia leaving, and the Doran monster detection are the tough parts)
-                int[] npcs = { 0x778df, 0x778f1, 0x778f7, 0x778fd };
+                // 0x778df (8), 0x778f1 (9), 0x778f7 (a), 0x778fd (b), 0x73678 (c), 0x7364e (d), 0x7790f (e) + 0x77573, 0x73b30 (f)
+                romData[0x57169] = 0x20; // Prevent Doran from being called a monster when talking to anyone.  Mainly in case he's acting as Panon.
+                int[] npcs = { 0x778df, 0x778f1, 0x778f7, 0x778fd, 0x73678, 0x7364e, 0x7790f, 0x73b30 };
                 int npcMark = 0;
                 for (int lnI = 0; lnI < heroes.Length; lnI++)
                 {
-                    if (heroes[lnI] <= 3)
+                    if (heroes[lnI] <= 6)
                     {
                         romData[npcs[npcMark]] = (byte)(heroes[lnI] + 8);
                         if (npcs[npcMark] == 0x778f1)
                             romData[0x7b399] = (byte)(heroes[lnI] + 8);
+                        if (npcs[npcMark] == 0x73678)
+                            romData[0x79597] = (byte)(heroes[lnI] + 8);
+                        if (npcs[npcMark] == 0x7364d)
+                        {
+                            romData[0x56c1d] = (byte)(heroes[lnI] + 8);
+                        }
+                        if (npcs[npcMark] == 0x7790f)
+                            romData[0x77573] = (byte)(heroes[lnI] + 8);
+
                         npcMark++;
                     }
                 }
