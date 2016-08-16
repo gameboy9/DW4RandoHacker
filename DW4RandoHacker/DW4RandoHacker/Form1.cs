@@ -450,22 +450,19 @@ namespace DW4RandoHacker
                 int npcMark = 0;
                 for (int lnI = 0; lnI < heroes.Length; lnI++)
                 {
-                    if (heroes[lnI] <= 6)
+                    romData[npcs[npcMark]] = (byte)(heroes[lnI] + 8);
+                    if (npcs[npcMark] == 0x778f1)
+                        romData[0x7b399] = (byte)(heroes[lnI] + 8);
+                    if (npcs[npcMark] == 0x73678)
+                        romData[0x79597] = (byte)(heroes[lnI] + 8);
+                    if (npcs[npcMark] == 0x7364d)
                     {
-                        romData[npcs[npcMark]] = (byte)(heroes[lnI] + 8);
-                        if (npcs[npcMark] == 0x778f1)
-                            romData[0x7b399] = (byte)(heroes[lnI] + 8);
-                        if (npcs[npcMark] == 0x73678)
-                            romData[0x79597] = (byte)(heroes[lnI] + 8);
-                        if (npcs[npcMark] == 0x7364d)
-                        {
-                            romData[0x56c1d] = (byte)(heroes[lnI] + 8);
-                        }
-                        if (npcs[npcMark] == 0x7790f)
-                            romData[0x77573] = (byte)(heroes[lnI] + 8);
-
-                        npcMark++;
+                        romData[0x56c1d] = (byte)(heroes[lnI] + 8);
                     }
+                    if (npcs[npcMark] == 0x7790f)
+                        romData[0x77573] = (byte)(heroes[lnI] + 8);
+
+                    npcMark++;
                 }
             }
 
