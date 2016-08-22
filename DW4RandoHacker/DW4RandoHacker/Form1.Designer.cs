@@ -48,6 +48,7 @@
             this.cmdStatOutput = new System.Windows.Forms.Button();
             this.btnMonsterOutput = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.chkRandomizeHeroSpells = new System.Windows.Forms.CheckBox();
             this.chkRandomMonsterAttacks = new System.Windows.Forms.CheckBox();
             this.label9 = new System.Windows.Forms.Label();
             this.grpMonsterStat = new System.Windows.Forms.GroupBox();
@@ -112,7 +113,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.txtFlags = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.chkRandomizeHeroSpells = new System.Windows.Forms.CheckBox();
             this.tabShortcuts.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.grpMonsterStat.SuspendLayout();
@@ -326,6 +326,17 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Adjustments";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // chkRandomizeHeroSpells
+            // 
+            this.chkRandomizeHeroSpells.AutoSize = true;
+            this.chkRandomizeHeroSpells.Location = new System.Drawing.Point(234, 193);
+            this.chkRandomizeHeroSpells.Name = "chkRandomizeHeroSpells";
+            this.chkRandomizeHeroSpells.Size = new System.Drawing.Size(136, 17);
+            this.chkRandomizeHeroSpells.TabIndex = 28;
+            this.chkRandomizeHeroSpells.Text = "Randomize Hero Spells";
+            this.chkRandomizeHeroSpells.UseVisualStyleBackColor = true;
+            this.chkRandomizeHeroSpells.CheckedChanged += new System.EventHandler(this.determineFlags);
             // 
             // chkRandomMonsterAttacks
             // 
@@ -1031,16 +1042,6 @@
             this.label10.Size = new System.Drawing.Size(32, 13);
             this.label10.TabIndex = 42;
             this.label10.Text = "Flags";
-            // 
-            // chkRandomizeHeroSpells
-            // 
-            this.chkRandomizeHeroSpells.AutoSize = true;
-            this.chkRandomizeHeroSpells.Location = new System.Drawing.Point(234, 193);
-            this.chkRandomizeHeroSpells.Name = "chkRandomizeHeroSpells";
-            this.chkRandomizeHeroSpells.Size = new System.Drawing.Size(136, 17);
-            this.chkRandomizeHeroSpells.TabIndex = 28;
-            this.chkRandomizeHeroSpells.Text = "Randomize Hero Spells";
-            this.chkRandomizeHeroSpells.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
