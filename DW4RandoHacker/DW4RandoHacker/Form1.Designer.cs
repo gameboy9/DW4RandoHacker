@@ -112,6 +112,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.txtFlags = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.chkRandomizeHeroSpells = new System.Windows.Forms.CheckBox();
             this.tabShortcuts.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.grpMonsterStat.SuspendLayout();
@@ -299,6 +300,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.chkRandomizeHeroSpells);
             this.tabPage3.Controls.Add(this.chkRandomMonsterAttacks);
             this.tabPage3.Controls.Add(this.label9);
             this.tabPage3.Controls.Add(this.grpMonsterStat);
@@ -472,7 +474,7 @@
             // chkSpeedUpBattles
             // 
             this.chkSpeedUpBattles.AutoSize = true;
-            this.chkSpeedUpBattles.Location = new System.Drawing.Point(234, 193);
+            this.chkSpeedUpBattles.Location = new System.Drawing.Point(234, 216);
             this.chkSpeedUpBattles.Name = "chkSpeedUpBattles";
             this.chkSpeedUpBattles.Size = new System.Drawing.Size(106, 17);
             this.chkSpeedUpBattles.TabIndex = 9;
@@ -1030,6 +1032,16 @@
             this.label10.TabIndex = 42;
             this.label10.Text = "Flags";
             // 
+            // chkRandomizeHeroSpells
+            // 
+            this.chkRandomizeHeroSpells.AutoSize = true;
+            this.chkRandomizeHeroSpells.Location = new System.Drawing.Point(234, 193);
+            this.chkRandomizeHeroSpells.Name = "chkRandomizeHeroSpells";
+            this.chkRandomizeHeroSpells.Size = new System.Drawing.Size(136, 17);
+            this.chkRandomizeHeroSpells.TabIndex = 28;
+            this.chkRandomizeHeroSpells.Text = "Randomize Hero Spells";
+            this.chkRandomizeHeroSpells.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1166,6 +1178,7 @@
         private System.Windows.Forms.CheckBox chkRandomMonsterAttacks;
         private System.Windows.Forms.TextBox txtFlags;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.CheckBox chkRandomizeHeroSpells;
     }
 }
 

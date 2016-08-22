@@ -270,6 +270,14 @@ namespace DW4RandoHacker
                 romData[0x413fd] = 0x9c;
                 romData[0x413fe] = 0x93;
 
+                // If Mara is the solo hero, adjust Firebane to be learned at level 8.
+                romData[0x4a2f2] = 0x08;
+                // And adjust Blazemore to be learned at level 12.
+                romData[0x4a2ef] = 0x0c;
+
+                // If Brey is the solo hero, adjust Snowstorm to be learned at level 8.
+                romData[0x4a306] = 0x08;
+
                 // Make the Cristo and Brey join change to the solo hero joining twice instead in Chapter 2.
                 romData[0x79d44] = power;
                 romData[0x79d49] = power;
@@ -349,6 +357,20 @@ namespace DW4RandoHacker
 
                 for (int lnI = 0; lnI < 5; lnI++)
                     romData[0x4914d + lnI] = (byte)(128 + heroes[lnI]); // This will ensure the same character starts each chapter.
+
+                // If Mara is the Chapter 1 or Chapter 2-Tournament hero...
+                if (heroes[0] == 2 || heroes[1] == 2)
+                {
+                    // Adjust Firebane to be learned at level 8.
+                    romData[0x4a2f2] = 0x08;
+                    // And adjust Blazemore to be learned at level 12.
+                    romData[0x4a2ef] = 0x0c;
+                }
+
+                // If Brey is the Chapter 1 or Chapter 2-Tournament hero, adjust Snowstorm to be learned at level 8.
+                if (heroes[0] == 3 || heroes[1] == 3)
+                    romData[0x4a306] = 0x08;
+
 
                 // Make Taloon sane in the first 4 chapters, not just in Chapter 3.
                 if (heroes[0] == 5) romData[0x47309] = 0;
@@ -445,7 +467,7 @@ namespace DW4RandoHacker
                 }
 
                 // 0x778df (8), 0x778f1 (9), 0x778f7 (a), 0x778fd (b), 0x73678 (c), 0x7364e (d), 0x7790f (e) + 0x77573, 0x73b30 (f)
-                romData[0x57169] = 0x20; // Prevent Doran from being called a monster when talking to anyone.  Mainly in case he's acting as Panon.
+                romData[0x57169] = romData[0x57157] = 0x20; // Prevent Healie and Doran from being called a monster when talking to anyone.  Mainly in case one is acting as Panon.
                 int[] npcs = { 0x778df, 0x778f1, 0x778f7, 0x778fd, 0x73678, 0x7364e, 0x7790f, 0x73b30 };
                 int npcMark = 0;
                 for (int lnI = 0; lnI < heroes.Length; lnI++)
@@ -544,17 +566,10 @@ namespace DW4RandoHacker
                 romData[0x60056 + (lnI * 22) + 7] = (byte)(xpTrue % 256);
             }
 
-            if (chkRandomMonsterStats.Checked)
-                randomizeMonsterStats(r1);
-
-            if (chkRandomMonsterAttacks.Checked)
-                randomizeMonsterAttacks(r1);
-
-            if (chkRandomMonsterResistances.Checked)
-                randomizeMonsterResistances(r1);
-
-            if (chkRandomTreasures.Checked)
-                randomizeTreasures(r1);
+            if (chkRandomMonsterStats.Checked) randomizeMonsterStats(r1);
+            if (chkRandomMonsterAttacks.Checked) randomizeMonsterAttacks(r1);
+            if (chkRandomMonsterResistances.Checked) randomizeMonsterResistances(r1);
+            if (chkRandomTreasures.Checked) randomizeTreasures(r1);
 
             // Finally, the encounter rate.  I've noticed that the encounter rate by default is VARIABLE!
             // 25% of normal = Branca Castle, north to the Heroes' Hometown, the approach to Necrosaro itself, and the Gardenbur Cave.  (the later two is guaranteed 1/64)
@@ -581,17 +596,11 @@ namespace DW4RandoHacker
                 romData[0x6228b + lnI] = (byte)encounterRate;
             }
 
-            if (chkRandomHeroEquip.Checked)
-                randomizeHeroEquipment(r1);
-
-            if (chkRandomMonsterZones.Checked)
-                randomizeMonsterZones(r1);
-
-            if (chkRandomStores.Checked)
-                randomizeStores(r1);
-
-            if (chkRandomHeroStats.Checked)
-                randomizeHeroStats(r1);
+            if (chkRandomHeroEquip.Checked) randomizeHeroEquipment(r1);
+            if (chkRandomMonsterZones.Checked) randomizeMonsterZones(r1);
+            if (chkRandomStores.Checked) randomizeStores(r1);
+            if (chkRandomHeroStats.Checked) randomizeHeroStats(r1);
+            if (chkRandomizeHeroSpells.Checked) randomizeHeroSpells(r1);
 
             if (chkSpeedUpBattles.Checked)
             {
@@ -847,6 +856,169 @@ namespace DW4RandoHacker
             }
             //int asdf = 1234;
             //overrideStats();
+        }
+
+        private void randomizeHeroSpells(Random r1)
+        {
+            // 80+ = Intelligence based? - Spells are in numerical order.  (Blaze, Blazemore, Blazemost, etc.)
+            // 0x41129-0x4113a - Hero battle spells (18 bytes)
+            // 0x4113b-0x41146 - Cristo battle spells (12 bytes)
+            // 0x41147-0x41152 - Nara battle spells (12 bytes)
+            // 0x41153-0x4115e - Mara battle spells (12 bytes)
+            // 0x4115f-0x4116a - Brey battle spells (12 bytes)
+            // 0x4116b - Hero field spells
+            // 0x41173 - Cristo field spells used
+            // 0x4117b - Nara field spells used
+            // 0x41183 - Mara field spells.  FFs are skipped.
+            // 0x4118b - Brey field spells
+            // 0x4a2a1-0x4a2a8 - Hero Gap (8 bytes)
+            // 0x4a2a9-0x4a2bc - Hero spell learning (20 bytes)
+            // 0x4a2bd-0x4a2c4 - Gap (8 bytes) (interference!  Skip 00, something happens at E0 though!  UGH!)
+            // 0x4a2c5-0x4a2d0 - Nara spell learning (12 bytes)
+            // 0x4a2d1-0x4a2d8 - Gap (8 bytes)
+            // 0x4a2d9-0x4a2e5 - Cristo spell learning (12 bytes)
+            // 0x4a2e6-0x4a2ed - Gap (8 bytes)
+            // 0x4a2ee-0x4a2fc - Mara spell learning (14 bytes)
+            // 0x4a2fd-0x4a304 - Gap (8 bytes)
+            // 0x4a305-0x4a313 - Brey spell learning (14 bytes)
+
+            // 0x4f338 - Battle spells for Hero repeated
+            // 0x4f34a - Battle spells for Cristo repeated
+            // 0x4f356 - Battle spells for Nara repeated
+            // 0x4f362 - Battle spells for Mara repeated
+            // 0x4f36e - Battle spells for Brey repeated
+
+            // Procedure:  Come up with x unique battle spells from 0x00 to 0x35.  If there are any spell learning bytes leftover, add from 0x36-0x3b
+            int[] battleSpells = { 18, 12, 12, 12, 12 };
+            int[] allSpells = { 20, 12, 12, 14, 14 };
+
+            for (int lnI = 0; lnI < 5; lnI++)
+            {
+                int fieldSpells = 0;
+                int extraField = 0;
+                List<int> battle = new List<int>();
+                List<int> field = new List<int>();
+
+                int byteToUse = 0x41129;
+                int byteToUse2 = 0x4116b + (8 * lnI);
+                for (int lnJ = 0; lnJ < 8; lnJ++) romData[byteToUse2 + lnJ] = 0xff;
+                int byteToUse3 = 0x4f338;
+                int byteToUse4 = (lnI == 0 ? 0x4a2a9 : lnI == 1 ? 0x4a2d9 : lnI == 2 ? 0x4a2c5 : lnI == 3 ? 0x4a2ee : 0x4a305);
+                int gapByte = (lnI == 0 ? 0x4a2a1 : lnI == 1 ? 0x4a2d1 : lnI == 2 ? 0x4a2bd : lnI == 3 ? 0x4a2e6 : 0x4a2fd);
+                for (int lnJ = lnI; lnJ > 0; lnJ--)
+                {
+                    byteToUse += battleSpells[lnJ - 1];
+                    byteToUse3 += battleSpells[lnJ - 1];
+                }
+                for (int lnJ = 0; lnJ < battleSpells[lnI]; lnJ++)
+                {
+                    bool dup = false;
+                    romData[byteToUse + lnJ] = (byte)(r1.Next() % 0x36);
+                    for (int lnK = lnJ - 1; lnK >= 0; lnK--)
+                    {
+                        if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
+                        {
+                            dup = true;
+                            lnJ--;
+                            break;
+                        }
+                    }
+                    if (!dup)
+                    {
+                        if (romData[byteToUse + lnJ] >= 0x29)
+                        {
+                            romData[byteToUse2 + fieldSpells] = romData[byteToUse + lnJ];
+                            field.Add(romData[byteToUse + lnJ]);
+                            fieldSpells++;
+                        }
+                        battle.Add(romData[byteToUse + lnJ]);
+                    }
+                }
+
+                for (int lnJ = 0; lnJ < allSpells[lnI] - battleSpells[lnI]; lnJ++)
+                {
+                    bool dup = false;
+                    romData[byteToUse2 + fieldSpells] = (byte)((r1.Next() % 5) + 0x36);
+                    for (int lnK = fieldSpells - 1; lnK >= 0; lnK--)
+                    {
+                        if (romData[byteToUse2 + fieldSpells] == romData[byteToUse2 + lnK])
+                        {
+                            dup = true;
+                            lnJ--;
+                            break;
+                        }
+                    }
+                    if (!dup)
+                    {
+                        //romData[byteToUse2 + fieldSpells] = romData[byteToUse + lnJ];
+                        fieldSpells++;
+                        extraField++;
+                        field.Add(romData[byteToUse2 + fieldSpells]);
+                    }
+                }
+
+                int[] battle1 = battle.ToArray();
+                int[] field1 = field.ToArray();
+
+                int[] spellLearning = new int[allSpells[lnI]];
+                for (int lnJ = 0; lnJ < spellLearning.Length; lnJ++)
+                    spellLearning[lnJ] = (r1.Next() % 31) + 1;
+
+                Array.Sort(spellLearning);
+                spellLearning[0] = 1;
+                for (int lnJ = 0; lnJ < battleSpells[lnI]; lnJ++)
+                {
+                    for (int lnK = lnJ + 1; lnK < battleSpells[lnI]; lnK++)
+                    {
+                        if (battle1[lnJ] > battle1[lnK])
+                        {
+                            int temp = spellLearning[lnJ];
+                            spellLearning[lnJ] = spellLearning[lnK];
+                            spellLearning[lnK] = temp;
+
+                            temp = battle1[lnJ];
+                            battle1[lnJ] = battle1[lnK];
+                            battle1[lnK] = temp;
+                        }
+                    }
+                }
+
+                for (int lnJ = 0; lnJ < extraField; lnJ++)
+                {
+                    for (int lnK = lnJ + 1; lnK < extraField; lnK++)
+                    {
+                        if (field1[lnJ] > field1[lnK])
+                        {
+                            int bs = battleSpells[lnI];
+                            int temp = spellLearning[bs + lnJ];
+                            spellLearning[bs + lnJ] = spellLearning[bs + lnK];
+                            spellLearning[bs + lnK] = temp;
+
+                            temp = field1[lnJ];
+                            field1[lnJ] = field1[lnK];
+                            field1[lnK] = temp;
+                        }
+                    }
+                }
+
+                for (int lnJ = 0; lnJ < allSpells[lnI]; lnJ++)
+                    romData[byteToUse4 + lnJ] = (byte)spellLearning[lnJ];
+
+                // Determine the gap.
+                // First byte is spells 00-07, second byte is spells 08-0f, and so forth.
+                // Bit 1 is spell 00, bit 2 is spell 01, and so forth.
+                int[] gapData = { 0, 0, 0, 0, 0, 0, 0, 0 };
+                for (int lnJ = 0; lnJ < battle1.Length; lnJ++)
+                {
+                    int battleByte = battle1[lnJ] / 8;
+                    int battleBit = (int)Math.Pow(2, battle1[lnJ] % 8);
+                    gapData[battleByte] += battleBit;
+                }
+                for (int lnJ = 0; lnJ < gapData.Length; lnJ++)
+                {
+                    romData[gapByte + lnJ] = (byte)gapData[lnJ];
+                }
+            }
         }
 
         //private void overrideStats()
@@ -1193,8 +1365,8 @@ namespace DW4RandoHacker
             {
                 if (r1.Next() % 3 == 0)
                     romData[treasure] = (byte)legalTreasures2[r1.Next() % legalTreasures2.Length];
-                else if (r1.Next() % 3 == 0 && treasure >= 0x7bd01 && treasure <= 0x7bfff)
-                    romData[treasure] = (byte)(r1.Next() % 124 + 128);
+                else if (r1.Next() % 3 == 0 && treasure >= 0x7bd01 && treasure <= 0x7bfff) // Give out gold
+                    romData[treasure] = (byte)(r1.Next() % 80 + 128);
                 else
                     romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
                 //romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
@@ -1264,7 +1436,7 @@ namespace DW4RandoHacker
         {
             // We first need to adjust the prices of all the items so that the casino and medal king stores sell at a proper price.
             int[] prices = { 10, 30, 100, 1500, 550, 880, 2000, 5500, 500, 200, 1250, 350, 1600, 620, 50000, 1400,
-                             2500, 20000, 600, 3300, 0, 50000, 7500, 4300, 8000, 750, 10000, 20000, 30000, 4000, 0, 4000,
+                             2500, 20000, 600, 3300, 0, 15000, 7500, 4300, 8000, 750, 10000, 20000, 30000, 4000, 0, 4000,
                              6000, 0, 4000, 3500, 10, 70, 180, 350, 1200, 1500, 2300, 110, 400, 700, 15000, 600,
                              250, 6300, 5200, 3000, 4400, 15000, 7500, 0, 9800, 6000, 870, 8800, 1000, 90, 180, 650,
                              13000, 9000, 4700, 7100, 0, 50000, 65, 120, 1100, 3500, 280, 0, 8, 540, 15000, 50000,
@@ -2145,6 +2317,7 @@ namespace DW4RandoHacker
             flags += (chkRandomHeroStats.Checked ? "S" : "");
             flags += (chkC5ControlAllChars.Checked ? "C" : "");
             flags += (chkRandomMonsterAttacks.Checked ? "A" : "");
+            flags += (chkRandomizeHeroSpells.Checked ? "P" : "");
 
             flags += (optMonsterLight.Checked ? "_r1" : "");
             flags += (optMonsterSilly.Checked ? "_r2" : "");
@@ -2221,6 +2394,7 @@ namespace DW4RandoHacker
                     chkRandomHeroStats.Checked = flag.Contains("S");
                     chkC5ControlAllChars.Checked = flag.Contains("C");
                     chkRandomMonsterAttacks.Checked = flag.Contains("A");
+                    chkRandomizeHeroSpells.Checked = flag.Contains("P");
                 }
             }
         }
