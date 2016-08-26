@@ -113,6 +113,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.txtFlags = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.chkDoubleWalking = new System.Windows.Forms.CheckBox();
             this.tabShortcuts.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.grpMonsterStat.SuspendLayout();
@@ -300,6 +301,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.chkDoubleWalking);
             this.tabPage3.Controls.Add(this.chkRandomizeHeroSpells);
             this.tabPage3.Controls.Add(this.chkRandomMonsterAttacks);
             this.tabPage3.Controls.Add(this.label9);
@@ -1043,6 +1045,17 @@
             this.label10.TabIndex = 42;
             this.label10.Text = "Flags";
             // 
+            // chkDoubleWalking
+            // 
+            this.chkDoubleWalking.AutoSize = true;
+            this.chkDoubleWalking.Location = new System.Drawing.Point(234, 239);
+            this.chkDoubleWalking.Name = "chkDoubleWalking";
+            this.chkDoubleWalking.Size = new System.Drawing.Size(131, 17);
+            this.chkDoubleWalking.TabIndex = 29;
+            this.chkDoubleWalking.Text = "Double walking speed";
+            this.chkDoubleWalking.UseVisualStyleBackColor = true;
+            this.chkDoubleWalking.CheckedChanged += new System.EventHandler(this.determineFlags);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1180,6 +1193,7 @@
         private System.Windows.Forms.TextBox txtFlags;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox chkRandomizeHeroSpells;
+        private System.Windows.Forms.CheckBox chkDoubleWalking;
     }
 }
 

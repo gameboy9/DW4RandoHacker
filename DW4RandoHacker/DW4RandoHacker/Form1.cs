@@ -14,9 +14,9 @@ namespace DW4RandoHacker
 
         int[] monsterRank = // after 0x55, 0x??????, - bisonhawk unknown
             {
-                    0x5c, 0x01, 0x00, 0x03, 0x02, 0x05, 0x08, 0x07, 0x09, 0x06, 0x0b, 0x0e, 0x0a, 0x11, 0x0d, 0x0f, // 6
-                    0x14, 0x0c, 0x1c, 0x1a, 0x18, 0x13, 0x10, 0x1f, 0x26, 0x16, 0x1e, 0x19, 0x17, 0x24, 0x1b, 0x22, // 15
-                    0x23, 0x15, 0x1d, 0x2a, 0x20, 0x27, 0x25, 0x21, 0x43, 0x28, 0x2f, 0x04, 0x31, 0x2c, 0x3c, 0x29, // 27
+                    0x01, 0x00, 0x03, 0x02, 0x05, 0x08, 0x07, 0x09, 0x06, 0x0b, 0x0e, 0x0a, 0x11, 0x0d, 0x0f, 0x14, // 6
+                    0x0c, 0x1c, 0x1a, 0x18, 0x13, 0x10, 0x1f, 0x26, 0x16, 0x1e, 0x19, 0x17, 0x24, 0x1b, 0x22, 0x23, // 15
+                    0x15, 0x1d, 0x5c, 0x2a, 0x20, 0x27, 0x25, 0x21, 0x43, 0x28, 0x2f, 0x04, 0x31, 0x2c, 0x3c, 0x29, // 27
                     0x3d, 0x2d, 0x36, 0x45, 0x2e, 0x38, 0x39, 0x33, 0x42, 0x3e, 0x58, 0x4d, 0x40, 0x4a, 0x32, 0x47, // 45
                     0x2b, 0x35, 0x52, 0x48, 0x46, 0x37, 0x4c, 0xaf, 0x34, 0x5e, 0x3a, 0x4f, 0x66, 0xb3, 0x3b, 0x49, // 77
                     0xb0, 0xb1, 0x56, 0x41, 0x51, 0x50, 0x55, 0x57, 0x44, 0x5a, 0x3f, 0xb2, 0xba, 0x30, 0x53, 0x60, // 104
@@ -148,46 +148,13 @@ namespace DW4RandoHacker
                 return;
 
             hackRom();
-
-            //// All ROM hacks will revive ALL characters on a ColdAsACod.
-            //// There will be a temporary graphical error if you use less than four characters, but I'm going to leave it be.
-            //byte[] codData1 = { 0xa0, 0x00, // Make sure Y is 0 first.
-            //    0xb9, 0x3c, 0x07,
-            //    0xc9, 0x80,
-            //    0x90, 0x03, // If less than 0x80, skip.
-            //    0x20, 0xb2, 0xbf, // JSR to a bunch of unused code, which will have the "revive one character code" that I'm replacing.
-            //    0xc8, 0xc8, // Increment Y twice (Y is used to revive the characters)
-            //    0xc0, 0x08, // Compare Y with 08
-            //    0xd0, 0xf0, // If not equal, go back to the JSR mentioned above
-            //    0xa0, 0x00, // Set Y back to 0 to make sure the game doesn't think something is up
-            //    0xea, 0xea, 0xea, 0xea, 0xea,
-            //    0xea, 0xea, 0xea, 0xea, 0xea,
-            //    0xea, 0xea }; // 12 NOPs, since I have nothing else to do.
-            //byte[] codData2 = { 0xa9, 0x80, // Load 80, the status for alive
-            //    0x99, 0x3c, 0x07, // store to two status bytes
-            //    0x99, 0x3d, 0x07,
-            //    0xb9, 0x24, 0x07, // Load max HP
-            //    0x99, 0x1c, 0x07, // save max HP
-            //    0xb9, 0x25, 0x07, // second byte
-            //    0x99, 0x1d, 0x07,
-            //    0xb9, 0x34, 0x07, // Load max MP
-            //    0x99, 0x2c, 0x07, // save max MP
-            //    0xb9, 0x35, 0x07, // second byte
-            //    0x99, 0x2d, 0x07,
-            //    0x60 }; // end JSR
-
-            //for (int lnI = 0; lnI < codData1.Length; lnI++)
-            //    romData[0x22b3 + lnI] = codData1[lnI];
-            //for (int lnI = 0; lnI < codData2.Length; lnI++)
-            //    romData[0x3fc2 + lnI] = codData2[lnI];
-
             saveRom();
         }
 
         private bool hackRom()
         {
-            if (chkRandomTreasures.Checked || chkRandomMonsterStats.Checked)
-                if (MessageBox.Show(this, "WARNING:  Random monster stats and attacks and especially random treasures is still experimental and may cause crashes where the game cannot be winnable.  Continue?", "DW4 RandoHacker", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (chkDoubleWalking.Checked)
+                if (MessageBox.Show(this, "WARNING:  Double walking speed will cause graphical errors with other characters, but actual gameplay should not be affected.  Continue?", "DW4 RandoHacker", MessageBoxButtons.YesNo) == DialogResult.No)
                     return false;
 
             Random r1;
@@ -442,6 +409,9 @@ namespace DW4RandoHacker
                 // Force Taloon to solo hero in Chapter 5
                 romData[0x732ad] = (byte)heroes[3];
 
+                // Force solo Brey to solo hero in Chapter 5
+                romData[0x7362a] = (byte)heroes[4];
+
                 // Force Alena, Brey, and Cristo to solo hero in Chapter 5
                 romData[0x739d9] = (byte)heroes[4];
                 romData[0x739de] = (byte)heroes[5]; // <----- Give thief's key to this person...
@@ -473,14 +443,16 @@ namespace DW4RandoHacker
                 for (int lnI = 0; lnI < heroes.Length; lnI++)
                 {
                     romData[npcs[npcMark]] = (byte)(heroes[lnI] + 8);
+                    if (npcs[npcMark] == 0x778f7)
+                        romData[0x79574] = (byte)(heroes[lnI] + 8);
+                    if (npcs[npcMark] == 0x778fd)
+                        romData[0x7957c] = (byte)(heroes[lnI] + 8);
                     if (npcs[npcMark] == 0x778f1)
                         romData[0x7b399] = (byte)(heroes[lnI] + 8);
                     if (npcs[npcMark] == 0x73678)
                         romData[0x79597] = (byte)(heroes[lnI] + 8);
-                    if (npcs[npcMark] == 0x7364d)
-                    {
+                    if (npcs[npcMark] == 0x7364e)
                         romData[0x56c1d] = (byte)(heroes[lnI] + 8);
-                    }
                     if (npcs[npcMark] == 0x7790f)
                         romData[0x77573] = (byte)(heroes[lnI] + 8);
 
@@ -617,6 +589,15 @@ namespace DW4RandoHacker
                 romData[0x48628] = 0x1f;
                 romData[0x48629] = 0x2f;
                 romData[0x4862a] = 0x3f;
+            }
+
+            if (chkDoubleWalking.Checked)
+            {
+                romData[0x788ec] = romData[0x7cb08] = romData[0x7a5f3] = romData[0x3cb07] = 0x20;
+                romData[0x788e7] = romData[0x7a5ee] = romData[0x7cb02] = romData[0x3cb02] = romData[0x769ae] = 0x02;
+                romData[0x3cafa] = romData[0x3cafb] = romData[0x3cafc] = romData[0x3cafd] = romData[0x3cafe] = romData[0x3caff] = romData[0x3cb00] = 0xea;
+                romData[0x74b32] = romData[0x74b33] = romData[0x74b34] = romData[0x74b35] = romData[0x74b36] = romData[0x74b37] = romData[0x74b38] = 0xea;
+                romData[0x61bf6] = romData[0x61bf7] = romData[0x61bf8] = romData[0x61bf9] = romData[0x61bfa] = romData[0x61bfb] = romData[0x61bfc] = 0xea;
             }
 
             // Give full control over all players in Chapter 5.  You lose the wagon control though.  I would LOVE to figure out how to get both though!  Maybe some nops?
@@ -913,7 +894,7 @@ namespace DW4RandoHacker
                 for (int lnJ = 0; lnJ < battleSpells[lnI]; lnJ++)
                 {
                     bool dup = false;
-                    romData[byteToUse + lnJ] = (byte)(r1.Next() % 0x36);
+                    romData[byteToUse + lnJ] = (byte)(r1.Next() % 0x35);
                     for (int lnK = lnJ - 1; lnK >= 0; lnK--)
                     {
                         if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
@@ -925,7 +906,7 @@ namespace DW4RandoHacker
                     }
                     if (!dup)
                     {
-                        if (romData[byteToUse + lnJ] >= 0x29)
+                        if (romData[byteToUse + lnJ] >= 0x29 && romData[byteToUse + lnJ] != 0x2d && romData[byteToUse + lnJ] != 0x34)
                         {
                             romData[byteToUse2 + fieldSpells] = romData[byteToUse + lnJ];
                             field.Add(romData[byteToUse + lnJ]);
@@ -938,7 +919,7 @@ namespace DW4RandoHacker
                 for (int lnJ = 0; lnJ < allSpells[lnI] - battleSpells[lnI]; lnJ++)
                 {
                     bool dup = false;
-                    romData[byteToUse2 + fieldSpells] = (byte)((r1.Next() % 5) + 0x36);
+                    romData[byteToUse2 + fieldSpells] = (byte)((r1.Next() % 6) + 0x35);
                     for (int lnK = fieldSpells - 1; lnK >= 0; lnK--)
                     {
                         if (romData[byteToUse2 + fieldSpells] == romData[byteToUse2 + lnK])
@@ -1108,7 +1089,7 @@ namespace DW4RandoHacker
 
                     for (int lnJ = 0; lnJ < 6; lnJ++)
                     {
-                        if (lnJ >= 0 && lnJ <= 1 && (monsterRank[lnI] == 0x5c || monsterRank[lnI] == 0x75))
+                        if (lnJ >= 0 && lnJ <= 2 && (monsterRank[lnI] == 0x5c || monsterRank[lnI] == 0x75))
                             romData[byteToUse + 9 + lnJ] = 0x47;
                         else
                             romData[byteToUse + 9 + lnJ] = (byte)(moveLevel == 0 ? level1Moves[r1.Next() % level1Moves.Length] :
@@ -1129,7 +1110,7 @@ namespace DW4RandoHacker
                 {
                     for (int lnJ = 0; lnJ < 6; lnJ++)
                     {
-                        if (lnJ >= 0 && lnJ <= 1 && (monsterRank[lnI] == 0x5c || monsterRank[lnI] == 0x75))
+                        if (lnJ >= 0 && lnJ <= 2 && (monsterRank[lnI] == 0x5c || monsterRank[lnI] == 0x75))
                             romData[byteToUse + 9 + lnJ] = 0x47;
                         else if (r1.Next() % 2 == 1)
                             romData[byteToUse + 9 + lnJ] = (byte)(r1.Next() % 0x67);
@@ -1137,10 +1118,6 @@ namespace DW4RandoHacker
                             romData[byteToUse + 9 + lnJ] = 0x32;
                         if (romData[byteToUse + 9 + lnJ] == 0x15 || romData[byteToUse + 9 + lnJ] == 0x55)
                             lnJ--; // redo randomization.  Transform and super slime is a bad idea to use here.
-                    }
-                    if (lnI == 0x42 || lnI == 0x58)
-                    {
-
                     }
                 }
 
@@ -1379,7 +1356,7 @@ namespace DW4RandoHacker
                     0x76, 0x75,
                     0x6b, 0x6d,
                     0x5d, 0x70,
-                    0x7c, 0x7b, 0x72, 0x1e, 0x68, 0x5c, 0x7d, 0x14, 0x37, 0x44, 0x4b, 0x52,
+                    0x7c, 0xe2, 0x72, 0x1e, 0x68, 0x5c, 0x7d, 0x14, 0x37, 0x44, 0x4b, 0x52, // e2 instead of 7b
                     0x60, 0x67, 0x6e, 0x5f, 0x6a };
             List<int> keyItemList = new List<int> { };
             addTreasure(keyItemList, keyItems);
@@ -1746,7 +1723,7 @@ namespace DW4RandoHacker
             // Keeleon II, Minidemon, Balzack II, Saroknight, Bakor, Rhinoking/Bengal, Esturk, Gigademon, Anderoug(3), Infernus Shadow, Radimvice, Necrosaro, Liclick, (13)
             // Man-eater chest, Rhinoband, Imposter, Leaonar, Necrodain, Minidemon, Bengal (7)
             int[] maxBossLimit = { 0xb4, 0xbd, 27, 0xbd, 69, 50, 0xbd, -1, -1, -1, -1, -1, 33, 104, // 14
-                    0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xbc, 0xbc, 0xbc, 0xbc, 0xbc, 0xbc, 0xbc, 60, // 13
+                    0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xbc, -1, 0xbc, 0xbc, 0xbc, 0xbc, -1, 60, // 13 - next to last one, and five before that, was 0xbc (Esturk and Necrosaro)
                     0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4 }; // 7
             int[] minBossLimit = { 0, 148, 5, 148, 20, 15, 148, -1, -1, -1, -1, -1, 10, 20, // 14
                     0, 106, 0, 0, 0, 106, 106, 148, 148, 148, 148, 148, 20, // 13
@@ -2318,6 +2295,7 @@ namespace DW4RandoHacker
             flags += (chkC5ControlAllChars.Checked ? "C" : "");
             flags += (chkRandomMonsterAttacks.Checked ? "A" : "");
             flags += (chkRandomizeHeroSpells.Checked ? "P" : "");
+            flags += (chkDoubleWalking.Checked ? "D" : "");
 
             flags += (optMonsterLight.Checked ? "_r1" : "");
             flags += (optMonsterSilly.Checked ? "_r2" : "");
@@ -2395,6 +2373,7 @@ namespace DW4RandoHacker
                     chkC5ControlAllChars.Checked = flag.Contains("C");
                     chkRandomMonsterAttacks.Checked = flag.Contains("A");
                     chkRandomizeHeroSpells.Checked = flag.Contains("P");
+                    chkDoubleWalking.Checked = flag.Contains("D");
                 }
             }
         }
