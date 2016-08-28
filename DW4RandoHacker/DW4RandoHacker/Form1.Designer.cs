@@ -489,9 +489,9 @@
             this.chkSpeedUpBattles.AutoSize = true;
             this.chkSpeedUpBattles.Location = new System.Drawing.Point(234, 216);
             this.chkSpeedUpBattles.Name = "chkSpeedUpBattles";
-            this.chkSpeedUpBattles.Size = new System.Drawing.Size(106, 17);
+            this.chkSpeedUpBattles.Size = new System.Drawing.Size(160, 17);
             this.chkSpeedUpBattles.TabIndex = 9;
-            this.chkSpeedUpBattles.Text = "Speed up battles";
+            this.chkSpeedUpBattles.Text = "Speed up battles/wait music";
             this.chkSpeedUpBattles.UseVisualStyleBackColor = true;
             this.chkSpeedUpBattles.CheckedChanged += new System.EventHandler(this.determineFlags);
             // 

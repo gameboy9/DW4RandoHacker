@@ -589,6 +589,39 @@ namespace DW4RandoHacker
                 romData[0x48628] = 0x1f;
                 romData[0x48629] = 0x2f;
                 romData[0x4862a] = 0x3f;
+
+                // Win tune
+                romData[0x6666a] = 0x01;
+                romData[0x6666c] = 0x01;
+                romData[0x6667d] = 0x01;
+
+                // Level up
+                romData[0x43d22] = 0x01;
+                romData[0x43d27] = 0x01;
+                romData[0x43d2b] = 0x01;
+
+                // Save music
+                romData[0x6677d] = 0x01;
+                romData[0x6677f] = 0x01;
+                romData[0x66781] = 0x01;
+                romData[0x66783] = 0x01;
+                romData[0x66786] = 0x01;
+                romData[0x66788] = 0x01;
+                romData[0x6678c] = 0x01;
+                romData[0x66795] = 0x01;
+                romData[0x6679b] = 0x01;
+
+                // Revive music
+                romData[0x66635] = 0x01;
+                romData[0x6663a] = 0x01;
+                romData[0x6663e] = 0x01;
+                romData[0x66641] = 0x01;
+                romData[0x66644] = 0x01;
+                romData[0x6664b] = 0x01;
+                romData[0x6664e] = 0x01;
+                romData[0x66650] = 0x01;
+                romData[0x66655] = 0x01;
+                romData[0x6665b] = 0x01;
             }
 
             if (chkDoubleWalking.Checked)
@@ -598,6 +631,16 @@ namespace DW4RandoHacker
                 romData[0x3cafa] = romData[0x3cafb] = romData[0x3cafc] = romData[0x3cafd] = romData[0x3cafe] = romData[0x3caff] = romData[0x3cb00] = 0xea;
                 romData[0x74b32] = romData[0x74b33] = romData[0x74b34] = romData[0x74b35] = romData[0x74b36] = romData[0x74b37] = romData[0x74b38] = 0xea;
                 romData[0x61bf6] = romData[0x61bf7] = romData[0x61bf8] = romData[0x61bf9] = romData[0x61bfa] = romData[0x61bfb] = romData[0x61bfc] = 0xea;
+                // If this isn't put in here, the game locks after dying and reviving at the House Of Healing.
+                romData[0x7cafa] = romData[0x7cafb] = romData[0x7cafc] = romData[0x7cafd] = romData[0x7cafe] = 0xea;
+                // Doubles the speed of the NPCs.  Required to get past the offering challenge in Chapter 2, at a minimum.
+                romData[0x3da5b] = 0xc0;
+                // Makes sure the ship goes double speed at the Cave of the Silver Statuette in Chapters 3 and 5.
+                romData[0x72012] = 0x41;
+                romData[0x72016] = 0x42;
+                romData[0x7201a] = 0x41;
+                // Prevents a slow down as you escape Keeleon in Chapter 4.
+                romData[0x76c4b] = 0x02;
             }
 
             // Give full control over all players in Chapter 5.  You lose the wagon control though.  I would LOVE to figure out how to get both though!  Maybe some nops?
