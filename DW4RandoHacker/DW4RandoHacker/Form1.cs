@@ -612,16 +612,31 @@ namespace DW4RandoHacker
                 romData[0x6679b] = 0x01;
 
                 // Revive music
-                romData[0x66635] = 0x01;
+                romData[0x66635] = 0x81;
                 romData[0x6663a] = 0x01;
-                romData[0x6663e] = 0x01;
-                romData[0x66641] = 0x01;
-                romData[0x66644] = 0x01;
-                romData[0x6664b] = 0x01;
+                romData[0x6663e] = 0x81;
+                romData[0x66641] = 0x81;
+                romData[0x66644] = 0x81;
+
+                romData[0x6664b] = 0x81;
                 romData[0x6664e] = 0x01;
-                romData[0x66650] = 0x01;
-                romData[0x66655] = 0x01;
+                romData[0x66650] = 0x81;
+
+                romData[0x66655] = 0x81;
                 romData[0x6665b] = 0x01;
+
+                // Recruit music
+                romData[0x43c94] = 0x81;
+                romData[0x43cb8] = 0x81;
+                romData[0x43cc3] = 0x01;
+                romData[0x43cd0] = 0x01;
+                romData[0x43cd3] = 0x81;
+
+                romData[0x43cff] = 0x01;
+                romData[0x43d11] = 0x81;
+                romData[0x43d15] = 0x81;
+                romData[0x43d1b] = 0x01;
+
             }
 
             if (chkDoubleWalking.Checked)
@@ -949,7 +964,7 @@ namespace DW4RandoHacker
                     }
                     if (!dup)
                     {
-                        if (romData[byteToUse + lnJ] >= 0x29 && romData[byteToUse + lnJ] != 0x2d && romData[byteToUse + lnJ] != 0x34)
+                        if (romData[byteToUse + lnJ] >= 0x29 && romData[byteToUse + lnJ] != 0x2d && romData[byteToUse + lnJ] != 0x2f && romData[byteToUse + lnJ] != 0x34)
                         {
                             romData[byteToUse2 + fieldSpells] = romData[byteToUse + lnJ];
                             field.Add(romData[byteToUse + lnJ]);
@@ -1283,66 +1298,138 @@ namespace DW4RandoHacker
 
         private void randomizeTreasures(Random r1)
         {
-            int[] c1p1Treasure = { 0x7bd1d, // Burland
+            int[] c1p1Treasure = { 
                     0x7bf38, 0x7bf37, // Cave To Izmit
-                    0x7bd6a, // Izmit
-                    0x7bf15, 0x7bf16, 0x7bf17, 0x7bdb7, 0x7b936 }; // Old Well - Flying Shoes - 9
-            int[] c1p2Treasure = { 0x7bf47, 0x7bf48, 0x7bf49, 0x7bf4a, 0x7bf4b, 0x7bf4c }; // Loch Tower - End of C1 - 6 (15)
-            int[] c2p1Treasure = { 0x7bd0f, 0x7bd16, // Santeem
-                    0x7bdc7, // Tempe
-                    0x7bf10, 0x7bf11, 0x7bf12, 0x7bf13, 0x7bf14, // Frenor 
-                    0x7bd4e, 0x7bd55 }; //  Bazaar - Thief's Key - 10 (25)
-            int[] c2p2Treasure = { 0x7bd08, // Santeem (Thief's Key)
-                    0x7bf41, 0x7bf42, 0x7bf43, 0x7b901 }; // Birdsong Tower - Birdsong Nectar(0x7b8f4?) - 5 (30)
-            int[] c3p1Treasure = {  0x7bd86, // Lakanaba
-                    0x7bf2a, 0x7bf2b, // Iron Safe Cave
+                    0x7bf15, 0x7bf16, 0x7bf17, 0x7bdb7, 0x7b936 }; // Old Well - Flying Shoes - 7
+            int[] c1p2Treasure = { 0x7bf47, 0x7bf48, 0x7bf49, 0x7bf4a, 0x7bf4b, 0x7bf4c }; // Loch Tower - End of C1 - 6 (13)
+            int[] c2p1Treasure = { 0x7bf10, 0x7bf11, 0x7bf12, 0x7bf13, 0x7bf14 }; // Cave Of Frenor - Thief's Key - 5 (18)
+            int[] c2p2Treasure = { 0x7bf41, 0x7bf42, 0x7bf43, 0x7b901 }; // Birdsong Tower - Birdsong Nectar(0x7b8f4?) - 4 (22)
+            int[] c3p1Treasure = { 0x7bf2a, 0x7bf2b, // Iron Safe Cave
                     0x560e8, // Foxville fox
-                    0x7bf2d, 0x7bf2e, 0x7bf2f, 0x7bf30, 0x7bf31, 0x7bf32, 0x7bf33, 0x7bf34, 0x7bf35, 0x7bf36 }; // Silver Statuette Cave - Silver Statuette - 14 (44)
-            int[] c4p1Treasure = { 0x7bd7f, 0x7bd78, 0x7bdca, // Monbaraba
-                    0x7bd8d, 0x7beee, // Kievs
+                    0x7bf2d, 0x7bf2e, 0x7bf2f, 0x7bf30, 0x7bf31, 0x7bf32, 0x7bf33, 0x7bf34, 0x7bf35, 0x7bf36 }; // Silver Statuette Cave - Silver Statuette - 13 (35)
+            int[] c4p1Treasure = { 0x7beee, // Kievs
                     0x7bf0a, 0x7bf0b, 0x7bf0c, 0x7ba05, 0x7bf0e, // Cave West of Kievs (couple 0x7ba05 with 0x7ba0a)
-                    0x7bef0, 0x7bef1, 0x7bef2 }; // Aktemto Mine - Gunpowder Jar and Sphere Of Silence - 13 (57)
-            int[] c5p1Treasure = { 0x7bd71, 0x7bdc9, // Hometown
-                    0x7b96a, 0x7b983, // Woodman's Shack
+                    0x7bef0, 0x7bef1, 0x7bef2 }; // Aktemto Mine - Gunpowder Jar and Sphere Of Silence - 9 (44)
+            int[] c5p1Treasure = { 
                     //0x7bf2c, // Cave Of Betrayal - Can't change this due to the way the cave works
-                    0x7beef }; // Desert Inn - Symbol Of Faith - 5 (62)
-            int[] c5p2Treasure = { 0x7bdc8, // Aneaux
-                    0x7bf4d, 0x7bf4e, 0x7bf4f, 0x7bf50, 0x7bf51, 0x7bf52, 0x7bf53, 0x7bf54, 0x7bf55 }; // Great Lighthouse - Fire Of Serenity - 10 (72)
-            int[] c5p3Treasure = { 0x7bdc6, // Mintos
-                    0x7bdcc, // Shrine East Of Mintos
-                    0x7befe, 0x7beff, 0x7bf00, 0x7bf01, 0x7bf02, 0x7bf03, // Cave Of The Padequia
-                    0x7bda9, // Old Man's Island House
-                    0x7bdcb, 0x7b94b, // Seaside Village
-                    0x7bd40, 0x7bd47, // Stancia Castle
-                    0x7bdc5 }; // Riverton - Padequia Root - 14 (86)
-            int[] c5p4Treasure = { 0x7bdb0, 0x7bf0f }; // Cave West Of Kievs - Pre-Magic Key - 2 (88)
+                    0x7beef }; // Desert Inn - Symbol Of Faith - 1 (45)
+            int[] c5p2Treasure = { 
+                    0x7bf4d, 0x7bf4e, 0x7bf4f, 0x7bf50, 0x7bf51, 0x7bf52, 0x7bf53, 0x7bf54, 0x7bf55 }; // Great Lighthouse - Fire Of Serenity - 9 (54)
+            int[] c5p3Treasure = { 
+                    0x7befe, 0x7beff, 0x7bf00, 0x7bf01, 0x7bf02, 0x7bf03, // Cave Of The Padequia - Padequia Seed - 6 (60)
+                     };
+            int[] c5p4Treasure = { 0x7bf0f }; // Cave West Of Kievs - Pre-Magic Key - 1 (61)
             int[] c5p5Treasure = { 0x7becd, 0x7bece, 0x7becf, 0x7bed0, 0x7bed1, 0x7bed2, // Burland Castle
                     0x7beca, 0x7becb, 0x7becc, // Santeem Castle
-                    0x7beda, 0x7bedb, 0x7bedd, 0x7bede, 0x7bd2b, // Endor
-                    0x7befb, 0x7befc, 0x7befd }; // Shrine Of Breaking Waves - Pre-Magma Staff - 17 (105)
-            int[] c5p6Treasure = { 0x7bd32, 0x7bd39, 0x7bee7, // Gardenbur Castle
-                    0x7bf04, 0x7bf05, 0x7bf06, 0x7bf07, 0x7bf08, 0x7bf09 }; // Cave SE Of Gardenbur - Pre-Final Key - 9 (114)
+                    0x7beda, 0x7bedb, 0x7bedd, 0x7bede, // Endor
+                    0x7befb, 0x7befc, 0x7befd }; // Shrine Of Breaking Waves - Pre-Magma Staff - 16 (77)
+            int[] c5p6Treasure = { 0x7bee7, // Gardenbur Castle
+                    0x7bf04, 0x7bf05, 0x7bf06, 0x7bf07, 0x7bf08, 0x7bf09 }; // Cave SE Of Gardenbur - Pre-Final Key - 7 (84)
             int[] c5p7Treasure = { 0x7beeb, 0x7beec, 0x7beed, // Lakanaba
                     0x7bee3, 0x7bee4, 0x7bee5, // Branca Castle
                     0x7bf56, // Konenber
                     0x7bee6, // Gardenbur Castle
                     0x7bf39, 0x7bf3a, 0x7bf3b, // Royal Crypt
-                    0x7bd63, 0x7bd5c, // Haville
-                    0x7bf64, 0x7bf65, 0x7bf66, 0x7bf67, 0x7bf68 }; // Colossus - Pre-Staff Of Transform - 18 (132)
-            int[] c5p8Treasure = { 0x7bd24, 0x7bdc3, 0x7bed3, 0x7bed4, 0x7bed5, 0x7bed6, // Dire Palace
-                    0x7bdc4, 0x7bef3, 0x7bef4, 0x7bef5, 0x7bef6, 0x7bef7, 0x7bef8, 0x7bef9, 0x7befa }; // Aktemto Bonus Round - Gas Canister & Stone Of Drought - 15 (147)
+                    0x7bf64, 0x7bf65, 0x7bf66, 0x7bf67, 0x7bf68 }; // Colossus - Pre-Staff Of Transform - 16 (100)
+            int[] c5p8Treasure = { 0x7bed3, 0x7bed4, 0x7bed5, 0x7bed6, // Dire Palace
+                    0x7bef3, 0x7bef4, 0x7bef5, 0x7bef6, 0x7bef7, 0x7bef8, 0x7bef9, 0x7befa }; // Aktemto Bonus Round - Gas Canister & Stone Of Drought - 12 (112)
             int[] c5p9Treasure = { 0x7bf44, 0x7bf45, 0x7bf46, // World Tree
-                    0x7bd94, // Gottside
                     0x7bf18, 0x7bf19, 0x7bf1a, 0x7bf1b, 0x7bf1c, // Cascade Cave
-                    0x7bf61, 0x7bf63 }; // Shrine Of Horn - All Zenithian equipment - 11 (158)
+                    0x7bf61, 0x7bf63 }; // Shrine Of Horn - All Zenithian equipment - 10 (122)
             int[] c5p10Treasure = { 0x7bf3c, 0x7bf3d, 0x7bf3e, 0x7bf3f, 0x7bf40, // Zenithian Tower
-                    0x7bd01, // Zenithian Castle
                     0x7bf1d, 0x7bf1e, 0x7bf1f, 0x7bf20, 0x7bf21, 0x7bf22, 0x7bf23, 0x7bf24, 0x7bf25, 0x7bf26, 0x7bf27, 0x7bf28, 0x7bf29, // Final Cave
-                    0x7bdcd, // Gigademon Area
                     0x7bf5c, // Radimvice Area
-                    0x7bf5d, 0x7bf5d, 0x7bf5d, 0x7bf60 }; // Necrosaro's Palace - Baron's Horn & End Of Game - 25 (183)
-            int[] c5DeadZone = { 0x7bda2, 0x7bd9b, // Konenber ships -> lost forevers,
-                                 0x7bedc }; // Endor (Chapter 2/3) - 3 (186)
+                    0x7bf5d, 0x7bf5d, 0x7bf5d, 0x7bf60 }; // Necrosaro's Palace - Baron's Horn & End Of Game - 23 (145)
+            int[] c5DeadZone = { 0x7bd1d, // Burland
+                                 0x7bd6a, // Izmit
+                                 0x7bd0f, 0x7bd16, // Santeem
+                                 0x7bdc7, // Tempe
+                                 0x7bd4e, 0x7bd55, // Bazaar
+                                 0x7bd08, // Santeem (Thief's Key)
+                                 0x7bd86, // Lakanaba
+                                 0x7bd7f, 0x7bd78, 0x7bdca, // Monbaraba
+                                 0x7bd8d, // Kievs
+                                 0x7bd71, 0x7bdc9, // Hometown
+                                 0x7b96a, 0x7b983, // Woodman's Shack
+                                 0x7bdc8, // Aneaux
+                                 0x7bdc6, // Mintos
+                                 0x7bdcc, // Shrine East Of Mintos
+                                 0x7bda9, // Old Man's Island House
+                                 0x7bdcb, 0x7b94b, // Seaside Village
+                                 0x7bd40, 0x7bd47, // Stancia Castle
+                                 0x7bdc5, // Riverton
+                                 0x7bda2, 0x7bd9b, // Konenber ships -> lost forevers,
+                                 0x7bdb0, // Cave West Of Kievs, hidden basement
+                                 0x7bd2b, // Endor (King's Drawer - Chapter 5)
+                                 0x7bd32, 0x7bd39, // Gardenbur Castle
+                                 0x7bd63, 0x7bd5c, // Haville
+                                 0x7bd24, 0x7bdc3, // Dire Palace
+                                 0x7bdc4, // Aktemto Bonus Round
+                                 0x7bd94, // Gottside
+                                 0x7bd01, // Zenithian Castle
+                                 0x7bdcd, // Gigademon Area
+                                 0x7bedc }; // Endor (Chapter 2/3) - 41 (186)
+
+            //int[] c1p1Treasure = { 0x7bd1d, // Burland
+            //        0x7bf38, 0x7bf37, // Cave To Izmit
+            //        0x7bd6a, // Izmit
+            //        0x7bf15, 0x7bf16, 0x7bf17, 0x7bdb7, 0x7b936 }; // Old Well - Flying Shoes - 9
+            //int[] c1p2Treasure = { 0x7bf47, 0x7bf48, 0x7bf49, 0x7bf4a, 0x7bf4b, 0x7bf4c }; // Loch Tower - End of C1 - 6 (15)
+            //int[] c2p1Treasure = { 0x7bd0f, 0x7bd16, // Santeem
+            //        0x7bdc7, // Tempe
+            //        0x7bf10, 0x7bf11, 0x7bf12, 0x7bf13, 0x7bf14, // Frenor 
+            //        0x7bd4e, 0x7bd55 }; //  Bazaar - Thief's Key - 10 (25)
+            //int[] c2p2Treasure = { 0x7bd08, // Santeem (Thief's Key)
+            //        0x7bf41, 0x7bf42, 0x7bf43, 0x7b901 }; // Birdsong Tower - Birdsong Nectar(0x7b8f4?) - 5 (30)
+            //int[] c3p1Treasure = {  0x7bd86, // Lakanaba
+            //        0x7bf2a, 0x7bf2b, // Iron Safe Cave
+            //        0x560e8, // Foxville fox
+            //        0x7bf2d, 0x7bf2e, 0x7bf2f, 0x7bf30, 0x7bf31, 0x7bf32, 0x7bf33, 0x7bf34, 0x7bf35, 0x7bf36 }; // Silver Statuette Cave - Silver Statuette - 14 (44)
+            //int[] c4p1Treasure = { 0x7bd7f, 0x7bd78, 0x7bdca, // Monbaraba
+            //        0x7bd8d, 0x7beee, // Kievs
+            //        0x7bf0a, 0x7bf0b, 0x7bf0c, 0x7ba05, 0x7bf0e, // Cave West of Kievs (couple 0x7ba05 with 0x7ba0a)
+            //        0x7bef0, 0x7bef1, 0x7bef2 }; // Aktemto Mine - Gunpowder Jar and Sphere Of Silence - 13 (57)
+            //int[] c5p1Treasure = { 0x7bd71, 0x7bdc9, // Hometown
+            //        0x7b96a, 0x7b983, // Woodman's Shack
+            //        //0x7bf2c, // Cave Of Betrayal - Can't change this due to the way the cave works
+            //        0x7beef }; // Desert Inn - Symbol Of Faith - 5 (62)
+            //int[] c5p2Treasure = { 0x7bdc8, // Aneaux
+            //        0x7bf4d, 0x7bf4e, 0x7bf4f, 0x7bf50, 0x7bf51, 0x7bf52, 0x7bf53, 0x7bf54, 0x7bf55 }; // Great Lighthouse - Fire Of Serenity - 10 (72)
+            //int[] c5p3Treasure = { 0x7bdc6, // Mintos
+            //        0x7bdcc, // Shrine East Of Mintos
+            //        0x7befe, 0x7beff, 0x7bf00, 0x7bf01, 0x7bf02, 0x7bf03, // Cave Of The Padequia
+            //        0x7bda9, // Old Man's Island House
+            //        0x7bdcb, 0x7b94b, // Seaside Village
+            //        0x7bd40, 0x7bd47, // Stancia Castle
+            //        0x7bdc5 }; // Riverton - Padequia Root - 14 (86)
+            //int[] c5p4Treasure = { 0x7bdb0, 0x7bf0f }; // Cave West Of Kievs - Pre-Magic Key - 2 (88)
+            //int[] c5p5Treasure = { 0x7becd, 0x7bece, 0x7becf, 0x7bed0, 0x7bed1, 0x7bed2, // Burland Castle
+            //        0x7beca, 0x7becb, 0x7becc, // Santeem Castle
+            //        0x7beda, 0x7bedb, 0x7bedd, 0x7bede, 0x7bd2b, // Endor
+            //        0x7befb, 0x7befc, 0x7befd }; // Shrine Of Breaking Waves - Pre-Magma Staff - 17 (105)
+            //int[] c5p6Treasure = { 0x7bd32, 0x7bd39, 0x7bee7, // Gardenbur Castle
+            //        0x7bf04, 0x7bf05, 0x7bf06, 0x7bf07, 0x7bf08, 0x7bf09 }; // Cave SE Of Gardenbur - Pre-Final Key - 9 (114)
+            //int[] c5p7Treasure = { 0x7beeb, 0x7beec, 0x7beed, // Lakanaba
+            //        0x7bee3, 0x7bee4, 0x7bee5, // Branca Castle
+            //        0x7bf56, // Konenber
+            //        0x7bee6, // Gardenbur Castle
+            //        0x7bf39, 0x7bf3a, 0x7bf3b, // Royal Crypt
+            //        0x7bd63, 0x7bd5c, // Haville
+            //        0x7bf64, 0x7bf65, 0x7bf66, 0x7bf67, 0x7bf68 }; // Colossus - Pre-Staff Of Transform - 18 (132)
+            //int[] c5p8Treasure = { 0x7bd24, 0x7bdc3, 0x7bed3, 0x7bed4, 0x7bed5, 0x7bed6, // Dire Palace
+            //        0x7bdc4, 0x7bef3, 0x7bef4, 0x7bef5, 0x7bef6, 0x7bef7, 0x7bef8, 0x7bef9, 0x7befa }; // Aktemto Bonus Round - Gas Canister & Stone Of Drought - 15 (147)
+            //int[] c5p9Treasure = { 0x7bf44, 0x7bf45, 0x7bf46, // World Tree
+            //        0x7bd94, // Gottside
+            //        0x7bf18, 0x7bf19, 0x7bf1a, 0x7bf1b, 0x7bf1c, // Cascade Cave
+            //        0x7bf61, 0x7bf63 }; // Shrine Of Horn - All Zenithian equipment - 11 (158)
+            //int[] c5p10Treasure = { 0x7bf3c, 0x7bf3d, 0x7bf3e, 0x7bf3f, 0x7bf40, // Zenithian Tower
+            //        0x7bd01, // Zenithian Castle
+            //        0x7bf1d, 0x7bf1e, 0x7bf1f, 0x7bf20, 0x7bf21, 0x7bf22, 0x7bf23, 0x7bf24, 0x7bf25, 0x7bf26, 0x7bf27, 0x7bf28, 0x7bf29, // Final Cave
+            //        0x7bdcd, // Gigademon Area
+            //        0x7bf5c, // Radimvice Area
+            //        0x7bf5d, 0x7bf5d, 0x7bf5d, 0x7bf60 }; // Necrosaro's Palace - Baron's Horn & End Of Game - 25 (183)
+            //int[] c5DeadZone = { 0x7bda2, 0x7bd9b, // Konenber ships -> lost forevers,
+            //                     0x7bedc }; // Endor (Chapter 2/3) - 3 (186)
 
             List<int> allTreasureList = new List<int>();
             allTreasureList = addTreasure(allTreasureList, c1p1Treasure);
