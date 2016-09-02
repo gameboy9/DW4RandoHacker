@@ -576,68 +576,16 @@ namespace DW4RandoHacker
 
             if (chkSpeedUpBattles.Checked)
             {
-                romData[0x502ff] = 1; // instead of 4.  6 frames saved each enemy hit when there is one monster left.
-                romData[0x5033f] = 2; // instead of 8.  6 frames saved each enemy hit where there are two or more monsters left.
-                romData[0x50420] = 2; // instead of 12.  10 frames saved each time YOU are hit.
-                romData[0x63237] = 2; // instead of 12.  10 frames saved each time an encounter begins.  (flash)
-                romData[0x62eb8] = 1; // instead of 29.  28 frames saved each time an encounter begins.  (spiral)
-                // Speed up the message speed
-                romData[0x48624] = 0x01;
-                romData[0x48625] = 0x04;
-                romData[0x48626] = 0x08;
-                romData[0x48627] = 0x0f;
-                romData[0x48628] = 0x1f;
-                romData[0x48629] = 0x2f;
-                romData[0x4862a] = 0x3f;
-
-                // Win tune
-                romData[0x6666a] = 0x01;
-                romData[0x6666c] = 0x01;
-                romData[0x6667d] = 0x01;
-
-                // Level up
-                romData[0x43d22] = 0x01;
-                romData[0x43d27] = 0x01;
-                romData[0x43d2b] = 0x01;
-
-                // Save music
-                romData[0x6677d] = 0x01;
-                romData[0x6677f] = 0x01;
-                romData[0x66781] = 0x01;
-                romData[0x66783] = 0x01;
-                romData[0x66786] = 0x01;
-                romData[0x66788] = 0x01;
-                romData[0x6678c] = 0x01;
-                romData[0x66795] = 0x01;
-                romData[0x6679b] = 0x01;
-
-                // Revive music
-                romData[0x66635] = 0x81;
-                romData[0x6663a] = 0x01;
-                romData[0x6663e] = 0x81;
-                romData[0x66641] = 0x81;
-                romData[0x66644] = 0x81;
-
-                romData[0x6664b] = 0x81;
-                romData[0x6664e] = 0x01;
-                romData[0x66650] = 0x81;
-
-                romData[0x66655] = 0x81;
-                romData[0x6665b] = 0x01;
-
-                // Recruit music
-                romData[0x43c94] = 0x81;
-                romData[0x43cb8] = 0x81;
-                romData[0x43cc3] = 0x01;
-                romData[0x43cd0] = 0x01;
-                romData[0x43cd3] = 0x81;
-
-                romData[0x43cff] = 0x01;
-                romData[0x43d11] = 0x81;
-                romData[0x43d15] = 0x81;
-                romData[0x43d1b] = 0x01;
-
+                speedUpBattles();
             }
+
+            if (chkSpeedUpMusic.Checked)
+            {
+                speedUpMusic();
+            }
+
+            if (chkNoFieldText.Checked)
+                noFieldText();
 
             if (chkDoubleWalking.Checked)
             {
@@ -654,6 +602,7 @@ namespace DW4RandoHacker
                 romData[0x72012] = 0x41;
                 romData[0x72016] = 0x42;
                 romData[0x7201a] = 0x41;
+                romData[0x71fdd] = 0x41;
                 // Prevents a slow down as you escape Keeleon in Chapter 4.
                 romData[0x76c4b] = 0x02;
             }
@@ -765,6 +714,80 @@ namespace DW4RandoHacker
             }
 
             return true;
+        }
+
+        private void speedUpBattles()
+        {
+            romData[0x502ff] = 1; // instead of 4.  6 frames saved each enemy hit when there is one monster left.
+            romData[0x5033f] = 2; // instead of 8.  6 frames saved each enemy hit where there are two or more monsters left.
+            romData[0x50420] = 2; // instead of 12.  10 frames saved each time YOU are hit.
+            romData[0x63237] = 2; // instead of 12.  10 frames saved each time an encounter begins.  (flash)
+            romData[0x62eb8] = 1; // instead of 29.  28 frames saved each time an encounter begins.  (spiral)
+                                  // Speed up the message speed
+            romData[0x48624] = 0x01;
+            romData[0x48625] = 0x04;
+            romData[0x48626] = 0x08;
+            romData[0x48627] = 0x0f;
+            romData[0x48628] = 0x1f;
+            romData[0x48629] = 0x2f;
+            romData[0x4862a] = 0x3f;
+        }
+
+        private void speedUpMusic()
+        {
+            // Win tune
+            romData[0x6666a] = 0x01;
+            romData[0x6666c] = 0x01;
+            romData[0x6667d] = 0x01;
+
+            // Level up
+            romData[0x43d22] = 0x01;
+            romData[0x43d27] = 0x01;
+            romData[0x43d2b] = 0x01;
+
+            // Save music
+            romData[0x6677d] = 0x01;
+            romData[0x6677f] = 0x01;
+            romData[0x66781] = 0x01;
+            romData[0x66783] = 0x01;
+            romData[0x66786] = 0x01;
+            romData[0x66788] = 0x01;
+            romData[0x6678c] = 0x01;
+            romData[0x66795] = 0x01;
+            romData[0x6679b] = 0x01;
+
+            // Revive music
+            romData[0x66635] = 0x81;
+            romData[0x6663a] = 0x01;
+            romData[0x6663e] = 0x81;
+            romData[0x66641] = 0x81;
+            romData[0x66644] = 0x81;
+
+            romData[0x6664b] = 0x81;
+            romData[0x6664e] = 0x01;
+            romData[0x66650] = 0x81;
+
+            romData[0x66655] = 0x81;
+            romData[0x6665b] = 0x01;
+
+            // Recruit music
+            romData[0x43c94] = 0x81;
+            romData[0x43cb8] = 0x81;
+            romData[0x43cc3] = 0x01;
+            romData[0x43cd0] = 0x01;
+            romData[0x43cd3] = 0x81;
+
+            romData[0x43cff] = 0x01;
+            romData[0x43d11] = 0x81;
+            romData[0x43d15] = 0x81;
+            romData[0x43d1b] = 0x01;
+        }
+
+        private void noFieldText()
+        {
+            romData[0x583a0] = 0x4c;
+            romData[0x583a1] = 0xb0;
+            romData[0x583a2] = 0xc1;
         }
 
         private void randomizeHeroStats(Random r1)
@@ -1120,7 +1143,7 @@ namespace DW4RandoHacker
 
                 if (randomType == 0)
                     continue;
-                if (randomType == 1 && monsterRank[lnI] != 0x5c && monsterRank[lnI] != 0x75)
+                if (randomType == 1 && monsterRank[lnI] != 0x5c && monsterRank[lnI] != 0x75 && monsterRank[lnI] != 0xa8)
                 {
                     if (r1.Next() % 2 == 1)
                         // weird attack pattern
@@ -1147,7 +1170,7 @@ namespace DW4RandoHacker
 
                     for (int lnJ = 0; lnJ < 6; lnJ++)
                     {
-                        if (lnJ >= 0 && lnJ <= 2 && (monsterRank[lnI] == 0x5c || monsterRank[lnI] == 0x75))
+                        if (lnJ >= 0 && lnJ <= 2 && (monsterRank[lnI] == 0x5c || monsterRank[lnI] == 0x75 || monsterRank[lnI] == 0xa8))
                             romData[byteToUse + 9 + lnJ] = 0x47;
                         else
                             romData[byteToUse + 9 + lnJ] = (byte)(moveLevel == 0 ? level1Moves[r1.Next() % level1Moves.Length] :
@@ -1168,7 +1191,7 @@ namespace DW4RandoHacker
                 {
                     for (int lnJ = 0; lnJ < 6; lnJ++)
                     {
-                        if (lnJ >= 0 && lnJ <= 2 && (monsterRank[lnI] == 0x5c || monsterRank[lnI] == 0x75))
+                        if (lnJ >= 0 && lnJ <= 2 && (monsterRank[lnI] == 0x5c || monsterRank[lnI] == 0x75 || monsterRank[lnI] == 0xa8))
                             romData[byteToUse + 9 + lnJ] = 0x47;
                         else if (r1.Next() % 2 == 1)
                             romData[byteToUse + 9 + lnJ] = (byte)(r1.Next() % 0x67);
@@ -1223,7 +1246,7 @@ namespace DW4RandoHacker
                 int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
 
                 // If light is selected, maintain enemy resistances, HP, strength, defense, and agility.  Do not do this if a metal monster is involved...
-                if (!optMonsterLight.Checked && monsterRank[lnI] != 0x5c && monsterRank[lnI] != 0x75)
+                if (!optMonsterLight.Checked && monsterRank[lnI] != 0x5c && monsterRank[lnI] != 0x75 && monsterRank[lnI] != 0xa8)
                 {
                     // If silly is selected, adjust HP, strength, defense, and agility by +/- 25%.
                     // If ridiculous is selected, adjust HP, strength, defense, and agility by +/- 50%.
@@ -1486,7 +1509,7 @@ namespace DW4RandoHacker
                     0x76, 0x75,
                     0x6b, 0x6d,
                     0x5d, 0x70,
-                    0x7c, 0xe2, 0x72, 0x1e, 0x68, 0x5c, 0x7d, 0x14, 0x37, 0x44, 0x4b, 0x52, // e2 instead of 7b
+                    0x7c, 0xe2, 0x72, 0x1e, 0x68, 0x5c, 0x7d, 0x14, 0x37, 0x44, 0x52, // e2 instead of 7b
                     0x60, 0x67, 0x6e, 0x5f, 0x6a };
             List<int> keyItemList = new List<int> { };
             addTreasure(keyItemList, keyItems);
@@ -1495,13 +1518,13 @@ namespace DW4RandoHacker
                     13, 13,
                     22, 22,
                     35, 35,
-                    44, 44, 44, 44, 44, 44, 60, 60, 60, 60, 60, 60,
+                    44, 44, 44, 44, 44, 44, 60, 60, 60, 60, 60,
                     0, 0, 0, 0, 72 };
             int[] maxItemZones = { 7,
                     18, 22,
                     35, 35,
                     44, 44,
-                    54, 60, 61, 77, 100, 112, 112, 122, 122, 122, 122, 145,
+                    54, 60, 61, 77, 100, 112, 112, 122, 122, 122, 145,
                     145, 145, 145, 145, 112 };
 
             for (int lnJ = 0; lnJ < keyItems.Length; lnJ++)
@@ -1894,7 +1917,7 @@ namespace DW4RandoHacker
             for (int lnI = 0; lnI < 190; lnI++) // <= 0xc2
             {
                 // do not randomize Necrosaro or the metal monsters.
-                if (lnI == 0xae || lnI == 0x5c || lnI == 0x75) continue;
+                if (lnI == 0xae || lnI == 0x5c || lnI == 0x75 || lnI == 0xa8) continue;
 
                 int byteToUse = 0x60056 + (lnI * 22);
 
@@ -2426,6 +2449,8 @@ namespace DW4RandoHacker
             flags += (chkRandomMonsterAttacks.Checked ? "A" : "");
             flags += (chkRandomizeHeroSpells.Checked ? "P" : "");
             flags += (chkDoubleWalking.Checked ? "D" : "");
+            flags += (chkNoFieldText.Checked ? "F" : "");
+            flags += (chkSpeedUpMusic.Checked ? "U" : "");
 
             flags += (optMonsterLight.Checked ? "_r1" : "");
             flags += (optMonsterSilly.Checked ? "_r2" : "");
@@ -2504,6 +2529,8 @@ namespace DW4RandoHacker
                     chkRandomMonsterAttacks.Checked = flag.Contains("A");
                     chkRandomizeHeroSpells.Checked = flag.Contains("P");
                     chkDoubleWalking.Checked = flag.Contains("D");
+                    chkNoFieldText.Checked = flag.Contains("F");
+                    chkSpeedUpMusic.Checked = flag.Contains("U");
                 }
             }
         }
