@@ -603,6 +603,13 @@ namespace DW4RandoHacker
                 romData[0x72016] = 0x42;
                 romData[0x7201a] = 0x41;
                 romData[0x71fdd] = 0x41;
+                romData[0x174ed] = romData[0x1750a] = 0x5f;
+                romData[0x71fa1] = 0x41;
+                romData[0x71fa9] = 0x41;
+                romData[0x71fb9] = 0x41;
+                romData[0x71fbd] = 0x41;
+                romData[0x71fc5] = 0x41;
+                romData[0x71fe1] = 0x41;
                 // Prevents a slow down as you escape Keeleon in Chapter 4.
                 romData[0x76c4b] = 0x02;
             }
@@ -723,7 +730,8 @@ namespace DW4RandoHacker
             romData[0x50420] = 2; // instead of 12.  10 frames saved each time YOU are hit.
             romData[0x63237] = 2; // instead of 12.  10 frames saved each time an encounter begins.  (flash)
             romData[0x62eb8] = 1; // instead of 29.  28 frames saved each time an encounter begins.  (spiral)
-                                  // Speed up the message speed
+            
+            // Speed up the message speed
             romData[0x48624] = 0x01;
             romData[0x48625] = 0x04;
             romData[0x48626] = 0x08;
@@ -731,6 +739,10 @@ namespace DW4RandoHacker
             romData[0x48628] = 0x1f;
             romData[0x48629] = 0x2f;
             romData[0x4862a] = 0x3f;
+
+            // Speed up fade in and fade out.
+            romData[0x7c5e0] = 0x01; // Instead of 0x03, saving about 12 frames each fade in/out.
+            romData[0x6c74a] = 0x01; // instead of 0x0f, saving 1+ second / castle door opening.
         }
 
         private void speedUpMusic()
@@ -781,13 +793,60 @@ namespace DW4RandoHacker
             romData[0x43d11] = 0x81;
             romData[0x43d15] = 0x81;
             romData[0x43d1b] = 0x01;
+
+            // Inn
+            romData[0x6661a] = 0x01;
+            romData[0x66622] = 0x81;
+
+            // Key item jingle
+            romData[0x5fe91] = 0x81;
+            romData[0x5fe99] = 0x81;
+            romData[0x5fe9c] = 0x81;
+            romData[0x5fea3] = 0x81;
         }
 
         private void noFieldText()
         {
+            //romData[0x58061] = 0x4c;
+            //romData[0x58062] = 0xb0;
+            //romData[0x58063] = 0xc1;
             romData[0x583a0] = 0x4c;
-            romData[0x583a1] = 0xb0;
-            romData[0x583a2] = 0xc1;
+            romData[0x583a1] = 0xb6;
+            romData[0x583a2] = 0xbf;
+
+            romData[0x5bfc6] = 0x68;
+            romData[0x5bfc7] = 0x68;
+            romData[0x5bfc8] = 0x68;
+            romData[0x5bfc9] = 0x68;
+            romData[0x5bfca] = 0x68;
+            romData[0x5bfcb] = 0x68;
+            romData[0x5bfcc] = 0xa9;
+            romData[0x5bfcd] = 0xff;
+            romData[0x5bfce] = 0x48;
+            romData[0x5bfcf] = 0xa9;
+            romData[0x5bfd0] = 0x7e;
+            romData[0x5bfd1] = 0x48;
+            romData[0x5bfd2] = 0xa9;
+            romData[0x5bfd3] = 0x80;
+            romData[0x5bfd4] = 0x48;
+            romData[0x5bfd5] = 0xa9;
+            romData[0x5bfd6] = 0x3b;
+            romData[0x5bfd7] = 0x48;
+            romData[0x5bfd8] = 0xa9;
+            romData[0x5bfd9] = 0x80;
+            romData[0x5bfda] = 0x48;
+            romData[0x5bfdb] = 0xa9;
+            romData[0x5bfdc] = 0xc2;
+            romData[0x5bfdd] = 0x48;
+            romData[0x5bfde] = 0x4c;
+            romData[0x5bfdf] = 0xb0;
+            romData[0x5bfe0] = 0xc1;
+            //romData[0x580a4] = 0x4c;
+            //romData[0x580a5] = 0xa4;
+            //romData[0x580a6] = 0x80;
+            //romData[0x580a7] = 0x4c;
+            //romData[0x7c496] = 0x10;
+            //romData[0x7c49a] = 0x27;
         }
 
         private void randomizeHeroStats(Random r1)
@@ -2439,7 +2498,7 @@ namespace DW4RandoHacker
             }
             flags += (chkRandomMonsterZones.Checked ? "Z" : "");
             flags += (chkSpeedUpBattles.Checked ? "B" : "");
-            flags += (chkRandomHeroEquip.Checked ? "E" : "");
+            flags += (chkRandomHeroEquip.Checked ? "e" : "");
             flags += (chkRandomMonsterStats.Checked ? "s" : "");
             flags += (chkRandomTreasures.Checked ? "T" : "");
             flags += (chkRandomMonsterResistances.Checked ? "R" : "");
@@ -2519,7 +2578,7 @@ namespace DW4RandoHacker
                         flag.Contains("E4") ? "x1.5" : flag.Contains("E5") ? "x2" : flag.Contains("E6") ? "x3" : flag.Contains("E7") ? "x4" : "x1");
                     chkRandomMonsterZones.Checked = flag.Contains("Z");
                     chkSpeedUpBattles.Checked = flag.Contains("B");
-                    chkRandomHeroEquip.Checked = flag.Contains("E");
+                    chkRandomHeroEquip.Checked = flag.Contains("e");
                     chkRandomMonsterStats.Checked = flag.Contains("s");
                     chkRandomTreasures.Checked = flag.Contains("T");
                     chkRandomMonsterResistances.Checked = flag.Contains("R");
