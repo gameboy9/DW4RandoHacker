@@ -2849,6 +2849,7 @@ namespace DW4RandoHacker
             flags += (chkC5ControlAllChars.Checked ? "C" : "");
             flags += (chkRandomMonsterAttacks.Checked ? "A" : "");
             flags += (chkRandomizeHeroSpells.Checked ? "P" : "");
+            flags += (chkScaleNPCs.Checked ? "N" : "");
             flags += (chkDoubleWalking.Checked ? "D" : "");
             flags += (chkNoFieldText.Checked ? "F" : "");
             flags += (chkSpeedUpMusic.Checked ? "U" : "");
@@ -2929,6 +2930,7 @@ namespace DW4RandoHacker
                     chkC5ControlAllChars.Checked = flag.Contains("C");
                     chkRandomMonsterAttacks.Checked = flag.Contains("A");
                     chkRandomizeHeroSpells.Checked = flag.Contains("P");
+                    chkScaleNPCs.Checked = flag.Contains("N");
                     chkDoubleWalking.Checked = flag.Contains("D");
                     chkNoFieldText.Checked = flag.Contains("F");
                     chkSpeedUpMusic.Checked = flag.Contains("U");
