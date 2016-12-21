@@ -452,7 +452,10 @@ namespace DW4RandoHacker
                     if (npcs[npcMark] == 0x73678)
                         romData[0x79597] = (byte)(heroes[lnI] + 8);
                     if (npcs[npcMark] == 0x7364e)
+                    {
                         romData[0x56c1d] = (byte)(heroes[lnI] + 8);
+                        romData[0x79584] = (byte)(heroes[lnI] + 8);
+                    }
                     if (npcs[npcMark] == 0x7790f)
                         romData[0x77573] = (byte)(heroes[lnI] + 8);
 
@@ -610,6 +613,8 @@ namespace DW4RandoHacker
                 romData[0x71fbd] = 0x41;
                 romData[0x71fc5] = 0x41;
                 romData[0x71fe1] = 0x41;
+                romData[0x71fe6] = 0x41; // Riverton
+                romData[0x72bdc] = 0x41; // Final Cave ship
                 // Prevents a slow down as you escape Keeleon in Chapter 4.
                 romData[0x76c4b] = 0x02;
             }
@@ -876,7 +881,7 @@ namespace DW4RandoHacker
             // Calculate the base gain based on the four multipliers.  Try to get as close to the target gain for each stat as possible.
             // Char byteToUse - 0x4a15b, 0x4a17f, 0x4a1a3, 0x4a1c7, 0x4a1eb, 0x4a20f, 0x4a22d, 0x4a24b
             int byteToUse = 0x4a15b;
-            // 48 bytes for strength, 48 bytes for agility, 48 bytes for intelligence, 48 bytes for luck, 30 bytes for mp, in that order.  NOT in character order, statistic order!
+            // 48 bytes for strength, 48 bytes for agility, 48 bytes for vitality, 48 bytes for intelligence, 48 bytes for luck, 30 bytes for mp, in that order.  NOT in character order, statistic order!
             for (int lnJ = 0; lnJ < 6; lnJ++)
             {
                 for (int lnI = 0; lnI < 8; lnI++)
@@ -895,7 +900,17 @@ namespace DW4RandoHacker
                             heroL41Gains[lnI, lnJ] += (r1.Next() % difference);
                     }
                     if (optMonsterHeavy.Checked)
-                        heroL41Gains[lnI, lnJ] = (r1.Next() % (lnJ == 3 ? 175 : 225)) + (lnJ == 3 ? 75 : 25);
+                    {
+                        if (lnJ == 2)
+                            heroL41Gains[lnI, lnJ] = (r1.Next() % 175 + 75);
+                        else if (lnJ == 0)
+                            heroL41Gains[lnI, lnJ] = (r1.Next() % (lnI == 0 || lnI >= 5 ? 175 : 210) + (lnI == 0 || lnI >= 5 ? 75 : 40));
+                        else if (lnJ == 5)
+                            heroL41Gains[lnI, lnJ] = (r1.Next() % 300 + 100);
+                        else
+                            heroL41Gains[lnI, lnJ] = (r1.Next() % 210 + 40);
+
+                    }
 
                     int baseStat = 0;
                     for (int lnK = 0; lnK < 4; lnK++)
@@ -947,7 +962,8 @@ namespace DW4RandoHacker
 
                             for (int lnL = 2; lnL <= 40; lnL++)
                             {
-                                if (lnL > (romData[byteToUse + multLevel] % 128))
+                                int multLevelToUse = (multLevel == 0 ? romData[byteToUse + multLevel] % 32 : romData[byteToUse + multLevel] % 128);
+                                if (lnL > multLevelToUse)
                                     multLevel++;
                                 stat += Math.Floor((((double)baseMult[lnK] * romData[byteToUse2 + multLevel]) - 8) / 16) + 0.6;
                             }
@@ -981,17 +997,25 @@ namespace DW4RandoHacker
 
         private void randomizeHeroSpells(Random r1)
         {
+            // Used for announcements
             // 80+ = Intelligence based? - Spells are in numerical order.  (Blaze, Blazemore, Blazemost, etc.)
             // 0x41129-0x4113a - Hero battle spells (18 bytes)
             // 0x4113b-0x41146 - Cristo battle spells (12 bytes)
             // 0x41147-0x41152 - Nara battle spells (12 bytes)
             // 0x41153-0x4115e - Mara battle spells (12 bytes)
             // 0x4115f-0x4116a - Brey battle spells (12 bytes)
-            // 0x4116b - Hero field spells
+            // 0x4116d - Hero field spells (6 BYTES ONLY)
             // 0x41173 - Cristo field spells used
             // 0x4117b - Nara field spells used
             // 0x41183 - Mara field spells.  FFs are skipped.
             // 0x4118b - Brey field spells
+
+            // Used for actual use
+            // 0x4f37d - Hero field spells REPEATED (6 BYTES ONLY)
+            // 0x4f383 - Cristo field spells used
+            // 0x4f38b - Nara field spells used
+            // 0x4f393 - Mara field spells.  FFs are skipped.
+            // 0x4f39b - Brey field spells
             // 0x4a2a1-0x4a2a8 - Hero Gap (8 bytes)
             // 0x4a2a9-0x4a2bc - Hero spell learning (20 bytes)
             // 0x4a2bd-0x4a2c4 - Gap (8 bytes) (interference!  Skip 00, something happens at E0 though!  UGH!)
@@ -1009,9 +1033,12 @@ namespace DW4RandoHacker
             // 0x4f362 - Battle spells for Mara repeated
             // 0x4f36e - Battle spells for Brey repeated
 
+            // 0x40f84-8 - Number of field spells for hero, Cristo, Nara, Mara, and Brey
+
             // Procedure:  Come up with x unique battle spells from 0x00 to 0x35.  If there are any spell learning bytes leftover, add from 0x36-0x3b
             int[] battleSpells = { 18, 12, 12, 12, 12 };
             int[] allSpells = { 20, 12, 12, 14, 14 };
+            int[] fieldSpellLimit = { 4, 7, 7, 5, 5 };
 
             for (int lnI = 0; lnI < 5; lnI++)
             {
@@ -1020,12 +1047,16 @@ namespace DW4RandoHacker
                 List<int> battle = new List<int>();
                 List<int> field = new List<int>();
 
-                int byteToUse = 0x41129;
-                int byteToUse2 = 0x4116b + (8 * lnI);
+                int byteToUse = 0x41129; // battle spells
+                int byteToUse2 = 0x4116b + (8 * lnI); // field spells
                 for (int lnJ = 0; lnJ < 8; lnJ++) romData[byteToUse2 + lnJ] = 0xff;
-                int byteToUse3 = 0x4f338;
-                int byteToUse4 = (lnI == 0 ? 0x4a2a9 : lnI == 1 ? 0x4a2d9 : lnI == 2 ? 0x4a2c5 : lnI == 3 ? 0x4a2ee : 0x4a305);
+                byteToUse2 += (lnI == 0 ? 2 : 0);
+                int byteToUse3 = 0x4f338; // battle spells repeated
+                int byteToUse4 = (lnI == 0 ? 0x4a2a9 : lnI == 1 ? 0x4a2d9 : lnI == 2 ? 0x4a2c5 : lnI == 3 ? 0x4a2ee : 0x4a305); // spell learning
                 int gapByte = (lnI == 0 ? 0x4a2a1 : lnI == 1 ? 0x4a2d1 : lnI == 2 ? 0x4a2bd : lnI == 3 ? 0x4a2e6 : 0x4a2fd);
+                int byteToUse5 = 0x4f37a; // field spells repeated
+                for (int lnJ = 0; lnJ < 8; lnJ++) romData[byteToUse5 + lnJ] = 0xff;
+                byteToUse5 += (lnI == 0 ? 2 : 0);
                 for (int lnJ = lnI; lnJ > 0; lnJ--)
                 {
                     byteToUse += battleSpells[lnJ - 1];
@@ -1037,7 +1068,9 @@ namespace DW4RandoHacker
                     romData[byteToUse + lnJ] = (byte)(r1.Next() % 0x35);
                     for (int lnK = lnJ - 1; lnK >= 0; lnK--)
                     {
-                        if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
+                        if ((romData[byteToUse + lnJ] == romData[byteToUse + lnK]) || 
+                            (romData[byteToUse + lnJ] >= 0x29 && (romData[byteToUse + lnJ] == 0x2d || romData[byteToUse + lnJ] == 0x2f
+                            || romData[byteToUse + lnJ] == 0x34 || romData[byteToUse + lnJ] == 0x39 || romData[byteToUse + lnJ] == 0x32 || fieldSpells >= fieldSpellLimit[lnI])))
                         {
                             dup = true;
                             lnJ--;
@@ -1046,9 +1079,10 @@ namespace DW4RandoHacker
                     }
                     if (!dup)
                     {
-                        if (romData[byteToUse + lnJ] >= 0x29 && romData[byteToUse + lnJ] != 0x2d && romData[byteToUse + lnJ] != 0x2f && romData[byteToUse + lnJ] != 0x34)
+                        if (romData[byteToUse + lnJ] >= 0x29 && romData[byteToUse + lnJ] != 0x2d && romData[byteToUse + lnJ] != 0x2f 
+                            && romData[byteToUse + lnJ] != 0x34 && romData[byteToUse + lnJ] != 0x32 && romData[byteToUse + lnJ] != 0x39)
                         {
-                            romData[byteToUse2 + fieldSpells] = romData[byteToUse + lnJ];
+                            romData[byteToUse2 + fieldSpells] = romData[byteToUse5 + fieldSpells] = romData[byteToUse + lnJ];
                             field.Add(romData[byteToUse + lnJ]);
                             fieldSpells++;
                         }
@@ -1059,7 +1093,12 @@ namespace DW4RandoHacker
                 for (int lnJ = 0; lnJ < allSpells[lnI] - battleSpells[lnI]; lnJ++)
                 {
                     bool dup = false;
-                    romData[byteToUse2 + fieldSpells] = (byte)((r1.Next() % 6) + 0x35);
+                    romData[byteToUse2 + fieldSpells] = romData[byteToUse5 + fieldSpells] = (byte)((r1.Next() % 6) + 0x35);
+                    if (romData[byteToUse2 + fieldSpells] == 0x39)
+                    {
+                        lnJ--;
+                        continue;
+                    }
                     for (int lnK = fieldSpells - 1; lnK >= 0; lnK--)
                     {
                         if (romData[byteToUse2 + fieldSpells] == romData[byteToUse2 + lnK])
@@ -1072,9 +1111,9 @@ namespace DW4RandoHacker
                     if (!dup)
                     {
                         //romData[byteToUse2 + fieldSpells] = romData[byteToUse + lnJ];
+                        field.Add(romData[byteToUse2 + fieldSpells]);
                         fieldSpells++;
                         extraField++;
-                        field.Add(romData[byteToUse2 + fieldSpells]);
                     }
                 }
 
@@ -1135,10 +1174,15 @@ namespace DW4RandoHacker
                     int battleBit = (int)Math.Pow(2, battle1[lnJ] % 8);
                     gapData[battleByte] += battleBit;
                 }
-                for (int lnJ = 0; lnJ < gapData.Length; lnJ++)
+                for (int lnJ = 0; lnJ < field1.Length; lnJ++)
                 {
-                    romData[gapByte + lnJ] = (byte)gapData[lnJ];
+                    int battleByte = field1[lnJ] / 8;
+                    int battleBit = (int)Math.Pow(2, field1[lnJ] % 8);
+                    gapData[battleByte] += battleBit;
                 }
+                romData[0x40f84 + lnI] = (byte)fieldSpells;
+                for (int lnJ = 0; lnJ < gapData.Length; lnJ++)
+                    romData[gapByte + lnJ] = (byte)gapData[lnJ];
             }
         }
 
@@ -1312,7 +1356,12 @@ namespace DW4RandoHacker
                     // If ludicrous is selected, adjust HP, strength, defense, and agility by +/- 100%.
                     for (int lnJ = 2; lnJ <= 6; lnJ++)
                     {
-                        if (lnJ == 3) lnJ++;
+                        if (lnJ == 3)
+                        {
+                            if (romData[byteToUse + 3] <= 16 && r1.Next() % 2 == 0)
+                                romData[byteToUse + 3] = (byte)(r1.Next() % 16);
+                            //lnJ++;
+                        }
                         int stat = romData[byteToUse + lnJ] + (lnJ >= 4 ? (romData[byteToUse + lnJ + 11] % 4) * 256 : 0);
                         int randomModifier = (r1.Next() % 3);
                         try
