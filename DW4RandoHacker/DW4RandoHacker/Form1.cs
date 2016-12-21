@@ -458,6 +458,299 @@ namespace DW4RandoHacker
 
                     npcMark++;
                 }
+
+                //2016 12 15 - TheCowness
+                //This checkbox is gonna scale the NPCs to the chapter they're dropped into
+                //using hard-coded loadouts
+                if (chkScaleNPCs.Checked)
+                {
+                    //Order if NPCs in memory is actually Healie > Orin > Laurent > Strom > Hector > Panon > Lucia > Doran (Orin before Laurent/Strom)
+                    int[, ,] npcLoadouts = new int[8, 8, 14]{
+                        {//Healie
+                            {//Chapter 1 (Healie)
+                                18,30,35,9,20, //Agi, MP, HP1, Str, Def
+                                0,0x7F, //Gold, Item (Unimportant)
+                                0x25,0xA2,0x22,0x32,0x30,0x32, //Attacks
+                                //Heal, Heal, Heal, Attack, Guard, Attack
+                                0x00 //HP2 (Multiply by 256, add to HP1)
+                            },
+                            {//Chapter 4 (Orin)
+                                //Heal, Heal, Heal, Attack, Guard, Attack
+                                40,42,45,30,40,0,0x7F,0x25,0x22,0x22,0x32,0x30,0x32,0x00
+                            },
+                            {//Chapter 3 (Laurent)
+                                //Heal, Heal, Heal, ParalyzeHit, Guard, Attack
+                                25,30,35,20,20,0,0x7F,0x25,0x22,0x22,0x37,0x30,0x32,0x00
+                            },
+                            {//Chapter 3 (Strom)
+                                //Heal, Heal, Heal, Attack, Guard, Attack
+                                18,30,35,15,30,0,0x7F,0x25,0x22,0x22,0x32,0x30,0x32,0x00
+                            },
+                            {//Chapter 5 (Hector)
+                                //Heal, Heal, Heal, Attack, Qrt Guard, Attack
+                                40,42,45,30,40,0,0x7F,0x25,0x22,0x22,0x32,0x31,0x32,0x00
+                            },
+                            {//Chapter 5 (Panon)
+                                //Healmore, Healmore, Healmore, SleepHit, Dazed, SleepHit
+                                65,90,80,45,60,0,0x7F,0x26,0x26,0x26,0x35,0x2C,0x35,0x00
+                            },
+                            {//Chapter 5 (Lucia)
+                                //HealAll, HealUs, HealUs, SleepHit, Upper, Upper
+                                95,210,145,75,90,0,0x7F,0x27,0x28,0x28,0x35,0x1C,0x1C,0x00
+                            },
+                            {//Chapter 5 (Doran)
+                                //HealAll, HealUs, HealUsAll, Attack, Increase, Increase
+                                110,255,165,95,110,0,0x7F,0x27,0x28,0x29,0x32,0x1D,0x1D,0x00
+                            }
+                        },
+                        {//Orin
+                            {//Chapter 1 (Healie)
+                                4,0,60,50,30,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
+                            },
+                            {//Chapter 4 (Orin)
+                                8,0,82,58,33,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
+                            },
+                            {//Chapter 3 (Laurent)
+                                //Paralyzehitx2, Attack x4
+                                6,0,70,60,30,0,0x7F,0x37,0x37,0x32,0x32,0x32,0x32,0x00
+                            },
+                            {//Chapter 3 (Strom)
+                                6,0,95,82,43,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
+                            },
+                            {//Chapter 5 (Hector)
+                                //Attack x6
+                                20,0,90,95,40,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
+                            },
+                            {//Chapter 5 (Panon)
+                                //Sleephitx3, Attack x3
+                                35,0,120,150,80,0,0x7F,0x35,0x35,0x35,0x32,0x32,0x32,0x00
+                            },
+                            {//Chapter 5 (Lucia)
+                                //Attack x6
+                                50,0,5,200,100,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x01
+                            },
+                            {//Chapter 5 (Doran)
+                                //Attack x6
+                                55,0,95,250,120,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x01
+                            }
+                        },
+                        {//Laurent
+                            {//Chapter 1 (Healie)
+                                //Heal, Heal, Blaze, Sleepmore, ParalyzeHit, Heal
+                                15,40,40,28,25,0,0x7F,0xA5,0x22,0x00,0x11,0x37,0x25,0x00
+                            },
+                            {//Chapter 4 (Orin)
+                                //Heal, Heal, Firebal, Sleep, ParalyzeHit, Heal
+                                25,68,58,35,30,0,0x7F,0xA5,0x22,0x03,0x10,0x37,0x25,0x00
+                            },
+                            {//Chapter 3 (Laurent)
+                                //Heal, Heal, Firebal, Sleep, ParalyzeHit, Heal
+                                18,68,58,28,25,0,0x7F,0xA5,0x22,0x03,0x10,0x37,0x25,0x00
+                            },
+                            {//Chapter 3 (Strom)
+                                //Firebal, Firebal, Firebal, Sleep, ParalyzeHit, Heal
+                                18,68,58,28,25,0,0x7F,0x03,0x03,0x03,0x10,0x37,0x25,0x00
+                            },
+                            {//Chapter 5 (Hector)
+                                //Heal, Heal, Firebal, Sleep, ParalyzeHit, Heal
+                                25,68,58,35,30,0,0x7F,0xA5,0x22,0x03,0x10,0x37,0x25,0x00
+                            },
+                            {//Chapter 5 (Panon)
+                                //Healmore, Healmore, Firebane, Sleep, ParalyzeHit, Healmore
+                                45,90,75,45,50,0,0x7F,0x26,0x26,0x04,0x10,0x37,0x26,0x00
+                            },
+                            {//Chapter 5 (Lucia)
+                                //HealAll, HealAll, Firevolt, Sleep, ParalyzeHit, HealAll
+                                70,180,135,80,80,0,0x7F,0x27,0x27,0x05,0x10,0x37,0x27,0x00
+                            },
+                            {//Chapter 5 (Doran)
+                                //HealAll, Firevolt, Blazemost, Blizzard, Sap, HealAll
+                                80,255,160,90,100,0,0x7F,0x27,0x05,0x02,0x09,0x16,0x27,0x00
+                            }
+                        },
+                        {//Strom
+                            {//Chapter 1 (Healie)
+                                10,0,60,50,30,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
+                            },
+                            {//Chapter 4 (Orin)
+                                //25% Crit x2, Attack x4
+                                25,0,95,82,43,0,0x7F,0x33,0x33,0x32,0x32,0x32,0x32,0x00
+                            },
+                            {//Chapter 3 (Laurent)
+                                //Sleephit, Paralyzehit, Attack x4
+                                25,0,80,60,30,0,0x7F,0x35,0x37,0x32,0x32,0x32,0x32,0x00
+                            },
+                            {//Chapter 3 (Strom)
+                                18,0,95,82,43,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
+                            },
+                            {//Chapter 5 (Hector)
+                                //25% Crit x2, Attack x4
+                                25,0,95,82,43,0,0x7F,0x33,0x33,0x32,0x32,0x32,0x32,0x00
+                            },
+                            {//Chapter 5 (Panon)
+                                //Sleephitx2, Flusteredx1, Attack x3
+                                50,0,150,100,80,0,0x7F,0x35,0x35,0x2B,0x32,0x32,0x32,0x00
+                            },
+                            {//Chapter 5 (Lucia)
+                                //25% Crit x2, Attack x4
+                                60,0,45,150,120,0,0x7F,0x33,0x33,0x32,0x32,0x32,0x32,0x01
+                            },
+                            {//Chapter 5 (Doran)
+                                //25% Crit x6
+                                75,0,145,200,150,0,0x7F,0x33,0x33,0x33,0x33,0x33,0x33,0x01
+                            }
+                        },
+                        {//Hector
+                            {//Chapter 1 (Healie)
+                                //25% Crit x2, Attack x2, Build Up x2
+                                15,0,60,50,30,0,0x7F,0x33,0x33,0x32,0x32,0x2D,0x2D,0x00
+                            },
+                            {//Chapter 4 (Orin)
+                                //25% Crit x2, Attack x2, Build Up x2
+                                20,0,96,50,40,0,0x7F,0x33,0x33,0x32,0x32,0x2D,0x2D,0x00
+                            },
+                            {//Chapter 3 (Laurent)
+                                //25% Crit x2, Attack x2, Build Up x2
+                                20,0,80,60,30,0,0x7F,0x33,0x33,0x32,0x32,0x2D,0x2D,0x00
+                            },
+                            {//Chapter 3 (Strom)
+                                //25% Crit x2, Attack x2, Build Up x2
+                                15,0,95,82,43,0,0x7F,0x33,0x33,0x32,0x32,0x2D,0x2D,0x00
+                            },
+                            {//Chapter 5 (Hector)
+                                //25% Crit x2, Build Up x2, Attack x2
+                                26,0,96,58,47,0,0x7F,0xB2,0x33,0x2D,0x32,0x33,0x2D,0x00
+                            },
+                            {//Chapter 5 (Panon)
+                                //25% Crit x2, Attack x2, Build Up x2
+                                40,0,120,80,70,0,0x7F,0xB2,0x33,0x2D,0x32,0x33,0x2D,0x00
+                            },
+                            {//Chapter 5 (Lucia)
+                                //25% Crit x2, Attack x2, Build Up x2
+                                50,0,45,150,100,0,0x7F,0xB2,0x33,0x2D,0x32,0x33,0x2D,0x01
+                            },
+                            {//Chapter 5 (Doran)
+                                //25% Crit x2, Attack x2, Build Up x2
+                                60,0,105,180,120,0,0x7F,0xB2,0x33,0x2D,0x32,0x33,0x2D,0x01
+                            }
+                        },
+                        {//Panon
+                            {//Chapter 1 (Healie)
+                                //Strange Dance, Attack, SleepHit, Sleep, Attack, SleepHit
+                                10,12,40,40,15,0,0x7F,0x39,0x32,0x35,0x10,0x32,0x35,0x00
+                            },
+                            {//Chapter 4 (Orin)
+                                //Strange Dance, Attack, SleepHit, Sleep, Attack, SleepHit
+                                25,18,75,75,30,0,0x7F,0x39,0x32,0x35,0x10,0x32,0x35,0x00
+                            },
+                            {//Chapter 3 (Laurent)
+                                //Strange Dance, Attack, SleepHit, Sleep, Attack, SleepHit
+                                25,18,60,60,20,0,0x7F,0x39,0x32,0x35,0x10,0x32,0x35,0x00
+                            },
+                            {//Chapter 3 (Strom)
+                                //Strange Dance, Attack, SleepHit, Sleep, Attack, SleepHit
+                                18,18,60,60,20,0,0x7F,0x39,0x32,0x35,0x10,0x32,0x35,0x00
+                            },
+                            {//Chapter 5 (Hector)
+                                //Strange Dance, Attack, SleepHit, Sleep, Attack, SleepHit
+                                25,18,60,60,35,0,0x7F,0x39,0x32,0x35,0x10,0x32,0x35,0x00
+                            },
+                            {//Chapter 5 (Panon)
+                                //Strange Dance, Attack, SleepHit, Sleep, Attack, SleepHit
+                                38,24,85,88,53,0,0x7F,0x39,0x32,0x35,0x10,0x32,0x35,0x00
+                            },
+                            {//Chapter 5 (Lucia)
+                                //Strange Dance, Attack, SleepHit, Sleep, Attack, SleepHit
+                                60,30,160,120,80,0,0x7F,0x39,0x32,0x35,0x10,0x32,0x35,0x00
+                            },
+                            {//Chapter 5 (Doran)
+                                //Strange Dance, Attack, SleepHit, Sleep, Attack, SleepHit
+                                75,30,200,150,100,0,0x7F,0x39,0x32,0x35,0x10,0x32,0x35,0x00
+                            }
+                        },
+                        {//Lucia
+                            {//Chapter 1 (Healie)
+                                15,40,40,30,20, //Agi, MP, HP1, Str, Def
+                                0,0x7F, //Gold, Item (Unimportant)
+                                0x25,0xA2,0x32,0x17,0x30,0x13, //Attacks
+                                //Heal, Heal, Attack, Defense, Defend, Surround
+                                0x00 //HP2 (Multiply by 256, add to HP1)
+                            },
+                            {//Chapter 4 (Orin)
+                                //Heal, Heal, Attack, Defense, Defend, Surround
+                                40,42,45,50,40,0,0x7F,0x25,0x22,0x32,0x17,0x30,0x13,0x00
+                            },
+                            {//Chapter 3 (Laurent)
+                                //Heal, Heal, Attack, Defense, Defend, Surround
+                                25,30,35,30,20,0,0x7F,0x25,0x22,0x32,0x17,0x30,0x13,0x00
+                            },
+                            {//Chapter 3 (Strom)
+                                //Heal, Heal, Attack, Defense, Defend, Surround
+                                18,30,35,35,30,0,0x7F,0x25,0x22,0x32,0x17,0x30,0x13,0x00
+                            },
+                            {//Chapter 5 (Hector)
+                                //Heal, Heal, Attack, Defense, Defend, Surround
+                                40,42,45,50,40,0,0x7F,0x25,0x22,0x32,0x17,0x30,0x13,0x00
+                            },
+                            {//Chapter 5 (Panon)
+                                //Healmore, Healmore, Attack, Defense, Defend, Surround
+                                65,90,80,70,60,0,0x7F,0x26,0x26,0x32,0x17,0x30,0x13,0x00
+                            },
+                            {//Chapter 5 (Lucia)
+                                //HealAll, HealAll, Attack, Defense, Defend, Surround
+                                80,180,156,95,81,0,0x7F,0x27,0xA4,0x32,0x17,0x30,0x13,0x00
+                            },
+                            {//Chapter 5 (Doran)
+                                //HealAll, HealAll, Attack, Defense, Defend, Surround
+                                90,210,180,110,90,0,0x7F,0x27,0xA4,0x32,0x17,0x30,0x13,0x00
+                            }
+                        },
+                        {//Doran
+                            {//Chapter 1 (Healie)
+                                //Fire Breath, 25% Crit, Fire Breath, 25% Crit, Fire Breath, Sweet Breath
+                                5,0,50,30,25,0,0x7F,0x3C,0x33,0x3C,0x33,0x3C,0x42,0x00
+                            },
+                            {//Chapter 4 (Orin)
+                                //Freezing Wind, 25% Crit, Freezing Wind, 25% Crit, Freezing Wind, Sweet Breath
+                                15,0,100,90,40,0,0x7F,0x3F,0x33,0x3F,0x33,0x3F,0x42,0x00
+                            },
+                            {//Chapter 3 (Laurent)
+                                //Freezing Wind, 25% Crit, Freezing Wind, 25% Crit, Sweet Breath, Sweet Breath
+                                10,0,75,60,30,0,0x7F,0x3F,0x33,0x3F,0x33,0x42,0x42,0x00
+                            },
+                            {//Chapter 3 (Strom)
+                                //Fire Breath, 25% Crit, Fire Breath, 25% Crit, Fire Breath, Sweet Breath
+                                10,0,85,70,30,0,0x7F,0x3C,0x33,0x3C,0x33,0x3C,0x42,0x00
+                            },
+                            {//Chapter 5 (Hector)
+                                //Freezing Wind, 25% Crit, Freezing Wind, 25% Crit, Freezing Wind, Sweet Breath
+                                15,0,100,80,50,0,0x7F,0x3F,0x33,0x3F,0x33,0x3F,0x42,0x00
+                            },
+                            {//Chapter 5 (Panon)
+                                //Scorching Gas, 25% Crit, Scorching Gas, 25% Crit, Sweet Breath, Sweet Breath
+                                20,0,150,150,100,0,0x7F,0x3D,0x33,0x3D,0x33,0x42,0x42,0x00
+                            },
+                            {//Chapter 5 (Lucia)
+                                //Violent Blaze, 25% Crit, Violent Blaze, 25% Crit, Violent Blaze, Sweet Breath
+                                30,0,250,180,140,0,0x7F,0x3D,0x33,0x3D,0x33,0x3D,0x42,0x00
+                            },
+                            {//Chapter 5 (Doran)
+                                //Blizzard Breath, 25% Crit, Blizzard Breath, 25% Crit, Blizzard Breath, Sweet Breath
+                                35,0,2,195,160,0,0x7F,0x40,0x33,0x40,0x33,0x40,0x42,0x01
+                            }
+                        }
+                    };
+                    //Loop through all of the heroes again
+                    for (int lnI = 0; lnI < heroes.Length; lnI++)
+                    {
+                        //lnI is where they're getting dropped, heroes[lnI] is which character we're dropping in.
+                        for (int lnJ = 0; lnJ < 14; lnJ++)
+                        {
+                            //The +2 here is because we're skipping the EXP bytes and starting at Agi
+                            romData[0x60056 + ((heroes[lnI] + 197) * 22) + lnJ + 2] = (byte)npcLoadouts[heroes[lnI], lnI, lnJ];
+                        }
+                    }
+                }
             }
 
             //if (chkC5Random.Checked && !chkSoloHero.Checked)
