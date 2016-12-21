@@ -79,6 +79,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.chkScaleNPCs = new System.Windows.Forms.CheckBox();
             this.chkC14Random = new System.Windows.Forms.CheckBox();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
@@ -684,6 +685,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.chkScaleNPCs);
             this.tabPage2.Controls.Add(this.chkC14Random);
             this.tabPage2.Controls.Add(this.tabControl2);
             this.tabPage2.Controls.Add(this.chkSoloCanEquipAll);
@@ -696,6 +698,16 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Chapter Setup";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // chkScaleNPCs
+            // 
+            this.chkScaleNPCs.AutoSize = true;
+            this.chkScaleNPCs.Location = new System.Drawing.Point(285, 40);
+            this.chkScaleNPCs.Name = "chkScaleNPCs";
+            this.chkScaleNPCs.Size = new System.Drawing.Size(199, 17);
+            this.chkScaleNPCs.TabIndex = 5;
+            this.chkScaleNPCs.Text = "Scale NPCs to chapter of acquisition";
+            this.chkScaleNPCs.UseVisualStyleBackColor = true;
             // 
             // chkC14Random
             // 
@@ -1336,6 +1348,7 @@
         private System.Windows.Forms.ComboBox cboSoloHero;
         private System.Windows.Forms.CheckBox chkSoloHero;
         private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.CheckBox chkScaleNPCs;
     }
 }
 
