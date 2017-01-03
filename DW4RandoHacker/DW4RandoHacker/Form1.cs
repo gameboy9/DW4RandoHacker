@@ -1967,7 +1967,7 @@ namespace DW4RandoHacker
 
         private void randomizeStores(Random r1)
         {
-            // We first need to adjust the prices of all the items so that the casino and medal king stores sell at a proper price.
+            //// We first need to adjust the prices of all the items so that the casino and medal king stores sell at a proper price.
             int[] prices = { 10, 30, 100, 1500, 550, 880, 2000, 5500, 500, 200, 1250, 350, 1600, 620, 50000, 1400,
                              2500, 20000, 600, 3300, 0, 15000, 7500, 4300, 8000, 750, 10000, 20000, 30000, 4000, 0, 4000,
                              6000, 0, 4000, 3500, 10, 70, 180, 350, 1200, 1500, 2300, 110, 400, 700, 15000, 600,
@@ -1977,7 +1977,7 @@ namespace DW4RandoHacker
                              0, 2000, 1500, 700, 2000, 3000, 5, 5, 0, 4000, 0, 0, 0, 0, 1000, 0,
                              0, 0, 0, 0, 10, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0 };
 
-            // Go through the prices and plug into the ROM.  If the price is 0, make sure that 0x10 is set in the first segment.
+            //// Go through the prices and plug into the ROM.  If the price is 0, make sure that 0x10 is set in the first segment.
             for (int lnI = 0; lnI < prices.Length; lnI++)
             {
                 int oldValue = romData[0x40cf4 + lnI];
@@ -1988,7 +1988,8 @@ namespace DW4RandoHacker
                 oldValue += (prices[lnI] >= 10000 ? 3 : prices[lnI] >= 1000 ? 2 : prices[lnI] >= 100 ? 1 : 0);
                 romData[0x40cf4 + lnI] = (byte)oldValue;
 
-                romData[0x40df2 + lnI] = (byte)(prices[lnI] / (prices[lnI] >= 10000 ? 1000 : prices[lnI] >= 1000 ? 100 : prices[lnI] >= 100 ? 10 : 1));
+                romData[0x40df2 + lnI] = (byte)(romData[0x40df2 + lnI] > 128 ? 128 : 0);
+                romData[0x40df2 + lnI] += (byte)(prices[lnI] / (prices[lnI] >= 10000 ? 1000 : prices[lnI] >= 1000 ? 100 : prices[lnI] >= 100 ? 10 : 1));
             }
 
             int[] lowGradeStores = { 0x6341f, 0x634a1, 0x63537, 0x63425, 0x634a9, 0x6353C,
@@ -2066,7 +2067,8 @@ namespace DW4RandoHacker
                             romData[0x5730b + (lnJ * 8)] = romData[byteToUse + lnJ];
                             romData[0x5730b + (lnJ * 8) + 4] = (byte)(prices[romData[byteToUse + lnJ]] / 4000);
                             if (romData[0x5730b + (lnJ * 8) + 4] == 0x00) romData[0x5730b + (lnJ * 8) + 4] = 0x01;
-                        } else
+                        }
+                        else
                         {
                             romData[0x57323] = (byte)(prices[romData[byteToUse + lnJ]] / 4000);
                             if (romData[0x57323] == 0x00) romData[0x57323] = 0x01;
