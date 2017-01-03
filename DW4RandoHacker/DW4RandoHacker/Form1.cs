@@ -173,6 +173,9 @@ namespace DW4RandoHacker
                 romData[0x49145 + lnI] = 0; // Make sure all characters are loaded right away; otherwise, Chapter 1 will most likely start with a ghost.
 
             romData[0x61c8b] = 0x07; // From awjackson, fixing the sea zone bug that mandated only zone 0 monsters in the sea.  (There should also be a zone 1)
+            // Below line:  awjackson suggestion, exposing metal slimes to fairy water, just like in the Japanese version of DW4 Randomizer.  
+            // Because of a possible event of a race between players using both the US and Japanese ROM, this will apply to all hacks.
+            romData[0x4f8b0] = 0xf2; 
 
             if (chkSoloHero.Checked)
             {
