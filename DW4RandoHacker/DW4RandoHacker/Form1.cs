@@ -1471,7 +1471,9 @@ namespace DW4RandoHacker
                 {
                     int battleByte = field1[lnJ] / 8;
                     int battleBit = (int)Math.Pow(2, field1[lnJ] % 8);
-                    gapData[battleByte] += battleBit;
+                    // Must check for battle bit already set!
+                    if (gapData[battleByte] % (battleBit * 2) < battleBit)
+                        gapData[battleByte] += battleBit;
                 }
                 romData[0x40f84 + lnI] = (byte)fieldSpells;
                 for (int lnJ = 0; lnJ < gapData.Length; lnJ++)
