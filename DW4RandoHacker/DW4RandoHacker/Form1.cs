@@ -172,6 +172,8 @@ namespace DW4RandoHacker
             for (int lnI = 0; lnI < 8; lnI++)
                 romData[0x49145 + lnI] = 0; // Make sure all characters are loaded right away; otherwise, Chapter 1 will most likely start with a ghost.
 
+            romData[0x61c8b] = 0x07; // From awjackson, fixing the sea zone bug that mandated only zone 0 monsters in the sea.  (There should also be a zone 1)
+
             if (chkSoloHero.Checked)
             {
                 byte power = 0;
