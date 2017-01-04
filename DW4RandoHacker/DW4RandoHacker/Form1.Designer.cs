@@ -708,6 +708,7 @@
             this.chkScaleNPCs.TabIndex = 5;
             this.chkScaleNPCs.Text = "Scale NPCs to chapter of acquisition";
             this.chkScaleNPCs.UseVisualStyleBackColor = true;
+            this.chkScaleNPCs.CheckedChanged += new System.EventHandler(this.determineFlags);
             // 
             // chkC14Random
             // 

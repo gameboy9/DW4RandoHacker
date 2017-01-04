@@ -415,12 +415,12 @@ namespace DW4RandoHacker
                 romData[0x732ad] = (byte)heroes[3];
 
                 // Force solo Brey to solo hero in Chapter 5
-                romData[0x7362a] = (byte)heroes[4];
+                romData[0x7362a] = (byte)heroes[6];
 
                 // Force Alena, Brey, and Cristo to solo hero in Chapter 5
                 romData[0x739d9] = (byte)heroes[4];
                 romData[0x739de] = (byte)heroes[5]; // <----- Give thief's key to this person...
-                romData[0x739e9] = (byte)heroes[6];
+                romData[0x739e9] = (byte)heroes[6]; // In case the player gets all three heroes at once...
 
                 // A bunch of weird stuff preventing the Keeleon battle from occuring... (Ragnar demanding "the hero"...)
                 romData[0x54e08] = (byte)heroes[0];
