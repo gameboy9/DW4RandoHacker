@@ -765,6 +765,34 @@ namespace DW4RandoHacker
             //{
             //}
 
+            //if (chkCh1InstantVictory.Checked)
+            //{
+            //    romData[0x6eb24] = 0xea;
+            //    romData[0x6eb25] = 0xea;
+            //}
+
+            if (chkCh1InstantWell.Checked)
+            {
+                romData[0x23668] = 0x00;
+                romData[0x23669] = 0xf0;
+            }
+
+            if (chkCh1FlyingShoes.Checked)
+            {
+                romData[0x491d3] = 0x6c;
+            }
+
+            if (chkCh2InstantWallKick.Checked)
+            {
+                romData[0x72113] = 0xea;
+                romData[0x72114] = 0xea;
+            }
+            
+            if (chkCh2EndorEntry.Checked)
+            {
+                romData[0x72d8d] = 0x82; // This actually is a Chapter 1 trigger which must be triggered currently, but the soldier blocking is an AND 0x02.
+            }
+
             // Make Chapter 2 adjustments if requested.
             if (chkCh2AwardXPTournament.Checked)
             {
@@ -773,6 +801,18 @@ namespace DW4RandoHacker
                 romData[0x60054 + (0xb1 * 22) + 2] = 80;
                 romData[0x60054 + (0xb2 * 22) + 2] = 100;
                 romData[0x60054 + (0xba * 22) + 2] = 100;
+            }
+
+            if (chkCh3BuildBridges.Checked)
+            {
+                romData[0x200bf] = 0x00;
+                romData[0x200c0] = 0xf0;
+            }
+
+            if (chkCh3BuildTunnel.Checked)
+            {
+                romData[0x22fce] = 0x00;
+                romData[0x22fcf] = 0xd0;
             }
 
             // Make Chapter 3 adjustments if requested.
@@ -792,6 +832,31 @@ namespace DW4RandoHacker
             {
                 romData[0x56641] = 0x00;
                 romData[0x56645] = 0x01;
+            }
+
+            if (chkCh4BoardingPass.Checked)
+            {
+                romData[0x491ba] = 0x7a;
+            }
+            romData[0x5499e] = 0xff; // Skip the talking to the one person at the bottom of the ship.
+
+            if (chkCh5BlowUpHometown.Checked)
+            {
+                romData[0x23494] = 0xea;
+                romData[0x23495] = 0xea;
+            }
+
+            if (chkCh5SymbolOfFaith.Checked)
+            {
+                romData[0x491a5] = 0x6f;
+            }
+
+            if (chkCh5InstantShip.Checked)
+            {
+                romData[0x72645] = 0xb0;
+                romData[0x7264b] = 0xea;
+                romData[0x7264c] = 0xea;
+                romData[0x55ab2] = 0xea;
             }
 
             // Now adjust XP for all monsters...
@@ -857,6 +922,21 @@ namespace DW4RandoHacker
             for (int lnI = 0; lnI < 16; lnI++)
             {
                 double encounterRate = (romData[0x6228b + lnI]);
+                if ((string)cboEncounterRate.SelectedItem == "1/4") encounterRate = Math.Round(encounterRate / 4);
+                if ((string)cboEncounterRate.SelectedItem == "1/3") encounterRate = Math.Round(encounterRate / 3);
+                if ((string)cboEncounterRate.SelectedItem == "1/2") encounterRate = Math.Round(encounterRate / 2);
+                if ((string)cboEncounterRate.SelectedItem == "2/3") encounterRate = Math.Round(encounterRate * 2 / 3);
+                if ((string)cboEncounterRate.SelectedItem == "x1.5") encounterRate = Math.Round(encounterRate * 3 / 2);
+                if ((string)cboEncounterRate.SelectedItem == "x2") encounterRate = Math.Round(encounterRate * 2);
+                if ((string)cboEncounterRate.SelectedItem == "x2.5") encounterRate = Math.Round(encounterRate * 5 / 2);
+                if ((string)cboEncounterRate.SelectedItem == "x3") encounterRate = Math.Round(encounterRate * 3);
+                if ((string)cboEncounterRate.SelectedItem == "x4") encounterRate = Math.Round(encounterRate * 4);
+                romData[0x6228b + lnI] = (byte)encounterRate;
+            }
+
+            for (int lnI = 0; lnI < 16; lnI++)
+            {
+                double encounterRate = (romData[0x62350 + lnI]);
                 if ((string)cboEncounterRate.SelectedItem == "1/4") encounterRate = Math.Round(encounterRate / 4);
                 if ((string)cboEncounterRate.SelectedItem == "1/3") encounterRate = Math.Round(encounterRate / 3);
                 if ((string)cboEncounterRate.SelectedItem == "1/2") encounterRate = Math.Round(encounterRate / 2);
@@ -1902,11 +1982,11 @@ namespace DW4RandoHacker
             foreach (int treasure in allTreasureList)
             {
                 if (r1.Next() % 3 == 0)
-                    romData[treasure] = (byte)legalTreasures2[r1.Next() % legalTreasures2.Length];
-                else if (r1.Next() % 3 == 0 && treasure >= 0x7bd01 && treasure <= 0x7bfff) // Give out gold
+                    romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
+                else if (r1.Next() % 3 == 0 && treasure >= 0x7bec9 && treasure <= 0x7bfff) // Give out gold.  You cannot give out gold in drawers, pots, or searchable spots.
                     romData[treasure] = (byte)(r1.Next() % 80 + 128);
                 else
-                    romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
+                    romData[treasure] = (byte)legalTreasures2[r1.Next() % legalTreasures2.Length];
                 //romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
                 if (treasure == 0x7b901)
                     romData[0x7b8f4] = romData[treasure];
@@ -1985,6 +2065,23 @@ namespace DW4RandoHacker
             //// Go through the prices and plug into the ROM.  If the price is 0, make sure that 0x10 is set in the first segment.
             for (int lnI = 0; lnI < prices.Length; lnI++)
             {
+                // Adjust prices based on random level...
+                int randomModifier = (r1.Next() % 2);
+                try
+                {
+                    //prices[lnI] *= 2;
+                    if (randomModifier == 0)
+                        prices[lnI] -= (r1.Next() % (prices[lnI] / (optMonsterSilly.Checked ? 8 : optMonsterMedium.Checked ? 4 : 2)));
+                    else
+                        prices[lnI] += (r1.Next() % (prices[lnI] / (optMonsterSilly.Checked ? 4 : optMonsterMedium.Checked ? 2 : 1)));
+                    //prices[lnI] /= 2;
+                }
+                catch (DivideByZeroException)
+                {
+                    // skip error and do not adjust the stat.  Crash on all other exceptions.
+                }
+
+
                 int oldValue = romData[0x40cf4 + lnI];
                 bool noThrow = (oldValue % 32 >= 16);
                 if (noThrow && prices[lnI] >= 1)
@@ -2005,9 +2102,9 @@ namespace DW4RandoHacker
             int[] highGradeStores = { 0x63564, 0x63477, 0x6348f, 0x63524, 0x635b3, 0x635ae, 0X63483, 0x63507, 0x635aa,
                     0x63530, 0x635ba, 0x6347f, 0x634ff, 0x635a4, 0x6350e, 0x63489, 0x63515, 0x6352c, 0x6351d, 0x635c0, 0x63588, 0x6349b}; // 22
 
-            byte[] legalLowGradeStoreItems = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x19,
-                    0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2b, 0x2c, 0x2d, 0x2f, 0x30,
-                    0x3d, 0x3e, 0x3f, 0x46, 0x47, 0x4a, 0x53, 0x54, 0x55, 0x56, 0x58, 0x5a, 0x74 };
+            byte[] legalLowGradeStoreItems = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x19, 0x23,
+                    0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2f, 0x30, 0x33, 
+                    0x3d, 0x3e, 0x3f, 0x46, 0x47, 0x48, 0x4a, 0x4d, 0x53, 0x54, 0x55, 0x56, 0x58, 0x5a, 0x74 };
             byte[] legalHighGradeStoreItems = { 0x06, 0x07, 0x0c, 0x0e, 0x0f, 0x10, 0x11, 0x15, 0x16, 0x17, 0x18, 0x1a, 0x1b, 0x1c, 0x1d, 0x20, 0x22, 0x23,
                     0x2a, 0x2e, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x38, 0x39, 0x3b,
                     0x40, 0x41, 0x42, 0x43, 0x45, 0x48, 0x49, 0x4d, 0x4e, 0x4f,

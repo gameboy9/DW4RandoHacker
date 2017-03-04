@@ -83,11 +83,16 @@
             this.chkC14Random = new System.Windows.Forms.CheckBox();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.chkCh1FlyingShoes = new System.Windows.Forms.CheckBox();
+            this.chkCh1InstantWell = new System.Windows.Forms.CheckBox();
+            this.chkCh1InstantVictory = new System.Windows.Forms.CheckBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.txtC1Name2 = new System.Windows.Forms.TextBox();
             this.txtC1Name1 = new System.Windows.Forms.TextBox();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.chkCh2EndorEntry = new System.Windows.Forms.CheckBox();
+            this.chkCh2InstantWallKick = new System.Windows.Forms.CheckBox();
             this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -96,6 +101,8 @@
             this.txtC2Name2 = new System.Windows.Forms.TextBox();
             this.chkCh2AwardXPTournament = new System.Windows.Forms.CheckBox();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.chkCh3BuildTunnel = new System.Windows.Forms.CheckBox();
+            this.chkCh3BuildBridges = new System.Windows.Forms.CheckBox();
             this.label22 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
@@ -106,6 +113,7 @@
             this.chkShop25K = new System.Windows.Forms.CheckBox();
             this.chkShop1 = new System.Windows.Forms.CheckBox();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.chkCh4BoardingPass = new System.Windows.Forms.CheckBox();
             this.label25 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
@@ -113,6 +121,10 @@
             this.txtC4Name2 = new System.Windows.Forms.TextBox();
             this.txtC4Name1 = new System.Windows.Forms.TextBox();
             this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.chkCh5PadequiaRoot = new System.Windows.Forms.CheckBox();
+            this.chkCh5InstantShip = new System.Windows.Forms.CheckBox();
+            this.chkCh5SymbolOfFaith = new System.Windows.Forms.CheckBox();
+            this.chkCh5BlowUpHometown = new System.Windows.Forms.CheckBox();
             this.label31 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
@@ -736,6 +748,9 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.chkCh1FlyingShoes);
+            this.tabPage5.Controls.Add(this.chkCh1InstantWell);
+            this.tabPage5.Controls.Add(this.chkCh1InstantVictory);
             this.tabPage5.Controls.Add(this.label12);
             this.tabPage5.Controls.Add(this.label11);
             this.tabPage5.Controls.Add(this.txtC1Name2);
@@ -748,10 +763,42 @@
             this.tabPage5.Text = "Chapter 1";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // chkCh1FlyingShoes
+            // 
+            this.chkCh1FlyingShoes.AutoSize = true;
+            this.chkCh1FlyingShoes.Location = new System.Drawing.Point(6, 30);
+            this.chkCh1FlyingShoes.Name = "chkCh1FlyingShoes";
+            this.chkCh1FlyingShoes.Size = new System.Drawing.Size(133, 17);
+            this.chkCh1FlyingShoes.TabIndex = 9;
+            this.chkCh1FlyingShoes.Text = "Start with Flying Shoes";
+            this.chkCh1FlyingShoes.UseVisualStyleBackColor = true;
+            this.chkCh1FlyingShoes.Visible = false;
+            // 
+            // chkCh1InstantWell
+            // 
+            this.chkCh1InstantWell.AutoSize = true;
+            this.chkCh1InstantWell.Location = new System.Drawing.Point(6, 7);
+            this.chkCh1InstantWell.Name = "chkCh1InstantWell";
+            this.chkCh1InstantWell.Size = new System.Drawing.Size(176, 17);
+            this.chkCh1InstantWell.TabIndex = 8;
+            this.chkCh1InstantWell.Text = "Enter well without returning Alex";
+            this.chkCh1InstantWell.UseVisualStyleBackColor = true;
+            // 
+            // chkCh1InstantVictory
+            // 
+            this.chkCh1InstantVictory.AutoSize = true;
+            this.chkCh1InstantVictory.Location = new System.Drawing.Point(6, 54);
+            this.chkCh1InstantVictory.Name = "chkCh1InstantVictory";
+            this.chkCh1InstantVictory.Size = new System.Drawing.Size(209, 17);
+            this.chkCh1InstantVictory.TabIndex = 7;
+            this.chkCh1InstantVictory.Text = "Instant victory (Exit and re-enter castle)";
+            this.chkCh1InstantVictory.UseVisualStyleBackColor = true;
+            this.chkCh1InstantVictory.Visible = false;
+            // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(6, 35);
+            this.label12.Location = new System.Drawing.Point(6, 149);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(37, 13);
             this.label12.TabIndex = 6;
@@ -760,7 +807,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 9);
+            this.label11.Location = new System.Drawing.Point(6, 123);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(42, 13);
             this.label11.TabIndex = 5;
@@ -768,7 +815,7 @@
             // 
             // txtC1Name2
             // 
-            this.txtC1Name2.Location = new System.Drawing.Point(82, 32);
+            this.txtC1Name2.Location = new System.Drawing.Point(82, 146);
             this.txtC1Name2.MaxLength = 8;
             this.txtC1Name2.Name = "txtC1Name2";
             this.txtC1Name2.Size = new System.Drawing.Size(81, 20);
@@ -777,7 +824,7 @@
             // 
             // txtC1Name1
             // 
-            this.txtC1Name1.Location = new System.Drawing.Point(82, 6);
+            this.txtC1Name1.Location = new System.Drawing.Point(82, 120);
             this.txtC1Name1.MaxLength = 8;
             this.txtC1Name1.Name = "txtC1Name1";
             this.txtC1Name1.Size = new System.Drawing.Size(81, 20);
@@ -786,6 +833,8 @@
             // 
             // tabPage6
             // 
+            this.tabPage6.Controls.Add(this.chkCh2EndorEntry);
+            this.tabPage6.Controls.Add(this.chkCh2InstantWallKick);
             this.tabPage6.Controls.Add(this.label21);
             this.tabPage6.Controls.Add(this.label20);
             this.tabPage6.Controls.Add(this.label13);
@@ -801,10 +850,30 @@
             this.tabPage6.Text = "Chapter 2";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
+            // chkCh2EndorEntry
+            // 
+            this.chkCh2EndorEntry.AutoSize = true;
+            this.chkCh2EndorEntry.Location = new System.Drawing.Point(9, 35);
+            this.chkCh2EndorEntry.Name = "chkCh2EndorEntry";
+            this.chkCh2EndorEntry.Size = new System.Drawing.Size(155, 17);
+            this.chkCh2EndorEntry.TabIndex = 14;
+            this.chkCh2EndorEntry.Text = "Always allow entry to Endor";
+            this.chkCh2EndorEntry.UseVisualStyleBackColor = true;
+            // 
+            // chkCh2InstantWallKick
+            // 
+            this.chkCh2InstantWallKick.AutoSize = true;
+            this.chkCh2InstantWallKick.Location = new System.Drawing.Point(9, 12);
+            this.chkCh2InstantWallKick.Name = "chkCh2InstantWallKick";
+            this.chkCh2InstantWallKick.Size = new System.Drawing.Size(233, 17);
+            this.chkCh2InstantWallKick.TabIndex = 13;
+            this.chkCh2InstantWallKick.Text = "Kick the opening wall w/o talking to anyone";
+            this.chkCh2InstantWallKick.UseVisualStyleBackColor = true;
+            // 
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(6, 84);
+            this.label21.Location = new System.Drawing.Point(6, 136);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(28, 13);
             this.label21.TabIndex = 12;
@@ -813,7 +882,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(6, 58);
+            this.label20.Location = new System.Drawing.Point(6, 110);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(33, 13);
             this.label20.TabIndex = 11;
@@ -822,7 +891,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 32);
+            this.label13.Location = new System.Drawing.Point(6, 84);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(34, 13);
             this.label13.TabIndex = 10;
@@ -830,7 +899,7 @@
             // 
             // txtC2Name1
             // 
-            this.txtC2Name1.Location = new System.Drawing.Point(71, 29);
+            this.txtC2Name1.Location = new System.Drawing.Point(71, 81);
             this.txtC2Name1.MaxLength = 8;
             this.txtC2Name1.Name = "txtC2Name1";
             this.txtC2Name1.Size = new System.Drawing.Size(81, 20);
@@ -839,7 +908,7 @@
             // 
             // txtC2Name3
             // 
-            this.txtC2Name3.Location = new System.Drawing.Point(71, 81);
+            this.txtC2Name3.Location = new System.Drawing.Point(71, 133);
             this.txtC2Name3.MaxLength = 8;
             this.txtC2Name3.Name = "txtC2Name3";
             this.txtC2Name3.Size = new System.Drawing.Size(81, 20);
@@ -848,7 +917,7 @@
             // 
             // txtC2Name2
             // 
-            this.txtC2Name2.Location = new System.Drawing.Point(71, 55);
+            this.txtC2Name2.Location = new System.Drawing.Point(71, 107);
             this.txtC2Name2.MaxLength = 8;
             this.txtC2Name2.Name = "txtC2Name2";
             this.txtC2Name2.Size = new System.Drawing.Size(81, 20);
@@ -858,7 +927,7 @@
             // chkCh2AwardXPTournament
             // 
             this.chkCh2AwardXPTournament.AutoSize = true;
-            this.chkCh2AwardXPTournament.Location = new System.Drawing.Point(6, 6);
+            this.chkCh2AwardXPTournament.Location = new System.Drawing.Point(9, 58);
             this.chkCh2AwardXPTournament.Name = "chkCh2AwardXPTournament";
             this.chkCh2AwardXPTournament.Size = new System.Drawing.Size(177, 17);
             this.chkCh2AwardXPTournament.TabIndex = 6;
@@ -868,6 +937,8 @@
             // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.chkCh3BuildTunnel);
+            this.tabPage7.Controls.Add(this.chkCh3BuildBridges);
             this.tabPage7.Controls.Add(this.label22);
             this.tabPage7.Controls.Add(this.label23);
             this.tabPage7.Controls.Add(this.label24);
@@ -883,6 +954,26 @@
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "Chapter 3";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // chkCh3BuildTunnel
+            // 
+            this.chkCh3BuildTunnel.AutoSize = true;
+            this.chkCh3BuildTunnel.Location = new System.Drawing.Point(227, 38);
+            this.chkCh3BuildTunnel.Name = "chkCh3BuildTunnel";
+            this.chkCh3BuildTunnel.Size = new System.Drawing.Size(150, 17);
+            this.chkCh3BuildTunnel.TabIndex = 17;
+            this.chkCh3BuildTunnel.Text = "Automatically Build Tunnel";
+            this.chkCh3BuildTunnel.UseVisualStyleBackColor = true;
+            // 
+            // chkCh3BuildBridges
+            // 
+            this.chkCh3BuildBridges.AutoSize = true;
+            this.chkCh3BuildBridges.Location = new System.Drawing.Point(227, 14);
+            this.chkCh3BuildBridges.Name = "chkCh3BuildBridges";
+            this.chkCh3BuildBridges.Size = new System.Drawing.Size(129, 17);
+            this.chkCh3BuildBridges.TabIndex = 16;
+            this.chkCh3BuildBridges.Text = "Start with built bridges";
+            this.chkCh3BuildBridges.UseVisualStyleBackColor = true;
             // 
             // label22
             // 
@@ -973,6 +1064,7 @@
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.chkCh4BoardingPass);
             this.tabPage8.Controls.Add(this.label25);
             this.tabPage8.Controls.Add(this.label26);
             this.tabPage8.Controls.Add(this.label27);
@@ -986,10 +1078,20 @@
             this.tabPage8.Text = "Chapter 4";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
+            // chkCh4BoardingPass
+            // 
+            this.chkCh4BoardingPass.AutoSize = true;
+            this.chkCh4BoardingPass.Location = new System.Drawing.Point(16, 18);
+            this.chkCh4BoardingPass.Name = "chkCh4BoardingPass";
+            this.chkCh4BoardingPass.Size = new System.Drawing.Size(141, 17);
+            this.chkCh4BoardingPass.TabIndex = 18;
+            this.chkCh4BoardingPass.Text = "Start with Boarding Pass";
+            this.chkCh4BoardingPass.UseVisualStyleBackColor = true;
+            // 
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(12, 72);
+            this.label25.Location = new System.Drawing.Point(13, 96);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(26, 13);
             this.label25.TabIndex = 17;
@@ -998,7 +1100,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(12, 46);
+            this.label26.Location = new System.Drawing.Point(13, 70);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(31, 13);
             this.label26.TabIndex = 16;
@@ -1007,7 +1109,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(12, 20);
+            this.label27.Location = new System.Drawing.Point(13, 44);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(30, 13);
             this.label27.TabIndex = 15;
@@ -1015,7 +1117,7 @@
             // 
             // txtC4Name3
             // 
-            this.txtC4Name3.Location = new System.Drawing.Point(71, 69);
+            this.txtC4Name3.Location = new System.Drawing.Point(72, 93);
             this.txtC4Name3.MaxLength = 8;
             this.txtC4Name3.Name = "txtC4Name3";
             this.txtC4Name3.Size = new System.Drawing.Size(81, 20);
@@ -1024,7 +1126,7 @@
             // 
             // txtC4Name2
             // 
-            this.txtC4Name2.Location = new System.Drawing.Point(71, 43);
+            this.txtC4Name2.Location = new System.Drawing.Point(72, 67);
             this.txtC4Name2.MaxLength = 8;
             this.txtC4Name2.Name = "txtC4Name2";
             this.txtC4Name2.Size = new System.Drawing.Size(81, 20);
@@ -1033,7 +1135,7 @@
             // 
             // txtC4Name1
             // 
-            this.txtC4Name1.Location = new System.Drawing.Point(71, 17);
+            this.txtC4Name1.Location = new System.Drawing.Point(72, 41);
             this.txtC4Name1.MaxLength = 8;
             this.txtC4Name1.Name = "txtC4Name1";
             this.txtC4Name1.Size = new System.Drawing.Size(81, 20);
@@ -1042,6 +1144,10 @@
             // 
             // tabPage9
             // 
+            this.tabPage9.Controls.Add(this.chkCh5PadequiaRoot);
+            this.tabPage9.Controls.Add(this.chkCh5InstantShip);
+            this.tabPage9.Controls.Add(this.chkCh5SymbolOfFaith);
+            this.tabPage9.Controls.Add(this.chkCh5BlowUpHometown);
             this.tabPage9.Controls.Add(this.label31);
             this.tabPage9.Controls.Add(this.label28);
             this.tabPage9.Controls.Add(this.label29);
@@ -1058,10 +1164,52 @@
             this.tabPage9.Text = "Chapter 5";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
+            // chkCh5PadequiaRoot
+            // 
+            this.chkCh5PadequiaRoot.AutoSize = true;
+            this.chkCh5PadequiaRoot.Location = new System.Drawing.Point(207, 5);
+            this.chkCh5PadequiaRoot.Name = "chkCh5PadequiaRoot";
+            this.chkCh5PadequiaRoot.Size = new System.Drawing.Size(144, 17);
+            this.chkCh5PadequiaRoot.TabIndex = 39;
+            this.chkCh5PadequiaRoot.Text = "Start with Padequia Root";
+            this.chkCh5PadequiaRoot.UseVisualStyleBackColor = true;
+            this.chkCh5PadequiaRoot.Visible = false;
+            // 
+            // chkCh5InstantShip
+            // 
+            this.chkCh5InstantShip.AutoSize = true;
+            this.chkCh5InstantShip.Location = new System.Drawing.Point(11, 50);
+            this.chkCh5InstantShip.Name = "chkCh5InstantShip";
+            this.chkCh5InstantShip.Size = new System.Drawing.Size(102, 17);
+            this.chkCh5InstantShip.TabIndex = 38;
+            this.chkCh5InstantShip.Text = "Get Instant Ship";
+            this.chkCh5InstantShip.UseVisualStyleBackColor = true;
+            this.chkCh5InstantShip.Visible = false;
+            // 
+            // chkCh5SymbolOfFaith
+            // 
+            this.chkCh5SymbolOfFaith.AutoSize = true;
+            this.chkCh5SymbolOfFaith.Location = new System.Drawing.Point(11, 5);
+            this.chkCh5SymbolOfFaith.Name = "chkCh5SymbolOfFaith";
+            this.chkCh5SymbolOfFaith.Size = new System.Drawing.Size(147, 17);
+            this.chkCh5SymbolOfFaith.TabIndex = 37;
+            this.chkCh5SymbolOfFaith.Text = "Start with Symbol Of Faith";
+            this.chkCh5SymbolOfFaith.UseVisualStyleBackColor = true;
+            // 
+            // chkCh5BlowUpHometown
+            // 
+            this.chkCh5BlowUpHometown.AutoSize = true;
+            this.chkCh5BlowUpHometown.Location = new System.Drawing.Point(11, 28);
+            this.chkCh5BlowUpHometown.Name = "chkCh5BlowUpHometown";
+            this.chkCh5BlowUpHometown.Size = new System.Drawing.Size(141, 17);
+            this.chkCh5BlowUpHometown.TabIndex = 36;
+            this.chkCh5BlowUpHometown.Text = "Blow up hometown early";
+            this.chkCh5BlowUpHometown.UseVisualStyleBackColor = true;
+            // 
             // label31
             // 
             this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(10, 116);
+            this.label31.Location = new System.Drawing.Point(8, 177);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(36, 13);
             this.label31.TabIndex = 35;
@@ -1070,7 +1218,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(10, 90);
+            this.label28.Location = new System.Drawing.Point(8, 151);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(33, 13);
             this.label28.TabIndex = 34;
@@ -1079,7 +1227,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(10, 64);
+            this.label29.Location = new System.Drawing.Point(8, 125);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(38, 13);
             this.label29.TabIndex = 33;
@@ -1088,7 +1236,7 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(10, 38);
+            this.label30.Location = new System.Drawing.Point(8, 99);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(39, 13);
             this.label30.TabIndex = 32;
@@ -1096,7 +1244,7 @@
             // 
             // txtC5Name4
             // 
-            this.txtC5Name4.Location = new System.Drawing.Point(71, 113);
+            this.txtC5Name4.Location = new System.Drawing.Point(69, 174);
             this.txtC5Name4.MaxLength = 8;
             this.txtC5Name4.Name = "txtC5Name4";
             this.txtC5Name4.Size = new System.Drawing.Size(81, 20);
@@ -1105,7 +1253,7 @@
             // 
             // txtC5Name3
             // 
-            this.txtC5Name3.Location = new System.Drawing.Point(71, 87);
+            this.txtC5Name3.Location = new System.Drawing.Point(69, 148);
             this.txtC5Name3.MaxLength = 8;
             this.txtC5Name3.Name = "txtC5Name3";
             this.txtC5Name3.Size = new System.Drawing.Size(81, 20);
@@ -1114,7 +1262,7 @@
             // 
             // txtC5Name2
             // 
-            this.txtC5Name2.Location = new System.Drawing.Point(71, 61);
+            this.txtC5Name2.Location = new System.Drawing.Point(69, 122);
             this.txtC5Name2.MaxLength = 8;
             this.txtC5Name2.Name = "txtC5Name2";
             this.txtC5Name2.Size = new System.Drawing.Size(81, 20);
@@ -1123,7 +1271,7 @@
             // 
             // txtC5Name1
             // 
-            this.txtC5Name1.Location = new System.Drawing.Point(71, 35);
+            this.txtC5Name1.Location = new System.Drawing.Point(69, 96);
             this.txtC5Name1.MaxLength = 8;
             this.txtC5Name1.Name = "txtC5Name1";
             this.txtC5Name1.Size = new System.Drawing.Size(81, 20);
@@ -1133,7 +1281,7 @@
             // chkC5ControlAllChars
             // 
             this.chkC5ControlAllChars.AutoSize = true;
-            this.chkC5ControlAllChars.Location = new System.Drawing.Point(13, 12);
+            this.chkC5ControlAllChars.Location = new System.Drawing.Point(11, 73);
             this.chkC5ControlAllChars.Name = "chkC5ControlAllChars";
             this.chkC5ControlAllChars.Size = new System.Drawing.Size(125, 17);
             this.chkC5ControlAllChars.TabIndex = 27;
@@ -1350,6 +1498,18 @@
         private System.Windows.Forms.CheckBox chkSoloHero;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.CheckBox chkScaleNPCs;
+        private System.Windows.Forms.CheckBox chkCh1InstantWell;
+        private System.Windows.Forms.CheckBox chkCh1InstantVictory;
+        private System.Windows.Forms.CheckBox chkCh1FlyingShoes;
+        private System.Windows.Forms.CheckBox chkCh2InstantWallKick;
+        private System.Windows.Forms.CheckBox chkCh2EndorEntry;
+        private System.Windows.Forms.CheckBox chkCh3BuildBridges;
+        private System.Windows.Forms.CheckBox chkCh3BuildTunnel;
+        private System.Windows.Forms.CheckBox chkCh4BoardingPass;
+        private System.Windows.Forms.CheckBox chkCh5BlowUpHometown;
+        private System.Windows.Forms.CheckBox chkCh5SymbolOfFaith;
+        private System.Windows.Forms.CheckBox chkCh5InstantShip;
+        private System.Windows.Forms.CheckBox chkCh5PadequiaRoot;
     }
 }
 
