@@ -1191,7 +1191,7 @@ namespace DW4RandoHacker
 
         private void speedyText()
         {
-            romData[0x58383] = 0x60;
+            romData[0x58393] = 0x60;
 
             byte[] speedyTextBlock = { 0xad, 0x0b, 0x05,
                 0xf0, 0x03,
@@ -1208,33 +1208,33 @@ namespace DW4RandoHacker
                 0x60 };
 
             for (int i = 0; i < speedyTextBlock.Length; i++)
-                romData[0x583D8 + i] = speedyTextBlock[i];
+                romData[0x583E8 + i] = speedyTextBlock[i];
 
-            //romData[0x58736] = 0xa2;
-            //romData[0x58737] = 0x18;
+            romData[0x58746] = 0xa2;
+            romData[0x58747] = 0x18;
 
-            //byte[] compressionBlock = { 0xa9, 0x5c,
-            //    0xa6, 0x5e,
-            //    0xa8,
-            //    0xca,
-            //    0x10, 0x09,
-            //    0x84, 0x5f,
-            //    0x20, 0x7a, 0xdf,
-            //    0xa4, 0x5f,
-            //    0xa2, 0x17,
-            //    0x06, 0x9a,
-            //    0x26, 0x99,
-            //    0x26, 0x98,
-            //    0xb9, 0x35, 0x88,
-            //    0x90, 0x03,
-            //    0xb9, 0xd8, 0x87,
-            //    0x10, 0xe3,
-            //    0x86, 0x5e,
-            //    0x29, 0x7f,
-            //    0x60 };
+            byte[] compressionBlock = { 0xa9, 0x5c,
+                0xa6, 0x5e,
+                0xa8,
+                0xca,
+                0x10, 0x09,
+                0x84, 0x5f,
+                0x20, 0x7a, 0xdf,
+                0xa4, 0x5f,
+                0xa2, 0x17,
+                0x06, 0x9a,
+                0x26, 0x99,
+                0x26, 0x98,
+                0xb9, 0x35, 0x88,
+                0x90, 0x03,
+                0xb9, 0xd8, 0x87,
+                0x10, 0xe3,
+                0x86, 0x5e,
+                0x29, 0x7f,
+                0x60 };
 
-            //for (int i = 0; i < compressionBlock.Length; i++)
-            //    romData[0x587a8 + i] = compressionBlock[i];
+            for (int i = 0; i < compressionBlock.Length; i++)
+                romData[0x587b8 + i] = compressionBlock[i];
 
             //romData[0x58061] = 0x4c;
             //romData[0x58062] = 0xb0;
