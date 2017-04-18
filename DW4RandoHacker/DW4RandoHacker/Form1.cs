@@ -128,6 +128,7 @@ namespace DW4RandoHacker
                     txtC5Name3.Text = "Lucia";
                     txtC5Name4.Text = "Doran";
                 }
+                loading = false;
             }
         }
 
@@ -965,8 +966,8 @@ namespace DW4RandoHacker
                 speedUpMusic();
             }
 
-            if (chkNoFieldText.Checked)
-                noFieldText();
+            if (chkSpeedyText.Checked)
+                speedyText();
 
             if (chkDoubleWalking.Checked)
             {
@@ -1188,42 +1189,87 @@ namespace DW4RandoHacker
             romData[0x5fea3] = 0x81;
         }
 
-        private void noFieldText()
+        private void speedyText()
         {
+            romData[0x58383] = 0x60;
+
+            byte[] speedyTextBlock = { 0xad, 0x0b, 0x05,
+                0xf0, 0x03,
+                0x20, 0x2d, 0xc6,
+                0xad, 0x53, 0x05,
+                0x30, 0x12,
+                0xad, 0x52, 0x05,
+                0xc9, 0x08,
+                0xd0, 0x0b,
+                0x20, 0xfb, 0x83,
+                0xa9, 0x07,
+                0x8d, 0x52, 0x05,
+                0x20, 0xe7, 0x85,
+                0x60 };
+
+            for (int i = 0; i < speedyTextBlock.Length; i++)
+                romData[0x583D8 + i] = speedyTextBlock[i];
+
+            //romData[0x58736] = 0xa2;
+            //romData[0x58737] = 0x18;
+
+            //byte[] compressionBlock = { 0xa9, 0x5c,
+            //    0xa6, 0x5e,
+            //    0xa8,
+            //    0xca,
+            //    0x10, 0x09,
+            //    0x84, 0x5f,
+            //    0x20, 0x7a, 0xdf,
+            //    0xa4, 0x5f,
+            //    0xa2, 0x17,
+            //    0x06, 0x9a,
+            //    0x26, 0x99,
+            //    0x26, 0x98,
+            //    0xb9, 0x35, 0x88,
+            //    0x90, 0x03,
+            //    0xb9, 0xd8, 0x87,
+            //    0x10, 0xe3,
+            //    0x86, 0x5e,
+            //    0x29, 0x7f,
+            //    0x60 };
+
+            //for (int i = 0; i < compressionBlock.Length; i++)
+            //    romData[0x587a8 + i] = compressionBlock[i];
+
             //romData[0x58061] = 0x4c;
             //romData[0x58062] = 0xb0;
             //romData[0x58063] = 0xc1;
-            romData[0x583a0] = 0x4c;
-            romData[0x583a1] = 0xb6;
-            romData[0x583a2] = 0xbf;
+            //romData[0x583a0] = 0x4c;
+            //romData[0x583a1] = 0xb6;
+            //romData[0x583a2] = 0xbf;
 
-            romData[0x5bfc6] = 0x68;
-            romData[0x5bfc7] = 0x68;
-            romData[0x5bfc8] = 0x68;
-            romData[0x5bfc9] = 0x68;
-            romData[0x5bfca] = 0x68;
-            romData[0x5bfcb] = 0x68;
-            romData[0x5bfcc] = 0xa9;
-            romData[0x5bfcd] = 0xff;
-            romData[0x5bfce] = 0x48;
-            romData[0x5bfcf] = 0xa9;
-            romData[0x5bfd0] = 0x7e;
-            romData[0x5bfd1] = 0x48;
-            romData[0x5bfd2] = 0xa9;
-            romData[0x5bfd3] = 0x80;
-            romData[0x5bfd4] = 0x48;
-            romData[0x5bfd5] = 0xa9;
-            romData[0x5bfd6] = 0x3b;
-            romData[0x5bfd7] = 0x48;
-            romData[0x5bfd8] = 0xa9;
-            romData[0x5bfd9] = 0x80;
-            romData[0x5bfda] = 0x48;
-            romData[0x5bfdb] = 0xa9;
-            romData[0x5bfdc] = 0xc2;
-            romData[0x5bfdd] = 0x48;
-            romData[0x5bfde] = 0x4c;
-            romData[0x5bfdf] = 0xb0;
-            romData[0x5bfe0] = 0xc1;
+            //romData[0x5bfc6] = 0x68;
+            //romData[0x5bfc7] = 0x68;
+            //romData[0x5bfc8] = 0x68;
+            //romData[0x5bfc9] = 0x68;
+            //romData[0x5bfca] = 0x68;
+            //romData[0x5bfcb] = 0x68;
+            //romData[0x5bfcc] = 0xa9;
+            //romData[0x5bfcd] = 0xff;
+            //romData[0x5bfce] = 0x48;
+            //romData[0x5bfcf] = 0xa9;
+            //romData[0x5bfd0] = 0x7e;
+            //romData[0x5bfd1] = 0x48;
+            //romData[0x5bfd2] = 0xa9;
+            //romData[0x5bfd3] = 0x80;
+            //romData[0x5bfd4] = 0x48;
+            //romData[0x5bfd5] = 0xa9;
+            //romData[0x5bfd6] = 0x3b;
+            //romData[0x5bfd7] = 0x48;
+            //romData[0x5bfd8] = 0xa9;
+            //romData[0x5bfd9] = 0x80;
+            //romData[0x5bfda] = 0x48;
+            //romData[0x5bfdb] = 0xa9;
+            //romData[0x5bfdc] = 0xc2;
+            //romData[0x5bfdd] = 0x48;
+            //romData[0x5bfde] = 0x4c;
+            //romData[0x5bfdf] = 0xb0;
+            //romData[0x5bfe0] = 0xc1;
             //romData[0x580a4] = 0x4c;
             //romData[0x580a5] = 0xa4;
             //romData[0x580a6] = 0x80;
@@ -2957,24 +3003,44 @@ namespace DW4RandoHacker
             flags += (chkRandomizeHeroSpells.Checked ? "P" : "");
             flags += (chkScaleNPCs.Checked ? "N" : "");
             flags += (chkDoubleWalking.Checked ? "D" : "");
-            flags += (chkNoFieldText.Checked ? "F" : "");
+            flags += (chkSpeedyText.Checked ? "F" : "");
             flags += (chkSpeedUpMusic.Checked ? "U" : "");
 
             flags += (optMonsterLight.Checked ? "_r1" : "");
             flags += (optMonsterSilly.Checked ? "_r2" : "");
             flags += (optMonsterMedium.Checked ? "_r3" : "");
             flags += (optMonsterHeavy.Checked ? "_r4" : "");
-            if (chkCh2AwardXPTournament.Checked)
+            if (chkCh1InstantWell.Checked)
+            {
+                flags += "_1";
+                flags += (chkCh1InstantWell.Checked ? "W" : "");
+            }
+            if (chkCh2AwardXPTournament.Checked || chkCh2EndorEntry.Checked || chkCh2InstantWallKick.Checked)
             {
                 flags += "_2";
                 flags += (chkCh2AwardXPTournament.Checked ? "T" : "");
+                flags += (chkCh2EndorEntry.Checked ? "E" : "");
+                flags += (chkCh2InstantWallKick.Checked ? "W" : "");
             }
-            if (chkShop1.Checked || chkShop25K.Checked || chkTunnel1.Checked)
+            if (chkShop1.Checked || chkShop25K.Checked || chkTunnel1.Checked || chkCh3BuildBridges.Checked || chkCh3BuildTunnel.Checked)
             {
                 flags += "_3";
                 flags += (chkShop1.Checked ? "s" : "");
                 flags += (chkShop25K.Checked ? "S" : "");
                 flags += (chkTunnel1.Checked ? "T" : "");
+                flags += (chkCh3BuildBridges.Checked ? "B" : "");
+                flags += (chkCh3BuildTunnel.Checked ? "U" : "");
+            }
+            if (chkCh4BoardingPass.Checked)
+            {
+                flags += "_4";
+                flags += (chkCh4BoardingPass.Checked ? "P" : "");
+            }
+            if (chkCh5BlowUpHometown.Checked || chkCh5SymbolOfFaith.Checked)
+            {
+                flags += "_5";
+                flags += (chkCh5BlowUpHometown.Checked ? "X" : "");
+                flags += (chkCh5SymbolOfFaith.Checked ? "F" : "");
             }
 
             txtFlags.Text = flags;
@@ -2988,20 +3054,32 @@ namespace DW4RandoHacker
             {
                 if (flag.Substring(0, 1).Contains("1"))
                 {
+                    chkCh1InstantWell.Checked = flag.Contains("W");
                     // nothing implemented yet
                 } else if (flag.Substring(0, 1).Contains("2"))
                 {
                     chkCh2AwardXPTournament.Checked = flag.Contains("T");
+                    chkCh2EndorEntry.Checked = flag.Contains("E");
+                    chkCh2InstantWallKick.Checked = flag.Contains("W");
                 }
                 else if (flag.Substring(0, 1).Contains("3"))
                 {
                     chkShop1.Checked = flag.Contains("s");
                     chkShop25K.Checked = flag.Contains("S");
                     chkTunnel1.Checked = flag.Contains("T");
+                    chkCh3BuildBridges.Checked = flag.Contains("B");
+                    chkCh3BuildTunnel.Checked = flag.Contains("U");
                 }
                 else if (flag.Substring(0, 1).Contains("4"))
                 {
-                    // nothing implemented yet
+                    chkCh4BoardingPass.Checked = flag.Contains("P");
+                }
+                else if (flag.Substring(0, 1).Contains("5"))
+                {
+                    chkCh5BlowUpHometown.Checked = flag.Contains("X");
+                    //chkCh5InstantShip.Checked = flag.Contains("S");
+                    //chkCh5PadequiaRoot.Checked = flag.Contains("R");
+                    chkCh5SymbolOfFaith.Checked = flag.Contains("F");
                 }
                 else if (flag.Substring(0, 1).Contains("r"))
                 {
@@ -3038,7 +3116,7 @@ namespace DW4RandoHacker
                     chkRandomizeHeroSpells.Checked = flag.Contains("P");
                     chkScaleNPCs.Checked = flag.Contains("N");
                     chkDoubleWalking.Checked = flag.Contains("D");
-                    chkNoFieldText.Checked = flag.Contains("F");
+                    chkSpeedyText.Checked = flag.Contains("F");
                     chkSpeedUpMusic.Checked = flag.Contains("U");
                 }
             }
