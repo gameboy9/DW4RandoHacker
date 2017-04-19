@@ -947,7 +947,7 @@ namespace DW4RandoHacker
                 if ((string)cboEncounterRate.SelectedItem == "x2.5") encounterRate = Math.Round(encounterRate * 5 / 2);
                 if ((string)cboEncounterRate.SelectedItem == "x3") encounterRate = Math.Round(encounterRate * 3);
                 if ((string)cboEncounterRate.SelectedItem == "x4") encounterRate = Math.Round(encounterRate * 4);
-                romData[0x6228b + lnI] = (byte)encounterRate;
+                romData[0x62350 + lnI] = (byte)encounterRate;
             }
 
             if (chkRandomHeroEquip.Checked) randomizeHeroEquipment(r1);
@@ -1708,8 +1708,8 @@ namespace DW4RandoHacker
                                                                   moveLevel == 3 ? level4Moves[r1.Next() % level4Moves.Length] :
                                                                   level5Moves[r1.Next() % level5Moves.Length]);
 
-                        // Chapter 1-4 Boss monsters should not have a chance to crit nor be able to call for more bosses.  If they come up, redo the randomization.
-                        if ((romData[byteToUse + 9 + lnJ] == 0x48 || romData[byteToUse + 9 + lnJ] == 0x34) && ((monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf ||
+                        // Chapter 1-4 Boss monsters should not have a chance to crit nor be able to call for more bosses nor be able to cast Surround.  If they come up, redo the randomization.
+                        if ((romData[byteToUse + 9 + lnJ] == 0x48 || romData[byteToUse + 9 + lnJ] == 0x34 || romData[byteToUse + 9 + lnJ] == 0x13) && ((monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf ||
                             monsterRank[lnI] == 0xb0 || monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4)))
                         {
                             lnJ--;
