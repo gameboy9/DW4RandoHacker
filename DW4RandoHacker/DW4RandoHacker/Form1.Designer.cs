@@ -138,6 +138,7 @@
             this.cboSoloHero = new System.Windows.Forms.ComboBox();
             this.chkSoloHero = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.chkCh5StartGameOnCh5 = new System.Windows.Forms.CheckBox();
             this.tabShortcuts.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.grpMonsterStat.SuspendLayout();
@@ -1245,6 +1246,7 @@
             // 
             // tabPage9
             // 
+            this.tabPage9.Controls.Add(this.chkCh5StartGameOnCh5);
             this.tabPage9.Controls.Add(this.chkCh5PadequiaRoot);
             this.tabPage9.Controls.Add(this.chkCh5InstantShip);
             this.tabPage9.Controls.Add(this.chkCh5SymbolOfFaith);
@@ -1467,6 +1469,18 @@
             this.tabControl1.Size = new System.Drawing.Size(762, 503);
             this.tabControl1.TabIndex = 8;
             // 
+            // chkCh5StartGameOnCh5
+            // 
+            this.chkCh5StartGameOnCh5.AutoSize = true;
+            this.chkCh5StartGameOnCh5.Location = new System.Drawing.Point(310, 43);
+            this.chkCh5StartGameOnCh5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkCh5StartGameOnCh5.Name = "chkCh5StartGameOnCh5";
+            this.chkCh5StartGameOnCh5.Size = new System.Drawing.Size(284, 24);
+            this.chkCh5StartGameOnCh5.TabIndex = 40;
+            this.chkCh5StartGameOnCh5.Text = "Instantly start game on this chapter";
+            this.chkCh5StartGameOnCh5.UseVisualStyleBackColor = true;
+            this.chkCh5StartGameOnCh5.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1634,6 +1648,7 @@
         private System.Windows.Forms.CheckBox chkCh5SymbolOfFaith;
         private System.Windows.Forms.CheckBox chkCh5InstantShip;
         private System.Windows.Forms.CheckBox chkCh5PadequiaRoot;
+        private System.Windows.Forms.CheckBox chkCh5StartGameOnCh5;
     }
 }
 
