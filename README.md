@@ -29,4 +29,5 @@
 ## Special Thanks
 - Mcgrew, for his Dragon Warrior 1 Randomizer(https://github.com/mcgrew/dwrandomizer), giving me the inspiration to create this randomizer.  Twitch:  http://www.twitch.tv/mcgrew
 - LemmyPi for his contributions toward where in the ROM is various stuff.
+- Vaxherd for the speed text hacks.
 - HighSpirits (Twitch:  https://www.twitch.tv/highspirits), TheCowness (Twitch:  https://www.twitch.tv/thecowness), Shoobinator (Twitch:  https://www.twitch.tv/Shoobinator), Zombietraine (Twitch:  https://www.twitch.tv/Zombietraine), SgtMetTool (Twitch:  https://www.twitch.tv/sgtmettool), hyrule1989(Twitch:  https://www.twitch.tv/hyrule1989), and deranged_squirrel_fighter(Twitch:  https://www.twitch.tv/deranged_squirrel_fighter) for testing.
