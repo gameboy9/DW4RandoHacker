@@ -1669,7 +1669,8 @@ namespace DW4RandoHacker
                                                                   earlyBossMoves[r1.Next() % level5Moves.Length]);
 
                         // Linguar is not allowed to heal
-                        if (monsterRank[lnI] == 0xba && (romData[byteToUse + 9 + lnJ] == 0x22 || romData[byteToUse + 9 + lnJ] == 0x25 || romData[byteToUse + 9 + lnJ] == 0x22 |))
+                        if (monsterRank[lnI] == 0xba && (romData[byteToUse + 9 + lnJ] == 0x22 || romData[byteToUse + 9 + lnJ] == 0x25 || romData[byteToUse + 9 + lnJ] == 0x5f))
+                            lnJ--;
                     }
                 }
                 if (randomType == 3)
