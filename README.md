@@ -2,7 +2,7 @@
 
 ## Features
 - Can adjust XP gains from 50% to 500%, and randomize those XP gains.
-- Can adjust gold gains from 50% to 200%, and randomize that as well.
+- Can adjust gold gains from 100% to 400%, and randomize that as well.
 - Adjust encounter rate from 1/4 to 4x normal.
 - Can randomize monsters/boss fights(the main boss will still be there, but who joins him would be randomized.  The Chapter 2 Tournament does not have monsters joining them, however, for fairness purposes)
 - Can randomize who can equip what item.  The hero will still be able to equip the Zenithian equipment, however, so you can get through the tower.
