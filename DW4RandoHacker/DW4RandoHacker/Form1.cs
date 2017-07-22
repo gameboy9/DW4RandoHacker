@@ -351,7 +351,7 @@ namespace DW4RandoHacker
                 else if (heroes[2] == 5) romData[0x47309] = 2;
                 else romData[0x47309] = 3;
 
-                // Make the Cristo and Brey join change to the solo hero joining twice instead in Chapter 2.
+                // Make the Cristo and Brey join change to the randomized heroes selected in chapter 2.
                 romData[0x79d44] = (byte)heroes[5];
                 romData[0x79d49] = (byte)heroes[6];
 
@@ -367,10 +367,27 @@ namespace DW4RandoHacker
                 romData[0x7907a] = (byte)heroes[3];
                 romData[0x7907b] = (byte)heroes[7];
 
-                // Turn Nara into the solo hero in Chapter 4!
+                // Turn Nara into the other randomized hero selected in chapter 4.
                 romData[0x76b3c] = (byte)heroes[7];
 
                 finalHero = heroes[4];
+
+                if (chkCh4BoardingPass.Checked)
+                {
+                    int byteToUse = (heroes[3] == 0 ? 0x491a5 : heroes[3] == 1 ? 0x491ab : heroes[3] == 2 ? 0x491b3 : heroes[3] == 3 ? 0x491ba : heroes[3] == 4 ? 0x491c3 : heroes[3] == 5 ? 0x491cb : heroes[3] == 6 ? 0x491d3 : 0x491da);
+                    romData[byteToUse] = 0x7a;
+                }
+                if (chkCh4GunpowderJar.Checked)
+                {
+                    int byteToUse = (heroes[3] == 0 ? 0x491a5 : heroes[3] == 1 ? 0x491ab : heroes[3] == 2 ? 0x491b3 : heroes[3] == 3 ? 0x491ba : heroes[3] == 4 ? 0x491c3 : heroes[3] == 5 ? 0x491cb : heroes[3] == 6 ? 0x491d3 : 0x491da);
+                    byteToUse++;
+                    romData[byteToUse] = 0x70;
+                }
+                if (chkCh5SymbolOfFaith.Checked)
+                {
+                    int byteToUse = (heroes[4] == 0 ? 0x491a5 : heroes[4] == 1 ? 0x491ab : heroes[4] == 2 ? 0x491b3 : heroes[4] == 3 ? 0x491ba : heroes[4] == 4 ? 0x491c3 : heroes[4] == 5 ? 0x491cb : heroes[4] == 6 ? 0x491d3 : 0x491da);
+                    romData[byteToUse] = 0x6f;
+                }
 
                 // Give the Thief's Key to the Chapter 5 hero to prevent a potential unwinnable condition.
                 // romData[0x4911e] = (byte)heroes[7]; <------------ ... maybe...
@@ -835,21 +852,28 @@ namespace DW4RandoHacker
                 romData[0x56645] = 0x01;
             }
 
-            if (chkCh4BoardingPass.Checked)
+            if (chkCh4BoardingPass.Checked && !chkC14Random.Checked)
             {
-                romData[0x491ba] = 0x7a;
+                int byteToUse = 0x491ba;
+                romData[byteToUse] = 0x7a;
             }
+            if (chkCh4GunpowderJar.Checked && !chkC14Random.Checked)
+            {
+                int byteToUse = 0x491bb;
+                romData[byteToUse] = 0x70;
+            }
+            if (chkCh5SymbolOfFaith.Checked)
+            {
+                int byteToUse = 0x491a5; // Hero
+                romData[byteToUse] = 0x6f;
+            }
+
             romData[0x5499e] = 0xff; // Skip the talking to the one person at the bottom of the ship.
 
             if (chkCh5BlowUpHometown.Checked)
             {
                 romData[0x23494] = 0xea;
                 romData[0x23495] = 0xea;
-            }
-
-            if (chkCh5SymbolOfFaith.Checked)
-            {
-                romData[0x491a5] = 0x6f;
             }
 
             if (chkCh5InstantShip.Checked)
@@ -889,9 +913,9 @@ namespace DW4RandoHacker
             {
                 double xp = ((romData[0x60056 + (lnI * 22) + 18] % 4) * 256) + (romData[0x60056 + (lnI * 22) + 7]);
                 double origXP = xp;
-                if ((string)cboGoldAdjustment.SelectedItem == "50%") xp = xp / 2;
-                if ((string)cboGoldAdjustment.SelectedItem == "150%") xp = xp * 3 / 2;
                 if ((string)cboGoldAdjustment.SelectedItem == "200%") xp = xp * 2;
+                if ((string)cboGoldAdjustment.SelectedItem == "300%") xp = xp * 3;
+                if ((string)cboGoldAdjustment.SelectedItem == "400%") xp = xp * 4;
                 if (txtSeed.Text == "whoa") xp = 1000;
 
                 if (chkGoldRandom.Checked && txtSeed.Text != "whoa")
@@ -920,7 +944,7 @@ namespace DW4RandoHacker
             // The area outside of Tempe in Chapter 2 has a +75% encounter rate.
             // Finally, the big desert you must go through after acquiring the wagon has a +100% encounter rate.  This also may be why Fairy Water doesn't work through there.
             // I believe that makes the encounter rate 1/6.4 through there!
-            for (int lnI = 0; lnI < 16; lnI++)
+            for (int lnI = 0; lnI < 8; lnI++)
             {
                 double encounterRate = (romData[0x6228b + lnI]);
                 if ((string)cboEncounterRate.SelectedItem == "1/4") encounterRate = Math.Round(encounterRate / 4);
@@ -1416,6 +1440,113 @@ namespace DW4RandoHacker
             // 0x4f36e - Battle spells for Brey repeated
 
             // 0x40f84-8 - Number of field spells for hero, Cristo, Nara, Mara, and Brey
+
+            //// There are 64 fight spells overall, and 24 command spells overall.  Make sure that each fight spell is in the final list, then scramble after that.  Make sure there are no more than three copies of a spell, 
+            //// make sure there are no duplicates in blocks 0-15, 16-39, and 40-63.  Any command spells that duplicate the fight spells should be placed in their respective blocks.
+            //int[] finalFight = new int[64];
+            //int[] finalCommand = new int[24];
+            //for (int i = 0; i < finalFight.Length; i++) finalFight[i] = -1;
+            //for (int i = 0; i < finalCommand.Length; i++) finalCommand[i] = -1;
+
+            int[] fightSpells = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 45, 47, 50, 52 }; // 52 (12-20-20)
+            int[] commandSpells = { 53, 54, 55, 56, 57, 58 }; // 18 (6-6-6)
+            int[] bothSpells = { 41, 42, 43, 44, 46, 48, 49, 51 };
+            for (int lnI = 0; lnI < fightSpells.Length * 20; lnI++)
+                swapArray(fightSpells, (r1.Next() % fightSpells.Length), (r1.Next() % fightSpells.Length));
+            for (int lnI = 0; lnI < commandSpells.Length * 20; lnI++)
+                swapArray(commandSpells, (r1.Next() % commandSpells.Length), (r1.Next() % commandSpells.Length));
+
+            //int[] heroFight2 = new int[16];
+            //int[] pilgrimFight2 = new int[24];
+            //int[] wizardFight2 = new int[24];
+
+            //for (int lnI = 0; lnI < 52; lnI++)
+            //{
+            //    if (lnI < 12) heroFight2[lnI] = fightSpells[lnI];
+            //    else if (lnI < 32) pilgrimFight2[lnI - 12] = fightSpells[lnI];
+            //    else wizardFight2[lnI - 32] = fightSpells[lnI];
+            //}
+
+            //for (int lnI = 12; lnI < 16; lnI++)
+            //{
+            //    heroFight2[lnI] = fightSpells[r1.Next() % fightSpells.Length];
+            //    for (int lnJ = 0; lnJ < lnI; lnJ++)
+            //        if (heroFight2[lnJ] == heroFight2[lnI])
+            //        {
+            //            lnI--;
+            //            break;
+            //        }
+            //}
+            //for (int lnI = 20; lnI < 24; lnI++)
+            //{
+            //    pilgrimFight2[lnI] = fightSpells[r1.Next() % fightSpells.Length];
+            //    for (int lnJ = 0; lnJ < lnI; lnJ++)
+            //        if (pilgrimFight2[lnJ] == pilgrimFight2[lnI])
+            //        {
+            //            lnI--;
+            //            break;
+            //        }
+            //}
+            //for (int lnI = 20; lnI < 24; lnI++)
+            //{
+            //    wizardFight2[lnI] = fightSpells[r1.Next() % fightSpells.Length];
+            //    for (int lnJ = 0; lnJ < lnI; lnJ++)
+            //        if (wizardFight2[lnJ] == wizardFight2[lnI])
+            //        {
+            //            lnI--;
+            //            break;
+            //        }
+            //}
+
+            //int[] heroCommand2 = new int[8];
+            //int[] pilgrimCommand2 = new int[8];
+            //int[] wizardCommand2 = new int[8];
+
+            //for (int lnI = 0; lnI < 18; lnI++)
+            //{
+            //    if (lnI < 6) heroCommand2[lnI] = commandSpells[lnI];
+            //    else if (lnI < 12) pilgrimCommand2[lnI - 6] = commandSpells[lnI];
+            //    else wizardCommand2[lnI - 12] = commandSpells[lnI];
+            //}
+
+            //for (int lnI = 6; lnI < 8; lnI++)
+            //{
+            //    heroCommand2[lnI] = commandSpells[r1.Next() % commandSpells.Length];
+            //    for (int lnJ = 0; lnJ < lnI; lnJ++)
+            //        if (heroCommand2[lnJ] == heroCommand2[lnI])
+            //        {
+            //            lnI--;
+            //            break;
+            //        }
+            //}
+            //for (int lnI = 6; lnI < 8; lnI++)
+            //{
+            //    pilgrimCommand2[lnI] = commandSpells[r1.Next() % commandSpells.Length];
+            //    for (int lnJ = 0; lnJ < lnI; lnJ++)
+            //        if (pilgrimCommand2[lnJ] == pilgrimCommand2[lnI])
+            //        {
+            //            lnI--;
+            //            break;
+            //        }
+            //}
+            //for (int lnI = 6; lnI < 8; lnI++)
+            //{
+            //    wizardCommand2[lnI] = commandSpells[r1.Next() % commandSpells.Length];
+            //    for (int lnJ = 0; lnJ < lnI; lnJ++)
+            //        if (wizardCommand2[lnJ] == wizardCommand2[lnI])
+            //        {
+            //            lnI--;
+            //            break;
+            //        }
+            //}
+
+            //int[] heroFightLevels = inverted_power_curve(1, 35, 24, 1, r1);
+            //int[] pilgrimFightLevels = inverted_power_curve(1, 35, 24, 1, r1);
+            //int[] wizardFightLevels = inverted_power_curve(1, 35, 24, 1, r1);
+            //int[] heroCommandLevels = inverted_power_curve(1, 35, 8, 1, r1);
+            //int[] pilgrimCommandLevels = inverted_power_curve(1, 35, 8, 1, r1);
+            //int[] wizardCommandLevels = inverted_power_curve(1, 35, 8, 1, r1);
+
 
             // Procedure:  Come up with x unique battle spells from 0x00 to 0x35.  If there are any spell learning bytes leftover, add from 0x36-0x3b
             int[] battleSpells = { 18, 12, 12, 12, 12 };
@@ -2416,7 +2547,11 @@ namespace DW4RandoHacker
                     if (lnJ == 0 && firstMonster[lnI] >= 0)
                         romData[byteToUse + 0] = (byte)firstMonster[lnI];
                     else
+                    {
                         romData[byteToUse + lnJ] = (byte)(monsterRank[r1.Next() % (maxBossLimit[lnI] - minBossLimit[lnI]) + minBossLimit[lnI]]);
+                        // Redo randomization if Linguar or Imposter are in the proceedings due to graphical glitches.
+                        if (romData[byteToUse + lnJ] == 0xba || romData[byteToUse + lnJ] == 0x99) lnJ--;
+                    }
                     romData[byteToUse + lnJ + 4] = (byte)(lnJ == groups ? 8 : 1);
                 }
             }
@@ -2892,182 +3027,174 @@ namespace DW4RandoHacker
             if (loading) return;
 
             string flags = "";
+            int number = 0;
 
-            if (chkSoloHero.Checked)
-            {
-                flags += "O";
-                flags += ((string)cboSoloHero.SelectedItem == "Hero" ? 0 :
-                          (string)cboSoloHero.SelectedItem == "Cristo" ? 1 :
-                          (string)cboSoloHero.SelectedItem == "Nara" ? 2 :
-                          (string)cboSoloHero.SelectedItem == "Mara" ? 3 :
-                          (string)cboSoloHero.SelectedItem == "Brey" ? 4 :
-                          (string)cboSoloHero.SelectedItem == "Taloon" ? 5 :
-                          (string)cboSoloHero.SelectedItem == "Ragnar" ? 6 : 7);
-            }
-            flags += (chkSoloCanEquipAll.Checked ? "o" : "");
-            flags += (chkC14Random.Checked ? "H" : "");
-            if ((string)cboXPAdjustment.SelectedItem != "100%" && (string)cboXPAdjustment.SelectedItem != "")
-            {
-                flags += "X";
-                flags += ((string)cboXPAdjustment.SelectedItem == "50%" ? 0 :
-                    (string)cboXPAdjustment.SelectedItem == "100%" ? 1 :
-                    (string)cboXPAdjustment.SelectedItem == "150%" ? 2 :
-                    (string)cboXPAdjustment.SelectedItem == "200%" ? 3 :
-                    (string)cboXPAdjustment.SelectedItem == "300%" ? 4 :
-                    (string)cboXPAdjustment.SelectedItem == "400%" ? 5 : 6);
-            }
-            flags += (chkXPRandom.Checked ? "x" : "");
-            if ((string)cboGoldAdjustment.SelectedItem != "100%" && (string)cboGoldAdjustment.SelectedItem != "")
-            {
-                flags += "G";
-                flags += ((string)cboGoldAdjustment.SelectedItem == "50%" ? 0 :
-                    (string)cboGoldAdjustment.SelectedItem == "100%" ? 1 :
-                    (string)cboGoldAdjustment.SelectedItem == "150%" ? 2 : 3);
-            }
-            flags += (chkGoldRandom.Checked ? "g" : "");
-            if ((string)cboEncounterRate.SelectedItem != "x1" && (string)cboEncounterRate.SelectedItem != "")
-            {
-                flags += "E";
-                flags += ((string)cboEncounterRate.SelectedItem == "1/4" ? 0 :
-                    (string)cboEncounterRate.SelectedItem == "1/2" ? 1 :
-                    (string)cboEncounterRate.SelectedItem == "3/4" ? 2 :
-                    (string)cboEncounterRate.SelectedItem == "x1" ? 3 :
-                    (string)cboEncounterRate.SelectedItem == "x1.5" ? 4 :
-                    (string)cboEncounterRate.SelectedItem == "x2" ? 5 :
-                    (string)cboEncounterRate.SelectedItem == "x3" ? 6 : 7);
-            }
-            flags += (chkRandomMonsterZones.Checked ? "Z" : "");
-            flags += (chkSpeedUpBattles.Checked ? "B" : "");
-            flags += (chkRandomHeroEquip.Checked ? "e" : "");
-            flags += (chkRandomMonsterStats.Checked ? "s" : "");
-            flags += (chkRandomTreasures.Checked ? "T" : "");
-            flags += (chkRandomMonsterResistances.Checked ? "R" : "");
-            flags += (chkRandomStores.Checked ? "M" : "");
-            flags += (chkRandomHeroStats.Checked ? "S" : "");
-            flags += (chkC5ControlAllChars.Checked ? "C" : "");
-            flags += (chkRandomMonsterAttacks.Checked ? "A" : "");
-            flags += (chkRandomizeHeroSpells.Checked ? "P" : "");
-            flags += (chkScaleNPCs.Checked ? "N" : "");
-            flags += (chkDoubleWalking.Checked ? "D" : "");
-            flags += (chkSpeedyText.Checked ? "F" : "");
-            flags += (chkSpeedUpMusic.Checked ? "U" : "");
+            number += cboSoloHero.SelectedIndex;
+            number += (chkSoloHero.Checked ? 8 : 0);
+            number += (chkSoloCanEquipAll.Checked ? 16 : 0);
+            number += (chkC14Random.Checked ? 32 : 0);
+            flags += convertIntToChar(number);
+            number = 0;
 
-            flags += (optMonsterLight.Checked ? "_r1" : "");
-            flags += (optMonsterSilly.Checked ? "_r2" : "");
-            flags += (optMonsterMedium.Checked ? "_r3" : "");
-            flags += (optMonsterHeavy.Checked ? "_r4" : "");
-            if (chkCh1InstantWell.Checked)
-            {
-                flags += "_1";
-                flags += (chkCh1InstantWell.Checked ? "W" : "");
-            }
-            if (chkCh2AwardXPTournament.Checked || chkCh2EndorEntry.Checked || chkCh2InstantWallKick.Checked)
-            {
-                flags += "_2";
-                flags += (chkCh2AwardXPTournament.Checked ? "T" : "");
-                flags += (chkCh2EndorEntry.Checked ? "E" : "");
-                flags += (chkCh2InstantWallKick.Checked ? "W" : "");
-            }
-            if (chkShop1.Checked || chkShop25K.Checked || chkTunnel1.Checked || chkCh3BuildBridges.Checked || chkCh3BuildTunnel.Checked)
-            {
-                flags += "_3";
-                flags += (chkShop1.Checked ? "s" : "");
-                flags += (chkShop25K.Checked ? "S" : "");
-                flags += (chkTunnel1.Checked ? "T" : "");
-                flags += (chkCh3BuildBridges.Checked ? "B" : "");
-                flags += (chkCh3BuildTunnel.Checked ? "U" : "");
-            }
-            if (chkCh4BoardingPass.Checked)
-            {
-                flags += "_4";
-                flags += (chkCh4BoardingPass.Checked ? "P" : "");
-            }
-            if (chkCh5BlowUpHometown.Checked || chkCh5SymbolOfFaith.Checked)
-            {
-                flags += "_5";
-                flags += (chkCh5BlowUpHometown.Checked ? "X" : "");
-                flags += (chkCh5SymbolOfFaith.Checked ? "F" : "");
-                flags += (chkCh5StartGameOnCh5.Checked ? "S" : "");
-            }
+            number += cboXPAdjustment.SelectedIndex;
+            number += (chkXPRandom.Checked ? 8 : 0);
+            flags += convertIntToChar(number);
+            number = 0;
+
+            number += cboGoldAdjustment.SelectedIndex;
+            number += (chkGoldRandom.Checked ? 8 : 0);
+            flags += convertIntToChar(number);
+            number = 0;
+
+            number += cboEncounterRate.SelectedIndex;
+            flags += convertIntToChar(number);
+            number = 0;
+
+            number += (chkRandomMonsterZones.Checked ? 1 : 0);
+            number += (chkSpeedUpBattles.Checked ? 2 : 0);
+            number += (chkRandomHeroEquip.Checked ? 4 : 0);
+            number += (chkRandomMonsterStats.Checked ? 8 : 0);
+            number += (chkRandomTreasures.Checked ? 16 : 0);
+            number += (chkRandomMonsterResistances.Checked ? 32 : 0);
+            flags += convertIntToChar(number);
+            number = 0;
+
+            number += (chkRandomStores.Checked ? 1 : 0);
+            number += (chkRandomHeroStats.Checked ? 2 : 0);
+            number += (chkC5ControlAllChars.Checked ? 4 : 0);
+            number += (chkRandomMonsterAttacks.Checked ? 8 : 0);
+            number += (chkRandomizeHeroSpells.Checked ? 16 : 0);
+            number += (chkScaleNPCs.Checked ? 32 : 0);
+            flags += convertIntToChar(number);
+            number = 0;
+
+            number += (optMonsterLight.Checked ? 1 : 0);
+            number += (optMonsterSilly.Checked ? 2 : 0);
+            number += (optMonsterMedium.Checked ? 3 : 0);
+            number += (optMonsterHeavy.Checked ? 4 : 0);
+            number += (chkDoubleWalking.Checked ? 8 : 0);
+            number += (chkSpeedyText.Checked ? 16 : 0);
+            number += (chkSpeedUpMusic.Checked ? 32 : 0);
+            flags += convertIntToChar(number);
+            number = 0;
+
+            number += (chkCh1InstantWell.Checked ? 1 : 0);
+            number += (chkCh2AwardXPTournament.Checked ? 2 : 0);
+            number += (chkCh2EndorEntry.Checked ? 4 : 0);
+            number += (chkCh2InstantWallKick.Checked ? 8 : 0);
+            flags += convertIntToChar(number);
+            number = 0;
+
+            number += (chkShop1.Checked ? 1 : 0);
+            number += (chkShop25K.Checked ? 2 : 0);
+            number += (chkTunnel1.Checked ? 4 : 0);
+            number += (chkCh3BuildBridges.Checked ? 8 : 0);
+            number += (chkCh3BuildTunnel.Checked ? 16 : 0);
+            number += (chkCh4BoardingPass.Checked ? 32 : 0);
+            flags += convertIntToChar(number);
+            number = 0;
+
+            number += (chkCh5BlowUpHometown.Checked ? 1 : 0);
+            number += (chkCh5SymbolOfFaith.Checked ? 2 : 0);
+            number += (chkCh5StartGameOnCh5.Checked ? 4 : 0);
+            number += (chkCh4GunpowderJar.Checked ? 8 : 0);
+            flags += convertIntToChar(number);
+            number = 0;
 
             txtFlags.Text = flags;
         }
 
         private void determineChecks(object sender, EventArgs e)
         {
-            string[] flags = txtFlags.Text.Split('_');
+            string flags = txtFlags.Text;
 
-            foreach (string flag in flags)
-            {
-                if (flag.Substring(0, 1).Contains("1"))
-                {
-                    chkCh1InstantWell.Checked = flag.Contains("W");
-                    // nothing implemented yet
-                } else if (flag.Substring(0, 1).Contains("2"))
-                {
-                    chkCh2AwardXPTournament.Checked = flag.Contains("T");
-                    chkCh2EndorEntry.Checked = flag.Contains("E");
-                    chkCh2InstantWallKick.Checked = flag.Contains("W");
-                }
-                else if (flag.Substring(0, 1).Contains("3"))
-                {
-                    chkShop1.Checked = flag.Contains("s");
-                    chkShop25K.Checked = flag.Contains("S");
-                    chkTunnel1.Checked = flag.Contains("T");
-                    chkCh3BuildBridges.Checked = flag.Contains("B");
-                    chkCh3BuildTunnel.Checked = flag.Contains("U");
-                }
-                else if (flag.Substring(0, 1).Contains("4"))
-                {
-                    chkCh4BoardingPass.Checked = flag.Contains("P");
-                }
-                else if (flag.Substring(0, 1).Contains("5"))
-                {
-                    chkCh5BlowUpHometown.Checked = flag.Contains("X");
-                    //chkCh5InstantShip.Checked = flag.Contains("S");
-                    //chkCh5PadequiaRoot.Checked = flag.Contains("R");
-                    chkCh5SymbolOfFaith.Checked = flag.Contains("F");
-                    chkCh5StartGameOnCh5.Checked = flag.Contains("S");
-                }
-                else if (flag.Substring(0, 1).Contains("r"))
-                {
-                    optMonsterLight.Checked = flag.Contains("r1");
-                    optMonsterSilly.Checked = flag.Contains("r2");
-                    optMonsterMedium.Checked = flag.Contains("r3");
-                    optMonsterHeavy.Checked = flag.Contains("r4");
-                }
-                else
-                {
-                    // everything else!
-                    chkSoloHero.Checked = flag.Contains("O");
-                    cboSoloHero.SelectedItem = (flag.Contains("O0") ? "Hero" : flag.Contains("O0") ? "Cristo" : flag.Contains("O0") ? "Nara" : 
-                        flag.Contains("O0") ? "Mara" : flag.Contains("O0") ? "Brey" : flag.Contains("O0") ? "Taloon" : flag.Contains("O0") ? "Ragnar" : "Alena");
-                    chkSoloCanEquipAll.Checked = flag.Contains("o");
-                    chkC14Random.Checked = flag.Contains("H");
-                    cboXPAdjustment.SelectedItem = (flag.Contains("X0") ? "50%" : flag.Contains("X2") ? "150%" : flag.Contains("X3") ? "200%" :
-                        flag.Contains("X4") ? "300%" : flag.Contains("X5") ? "400%" : flag.Contains("X6") ? "500%" : "100%");
-                    chkXPRandom.Checked = flag.Contains("x");
-                    cboGoldAdjustment.SelectedItem = (flag.Contains("G0") ? "50%" : flag.Contains("G2") ? "150%" : flag.Contains("G3") ? "200%" : "100%");
-                    chkGoldRandom.Checked = flag.Contains("g");
-                    cboEncounterRate.SelectedItem = (flag.Contains("E0") ? "1/4" : flag.Contains("E1") ? "1/2" : flag.Contains("E2") ? "3/4" :
-                        flag.Contains("E4") ? "x1.5" : flag.Contains("E5") ? "x2" : flag.Contains("E6") ? "x3" : flag.Contains("E7") ? "x4" : "x1");
-                    chkRandomMonsterZones.Checked = flag.Contains("Z");
-                    chkSpeedUpBattles.Checked = flag.Contains("B");
-                    chkRandomHeroEquip.Checked = flag.Contains("e");
-                    chkRandomMonsterStats.Checked = flag.Contains("s");
-                    chkRandomTreasures.Checked = flag.Contains("T");
-                    chkRandomMonsterResistances.Checked = flag.Contains("R");
-                    chkRandomStores.Checked = flag.Contains("M");
-                    chkRandomHeroStats.Checked = flag.Contains("S");
-                    chkC5ControlAllChars.Checked = flag.Contains("C");
-                    chkRandomMonsterAttacks.Checked = flag.Contains("A");
-                    chkRandomizeHeroSpells.Checked = flag.Contains("P");
-                    chkScaleNPCs.Checked = flag.Contains("N");
-                    chkDoubleWalking.Checked = flag.Contains("D");
-                    chkSpeedyText.Checked = flag.Contains("F");
-                    chkSpeedUpMusic.Checked = flag.Contains("U");
-                }
-            }
+            int number = convertChartoInt(Convert.ToChar(flags.Substring(0, 1)));
+            chkSoloHero.Checked = (number % 16 >= 8);
+            cboSoloHero.SelectedIndex = (number % 8);
+            chkSoloCanEquipAll.Checked = (number % 32 >= 16);
+            chkC14Random.Checked = (number % 64 >= 32);
+
+            number = convertChartoInt(Convert.ToChar(flags.Substring(1, 1)));
+            cboXPAdjustment.SelectedIndex = (number % 8);
+            chkXPRandom.Checked = (number % 16 >= 8);
+
+            number = convertChartoInt(Convert.ToChar(flags.Substring(2, 1)));
+            cboGoldAdjustment.SelectedIndex = (number % 8);
+            chkGoldRandom.Checked = (number % 16 >= 8);
+
+            number = convertChartoInt(Convert.ToChar(flags.Substring(3, 1)));
+            cboEncounterRate.SelectedIndex = (number % 8);
+
+            number = convertChartoInt(Convert.ToChar(flags.Substring(4, 1)));
+            chkRandomMonsterZones.Checked = (number % 2 == 1);
+            chkSpeedUpBattles.Checked = (number % 4 >= 2);
+            chkRandomHeroEquip.Checked = (number % 8 >= 4);
+            chkRandomMonsterStats.Checked = (number % 16 >= 8);
+            chkRandomTreasures.Checked = (number % 32 >= 16);
+            chkRandomMonsterResistances.Checked = (number % 64 >= 32);
+
+            number = convertChartoInt(Convert.ToChar(flags.Substring(5, 1)));
+            chkRandomStores.Checked = (number % 2 == 1);
+            chkRandomHeroStats.Checked = (number % 4 >= 2);
+            chkC5ControlAllChars.Checked = (number % 8 >= 4);
+            chkRandomMonsterAttacks.Checked = (number % 16 >= 8);
+            chkRandomizeHeroSpells.Checked = (number % 32 >= 16);
+            chkScaleNPCs.Checked = (number % 64 >= 32);
+
+            number = convertChartoInt(Convert.ToChar(flags.Substring(6, 1)));
+            optMonsterLight.Checked = (number % 8 == 1);
+            optMonsterSilly.Checked = (number % 8 == 2);
+            optMonsterMedium.Checked = (number % 8 == 3);
+            optMonsterHeavy.Checked = (number % 8 == 4);
+            chkDoubleWalking.Checked = (number % 16 >= 8);
+            chkSpeedyText.Checked = (number % 32 >= 16);
+            chkSpeedUpMusic.Checked = (number % 64 >= 32);
+
+            number = convertChartoInt(Convert.ToChar(flags.Substring(7, 1)));
+            chkCh1InstantWell.Checked = (number % 2 == 1);
+            chkCh2AwardXPTournament.Checked = (number % 4 >= 2);
+            chkCh2EndorEntry.Checked = (number % 8 >= 4);
+            chkCh2InstantWallKick.Checked = (number % 16 >= 8);
+
+            number = convertChartoInt(Convert.ToChar(flags.Substring(8, 1)));
+            chkShop1.Checked = (number % 2 == 1);
+            chkShop25K.Checked = (number % 4 >= 2);
+            chkTunnel1.Checked = (number % 8 >= 4);
+            chkCh3BuildBridges.Checked = (number % 16 >= 8);
+            chkCh3BuildTunnel.Checked = (number % 32 >= 16);
+            chkCh4BoardingPass.Checked = (number % 64 >= 32);
+
+            number = convertChartoInt(Convert.ToChar(flags.Substring(9, 1)));
+            chkCh5BlowUpHometown.Checked = (number % 2 == 1);
+            chkCh5SymbolOfFaith.Checked = (number % 4 >= 2);
+            chkCh5StartGameOnCh5.Checked = (number % 8 >= 4);
+            chkCh4GunpowderJar.Checked = (number % 16 >= 8);
+        }
+
+        private string convertIntToChar(int number)
+        {
+            if (number >= 0 && number <= 9)
+                return number.ToString();
+            if (number >= 10 && number <= 35)
+                return Convert.ToChar(55 + number).ToString();
+            if (number >= 36 && number <= 61)
+                return Convert.ToChar(61 + number).ToString();
+            if (number == 62) return "!";
+            if (number == 63) return "@";
+            return "";
+        }
+
+        private int convertChartoInt(char character)
+        {
+            if (character >= Convert.ToChar("0") && character <= Convert.ToChar("9"))
+                return character - 48;
+            if (character >= Convert.ToChar("A") && character <= Convert.ToChar("Z"))
+                return character - 55;
+            if (character >= Convert.ToChar("a") && character <= Convert.ToChar("z"))
+                return character - 61;
+            if (character == Convert.ToChar("!")) return 62;
+            if (character == Convert.ToChar("@")) return 63;
+            return 0;
         }
     }
 }
