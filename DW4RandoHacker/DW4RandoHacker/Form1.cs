@@ -176,7 +176,10 @@ namespace DW4RandoHacker
             romData[0x61c8b] = 0x07; // From awjackson, fixing the sea zone bug that mandated only zone 0 monsters in the sea.  (There should also be a zone 1)
             // Below line:  awjackson suggestion, exposing metal slimes to fairy water, just like in the Japanese version of DW4 Randomizer.  
             // Because of a possible event of a race between players using both the US and Japanese ROM, this will apply to all hacks.
-            romData[0x4f8b0] = 0xf2; 
+            romData[0x4f8b0] = 0xf2;
+
+            // Instant title screen
+            romData[0x6e553] = 0x01;
 
             if (chkSoloHero.Checked)
             {
@@ -311,6 +314,24 @@ namespace DW4RandoHacker
 
                 // Only one unit of experience points - otherwise Taloon could get 10 times the experience points earned.
                 //romData[0x41ff1] = 0x00;
+
+                if (chkCh4BoardingPass.Checked)
+                {
+                    int byteToUse = (power == 0 ? 0x491a5 : power == 1 ? 0x491ab : power == 2 ? 0x491b3 : power == 3 ? 0x491ba : power == 4 ? 0x491c3 : power == 5 ? 0x491cb : power == 6 ? 0x491d3 : 0x491da);
+                    romData[byteToUse] = 0x7a;
+                }
+                if (chkCh4GunpowderJar.Checked)
+                {
+                    int byteToUse = (power == 0 ? 0x491a5 : power == 1 ? 0x491ab : power == 2 ? 0x491b3 : power == 3 ? 0x491ba : power == 4 ? 0x491c3 : power == 5 ? 0x491cb : power == 6 ? 0x491d3 : 0x491da);
+                    byteToUse++;
+                    romData[byteToUse] = 0x70;
+                }
+                if (chkCh5SymbolOfFaith.Checked)
+                {
+                    int byteToUse = (power == 0 ? 0x491a5 : power == 1 ? 0x491ab : power == 2 ? 0x491b3 : power == 3 ? 0x491ba : power == 4 ? 0x491c3 : power == 5 ? 0x491cb : power == 6 ? 0x491d3 : 0x491da);
+                    byteToUse += 2;
+                    romData[byteToUse] = 0x6f;
+                }
             }
 
             int finalHero = 0;
@@ -852,17 +873,17 @@ namespace DW4RandoHacker
                 romData[0x56645] = 0x01;
             }
 
-            if (chkCh4BoardingPass.Checked && !chkC14Random.Checked)
+            if (chkCh4BoardingPass.Checked && !chkC14Random.Checked && !chkSoloHero.Checked)
             {
                 int byteToUse = 0x491ba;
                 romData[byteToUse] = 0x7a;
             }
-            if (chkCh4GunpowderJar.Checked && !chkC14Random.Checked)
+            if (chkCh4GunpowderJar.Checked && !chkC14Random.Checked && !chkSoloHero.Checked)
             {
                 int byteToUse = 0x491bb;
                 romData[byteToUse] = 0x70;
             }
-            if (chkCh5SymbolOfFaith.Checked)
+            if (chkCh5SymbolOfFaith.Checked && !chkC14Random.Checked && !chkSoloHero.Checked)
             {
                 int byteToUse = 0x491a5; // Hero
                 romData[byteToUse] = 0x6f;
@@ -944,6 +965,7 @@ namespace DW4RandoHacker
             // The area outside of Tempe in Chapter 2 has a +75% encounter rate.
             // Finally, the big desert you must go through after acquiring the wagon has a +100% encounter rate.  This also may be why Fairy Water doesn't work through there.
             // I believe that makes the encounter rate 1/6.4 through there!
+            // NOTE:  RNG @ 0012
             for (int lnI = 0; lnI < 8; lnI++)
             {
                 double encounterRate = (romData[0x6228b + lnI]);
@@ -1755,9 +1777,9 @@ namespace DW4RandoHacker
                 if (optMonsterHeavy.Checked)
                     randomType = 3;
 
-                // Force early chapter bosses to have no worse than level 2 moves. (part 1)
-                if (randomType == 3 && (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf ||
-                    monsterRank[lnI] == 0xb0 || monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
+				// Force early chapter bosses and Tricksy Urchin to have no worse than level 2 moves. (part 1)
+				if (randomType == 3 && (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf ||
+                    monsterRank[lnI] == 0xb0 || monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4 || monsterRank[lnI] == 0xc0))
                     randomType = 2;
 
                 if (randomType == 0)
@@ -1769,10 +1791,10 @@ namespace DW4RandoHacker
                         for (int lnJ = 0; lnJ < 6; lnJ++)
                         {
                             romData[byteToUse + 9 + lnJ] = (byte)weirdAttackMoves[r1.Next() % weirdAttackMoves.Length];
-                            // Chapter 1-4 Bosses should not critical hit or paralyze
+                            // Chapter 1-4 Bosses and Tricksy Urchin should not critical hit or paralyze
                             if ((romData[byteToUse + 9 + lnJ] == 0x33 || romData[byteToUse + 9 + lnJ] == 0x34 || romData[byteToUse + 9 + lnJ] == 0x37) &&
                                 (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
-                                  monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
+                                  monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4 || monsterRank[lnI] == 0xc0))
                                 lnJ--;
                         }
                     else
@@ -1782,9 +1804,9 @@ namespace DW4RandoHacker
                 if (randomType == 2)
                 {
                     int moveLevel = (lnI < 38 ? 0 : lnI < 76 ? 1 : lnI < 114 ? 2 : lnI < 152 ? 3 : 4);
-                    // Force early chapter bosses to have no worse than level 2 moves. (part 2)
-                    if (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
-                        monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4)
+					// Force early chapter bosses and Tricksy Urchin to have no worse than level 2 moves. (part 2)
+					if (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
+                        monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4 || monsterRank[lnI] == 0xc0)
                         moveLevel = 5;
 
                     for (int lnJ = 0; lnJ < 6; lnJ++)
@@ -1797,7 +1819,7 @@ namespace DW4RandoHacker
                                                                   moveLevel == 2 ? level3Moves[r1.Next() % level3Moves.Length] :
                                                                   moveLevel == 3 ? level4Moves[r1.Next() % level4Moves.Length] :
                                                                   moveLevel == 4 ? level5Moves[r1.Next() % level5Moves.Length] :
-                                                                  earlyBossMoves[r1.Next() % level5Moves.Length]);
+                                                                  earlyBossMoves[r1.Next() % earlyBossMoves.Length]);
 
                         // Linguar is not allowed to heal
                         if (monsterRank[lnI] == 0xba && (romData[byteToUse + 9 + lnJ] == 0x22 || romData[byteToUse + 9 + lnJ] == 0x25 || romData[byteToUse + 9 + lnJ] == 0x5f))
@@ -2425,6 +2447,23 @@ namespace DW4RandoHacker
 
         private void randomizeMonsterZones(Random r1)
         {
+            // How monster zones are formed: ($6E45-8 is the monster, $6E49-C is the number of monsters in that group)
+            // Load byte 0 of zone.  Bytes 5-7 are encouter rate adjustments from 25-200% (usually 100%; 60-7F)
+            // Bytes 2-4 are AND $07, so there are eight possible "zone possibilities".
+            // Start off with EF1B during the day, BE3F at night, and FF3F in a cave or tower.  Load all 12 possible monsters.  If there are any FFs in the monster list, remove that associated bit if possible.  Store the final result in a variable:  $00D2/3 and $0082/3
+            // Go through each bit and, if on, add up numbers from 0x6229d+(0x12 * zone possibility above)+each bit on and store to $008A
+            // Load RNG ($0012), store in $0016.  Multiply by $008A, store in $008A and $008B
+            // Store $008B into $00D4.  Repeat the process mentioned two lines ago, but with D2 and D3.  
+            // Once D4 is beaten, record the number of bytes it took for that to happen.  
+            // If it's 0-4, load monster at the byte selected, then (maybe) load another monster at a different byte, then get RNG.  
+            // If it is less than or equal to zone possibility byte 14, load another monster at a different byte, then repeat ONCE (four monster groups maximum), 
+            // Then if it's NOT chapter 5, end the monster formation routine.  Otherwise do some wild thing that might add monsters to a group. (9E67 -> 9EB9)
+            // if it's 5, load monster at the byte selected, then get another monster (9F34) and make a second group.  There is 1 monster in group 1, and 5 monsters in group 2 in this scenario.  (9E6A -> 9F5D)
+            // if it's 6-10, load monster at the byte selected, then take zone possibility bytes 16-17, do magic, limit to 0-7(R1), load from table of (0/0/0/2/3/3/4/0), store to $008A, get RNG, multiply by $008a, 
+            //               then take the high byte (i.e. divide by 256), then add from $A335+R1 to get number of monsters.  This looks to be a case of one monster group only. (9E6D -> 9E7B)
+            // if it'S 11, load the monster at that byte, make it one group, and you're done. (9E70)
+            // if it's 12+, load a special fight. (9E19)
+
             int[] maxMonster = { 0xb4, 0xb4, 0xb4, 0xb4, // 0x00-0x03 - Sea(0x00), wasted (0x01-0x03)
                     11, 21, 22, // 0x04-0x06 - Chapter 1
                     13, 22, 27, 41, 41, 71, // 0x07-0x0c - Chapter 2
@@ -2516,10 +2555,10 @@ namespace DW4RandoHacker
             // Mimic, Clay Doll, Chamelion Humanoid, Keeleon I, Balzack I, Saro's Shadow, Clay Doll, Hun, Roric, Vivian, Sampson, Linguar, Tricksy Urchin, Lighthouse Bengal, (14)
             // Keeleon II, Minidemon, Balzack II, Saroknight, Bakor, Rhinoking/Bengal, Esturk, Gigademon, Anderoug(3), Infernus Shadow, Radimvice, Necrosaro, Liclick, (13)
             // Man-eater chest, Rhinoband, Imposter, Leaonar, Necrodain, Minidemon, Bengal (7)
-            int[] maxBossLimit = { 0xb4, 0xbd, 27, 0xbd, 69, 50, 0xbd, -1, -1, -1, -1, -1, 33, 104, // 14
+            int[] maxBossLimit = { 0xb4, 0xbd, 27, 0xbd, 69, 50, 0xbd, -1, -1, -1, -1, -1, 60, 104, // 14
                     0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xbc, -1, 0xbc, 0xbc, 0xbc, 0xbc, -1, 60, // 13 - next to last one, and five before that, was 0xbc (Esturk and Necrosaro)
                     0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4, 0xb4 }; // 7
-            int[] minBossLimit = { 0, 148, 5, 148, 20, 15, 148, -1, -1, -1, -1, -1, 10, 20, // 14
+            int[] minBossLimit = { 0, 148, 5, 148, 20, 15, 148, -1, -1, -1, -1, -1, 20, 20, // 14
                     0, 106, 0, 0, 0, 106, 106, 148, 148, 148, 148, 148, 20, // 13
                     0, 106, 106, 106, 106, 106, 0 }; // 7
             int[] firstMonster = { 0x62, 0x91, 0x12, 0xbb, 0xb4, 0xb3, 0x91, 0xaf, 0xb0, 0xb1, 0xb2, 0xba, 0xc0, 0xbf,
@@ -2551,6 +2590,16 @@ namespace DW4RandoHacker
                         romData[byteToUse + lnJ] = (byte)(monsterRank[r1.Next() % (maxBossLimit[lnI] - minBossLimit[lnI]) + minBossLimit[lnI]]);
                         // Redo randomization if Linguar or Imposter are in the proceedings due to graphical glitches.
                         if (romData[byteToUse + lnJ] == 0xba || romData[byteToUse + lnJ] == 0x99) lnJ--;
+
+						if ((lnI == 12 || lnI == 26) && optMonsterHeavy.Checked)
+						{
+							// Limit Cave Of Betrayal bosses to level 2 moves only.
+							int byteToUse2 = 0x60056 + (romData[byteToUse + lnJ] * 22);
+							int[] earlyBossMoves = { 0x00, 0x03, 0x07, 0x0a, 0x10, 0x16, 0x17, 0x18, 0x22, 0x25, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32,
+								0x35, 0x38, 0x3c, 0x3f, 0x42, 0x45, 0x47, 0x4b, 0x4c, 0x4f, 0x58, 0x5e, 0x5f, 0x61, 0x62, 0x64 };
+							for (int lnK = 0; lnK < 6; lnK++)
+								romData[byteToUse2 + 9 + lnK] = (byte)(earlyBossMoves[r1.Next() % earlyBossMoves.Length]);
+						}
                     }
                     romData[byteToUse + lnJ + 4] = (byte)(lnJ == groups ? 8 : 1);
                 }
@@ -3195,6 +3244,49 @@ namespace DW4RandoHacker
             if (character == Convert.ToChar("!")) return 62;
             if (character == Convert.ToChar("@")) return 63;
             return 0;
+        }
+
+        private void write_bytes(int offset, byte[] data)
+        {
+            for (int lnI = 0; lnI < data.Length; lnI++)
+                romData[offset + lnI] = data[lnI];
+        }
+
+        private void fill_bytes(int offset, byte value, int count)
+        {
+            for (int lnI = 0; lnI < count; lnI++)
+                romData[offset + lnI] = value;
+        }
+
+        private void copy_bytes(int dest, int source, int count)
+        {
+            for (int lnI = 0; lnI < count; lnI++)
+                romData[dest + count] = romData[source + count];
+        }
+
+        private void relocate_JSRs(int old_addr, int new_addr, int start = 0, int? end = null)
+        {
+            if (end == null)
+                end = romData.Length;
+
+            bool match = true;
+            while (match)
+            {
+                int jsrIndex = Array.IndexOf(romData, 0x20, start);
+                if (jsrIndex == -1 || jsrIndex > end) { match = false; continue; }
+                
+                if (romData[jsrIndex + 1] == old_addr % 256 && romData[jsrIndex + 2] == old_addr / 256)
+                {
+                    romData[jsrIndex + 1] = (byte)(new_addr % 256);
+                    romData[jsrIndex + 2] = (byte)(new_addr / 256);
+                }
+                start = jsrIndex + 3;
+            }
+        }
+
+        private void tokenize_message(byte message, byte[] pair_list)
+        {
+
         }
     }
 }

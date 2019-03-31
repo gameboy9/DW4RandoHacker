@@ -1380,6 +1380,7 @@
             this.chkCh4GunpowderJar.TabIndex = 19;
             this.chkCh4GunpowderJar.Text = "Start with Gunpowder Jar";
             this.chkCh4GunpowderJar.UseVisualStyleBackColor = true;
+            this.chkCh4GunpowderJar.CheckedChanged += new System.EventHandler(this.determineFlags);
             // 
             // Form1
             // 
