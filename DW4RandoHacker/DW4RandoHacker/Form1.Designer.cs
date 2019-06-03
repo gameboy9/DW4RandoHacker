@@ -124,6 +124,7 @@
 			this.txtC4Name2 = new System.Windows.Forms.TextBox();
 			this.txtC4Name1 = new System.Windows.Forms.TextBox();
 			this.tabPage9 = new System.Windows.Forms.TabPage();
+			this.chkInstantFinalCave = new System.Windows.Forms.CheckBox();
 			this.chkCh5SymbolOfFaith = new System.Windows.Forms.CheckBox();
 			this.chkCh5BlowUpHometown = new System.Windows.Forms.CheckBox();
 			this.label31 = new System.Windows.Forms.Label();
@@ -142,7 +143,6 @@
 			this.btnCopyChecksum = new System.Windows.Forms.Button();
 			this.lblNewChecksum = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
-			this.chkInstantFinalCave = new System.Windows.Forms.CheckBox();
 			this.tabShortcuts.SuspendLayout();
 			this.tabPage4.SuspendLayout();
 			this.grpMonsterStat.SuspendLayout();
@@ -1212,6 +1212,17 @@
 			this.tabPage9.Text = "Chapter 5";
 			this.tabPage9.UseVisualStyleBackColor = true;
 			// 
+			// chkInstantFinalCave
+			// 
+			this.chkInstantFinalCave.AutoSize = true;
+			this.chkInstantFinalCave.Location = new System.Drawing.Point(202, 5);
+			this.chkInstantFinalCave.Name = "chkInstantFinalCave";
+			this.chkInstantFinalCave.Size = new System.Drawing.Size(160, 17);
+			this.chkInstantFinalCave.TabIndex = 38;
+			this.chkInstantFinalCave.Text = "Instant access to Final Cave";
+			this.chkInstantFinalCave.UseVisualStyleBackColor = true;
+			this.chkInstantFinalCave.CheckedChanged += new System.EventHandler(this.determineFlags);
+			// 
 			// chkCh5SymbolOfFaith
 			// 
 			this.chkCh5SymbolOfFaith.AutoSize = true;
@@ -1400,17 +1411,6 @@
 			this.label6.TabIndex = 47;
 			this.label6.Text = "New Checksum";
 			// 
-			// chkInstantFinalCave
-			// 
-			this.chkInstantFinalCave.AutoSize = true;
-			this.chkInstantFinalCave.Location = new System.Drawing.Point(202, 5);
-			this.chkInstantFinalCave.Name = "chkInstantFinalCave";
-			this.chkInstantFinalCave.Size = new System.Drawing.Size(160, 17);
-			this.chkInstantFinalCave.TabIndex = 38;
-			this.chkInstantFinalCave.Text = "Instant access to Final Cave";
-			this.chkInstantFinalCave.UseVisualStyleBackColor = true;
-			this.chkInstantFinalCave.CheckedChanged += new System.EventHandler(this.determineFlags);
-			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1439,7 +1439,7 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.txtFileName);
 			this.Name = "Form1";
-			this.Text = "Dragon Warrior IV RandoHacker 1.0";
+			this.Text = "Dragon Warrior IV RandoHacker 2.0.2";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.tabShortcuts.ResumeLayout(false);
