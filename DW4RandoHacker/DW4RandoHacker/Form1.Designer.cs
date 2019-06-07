@@ -68,6 +68,7 @@
 			this.chkRandomHeroEquip = new System.Windows.Forms.CheckBox();
 			this.chkRandomMonsterZones = new System.Windows.Forms.CheckBox();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.chkChapter5Start = new System.Windows.Forms.CheckBox();
 			this.chkSpeedUpMusic = new System.Windows.Forms.CheckBox();
 			this.chkSpeedyText = new System.Windows.Forms.CheckBox();
 			this.chkDoubleWalking = new System.Windows.Forms.CheckBox();
@@ -560,6 +561,7 @@
 			// 
 			// tabPage3
 			// 
+			this.tabPage3.Controls.Add(this.chkChapter5Start);
 			this.tabPage3.Controls.Add(this.chkSpeedUpMusic);
 			this.tabPage3.Controls.Add(this.chkSpeedyText);
 			this.tabPage3.Controls.Add(this.chkDoubleWalking);
@@ -578,6 +580,18 @@
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Adjustments";
 			this.tabPage3.UseVisualStyleBackColor = true;
+			// 
+			// chkChapter5Start
+			// 
+			this.chkChapter5Start.AutoSize = true;
+			this.chkChapter5Start.Location = new System.Drawing.Point(11, 186);
+			this.chkChapter5Start.Name = "chkChapter5Start";
+			this.chkChapter5Start.Size = new System.Drawing.Size(138, 17);
+			this.chkChapter5Start.TabIndex = 32;
+			this.chkChapter5Start.Text = "Start game at Chapter 5";
+			this.chkChapter5Start.UseVisualStyleBackColor = true;
+			this.chkChapter5Start.Visible = false;
+			this.chkChapter5Start.CheckedChanged += new System.EventHandler(this.determineFlags);
 			// 
 			// chkSpeedUpMusic
 			// 
@@ -1040,7 +1054,7 @@
 			// 
 			// txtC3Name3
 			// 
-			this.txtC3Name3.Location = new System.Drawing.Point(71, 143);
+			this.txtC3Name3.Location = new System.Drawing.Point(71, 117);
 			this.txtC3Name3.MaxLength = 8;
 			this.txtC3Name3.Name = "txtC3Name3";
 			this.txtC3Name3.Size = new System.Drawing.Size(81, 20);
@@ -1049,7 +1063,7 @@
 			// 
 			// txtC3Name2
 			// 
-			this.txtC3Name2.Location = new System.Drawing.Point(71, 117);
+			this.txtC3Name2.Location = new System.Drawing.Point(71, 143);
 			this.txtC3Name2.MaxLength = 8;
 			this.txtC3Name2.Name = "txtC3Name2";
 			this.txtC3Name2.Size = new System.Drawing.Size(81, 20);
@@ -1175,21 +1189,21 @@
 			// 
 			// txtC4Name2
 			// 
-			this.txtC4Name2.Location = new System.Drawing.Point(72, 89);
+			this.txtC4Name2.Location = new System.Drawing.Point(72, 63);
 			this.txtC4Name2.MaxLength = 8;
 			this.txtC4Name2.Name = "txtC4Name2";
 			this.txtC4Name2.Size = new System.Drawing.Size(81, 20);
 			this.txtC4Name2.TabIndex = 13;
-			this.txtC4Name2.Text = "Mara";
+			this.txtC4Name2.Text = "Nara";
 			// 
 			// txtC4Name1
 			// 
-			this.txtC4Name1.Location = new System.Drawing.Point(72, 63);
+			this.txtC4Name1.Location = new System.Drawing.Point(72, 89);
 			this.txtC4Name1.MaxLength = 8;
 			this.txtC4Name1.Name = "txtC4Name1";
 			this.txtC4Name1.Size = new System.Drawing.Size(81, 20);
 			this.txtC4Name1.TabIndex = 12;
-			this.txtC4Name1.Text = "Nara";
+			this.txtC4Name1.Text = "Mara";
 			// 
 			// tabPage9
 			// 
@@ -1439,7 +1453,7 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.txtFileName);
 			this.Name = "Form1";
-			this.Text = "Dragon Warrior IV RandoHacker 2.0.2";
+			this.Text = "Dragon Warrior IV RandoHacker 2.0.4";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.tabShortcuts.ResumeLayout(false);
@@ -1585,6 +1599,7 @@
 		private System.Windows.Forms.CheckBox chkSmallMap;
 		private System.Windows.Forms.CheckBox chkRandomizeMap;
 		private System.Windows.Forms.CheckBox chkInstantFinalCave;
+		private System.Windows.Forms.CheckBox chkChapter5Start;
 	}
 }
 

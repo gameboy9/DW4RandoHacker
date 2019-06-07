@@ -809,17 +809,7 @@ namespace DW4RandoHacker
 				}
 			}
 
-			//if (chkC5Random.Checked && !chkSoloHero.Checked)
-			//{
-			//}
-
-			//if (chkCh1InstantVictory.Checked)
-			//{
-			//    romData[0x6eb24] = 0xea;
-			//    romData[0x6eb25] = 0xea;
-			//}
-
-			if (chkCh1InstantWell.Checked)
+			if (chkCh1InstantWell.Checked || chkChapter5Start.Checked)
 			{
 				romData[0x23668] = 0x00;
 				romData[0x23669] = 0xf0;
@@ -836,7 +826,7 @@ namespace DW4RandoHacker
 				romData[0x72114] = 0xea;
 			}
 
-			if (chkCh2EndorEntry.Checked)
+			if (chkCh2EndorEntry.Checked || chkChapter5Start.Checked)
 			{
 				romData[0x72d8d] = 0x82; // This actually is a Chapter 1 trigger which must be triggered currently, but the soldier blocking is an AND 0x02.
 			}
@@ -857,7 +847,7 @@ namespace DW4RandoHacker
 				romData[0x200c0] = 0xf0;
 			}
 
-			if (chkCh3BuildTunnel.Checked)
+			if (chkCh3BuildTunnel.Checked || chkChapter5Start.Checked)
 			{
 				romData[0x22fce] = 0x00;
 				romData[0x22fcf] = 0xd0;
@@ -908,6 +898,29 @@ namespace DW4RandoHacker
 
 			if (chkInstantFinalCave.Checked)
 				romData[0x2ea19] = 0x85;
+
+			if (chkChapter5Start.Checked)
+			{
+				romData[0x4abb4] = 0x20;
+				romData[0x4abb5] = 0x68;
+				romData[0x4abb6] = 0xbf;
+
+				romData[0x4abc3] = 0xea;
+				romData[0x4abc4] = 0xea;
+
+				romData[0x4bf78] = 0xa9; // LDA #$04
+				romData[0x4bf79] = 0x04;
+				romData[0x4bf7a] = 0x8d; // STA $615A
+				romData[0x4bf7b] = 0x5a;
+				romData[0x4bf7c] = 0x61;
+				romData[0x4bf7d] = 0xa2; // Carry over from what was replaced
+				romData[0x4bf7e] = 0x08;
+				romData[0x4bf7f] = 0x8a;
+				romData[0x4bf80] = 0x60; // JSR
+
+				for (int lnI = 0; lnI < 8; lnI++)
+					romData[0x49145 + lnI] = 4; // Make sure all characters are loaded in Chapter 4 to avoid ghosting.
+			}
 
 			// Now to adjust the bonus for Chapter 1
 			if ((string)cboXPAdjustment.SelectedItem == "50%") romData[0x765ee] = 5;
@@ -3182,6 +3195,7 @@ namespace DW4RandoHacker
 			number += (chkCh5SymbolOfFaith.Checked ? 2 : 0);
 			number += (chkInstantFinalCave.Checked ? 4 : 0);
 			number += (chkCh4GunpowderJar.Checked ? 8 : 0);
+			number += (chkChapter5Start.Checked ? 16 : 0);
 			flags += convertIntToChar(number);
 			number = 0;
 
@@ -3255,6 +3269,7 @@ namespace DW4RandoHacker
 			chkCh5SymbolOfFaith.Checked = (number % 4 >= 2);
 			chkInstantFinalCave.Checked = (number % 8 >= 4);
 			chkCh4GunpowderJar.Checked = (number % 16 >= 8);
+			chkChapter5Start.Checked = (number % 32 >= 16);
 		}
 
 		private string convertIntToChar(int number)
@@ -3408,6 +3423,13 @@ namespace DW4RandoHacker
 			//createBridges(r1);
 			resetIslands();
 
+			connectLikeIslands();
+			// Go vertically first, then go horizontally once off island 3, then vertically onto island 4
+			connectIslands(3, 4, true);
+			connectIslands(5, 6, false);
+			connectIslands(5, 7, false);
+			connectIslands(9, 10, true);
+
 			// We should mark islands and inaccessible land...
 			int lakeNumber = 256;
 
@@ -3461,34 +3483,27 @@ namespace DW4RandoHacker
 			// Create a long bridge from island 3 to island 4
 			// Find the closest gap from max island 3 to max island 4
 
-			using (StreamWriter writer = File.CreateText(Path.Combine(Path.GetDirectoryName(txtFileName.Text), "island.txt")))
-			{
-				for (int lnY = 0; lnY < 256; lnY++)
-				{
-					string output = "";
-					for (int lnX = 0; lnX < 256; lnX++)
-						output += island[lnY, lnX].ToString().PadLeft(6);
-					writer.WriteLine(output);
-				}
-			}
+			//using (StreamWriter writer = File.CreateText(Path.Combine(Path.GetDirectoryName(txtFileName.Text), "island.txt")))
+			//{
+			//	for (int lnY = 0; lnY < 256; lnY++)
+			//	{
+			//		string output = "";
+			//		for (int lnX = 0; lnX < 256; lnX++)
+			//			output += island[lnY, lnX].ToString().PadLeft(6);
+			//		writer.WriteLine(output);
+			//	}
+			//}
 
-			connectLikeIslands();
-			// Go vertically first, then go horizontally once off island 3, then vertically onto island 4
-			connectIslands(3, 4, true);
-			connectIslands(5, 6, false);
-			connectIslands(5, 7, false);
-			connectIslands(9, 10, true);
-
-			using (StreamWriter writer = File.CreateText(Path.Combine(Path.GetDirectoryName(txtFileName.Text), "island2.txt")))
-			{
-				for (int lnY = 0; lnY < 256; lnY++)
-				{
-					string output = "";
-					for (int lnX = 0; lnX < 256; lnX++)
-						output += island[lnY, lnX].ToString().PadLeft(6);
-					writer.WriteLine(output);
-				}
-			}
+			//using (StreamWriter writer = File.CreateText(Path.Combine(Path.GetDirectoryName(txtFileName.Text), "island2.txt")))
+			//{
+			//	for (int lnY = 0; lnY < 256; lnY++)
+			//	{
+			//		string output = "";
+			//		for (int lnX = 0; lnX < 256; lnX++)
+			//			output += island[lnY, lnX].ToString().PadLeft(6);
+			//		writer.WriteLine(output);
+			//	}
+			//}
 
 			// Burland
 			bool midenOK = false;
@@ -3616,7 +3631,7 @@ namespace DW4RandoHacker
 					romData[byteToUse] = (byte)(midenX[6]);
 					romData[byteToUse + 1] = (byte)(midenY[6]);
 
-					setReturnPlacement(midenX[6], midenY[6], 6, true, maxLake);
+					setReturnPlacement(midenX[6], midenY[6], 22, true, maxLake);
 				}
 			}
 
@@ -3674,7 +3689,7 @@ namespace DW4RandoHacker
 					romData[byteToUse] = (byte)(midenX[9] + 1);
 					romData[byteToUse + 1] = (byte)(midenY[9] + 1);
 
-					setReturnPlacement(midenX[9] + 1, midenY[9], 9, true, maxLake);
+					setReturnPlacement(midenX[9] + 1, midenY[9], 7, true, maxLake);
 				}
 			}
 
@@ -3764,7 +3779,7 @@ namespace DW4RandoHacker
 								 19, 16, 22, 26, 15, -1, -1, -1, -1, 12, 17, 25, -1, 11, 18, 23, 21, 14,
 								 -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 								 -1, -1, -1, -1, -1, -1, -1, -1, -1,
-								 -1, -1, -1, -1, -1, -1, -1, 13, -1, -1 };
+								 -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1 };
 
 			for (int lnI = 0; lnI < locTypes.Length; lnI++)
 			{
@@ -4008,6 +4023,9 @@ namespace DW4RandoHacker
 
 								romData[0x23e95] = romData[0x3be73];
 								romData[0x23e96] = romData[0x3be74];
+
+								romData[0x7afff] = romData[0x3be73];
+								romData[0x7b006] = (byte)(romData[0x3be74] + 1);
 							}
 							else
 								lnI--;
@@ -4016,8 +4034,8 @@ namespace DW4RandoHacker
 						{
 							if (validPlot(y, x, 3, 3, islands.ToArray()) && reachable(y, x, true, midenX[10], midenY[10], maxLake, false))
 							{
-								for (int lnJ = x; lnJ <= x + 2; lnJ++)
-									for (int lnK = y; lnK <= y + 2; lnK++)
+								for (int lnJ = 0; lnJ <= 2; lnJ++)
+									for (int lnK = 0; lnK <= 2; lnK++)
 										map[y + lnJ, x + lnK] = 0x05;
 
 								map[y + 1, x + 1] = 0x04;
@@ -4032,7 +4050,7 @@ namespace DW4RandoHacker
 							else
 								lnI--;
 						}
-						else if (lnI == 55) // House of Island thingy
+						else if (lnI == 55) // Old Man's Island House
 						{
 							bool baramosLegal = true;
 							for (int lnJ = x - 1; lnJ <= x + 1; lnJ++)
@@ -4044,28 +4062,28 @@ namespace DW4RandoHacker
 
 							if (baramosLegal)
 							{
-								for (int lnJ = x - 1; lnJ <= x + 1; lnJ++)
-									for (int lnK = y - 1; lnK <= y + 1; lnK++)
+								for (int lnJ = -1; lnJ <= 1; lnJ++)
+									for (int lnK = -1; lnK <= 1; lnK++)
 										map[y + lnJ, x + lnK] = 0x04;
 
-								map[y + 1, x + 1] = 0x03;
+								map[y, x] = 0x03;
 
 								int byteToUse = 0x3be1c + (3 * lnI);
 								romData[byteToUse] = (byte)(x);
 								romData[byteToUse + 1] = (byte)(y);
 
-								romData[0x23e89] = (byte)(x + 1);
-								romData[0x23e8a] = (byte)(y + 1);
+								romData[0x23e89] = (byte)(x);
+								romData[0x23e8a] = (byte)(y);
 							}
 							else
 								lnI--;
 						}
-						else if (lnI == 56) // Bazzar
+						else if (lnI == 56) // Bazaar
 						{
 							if (validPlot(y, x, 3, 3, new int[] { maxIsland[locIslands[lnI]] }) && reachable(y, x, false, midenX[4], midenY[4], maxLake, false))
 							{
-								for (int lnJ = x; lnJ <= x + 2; lnJ++)
-									for (int lnK = y; lnK <= y + 2; lnK++)
+								for (int lnJ = 0; lnJ <= 2; lnJ++)
+									for (int lnK = 0; lnK <= 2; lnK++)
 										map[y + lnJ, x + lnK] = 0x05;
 
 								map[y + 1, x + 1] = 0x03;
@@ -4076,6 +4094,8 @@ namespace DW4RandoHacker
 
 								romData[0x23e8c] = (byte)(x + 1);
 								romData[0x23e8d] = (byte)(y + 1);
+
+								setReturnPlacement(x + 1, y + 1, returnPoints[lnI], true, maxLake);
 							}
 							else
 								lnI--;
@@ -4084,8 +4104,8 @@ namespace DW4RandoHacker
 						{
 							if (validPlot(y, x, 3, 3, new int[] { maxIsland[locIslands[lnI]] }) && reachable(y, x, false, midenX[2], midenY[2], maxLake, false))
 							{
-								for (int lnJ = x; lnJ <= x + 2; lnJ++)
-									for (int lnK = y; lnK <= y + 2; lnK++)
+								for (int lnJ = 0; lnJ <= 2; lnJ++)
+									for (int lnK = 0; lnK <= 2; lnK++)
 										map[y + lnJ, x + lnK] = 0x04;
 
 								map[y + 1, x + 1] = 0x03;
