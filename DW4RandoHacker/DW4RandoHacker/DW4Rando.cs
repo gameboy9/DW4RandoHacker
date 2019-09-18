@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DW4RandoHacker
 {
-	public partial class Form1 : Form
+	public partial class DW4Rando : Form
 	{
 		bool loading = true;
 		byte[] romData;
@@ -15,18 +15,18 @@ namespace DW4RandoHacker
 
 		int[] monsterRank = // after 0x55, 0x??????, - bisonhawk unknown
             {
-					0x01, 0x00, 0x03, 0x02, 0x05, 0x08, 0x07, 0x09, 0x06, 0x0b, 0x0e, 0x0a, 0x11, 0x0d, 0x0f, 0x14, // 6
-                    0x0c, 0x1c, 0x1a, 0x18, 0x13, 0x10, 0x1f, 0x26, 0x16, 0x1e, 0x19, 0x17, 0x24, 0x1b, 0x22, 0x23, // 15
-                    0x15, 0x1d, 0x5c, 0x2a, 0x20, 0x27, 0x25, 0x21, 0x43, 0x28, 0x2f, 0x04, 0x31, 0x2c, 0x3c, 0x29, // 27
-                    0x3d, 0x2d, 0x36, 0x45, 0x2e, 0x38, 0x39, 0x33, 0x42, 0x3e, 0x58, 0x4d, 0x40, 0x4a, 0x32, 0x47, // 45
-                    0x2b, 0x35, 0x52, 0x48, 0x46, 0x37, 0x4c, 0xaf, 0x34, 0x5e, 0x3a, 0x4f, 0x66, 0xb3, 0x3b, 0x49, // 77
-                    0xb0, 0xb1, 0x56, 0x41, 0x51, 0x50, 0x55, 0x57, 0x44, 0x5a, 0x3f, 0xb2, 0xba, 0x30, 0x53, 0x60, // 104
-                    0x5b, 0x75, 0x5f, 0x4b, 0x68, 0x63, 0x5d, 0x54, 0x6b, 0x61, 0x67, 0x6e, 0x6a, 0x76, 0x12, 0x69,
-					0x70, 0x59, 0x78, 0x72, 0xab, 0x7c, 0x7d, 0x73, 0x71, 0x6c, 0x6f, 0x7f, 0x77, 0x74, 0x64, 0x86,
-					0x7a, 0x6d, 0x79, 0x7b, 0x80, 0x81, 0x7e, 0x87, 0x83, 0x88, 0x85, 0x82, 0x84, 0x62, 0x8c, 0x97,
-					0x89, 0x8a, 0x8d, 0x8b, 0x93, 0x90, 0xc0, 0x9c, 0x8e, 0x98, 0x95, 0xb4, 0x96, 0x9f, 0x9a, 0x99,
-					0x92, 0x9d, 0xa2, 0x94, 0x9e, 0x91, 0x8f, 0xa1, 0xa9, 0x9b, 0xa0, 0xa6, 0xaa, 0xac, 0x65, 0xa8,
-					0xb8, 0xa3, 0xa4, 0xa5, 0xa7, 0xbf, 0xb9, 0xbe, 0xb7, 0xb6, 0xb5, 0xc1, 0xc2, 0xbc // 15000 - bosses start at 0xb5
+					0x01, 0x00, 0x03, 0x02, 0x05, 0x08, 0x07, 0x09, 0x06, 0x0b, 0x0e, 0x0a, 0x11, 0x0d, 0x0f, 0x14, // 6 XP - 0-15
+                    0x0c, 0x1c, 0x1a, 0x18, 0x13, 0x10, 0x1f, 0x26, 0x16, 0x1e, 0x19, 0x17, 0x24, 0x1b, 0x22, 0x23, // 15 XP - 16-31
+                    0x15, 0x1d, 0x5c, 0x2a, 0x20, 0x27, 0x25, 0x21, 0x43, 0x28, 0x2f, 0x04, 0x31, 0x2c, 0x3c, 0x29, // 27 XP - 32-47
+                    0x3d, 0x2d, 0x36, 0x45, 0x2e, 0x38, 0x39, 0x33, 0x42, 0x3e, 0x58, 0x4d, 0x40, 0x4a, 0x32, 0x47, // 45 XP - 48-63
+                    0x2b, 0x35, 0x52, 0x48, 0x46, 0x37, 0x4c, 0xaf, 0x34, 0x5e, 0x3a, 0x4f, 0x66, 0xb3, 0x3b, 0x49, // 77 XP - 64-79
+                    0xb0, 0xb1, 0x56, 0x41, 0x51, 0x50, 0x55, 0x57, 0x44, 0x5a, 0x3f, 0xb2, 0xba, 0x30, 0x53, 0x60, // 104 XP - 80-95
+                    0x5b, 0x75, 0x5f, 0x4b, 0x68, 0x63, 0x5d, 0x54, 0x6b, 0x61, 0x67, 0x6e, 0x6a, 0x76, 0x12, 0x69, // 96-111
+					0x70, 0x59, 0x78, 0x72, 0xab, 0x7c, 0x7d, 0x73, 0x71, 0x6c, 0x6f, 0x7f, 0x77, 0x74, 0x64, 0x86, // 112-127
+					0x7a, 0x6d, 0x79, 0x7b, 0x80, 0x81, 0x7e, 0x87, 0x83, 0x88, 0x85, 0x82, 0x84, 0x62, 0x8c, 0x97, // 128-143
+					0x89, 0x8a, 0x8d, 0x8b, 0x93, 0x90, 0xc0, 0x9c, 0x8e, 0x98, 0x95, 0xb4, 0x96, 0x9f, 0x9a, 0x99, // 144-159
+					0x92, 0x9d, 0xa2, 0x94, 0x9e, 0x91, 0x8f, 0xa1, 0xa9, 0x9b, 0xa0, 0xa6, 0xaa, 0xac, 0x65, 0xa8, // 160-175
+					0xb8, 0xa3, 0xa4, 0xa5, 0xa7, 0xbf, 0xb9, 0xbe, 0xb7, 0xb6, 0xb5, 0xc1, 0xc2, 0xbc // 15000 - bosses start at 0xb5 - 176-189
             };
 
 		int[,] map = new int[256, 256];
@@ -37,7 +37,39 @@ namespace DW4RandoHacker
 		int[] maxIsland = new int[11];
 		List<int> islands = new List<int>();
 
-		public Form1()
+		List<byte> L1Weapons = new List<byte> { 0x00, 0x01, 0x02, 0x04, 0x09, 0x0b };
+		List<byte> L2Weapons = new List<byte> { 0x03, 0x04, 0x05, 0x06, 0x08, 0x0a, 0x0b, 0x0c, 0x0d, 0x19, 0x23 };
+		List<byte> L3Weapons = new List<byte> { 0x06, 0x07, 0x0c, 0x0f, 0x10, 0x11, 0x15, 0x16, 0x17, 0x18, 0x22, 0x23 };
+		List<byte> L4Weapons = new List<byte> { 0x0e, 0x1a, 0x1b, 0x1c, 0x1d, 0x20 };
+		List<byte> L12Weapons;
+		List<byte> L34Weapons;
+		List<byte> AllWeapons;
+
+		List<byte> L1Armor = new List<byte> { 0x24, 0x25, 0x26, 0x27, 0x2b, 0x2c, 0x30, 0x3d, 0x46 };
+		List<byte> L2Armor = new List<byte> { 0x27, 0x28, 0x29, 0x2a, 0x2d, 0x2f, 0x33, 0x3e, 0x3f, 0x47, 0x4a, 0x4d };
+		List<byte> L3Armor = new List<byte> { 0x2a, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x38, 0x39, 0x40, 0x43, 0x48, 0x49, 0x4d };
+		List<byte> L4Armor = new List<byte> { 0x2e, 0x3b, 0x41, 0x42, 0x45, 0x4e, 0x4f };
+		List<byte> L12Armor;
+		List<byte> L34Armor;
+		List<byte> AllArmor;
+
+		List<byte> L1Items = new List<byte> { 0x53, 0x54, 0x55, 0x56, 0x58 };
+		List<byte> L2Items = new List<byte> { 0x53, 0x54, 0x55, 0x56, 0x58, 0x5e, 0x74 };
+		List<byte> L3Items = new List<byte> { 0x53, 0x54, 0x55, 0x56, 0x58, 0x5a, 0x5e, 0x74 };
+		List<byte> L4Items = new List<byte> { 0x59, 0x5a, 0x5b, 0x61, 0x62, 0x63, 0x64, 0x65 };
+		List<byte> L12Items;
+		List<byte> L34Items;
+		List<byte> AllItems;
+
+		List<byte> L1All;
+		List<byte> L2All;
+		List<byte> L12All;
+		List<byte> L3All;
+		List<byte> L4All;
+		List<byte> L34All;
+		List<byte> L1234All;
+
+		public DW4Rando()
 		{
 			InitializeComponent();
 		}
@@ -79,8 +111,29 @@ namespace DW4RandoHacker
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			cboXPAdjustment.SelectedIndex = 1;
-			cboGoldAdjustment.SelectedIndex = 1;
+			// Item list initialization
+			L12Weapons = L1Weapons.Concat(L2Weapons).Distinct().ToList();
+			L34Weapons = L3Weapons.Concat(L4Weapons).Distinct().ToList();
+			AllWeapons = L12Weapons.Concat(L34Weapons).Distinct().ToList();
+
+			L12Armor = L1Armor.Concat(L2Armor).Distinct().ToList();
+			L34Armor = L3Armor.Concat(L4Armor).Distinct().ToList();
+			AllArmor = L12Armor.Concat(L34Armor).Distinct().ToList();
+
+			L12Items = L1Items.Concat(L2Items).Distinct().ToList();
+			L34Items = L3Items.Concat(L4Items).Distinct().ToList();
+			AllItems = L12Items.Concat(L34Items).Distinct().ToList();
+
+			L1All = L1Weapons.Concat(L1Armor).Concat(L1Items).Distinct().ToList();
+			L2All = L2Weapons.Concat(L2Armor).Concat(L2Items).Distinct().ToList();
+			L12All = L1All.Concat(L2All).Distinct().ToList();
+			L3All = L3Weapons.Concat(L3Armor).Concat(L3Items).Distinct().ToList();
+			L4All = L4Weapons.Concat(L4Armor).Concat(L4Items).Distinct().ToList();
+			L34All = L3All.Concat(L4All).Distinct().ToList();
+			L1234All = L12All.Concat(L34All).Distinct().ToList();
+
+			cboXPBoost.SelectedIndex = 1;
+			cboGoldBoost.SelectedIndex = 1;
 
 			txtSeed.Text = (DateTime.Now.Ticks % 2147483647).ToString();
 			bool namesRead = false;
@@ -179,6 +232,8 @@ namespace DW4RandoHacker
 				return false;
 			}
 
+			//expandRom();
+
 			for (int lnI = 0; lnI < 8; lnI++)
 				romData[0x49145 + lnI] = 0; // Make sure all characters are loaded right away; otherwise, Chapter 1 will most likely start with a ghost.
 
@@ -201,17 +256,14 @@ namespace DW4RandoHacker
 				if ((string)cboSoloHero.SelectedItem == "Taloon") power = 5;
 				if ((string)cboSoloHero.SelectedItem == "Ragnar") power = 6;
 				if ((string)cboSoloHero.SelectedItem == "Alena") power = 7;
-				if (chkSoloCanEquipAll.Checked)
-					for (int lnI = 0; lnI < 80; lnI++)
-						romData[0x40c75 + lnI] = (byte)Math.Pow(2, power); // Going to make sure the character gets to equip everything!
-				else
-				{ // still have to allow equipping of the Zenethian equipment so you can get through the tower and castle...
-					romData[0x40c75 + 0x14] = (byte)Math.Pow(2, power);
-					romData[0x40c75 + 0x21] = (byte)Math.Pow(2, power);
-					romData[0x40c75 + 0x37] = (byte)Math.Pow(2, power);
-					romData[0x40c75 + 0x44] = (byte)Math.Pow(2, power);
-					romData[0x40c75 + 0x4b] = (byte)Math.Pow(2, power);
-				}
+
+				// Have to allow equipping of the Zenethian equipment so you can get through the tower and castle...
+				romData[0x40c75 + 0x14] = (byte)Math.Pow(2, power);
+				romData[0x40c75 + 0x21] = (byte)Math.Pow(2, power);
+				romData[0x40c75 + 0x37] = (byte)Math.Pow(2, power);
+				romData[0x40c75 + 0x44] = (byte)Math.Pow(2, power);
+				romData[0x40c75 + 0x4b] = (byte)Math.Pow(2, power);
+
 				for (int lnI = 0; lnI < 5; lnI++)
 					romData[0x4914d + lnI] = (byte)(128 + power); // This will ensure the same character starts each chapter.
 
@@ -343,12 +395,12 @@ namespace DW4RandoHacker
 				}
 			}
 
+			int[] heroes = { 0, 1, 2, 3, 4, 5, 6, 7 };
 			int finalHero = 0;
 			if (chkC14Random.Checked && !chkSoloHero.Checked)
 			{
 				// Randomize the starting character for each chapter...
 				// Come up with eight distinct numbers...
-				int[] heroes = { 0, 1, 2, 3, 4, 5, 6, 7 };
 				for (int lnI = 0; lnI < 100; lnI++)
 				{
 					int numberToSwap1 = (r1.Next() % 8);
@@ -373,7 +425,6 @@ namespace DW4RandoHacker
 				// If Brey is the Chapter 1 or Chapter 2-Tournament hero, adjust Snowstorm to be learned at level 8.
 				if (heroes[0] == 3 || heroes[1] == 3)
 					romData[0x4a306] = 0x08;
-
 
 				// Make Taloon sane in the first 4 chapters, not just in Chapter 3.
 				if (heroes[0] == 5) romData[0x47309] = romData[0x472a6] = 0;
@@ -478,47 +529,56 @@ namespace DW4RandoHacker
 
 				// Give the Thief's Key to the Chapter 5 hero to prevent a potential unwinnable condition.
 				romData[0x4911e] = (byte)heroes[0];
+			}
 
-				// Randomize NPCs
-				for (int lnI = 0; lnI < 100; lnI++)
-				{
-					int numberToSwap1 = (r1.Next() % 8);
-					int numberToSwap2 = (r1.Next() % 8);
-					int swappy = heroes[numberToSwap1];
-					heroes[numberToSwap1] = heroes[numberToSwap2];
-					heroes[numberToSwap2] = swappy;
-				}
+			if (chkRandomizeNPCs.Checked || cboNPCs.SelectedIndex != 0)
+			{
+				heroes = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
 
 				// 0x778df (8), 0x778f1 (9), 0x778f7 (a), 0x778fd (b), 0x73678 (c), 0x7364e (d), 0x7790f (e) + 0x77573, 0x73b30 (f)
 				romData[0x57169] = romData[0x57157] = 0x20; // Prevent Healie and Doran from being called a monster when talking to anyone.  Mainly in case one is acting as Panon.
-				int[] npcs = { 0x778df, 0x778f1, 0x778f7, 0x778fd, 0x73678, 0x7364e, 0x7790f, 0x73b30 };
-				int npcMark = 0;
-				for (int lnI = 0; lnI < heroes.Length; lnI++)
+				
+				if (chkRandomizeNPCs.Checked)
 				{
-					romData[npcs[npcMark]] = (byte)(heroes[lnI] + 8);
-					if (npcs[npcMark] == 0x778f7)
-						romData[0x79574] = (byte)(heroes[lnI] + 8);
-					if (npcs[npcMark] == 0x778fd)
-						romData[0x7957c] = (byte)(heroes[lnI] + 8);
-					if (npcs[npcMark] == 0x778f1)
-						romData[0x7b399] = (byte)(heroes[lnI] + 8);
-					if (npcs[npcMark] == 0x73678)
-						romData[0x79597] = (byte)(heroes[lnI] + 8);
-					if (npcs[npcMark] == 0x7364e)
+					// Randomize NPCs
+					for (int lnI = 0; lnI < 100; lnI++)
 					{
-						romData[0x56c1d] = (byte)(heroes[lnI] + 8);
-						romData[0x79584] = (byte)(heroes[lnI] + 8);
+						int numberToSwap1 = (r1.Next() % 8);
+						int numberToSwap2 = (r1.Next() % 8);
+						int swappy = heroes[numberToSwap1];
+						heroes[numberToSwap1] = heroes[numberToSwap2];
+						heroes[numberToSwap2] = swappy;
 					}
-					if (npcs[npcMark] == 0x7790f)
-						romData[0x77573] = (byte)(heroes[lnI] + 8);
 
-					npcMark++;
+					int[] npcs = { 0x778df, 0x778f1, 0x778f7, 0x778fd, 0x73678, 0x7364e, 0x7790f, 0x73b30 };
+					int npcMark = 0;
+					for (int lnI = 0; lnI < heroes.Length; lnI++)
+					{
+						romData[npcs[npcMark]] = (byte)(heroes[lnI] + 8);
+						if (npcs[npcMark] == 0x778f7)
+							romData[0x79574] = (byte)(heroes[lnI] + 8);
+						if (npcs[npcMark] == 0x778fd)
+							romData[0x7957c] = (byte)(heroes[lnI] + 8);
+						if (npcs[npcMark] == 0x778f1)
+							romData[0x7b399] = (byte)(heroes[lnI] + 8);
+						if (npcs[npcMark] == 0x73678)
+							romData[0x79597] = (byte)(heroes[lnI] + 8);
+						if (npcs[npcMark] == 0x7364e)
+						{
+							romData[0x56c1d] = (byte)(heroes[lnI] + 8);
+							romData[0x79584] = (byte)(heroes[lnI] + 8);
+						}
+						if (npcs[npcMark] == 0x7790f)
+							romData[0x77573] = (byte)(heroes[lnI] + 8);
+
+						npcMark++;
+					}
 				}
 
 				//2016 12 15 - TheCowness
 				//This checkbox is gonna scale the NPCs to the chapter they're dropped into
 				//using hard-coded loadouts
-				if (chkScaleNPCs.Checked)
+				if (cboNPCs.SelectedIndex == 3 || cboNPCs.SelectedIndex == 4 || cboNPCs.SelectedIndex == 5)
 				{
 					//Order if NPCs in memory is actually Healie > Orin > Laurent > Strom > Hector > Panon > Lucia > Doran (Orin before Laurent/Strom)
 					int[,,] npcLoadouts = new int[8, 8, 14]{
@@ -532,62 +592,62 @@ namespace DW4RandoHacker
                             },
 							{//Chapter 4 (Orin)
                                 //Heal, Heal, Heal, Attack, Guard, Attack
-                                40,42,45,30,40,0,0x7F,0x25,0x22,0x22,0x32,0x30,0x32,0x00
+                                40,42,45,30,40, 0,0x7F, 0x25,0x22,0x22,0x32,0x30,0x32, 0x00
 							},
 							{//Chapter 3 (Laurent)
                                 //Heal, Heal, Heal, ParalyzeHit, Guard, Attack
-                                25,30,35,20,20,0,0x7F,0x25,0x22,0x22,0x37,0x30,0x32,0x00
+                                25,30,35,20,20, 0,0x7F, 0x25,0x22,0x22,0x37,0x30,0x32, 0x00
 							},
 							{//Chapter 3 (Strom)
                                 //Heal, Heal, Heal, Attack, Guard, Attack
-                                18,30,35,15,30,0,0x7F,0x25,0x22,0x22,0x32,0x30,0x32,0x00
+                                18,30,35,15,30, 0,0x7F, 0x25,0x22,0x22,0x32,0x30,0x32, 0x00
 							},
 							{//Chapter 5 (Hector)
                                 //Heal, Heal, Heal, Attack, Qrt Guard, Attack
-                                40,42,45,30,40,0,0x7F,0x25,0x22,0x22,0x32,0x31,0x32,0x00
+                                40,42,45,30,40, 0,0x7F, 0x25,0x22,0x22,0x32,0x31,0x32, 0x00
 							},
 							{//Chapter 5 (Panon)
                                 //Healmore, Healmore, Healmore, SleepHit, Dazed, SleepHit
-                                65,90,80,45,60,0,0x7F,0x26,0x26,0x26,0x35,0x2C,0x35,0x00
+                                65,90,80,45,60, 0,0x7F, 0x26,0x26,0x26,0x35,0x2C,0x35, 0x00
 							},
 							{//Chapter 5 (Lucia)
                                 //HealAll, HealUs, HealUs, SleepHit, Upper, Upper
-                                95,210,145,75,90,0,0x7F,0x27,0x28,0x28,0x35,0x1C,0x1C,0x00
+                                95,210,145,75,90, 0,0x7F, 0x27,0x28,0x28,0x35,0x1C,0x1C, 0x00
 							},
 							{//Chapter 5 (Doran)
                                 //HealAll, HealUs, HealUsAll, Attack, Increase, Increase
-                                110,255,165,95,110,0,0x7F,0x27,0x28,0x29,0x32,0x1D,0x1D,0x00
+                                110,255,165,95,110, 0,0x7F, 0x27,0x28,0x29,0x32,0x1D,0x1D, 0x00
 							}
 						},
 						{//Orin
                             {//Chapter 1 (Healie)
-                                4,0,60,50,30,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
+                                4,0,60,50,30, 0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
 							},
 							{//Chapter 4 (Orin)
-                                8,0,82,58,33,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
+                                8,0,82,58,33, 0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
 							},
 							{//Chapter 3 (Laurent)
                                 //Paralyzehitx2, Attack x4
-                                6,0,70,60,30,0,0x7F,0x37,0x37,0x32,0x32,0x32,0x32,0x00
+                                6,0,70,60,30, 0,0x7F,0x37,0x37,0x32,0x32,0x32,0x32,0x00
 							},
 							{//Chapter 3 (Strom)
-                                6,0,95,82,43,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
+                                6,0,95,82,43, 0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
 							},
 							{//Chapter 5 (Hector)
                                 //Attack x6
-                                20,0,90,95,40,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
+                                20,0,90,95,40, 0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x00
 							},
 							{//Chapter 5 (Panon)
                                 //Sleephitx3, Attack x3
-                                35,0,120,150,80,0,0x7F,0x35,0x35,0x35,0x32,0x32,0x32,0x00
+                                35,0,120,150,80, 0,0x7F,0x35,0x35,0x35,0x32,0x32,0x32,0x00
 							},
 							{//Chapter 5 (Lucia)
                                 //Attack x6
-                                50,0,5,200,100,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x01
+                                50,0,5,200,100, 0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x01
 							},
 							{//Chapter 5 (Doran)
                                 //Attack x6
-                                55,0,95,250,120,0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x01
+                                55,0,95,250,120, 0,0x7F,0x32,0x32,0x32,0x32,0x32,0x32,0x01
 							}
 						},
 						{//Laurent
@@ -807,146 +867,74 @@ namespace DW4RandoHacker
 						}
 					}
 				}
+
+				// Randomize stats
+				if (cboNPCs.SelectedIndex == 1 || cboNPCs.SelectedIndex == 2 || cboNPCs.SelectedIndex == 4 || cboNPCs.SelectedIndex == 5)
+				{
+					for (int lnI = 0; lnI < heroes.Length; lnI++)
+					{
+						//lnI is where they're getting dropped, heroes[lnI] is which character we're dropping in.
+						for (int lnJ = 0; lnJ < 5; lnJ++)
+						{
+							int stat = romData[0x60056 + ((heroes[lnI] + 197) * 22) + lnJ + 2];
+							stat = ScaleValue(stat, (cboNPCs.SelectedIndex == 1 || cboNPCs.SelectedIndex == 4) ? 2.0 : 4.0, 1.0, r1);
+							//The +2 here is because we're skipping the EXP bytes and starting at Agi
+							romData[0x60056 + ((heroes[lnI] + 197) * 22) + lnJ + 2] = (byte)stat;
+						}
+					}
+				}
+				else if (cboNPCs.SelectedIndex == 6)
+				{
+					for (int lnI = 0; lnI < heroes.Length; lnI++)
+					{
+						//lnI is where they're getting dropped, heroes[lnI] is which character we're dropping in.
+						for (int lnJ = 0; lnJ < 5; lnJ++)
+						{
+							int stat = inverted_power_curve((lnJ == 2 ? 16 : 1), (lnJ == 2 ? 400 : 255), 1, 3.0, r1)[0];
+							//The +2 here is because we're skipping the EXP bytes and starting at Agi
+							romData[0x60056 + ((heroes[lnI] + 197) * 22) + lnJ + 2] = (byte)stat;
+						}
+						for (int lnJ = 7; lnJ < 13; lnJ++)
+						{
+							int attack;
+							if (r1.Next() % 2 == 1)
+								attack = (byte)(r1.Next() % 0x67);
+							else
+								attack = 0x32;
+							if (attack == 0x15 || attack == 0x55)
+								lnJ--; // redo randomization.  Transform and super slime is a bad idea to use here.
+
+							//The +2 here is because we're skipping the EXP bytes and starting at Agi
+							romData[0x60056 + ((heroes[lnI] + 197) * 22) + lnJ + 2] = (byte)attack;
+						}
+					}
+				}
 			}
 
-			if (chkCh1InstantWell.Checked || chkChapter5Start.Checked)
-			{
-				romData[0x23668] = 0x00;
-				romData[0x23669] = 0xf0;
-			}
+			chapter1Adjustments(r1);
+			chapter2Adjustments();
+			chapter3Adjustments();
+			chapter4Adjustments();
+			chapter5Adjustments();
 
-			if (chkCh1FlyingShoes.Checked)
-			{
-				romData[0x491d3] = 0x6c;
-			}
-
-			if (chkCh2InstantWallKick.Checked)
-			{
-				romData[0x72113] = 0xea;
-				romData[0x72114] = 0xea;
-			}
-
-			if (chkCh2EndorEntry.Checked || chkChapter5Start.Checked)
-			{
-				romData[0x72d8d] = 0x82; // This actually is a Chapter 1 trigger which must be triggered currently, but the soldier blocking is an AND 0x02.
-			}
-
-			// Make Chapter 2 adjustments if requested.
-			if (chkCh2AwardXPTournament.Checked)
-			{
-				romData[0x60054 + (0xaf * 22) + 2] = 60;
-				romData[0x60054 + (0xb0 * 22) + 2] = 80;
-				romData[0x60054 + (0xb1 * 22) + 2] = 80;
-				romData[0x60054 + (0xb2 * 22) + 2] = 100;
-				romData[0x60054 + (0xba * 22) + 2] = 100;
-			}
-
-			if (chkCh3BuildBridges.Checked)
-			{
-				romData[0x200bf] = 0x00;
-				romData[0x200c0] = 0xf0;
-			}
-
-			if (chkCh3BuildTunnel.Checked || chkChapter5Start.Checked)
-			{
-				romData[0x22fce] = 0x00;
-				romData[0x22fcf] = 0xd0;
-			}
-
-			// Make Chapter 3 adjustments if requested.
-			// Make the shop one piece of gold... I still think that Chapter 3 sucks.  :)
-			if (chkShop1.Checked)
-			{
-				romData[0x5603c] = 0x00;
-				romData[0x56044] = 0x01;
-			}
-			if (chkShop25K.Checked)
-			{
-				romData[0x5603c] = 0x61;
-				romData[0x56044] = 0xa8;
-			}
-			// This can make the tunnel one piece of gold...
-			if (chkTunnel1.Checked)
-			{
-				romData[0x56641] = 0x00;
-				romData[0x56645] = 0x01;
-			}
-
-			if (chkCh4BoardingPass.Checked && !chkC14Random.Checked && !chkSoloHero.Checked)
-			{
-				int byteToUse = 0x491ba;
-				romData[byteToUse] = 0x7a;
-			}
-			if (chkCh4GunpowderJar.Checked && !chkC14Random.Checked && !chkSoloHero.Checked)
-			{
-				int byteToUse = 0x491bb;
-				romData[byteToUse] = 0x70;
-			}
-			if (chkCh5SymbolOfFaith.Checked && !chkC14Random.Checked && !chkSoloHero.Checked)
-			{
-				int byteToUse = 0x491a5; // Hero
-				romData[byteToUse] = 0x6f;
-			}
-
-			romData[0x5499e] = 0xff; // Skip the talking to the one person at the bottom of the ship.
-
-			if (chkCh5BlowUpHometown.Checked)
-			{
-				romData[0x23494] = 0xea;
-				romData[0x23495] = 0xea;
-			}
-
-			if (chkInstantFinalCave.Checked)
-				romData[0x2ea19] = 0x85;
-
-			if (chkChapter5Start.Checked)
-			{
-				romData[0x4abb4] = 0x20;
-				romData[0x4abb5] = 0x68;
-				romData[0x4abb6] = 0xbf;
-
-				romData[0x4abc3] = 0xea;
-				romData[0x4abc4] = 0xea;
-
-				romData[0x4bf78] = 0xa9; // LDA #$04
-				romData[0x4bf79] = 0x04;
-				romData[0x4bf7a] = 0x8d; // STA $615A
-				romData[0x4bf7b] = 0x5a;
-				romData[0x4bf7c] = 0x61;
-				romData[0x4bf7d] = 0xa2; // Carry over from what was replaced
-				romData[0x4bf7e] = 0x08;
-				romData[0x4bf7f] = 0x8a;
-				romData[0x4bf80] = 0x60; // JSR
-
-				for (int lnI = 0; lnI < 8; lnI++)
-					romData[0x49145 + lnI] = 4; // Make sure all characters are loaded in Chapter 4 to avoid ghosting.
-			}
-
-			// Now to adjust the bonus for Chapter 1
-			if ((string)cboXPAdjustment.SelectedItem == "50%") romData[0x765ee] = 5;
-			if ((string)cboXPAdjustment.SelectedItem == "150%") romData[0x765ee] = 15;
-			if ((string)cboXPAdjustment.SelectedItem == "200%") romData[0x765ee] = 20;
-			if ((string)cboXPAdjustment.SelectedItem == "250%") romData[0x765ee] = 25;
-			if ((string)cboXPAdjustment.SelectedItem == "300%") romData[0x765ee] = 30;
-			if ((string)cboXPAdjustment.SelectedItem == "400%") romData[0x765ee] = 40;
-			if ((string)cboXPAdjustment.SelectedItem == "500%") romData[0x765ee] = 50;
+			int xpBoost = cboXPBoost.SelectedIndex;
+			int xpRandom = cboXPRandom.SelectedIndex;
 
 			// Now adjust XP for all monsters...
 			for (int lnI = 0; lnI <= 0xc2; lnI++)
 			{
 				double xp = (romData[0x60056 + (lnI * 22) + 1] * 256) + romData[0x60056 + (lnI * 22) + 0];
 				double origXP = xp;
-				if ((string)cboXPAdjustment.SelectedItem == "50%") xp = xp / 2;
-				if ((string)cboXPAdjustment.SelectedItem == "150%") xp = xp * 3 / 2;
-				if ((string)cboXPAdjustment.SelectedItem == "200%") xp = xp * 2;
-				if ((string)cboXPAdjustment.SelectedItem == "250%") xp = xp * 5 / 2;
-				if ((string)cboXPAdjustment.SelectedItem == "300%") xp = xp * 3;
-				if ((string)cboXPAdjustment.SelectedItem == "400%") xp = xp * 4;
-				if ((string)cboXPAdjustment.SelectedItem == "500%") xp = xp * 5;
-				if (txtSeed.Text == "whoa") xp = 65000;
+				if (xpRandom != 5)
+				{
+					xp *= xpBoost == 0 ? 0 : xpBoost == 1 ? .5 : xpBoost == 2 ? 1.0 : xpBoost == 3 ? 1.5 : xpBoost == 4 ? 2.0 : xpBoost == 5 ? 3.0 : xpBoost == 6 ? 4.0 : 5.0;
 
-				if (chkXPRandom.Checked && txtSeed.Text != "whoa")
-					xp = (r1.Next() % (xp * 2));
+					xp = ScaleValueDouble(xp, xpRandom == 0 ? 1.0 : xpRandom == 1 ? 1.5 : xpRandom == 2 ? 2.0 : xpRandom == 3 ? 3.0 : 4.0, 1.0, r1, false);
+				}
+				else
+				{
+					xp = inverted_power_curve(1, (int)(12000 * xpBoost == 0 ? 0 : xpBoost == 1 ? .5 : xpBoost == 2 ? 1.0 : xpBoost == 3 ? 1.5 : xpBoost == 4 ? 2.0 : xpBoost == 5 ? 3.0 : xpBoost == 6 ? 4.0 : 5.0), 1, 0.25, r1)[0];
+				}
 
 				int xpTrue = (int)Math.Round(xp);
 				if (xpTrue < 1 && origXP >= 1) xpTrue = 1;
@@ -955,37 +943,43 @@ namespace DW4RandoHacker
 				romData[0x60056 + (lnI * 22) + 0] = (byte)(xpTrue % 256);
 			}
 
+			xpBoost = cboGoldBoost.SelectedIndex;
+			xpRandom = cboGoldRandom.SelectedIndex;
+
 			// Then the gold for all monsters...
 			for (int lnI = 0; lnI <= 0xc2; lnI++)
 			{
 				double xp = ((romData[0x60056 + (lnI * 22) + 18] % 4) * 256) + (romData[0x60056 + (lnI * 22) + 7]);
 				double origXP = xp;
-				if ((string)cboGoldAdjustment.SelectedItem == "200%") xp = xp * 2;
-				if ((string)cboGoldAdjustment.SelectedItem == "300%") xp = xp * 3;
-				if ((string)cboGoldAdjustment.SelectedItem == "400%") xp = xp * 4;
-				if (txtSeed.Text == "whoa") xp = 1000;
 
-				if (chkGoldRandom.Checked && txtSeed.Text != "whoa")
-					xp = (r1.Next() % (xp * 2));
+				if (xpRandom != 5)
+				{
+					xp *= xpBoost == 0 ? 0 : xpBoost == 1 ? .5 : xpBoost == 2 ? 1.0 : xpBoost == 3 ? 1.5 : xpBoost == 4 ? 2.0 : xpBoost == 5 ? 3.0 : xpBoost == 6 ? 4.0 : 5.0;
+
+					xp = ScaleValueDouble(xp, xpRandom == 0 ? 1.0 : xpRandom == 1 ? 1.5 : xpRandom == 2 ? 2.0 : xpRandom == 3 ? 3.0 : 4.0, 1.0, r1, false);
+				}
+				else
+				{
+					xp = inverted_power_curve(1, (int)(200 * xpBoost == 0 ? 0 : xpBoost == 1 ? .5 : xpBoost == 2 ? 1.0 : xpBoost == 3 ? 1.5 : xpBoost == 4 ? 2.0 : xpBoost == 5 ? 3.0 : xpBoost == 6 ? 4.0 : 5.0), 1, 0.5, r1)[0];
+				}
 
 				int xpTrue = (int)Math.Round(xp);
 				if (xpTrue < 1 && origXP >= 1) xpTrue = 1;
-				if (xpTrue > 1000) xpTrue = 1000;
+				if (xpTrue > 1000) xpTrue = 1023;
 				romData[0x60056 + (lnI * 22) + 18] -= (byte)(romData[0x60054 + (lnI * 22) + 20] % 4);
 				romData[0x60056 + (lnI * 22) + 18] += (byte)(xpTrue / 256);
 				romData[0x60056 + (lnI * 22) + 7] = (byte)(xpTrue % 256);
 			}
 
-			if (chkRandomizeMap.Checked)
-			{
-				bool valid = false;
-				while (!valid)
-					valid = randomizeMapv5(r1);
-			}
-			if (chkRandomMonsterStats.Checked) randomizeMonsterStats(r1);
-			if (chkRandomMonsterAttacks.Checked) randomizeMonsterAttacks(r1);
-			if (chkRandomMonsterResistances.Checked) randomizeMonsterResistances(r1);
-			if (chkRandomTreasures.Checked) randomizeTreasures(r1);
+			criticalHits(r1);
+			taloonInsanity(r1);
+			if (chkRandomizeMap.Checked) randomizeMapv5(r1);
+			swapMonsters(r1);
+			randomizeMonsterStats(r1);
+			randomizeMonsterDrops(r1);
+			randomizeMonsterAttacks(r1);
+			randomizeMonsterResistances(r1);
+			randomizeTreasures(r1);
 
 			// Finally, the encounter rate.  I've noticed that the encounter rate by default is VARIABLE!
 			// 25% of normal = Branca Castle, north to the Heroes' Hometown, the approach to Necrosaro itself, and the Gardenbur Cave.  (the later two is guaranteed 1/64)
@@ -1002,9 +996,8 @@ namespace DW4RandoHacker
 			{
 				double encounterRate = (romData[0x6228b + lnI]);
 				if ((string)cboEncounterRate.SelectedItem == "1/4") encounterRate = Math.Round(encounterRate / 4);
-				if ((string)cboEncounterRate.SelectedItem == "1/3") encounterRate = Math.Round(encounterRate / 3);
 				if ((string)cboEncounterRate.SelectedItem == "1/2") encounterRate = Math.Round(encounterRate / 2);
-				if ((string)cboEncounterRate.SelectedItem == "2/3") encounterRate = Math.Round(encounterRate * 2 / 3);
+				if ((string)cboEncounterRate.SelectedItem == "3/4") encounterRate = Math.Round(encounterRate * 3 / 4);
 				if ((string)cboEncounterRate.SelectedItem == "x1.5") encounterRate = Math.Round(encounterRate * 3 / 2);
 				if ((string)cboEncounterRate.SelectedItem == "x2") encounterRate = Math.Round(encounterRate * 2);
 				if ((string)cboEncounterRate.SelectedItem == "x2.5") encounterRate = Math.Round(encounterRate * 5 / 2);
@@ -1017,9 +1010,8 @@ namespace DW4RandoHacker
 			{
 				double encounterRate = (romData[0x62350 + lnI]);
 				if ((string)cboEncounterRate.SelectedItem == "1/4") encounterRate = Math.Round(encounterRate / 4);
-				if ((string)cboEncounterRate.SelectedItem == "1/3") encounterRate = Math.Round(encounterRate / 3);
 				if ((string)cboEncounterRate.SelectedItem == "1/2") encounterRate = Math.Round(encounterRate / 2);
-				if ((string)cboEncounterRate.SelectedItem == "2/3") encounterRate = Math.Round(encounterRate * 2 / 3);
+				if ((string)cboEncounterRate.SelectedItem == "3/4") encounterRate = Math.Round(encounterRate * 3 / 4);
 				if ((string)cboEncounterRate.SelectedItem == "x1.5") encounterRate = Math.Round(encounterRate * 3 / 2);
 				if ((string)cboEncounterRate.SelectedItem == "x2") encounterRate = Math.Round(encounterRate * 2);
 				if ((string)cboEncounterRate.SelectedItem == "x2.5") encounterRate = Math.Round(encounterRate * 5 / 2);
@@ -1028,11 +1020,12 @@ namespace DW4RandoHacker
 				romData[0x62350 + lnI] = (byte)encounterRate;
 			}
 
-			if (chkRandomHeroEquip.Checked) randomizeHeroEquipment(r1);
-			if (chkRandomMonsterZones.Checked) randomizeMonsterZones(r1);
-			if (chkRandomStores.Checked) randomizeStores(r1);
-			if (chkRandomHeroStats.Checked) randomizeHeroStats(r1);
-			if (chkRandomizeHeroSpells.Checked) randomizeHeroSpells(r1);
+			randomizeHeroEquipment(r1);
+			randomizeEquipmentPowers(r1);
+			randomizeMonsterZones(r1);
+			randomizeStores(r1);
+			randomizeHeroStats(r1);
+			randomizeHeroSpells(r1);
 
 			if (chkSpeedUpBattles.Checked)
 			{
@@ -1076,10 +1069,6 @@ namespace DW4RandoHacker
 				romData[0x76c4b] = 0x02;
 			}
 
-			// Give full control over all players in Chapter 5.  You lose the wagon control though.  I would LOVE to figure out how to get both though!  Maybe some nops?
-			if (chkC5ControlAllChars.Checked)
-				romData[0x46e1e] = 0x7f; // You can make it any number higher than 04, chapter 5 I think... 
-
 			saveRom(true);
 
 			// Rename all characters - this starts at 0x2fba0
@@ -1120,12 +1109,14 @@ namespace DW4RandoHacker
 							byteArray.Add(0x22 + twoCharIndex);
 							lnJ++;
 							continue;
-						} else
+						}
+						else
 						{
 							char character = Convert.ToChar(name.Substring(lnJ, 1).ToLower());
 							byteArray.Add(character - 97);
 						}
-					} else
+					}
+					else
 					{
 						char character = Convert.ToChar(name.Substring(lnJ, 1).ToLower());
 						byteArray.Add(character - 97);
@@ -1185,6 +1176,264 @@ namespace DW4RandoHacker
 			}
 
 			return true;
+		}
+
+		private void swapMonsters(Random r1)
+		{
+			// First, let's shuffle boss fights if selected
+			if (chkSwapBossStats.Checked)
+			{
+				byte[] bosses = new byte[] { 0xb3, 0x12, 0xa4, 0xb0, 0xb1, 0xb2, 0xb4, 0xba, 0xc0, 0xbf, 0xbe, 0xb5, 0xc2, 0xc1, 0xbc, 0xb6, 0xb7, 0xb8, 0xb9, 0x91, 0x59, 0x62 };
+				bosses = shuffle(bosses, r1);
+				for (int lnI = 0; lnI < bosses.Length; lnI++)
+				{
+					int byteToUse = 0x6235c + (8 * lnI);
+					for (int lnJ = 0; lnJ < 4; lnJ++)
+						romData[byteToUse + lnJ] = 0xff;
+					for (int lnJ = 5; lnJ < 8; lnJ++)
+						romData[byteToUse + lnJ] = 0x00;
+
+					
+				}
+			}
+		}
+
+		private byte[] shuffle(byte[] treasureData, Random r1)
+		{
+			return treasureData;
+		}
+
+		private void swap(int firstAddress, int secondAddress)
+		{
+			byte holdAddress = romData[secondAddress];
+			romData[secondAddress] = romData[firstAddress];
+			romData[firstAddress] = holdAddress;
+		}
+
+		private void expandRom()
+		{
+			byte[] newRom = new byte[romData.Length + (32 * 16384)];
+			for (int lnI = 0; lnI < romData.Length; lnI++)
+				newRom[lnI] = romData[lnI];
+
+			romData = newRom;
+
+			romData[0x4] = 0x40;
+			for (int lnI = 0x7c010; lnI < 0x80010; lnI++)
+			{
+				romData[lnI + 0x40000] = romData[lnI + 0x80000] = romData[lnI];
+			}
+			romData[0x3ffb0] = romData[0x7ffb0] = romData[0xbffb0] = romData[0xfffb0] = 0x30;
+		}
+
+		private void chapter1Adjustments(Random r1)
+		{
+			if (chkCh1InstantWell.Checked || chkChapter5Start.Checked)
+			{
+				romData[0x23668] = 0x00;
+				romData[0x23669] = 0xf0;
+			}
+
+			if (chkCh1FlyingShoes.Checked)
+			{
+				romData[0x491d3] = 0x6c;
+			}
+
+			if (chkCh1Moat.Checked && !chkRandomizeMap.Checked)
+			{
+				romData[0x2cea8] = 0x84;
+			}
+
+			// Now to adjust the bonus for Chapter 1
+			int xpBoost = cboXPBoost.SelectedIndex;
+			int xpRandom = cboXPRandom.SelectedIndex;
+			int xpBonus = xpBoost == 0 ? 0 : xpBoost == 1 ? 5 : xpBoost == 2 ? 10 : xpBoost == 3 ? 15 : xpBoost == 4 ? 20 : xpBoost == 5 ? 30 : xpBoost == 6 ? 40 : 50;
+			xpBonus = ScaleValue(xpBonus, xpRandom == 0 ? 1.0 : xpRandom == 1 ? 1.5 : xpRandom == 2 ? 2.0 : xpRandom == 3 ? 3.0 : 4.0, 1.0, r1, false);
+			romData[0x765ee] = (byte)xpBonus;
+		}
+
+		private void chapter2Adjustments()
+		{
+			if (chkCh2InstantWallKick.Checked)
+			{
+				romData[0x72113] = 0xea;
+				romData[0x72114] = 0xea;
+			}
+
+			if (chkCh2EndorEntry.Checked || chkChapter5Start.Checked)
+			{
+				romData[0x72d8d] = 0x82; // This actually is a Chapter 1 trigger which must be triggered currently, but the soldier blocking is an AND 0x02.
+			}
+
+			// Make Chapter 2 adjustments if requested.
+			if (chkCh2AwardXPTournament.Checked)
+			{
+				romData[0x60054 + (0xaf * 22) + 2] = 60;
+				romData[0x60054 + (0xb0 * 22) + 2] = 80;
+				romData[0x60054 + (0xb1 * 22) + 2] = 80;
+				romData[0x60054 + (0xb2 * 22) + 2] = 100;
+				romData[0x60054 + (0xba * 22) + 2] = 100;
+			}
+		}
+
+		private void chapter3Adjustments()
+		{
+			if (chkCh3BuildBridges.Checked)
+			{
+				romData[0x200bf] = 0x00;
+				romData[0x200c0] = 0xf0;
+			}
+
+			if (chkCh3BuildTunnel.Checked || chkChapter5Start.Checked)
+			{
+				romData[0x22fce] = 0x00;
+				romData[0x22fcf] = 0xd0;
+			}
+
+			// Make Chapter 3 adjustments if requested.
+			// Make the shop one piece of gold... I still think that Chapter 3 sucks.  :)
+			if (chkCh3Shop1.Checked)
+			{
+				romData[0x5603c] = 0x00;
+				romData[0x56044] = 0x01;
+			}
+			if (chkCh3Shop25K.Checked)
+			{
+				romData[0x5603c] = 0x61;
+				romData[0x56044] = 0xa8;
+			}
+			// This can make the tunnel one piece of gold...
+			if (chkCh3Tunnel1.Checked)
+			{
+				romData[0x56641] = 0x00;
+				romData[0x56645] = 0x01;
+			}
+		}
+
+		private void chapter4Adjustments()
+		{
+			if (chkCh4BoardingPass.Checked && !chkC14Random.Checked && !chkSoloHero.Checked)
+			{
+				int byteToUse = 0x491ba;
+				romData[byteToUse] = 0x7a;
+			}
+			if (chkCh4GunpowderJar.Checked && !chkC14Random.Checked && !chkSoloHero.Checked)
+			{
+				int byteToUse = 0x491bb;
+				romData[byteToUse] = 0x70;
+			}
+
+			romData[0x5499e] = 0xff; // Skip the talking to the one person at the bottom of the ship.
+		}
+
+		private void chapter5Adjustments()
+		{
+			if (chkCh5SymbolOfFaith.Checked && !chkC14Random.Checked && !chkSoloHero.Checked)
+			{
+				int byteToUse = 0x491a5; // Hero
+				romData[byteToUse] = 0x6f;
+			}
+
+			if (chkCh5BlowUpHometown.Checked)
+			{
+				romData[0x23494] = 0xea;
+				romData[0x23495] = 0xea;
+			}
+
+			if (chkInstantFinalCave.Checked)
+				romData[0x2ea19] = 0x85;
+
+			if (chkChapter5Start.Checked)
+			{
+				// Make sure the Branca tunnel is built.
+				romData[0x22fce] = 0x00;
+				romData[0x22fcf] = 0xd0;
+				// Make sure Loch Tower is in the correct state.  You can "beat Chapter 1" otherwise, which disables all encounters and does a lot of weird stuff.
+				// Make sure Santeem is in the correct state.  The monsters won't be there in floor one, but Balzack would... pre-Keeleon.
+				romData[0x7215a] = 0x06;
+				romData[0x7215c] = 0x20;
+
+				// This code will get us starting in Chapter 5.
+				romData[0x4abb4] = 0x20;
+				romData[0x4abb5] = 0x68;
+				romData[0x4abb6] = 0xbf;
+
+				romData[0x4abc3] = 0xea;
+				romData[0x4abc4] = 0xea;
+
+				romData[0x4bf78] = 0xa9; // LDA #$04
+				romData[0x4bf79] = 0x04;
+				romData[0x4bf7a] = 0x8d; // STA $615A
+				romData[0x4bf7b] = 0x5a;
+				romData[0x4bf7c] = 0x61;
+				romData[0x4bf7d] = 0xa2; // Carry over from what was replaced
+				romData[0x4bf7e] = 0x08;
+				romData[0x4bf7f] = 0x8a;
+				romData[0x4bf80] = 0x60; // JSR
+
+				for (int lnI = 0; lnI < 8; lnI++)
+					romData[0x49145 + lnI] = 4; // Make sure all characters are loaded in Chapter 4 to avoid ghosting.
+			}
+
+			// Give full control over all players in Chapter 5.  You lose the wagon control though.  I would LOVE to figure out how to get both though!  Maybe some nops?
+			if (chkCh5ControlAllChars.Checked)
+				romData[0x46e1e] = 0x7f; // You can make it any number higher than 04, chapter 5 I think... 
+		}
+
+		private void taloonInsanity(Random r1)
+		{
+			if (cboTaloonInsanity.SelectedIndex == 1) // Always insane
+			{
+				romData[0x472a7] = romData[0x472a8] = 0xea; // Skip the comparison
+			} else if (cboTaloonInsanity.SelectedIndex == 2) // Never insane
+			{
+				romData[0x472a5] = 0x4c; // JMP $B2F4, meaning he's not insane.
+				romData[0x472a6] = 0xf4;
+				romData[0x472a7] = 0xb2;
+			}
+			// .SelectedIndex = 0 is not neccessary; it's covered earlier.  (possible hero randomization)
+			romData[0x472ad] = (byte)(cboTaloonInsanityChance.SelectedIndex == 0 ? 0x7f : cboTaloonInsanityChance.SelectedIndex == 1 ? 0x3f : cboTaloonInsanityChance.SelectedIndex == 2 ? 0x1f :
+				cboTaloonInsanityChance.SelectedIndex == 3 ? 0x0f : cboTaloonInsanityChance.SelectedIndex == 4 ? 0x07 : cboTaloonInsanityChance.SelectedIndex == 5 ? 0x03 : cboTaloonInsanityChance.SelectedIndex == 6 ? 0x01 : 0x00);
+
+			if (cboTaloonInsanityMoves.SelectedIndex >= 1)
+			{
+				byte[] badMoves = { 0x3c, 0x3d, 0x4d, 0x50, 0x53, 0x56, 0x57, 0x59, 0x5a, 0x68, 0x73, 0x75, 0x77, 0x78, 0x79, 0x7a, 0x7b, 0x7c, 0x7f, 0x82, 0x85, 0x86, 0x87, 0x89, 0x8a, 0x8b, 0x8d, 0x8e, 0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x9b, 0x9c, 0x9e,
+					0xa0, 0xa3, 0xa5, 0xa6, 0xa8, 0xaa, 0xab, 0xac, 0xad, 0xae, 0xb0, 0xb1, 0xb2, 0xb3, 0xb5, 0xb6, 0xb7, 0xb8, 0xb9, 0xba, 0xbb, 0xbc, 0xbd, 0xbf, 0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xcb, 0xcc, 0xcd, 0xce, 0xcf,
+					0xd0, 0xd1, 0xd2, 0xd6, 0xd7, 0xd8, 0xd9, 0xdb, 0xdc, 0xe1, 0xe4, 0xe6, 0xe7, 0xe8, 0xe9, 0xea, 0xeb, 0xec, 0xed, 0xef, 0xf3, 0xf4, 0xf5, 0xf7, 0xf8, 0xf9, 0xfa, 0xfc, 0xfe };
+				byte[] goodMoves = { 0x4e, 0x4f, 0x51, 0x52, 0x55, 0x67, 0x6d, 0x6e, 0x6f, 0x70, 0x71, 0x74, 0x76, 0x7d, 0x7e, 0x80, 0x83, 0x84, 0x8c, 0x8f, 0xa1, 0xa2, 0xa4, 0xa9, 0xbe, 0xca, 0xd4, 0xd5, 0xdd, 0xdf, 0xe0, 0xe2, 0xe3, 0xe5, 0xee, 0xf0, 0xf1, 0xf2, 0xf6, 0xfd, 0x3e };
+				byte[] excellentMoves = { 0x4f, 0x52, 0x6e, 0x7d, 0x80, 0xa1, 0xa2, 0xa4, 0xa9, 0xdd, 0xdf, 0xe0, 0xe2, 0xe3, 0xf1, 0x3e };
+				byte[] whoaMoves = { 0xa9, 0xa9, 0x7d, 0x7d, 0xa9, 0xa9, 0x7d, 0x7d, 0x45, 0x3e };
+
+				for (int lnI = 0; lnI < 13; lnI++)
+				{
+					if (cboTaloonInsanityMoves.SelectedIndex == 1 || (cboTaloonInsanityMoves.SelectedIndex == 2 && r1.Next() % 4 != 0) || (cboTaloonInsanityMoves.SelectedIndex == 3 && r1.Next() % 2 == 0) || (cboTaloonInsanityMoves.SelectedIndex == 4 && r1.Next() % 4 == 0))
+						romData[0x47368 + lnI] = badMoves[r1.Next() % badMoves.Length];
+					else if (cboTaloonInsanityMoves.SelectedIndex <= 5)
+						romData[0x47368 + lnI] = goodMoves[r1.Next() % goodMoves.Length];
+					else if (cboTaloonInsanityMoves.SelectedIndex == 6)
+						romData[0x47368 + lnI] = excellentMoves[r1.Next() % excellentMoves.Length];
+					else if (cboTaloonInsanityMoves.SelectedIndex == 7)
+						romData[0x47368 + lnI] = whoaMoves[r1.Next() % whoaMoves.Length];
+				}
+			}
+		}
+
+		private void criticalHits(Random r1)
+		{
+			if (cboLevelCrit.SelectedIndex == 1)
+				romData[0x457cd] = (byte)(r1.Next() % 8);
+			if (cboLevelCrit.SelectedIndex == 2)
+				romData[0x457cd] = 0x56; // Impossible to get this character number
+			if (cboLevelCrit.SelectedIndex == 3)
+				romData[0x457ce] = romData[0x457cf] = 0xea;
+
+			romData[0x457c3] = (byte)(cboCriticalHitChance.SelectedIndex == 0 ? 0 :
+								cboCriticalHitChance.SelectedIndex == 1 ? 4 :
+								cboCriticalHitChance.SelectedIndex == 2 ? 8 :
+								cboCriticalHitChance.SelectedIndex == 3 ? 16 :
+								cboCriticalHitChance.SelectedIndex == 4 ? 32 :
+								cboCriticalHitChance.SelectedIndex == 5 ? 64 :
+								cboCriticalHitChance.SelectedIndex == 6 ? 128 : 255);
 		}
 
 		private void speedUpBattles()
@@ -1317,8 +1566,135 @@ namespace DW4RandoHacker
 				romData[0x587b8 + i] = compressionBlock[i];
 		}
 
+		private void randomizeHeroStatsV2(Random r1)
+		{
+			int[,] min =
+			{
+				{ 6, 5, 12, 3, 4, 20, 5 },
+				{ 3, 5, 9, 3, 2, 14, 7 },
+				{ 4, 4, 9, 3, 6, 14, 7 },
+				{ 3, 5, 12, 4, 6, 20, 9 },
+				{ 3, 5, 7, 4, 2, 10, 10 },
+				{ 4, 5, 10, 5, 3, 16, 0 },
+				{ 7, 4, 13, 1, 2, 22, 0 },
+				{ 12, 7, 8, 4, 1, 12, 0 }
+			};
+
+			int[,] max =
+			{
+				{ 200, 100, 190, 75, 110, 400, 240 },
+				{ 65, 145, 155, 90, 155, 300, 195 },
+				{ 95, 75, 100, 115, 140, 180, 195 },
+				{ 36, 160, 140, 155, 230, 250, 315 },
+				{ 32, 170, 130, 150, 220, 240, 270 },
+				{ 120, 92, 155, 70, 60, 300, 0 },
+				{ 245, 38, 300, 30, 45, 600, 0 },
+				{ 250, 275, 220, 35, 210, 440, 0 }
+			};
+			// Skip the random bit
+			byte[] romPlugin = { 0xa9, 0x20, 0x20, 0x91, 0xff };
+			for (int lnI = 0; lnI < romPlugin.Length; lnI++)
+				romData[0x49e09 + lnI] = romPlugin[lnI];
+
+			romPlugin = new byte[] { 0x4c, 0x00, 0x90 }; // JMP 9000
+			for (int lnI = 0; lnI < romPlugin.Length; lnI++)
+				romData[0x81e0e + lnI] = romPlugin[lnI];
+
+			romPlugin = new byte[] { 0xa9, 0x12, 0x20, 0x91, 0xff }; // Will need to jump back to 9DFF
+			for (int lnI = 0; lnI < romPlugin.Length; lnI++)
+				romData[0x81e13 + lnI] = romPlugin[lnI];
+
+			for (int lnI = 0; lnI < 8; lnI++)
+			{
+				for (int lnJ = 0; lnJ < 7; lnJ++)
+				{
+					int byteToUse = 0x82010 + (lnI * 512) + (lnJ * 50);
+					int[] statGains;
+					if (cboHeroStats.SelectedIndex == 4)
+						statGains = inverted_power_curve(1, lnJ < 6 ? (r1.Next() % 225) + 30 : (r1.Next() % 400) + 150, 50, 1.0, r1);
+					else
+						statGains = inverted_power_curve(min[lnI, lnJ], max[lnI, lnJ], 50, 1.0, r1);
+
+					if (lnJ < 6 || lnI < 5)
+						for (int lnK = 0; lnK < statGains.Length - 1; lnK++)
+							romData[byteToUse + lnK] = (byte)(statGains[lnK + 1] - statGains[lnK]);
+				}
+			}
+
+			// And now to code all of this... starting from 0x81010 (9000)
+			// 000B = Stat to use (A5 0B - LDA $000B)
+			// 0079 - Character to use.  01/1F/3D/5B/79/97/B5/D3
+			// Decrease 0079.  Then Store into 0004, then store 00 into 0005.  Then load #$1E into the accumulator, then perform division at C851.
+			int pluginByte = 0x81010;
+			romPlugin = new byte[] { 0xc6, 0x79,
+									 0xa5, 0x04,
+									 0xa9, 0x00,
+									 0xa5, 0x05,
+									 0xa9, 0x1e,
+									 0x20, 0x51, 0xc8 }; // Division algorithm
+			for (int lnI = 0; lnI < romPlugin.Length; lnI++)
+				romData[pluginByte + lnI] = romPlugin[lnI];
+			pluginByte += romPlugin.Length;
+
+			// This gets the character number.  ASL, CLC, ADC #$A0.  Place into a variable, place 00 in the variable previous.
+			romPlugin = new byte[] { 0xa5, 0x04,
+									 0x0a,
+									 0x18,
+									 0x69, 0xa0,
+									 0x8d, 0x01, 0x61 };
+			for (int lnI = 0; lnI < romPlugin.Length; lnI++)
+				romData[pluginByte + lnI] = romPlugin[lnI];
+			pluginByte += romPlugin.Length;
+
+			// LDA $#32, place 000B into 0004, multiply using C827.  Add 0004 to new variable, add 0005 to new variable + 1.
+			romPlugin = new byte[] { 0xa5, 0x0b,
+									 0x85, 0x04,
+									 0xa9, 0x32,
+									 0x20, 0x27, 0xc8,
+									 0xa5, 0x04,
+									 0x8d, 0x00, 0x61,
+									 0xa5, 0x05,
+									 0x18,
+									 0x6d, 0x01, 0x61,
+									 0x8d, 0x01, 0x61 };
+			for (int lnI = 0; lnI < romPlugin.Length; lnI++)
+				romData[pluginByte + lnI] = romPlugin[lnI];
+			pluginByte += romPlugin.Length;
+
+			// Last piece of puzzle... what level is the person at?  Well, load $#05 to Y, load indirect 0079+Y, and you'll have the level required!  Add to new variable, add 00 w/ carry to 0005.
+			romPlugin = new byte[] { 0xa0, 0x05,
+									 0xb1, 0x79,
+									 0x18,
+									 0x6d, 0x00, 0x61,
+									 0x8d, 0x00, 0x61,
+									 0xad, 0x01, 0x61,
+									 0x69, 0x00,
+									 0x8d, 0x01, 0x61 };
+			for (int lnI = 0; lnI < romPlugin.Length; lnI++)
+				romData[pluginByte + lnI] = romPlugin[lnI];
+			pluginByte += romPlugin.Length;
+
+			// Now you can finally load the number stored at A000-AFFF and you're a winner!  Store to 0004 then jump back to 9DFF when you're done.
+			romPlugin = new byte[] { 0xad, 0x01, 0x61,
+									 0x85, 0x05,
+									 0xad, 0x00, 0x61,
+									 0x85, 0x04,
+									 0xa0, 0x00,
+									 0xb1, 0x04,
+									 0x85, 0x04,
+									 0x69, 0x00,
+									 0x85, 0x05,
+									 0x4c, 0xff, 0x9d };
+			for (int lnI = 0; lnI < romPlugin.Length; lnI++)
+				romData[pluginByte + lnI] = romPlugin[lnI];
+			pluginByte += romPlugin.Length;
+		}
+
 		private void randomizeHeroStats(Random r1)
 		{
+			if (cboHeroStats.SelectedIndex == 0)
+				return;
+
 			// Max array:  [7, 5]
 			int[,] heroL41Gains = new int[,] {
 				{ 156, 73, 155, 55, 82, 186 },
@@ -1352,16 +1728,16 @@ namespace DW4RandoHacker
 					if (lnJ == 5 && lnI >= 5)
 						continue;
 
-					if (optMonsterSilly.Checked || optMonsterMedium.Checked)
+					if (cboHeroStats.SelectedIndex == 2 || cboHeroStats.SelectedIndex == 3)
 					{
 						int randomDir = (r1.Next() % 3);
-						int difference = heroL41Gains[lnI, lnJ] / (optMonsterSilly.Checked ? 4 : 2);
+						int difference = heroL41Gains[lnI, lnJ] / (cboHeroStats.SelectedIndex == 1 ? 4 : 2);
 						if (randomDir == 0)
 							heroL41Gains[lnI, lnJ] -= (r1.Next() % difference);
 						if (randomDir == 1)
 							heroL41Gains[lnI, lnJ] += (r1.Next() % difference);
 					}
-					if (optMonsterHeavy.Checked)
+					if (cboHeroStats.SelectedIndex == 4)
 					{
 						if (lnJ == 2)
 							heroL41Gains[lnI, lnJ] = (r1.Next() % 175 + 75);
@@ -1380,16 +1756,16 @@ namespace DW4RandoHacker
 						if (romData[byteToUse + lnK] >= 128)
 							baseStat += (lnK == 0 ? 1 : lnK == 1 ? 2 : lnK == 2 ? 4 : lnK == 3 ? 8 : 16);
 					}
-					if (optMonsterSilly.Checked || optMonsterMedium.Checked)
+					if (cboHeroStats.SelectedIndex == 2 || cboHeroStats.SelectedIndex == 3)
 					{
-						int randomDir = (r1.Next() % 3);
-						int difference = baseStat / (optMonsterSilly.Checked ? 2 : 1);
+						int randomDir = r1.Next() % 3;
+						int difference = baseStat / (cboHeroStats.SelectedIndex == 1 ? 2 : 1);
 						if (randomDir == 0 && difference >= 2)
-							baseStat -= (r1.Next() % difference);
+							baseStat -= r1.Next() % difference;
 						if (randomDir == 1 && difference >= 2)
-							baseStat += (r1.Next() % difference);
+							baseStat += r1.Next() % difference;
 					}
-					if (optMonsterHeavy.Checked)
+					else if (cboHeroStats.SelectedIndex == 4)
 						baseStat = r1.Next() % 32;
 
 					int[] levels = { 0, 0, 0, 0 };
@@ -1459,6 +1835,9 @@ namespace DW4RandoHacker
 
 		private void randomizeHeroSpells(Random r1)
 		{
+			if (cboHeroSpells.SelectedIndex == 0)
+				return;
+
 			// Used for announcements
 			// 80+ = Intelligence based? - Spells are in numerical order.  (Blaze, Blazemore, Blazemost, etc.)
 			// 0x41129-0x4113a - Hero battle spells (18 bytes)
@@ -1512,98 +1891,6 @@ namespace DW4RandoHacker
 			for (int lnI = 0; lnI < commandSpells.Length * 20; lnI++)
 				swapArray(commandSpells, (r1.Next() % commandSpells.Length), (r1.Next() % commandSpells.Length));
 
-			//int[] heroFight2 = new int[16];
-			//int[] pilgrimFight2 = new int[24];
-			//int[] wizardFight2 = new int[24];
-
-			//for (int lnI = 0; lnI < 52; lnI++)
-			//{
-			//    if (lnI < 12) heroFight2[lnI] = fightSpells[lnI];
-			//    else if (lnI < 32) pilgrimFight2[lnI - 12] = fightSpells[lnI];
-			//    else wizardFight2[lnI - 32] = fightSpells[lnI];
-			//}
-
-			//for (int lnI = 12; lnI < 16; lnI++)
-			//{
-			//    heroFight2[lnI] = fightSpells[r1.Next() % fightSpells.Length];
-			//    for (int lnJ = 0; lnJ < lnI; lnJ++)
-			//        if (heroFight2[lnJ] == heroFight2[lnI])
-			//        {
-			//            lnI--;
-			//            break;
-			//        }
-			//}
-			//for (int lnI = 20; lnI < 24; lnI++)
-			//{
-			//    pilgrimFight2[lnI] = fightSpells[r1.Next() % fightSpells.Length];
-			//    for (int lnJ = 0; lnJ < lnI; lnJ++)
-			//        if (pilgrimFight2[lnJ] == pilgrimFight2[lnI])
-			//        {
-			//            lnI--;
-			//            break;
-			//        }
-			//}
-			//for (int lnI = 20; lnI < 24; lnI++)
-			//{
-			//    wizardFight2[lnI] = fightSpells[r1.Next() % fightSpells.Length];
-			//    for (int lnJ = 0; lnJ < lnI; lnJ++)
-			//        if (wizardFight2[lnJ] == wizardFight2[lnI])
-			//        {
-			//            lnI--;
-			//            break;
-			//        }
-			//}
-
-			//int[] heroCommand2 = new int[8];
-			//int[] pilgrimCommand2 = new int[8];
-			//int[] wizardCommand2 = new int[8];
-
-			//for (int lnI = 0; lnI < 18; lnI++)
-			//{
-			//    if (lnI < 6) heroCommand2[lnI] = commandSpells[lnI];
-			//    else if (lnI < 12) pilgrimCommand2[lnI - 6] = commandSpells[lnI];
-			//    else wizardCommand2[lnI - 12] = commandSpells[lnI];
-			//}
-
-			//for (int lnI = 6; lnI < 8; lnI++)
-			//{
-			//    heroCommand2[lnI] = commandSpells[r1.Next() % commandSpells.Length];
-			//    for (int lnJ = 0; lnJ < lnI; lnJ++)
-			//        if (heroCommand2[lnJ] == heroCommand2[lnI])
-			//        {
-			//            lnI--;
-			//            break;
-			//        }
-			//}
-			//for (int lnI = 6; lnI < 8; lnI++)
-			//{
-			//    pilgrimCommand2[lnI] = commandSpells[r1.Next() % commandSpells.Length];
-			//    for (int lnJ = 0; lnJ < lnI; lnJ++)
-			//        if (pilgrimCommand2[lnJ] == pilgrimCommand2[lnI])
-			//        {
-			//            lnI--;
-			//            break;
-			//        }
-			//}
-			//for (int lnI = 6; lnI < 8; lnI++)
-			//{
-			//    wizardCommand2[lnI] = commandSpells[r1.Next() % commandSpells.Length];
-			//    for (int lnJ = 0; lnJ < lnI; lnJ++)
-			//        if (wizardCommand2[lnJ] == wizardCommand2[lnI])
-			//        {
-			//            lnI--;
-			//            break;
-			//        }
-			//}
-
-			//int[] heroFightLevels = inverted_power_curve(1, 35, 24, 1, r1);
-			//int[] pilgrimFightLevels = inverted_power_curve(1, 35, 24, 1, r1);
-			//int[] wizardFightLevels = inverted_power_curve(1, 35, 24, 1, r1);
-			//int[] heroCommandLevels = inverted_power_curve(1, 35, 8, 1, r1);
-			//int[] pilgrimCommandLevels = inverted_power_curve(1, 35, 8, 1, r1);
-			//int[] wizardCommandLevels = inverted_power_curve(1, 35, 8, 1, r1);
-
-
 			// Procedure:  Come up with x unique battle spells from 0x00 to 0x35.  If there are any spell learning bytes leftover, add from 0x36-0x3b
 			int[] battleSpells = { 18, 12, 12, 12, 12 };
 			int[] allSpells = { 20, 12, 12, 14, 14 };
@@ -1631,67 +1918,141 @@ namespace DW4RandoHacker
 					byteToUse += battleSpells[lnJ - 1];
 					byteToUse3 += battleSpells[lnJ - 1];
 				}
-				for (int lnJ = 0; lnJ < battleSpells[lnI]; lnJ++)
-				{
-					bool dup = false;
-					romData[byteToUse + lnJ] = (byte)(r1.Next() % 0x35);
-					for (int lnK = lnJ - 1; lnK >= 0; lnK--)
-					{
-						if ((romData[byteToUse + lnJ] == romData[byteToUse + lnK]) ||
-							(romData[byteToUse + lnJ] >= 0x29 && (romData[byteToUse + lnJ] == 0x2d || romData[byteToUse + lnJ] == 0x2f
-							|| romData[byteToUse + lnJ] == 0x34 || romData[byteToUse + lnJ] == 0x39 || romData[byteToUse + lnJ] == 0x32 || fieldSpells >= fieldSpellLimit[lnI])))
-						{
-							dup = true;
-							lnJ--;
-							break;
-						}
-					}
-					if (!dup)
-					{
-						if (romData[byteToUse + lnJ] >= 0x29 && romData[byteToUse + lnJ] != 0x2d && romData[byteToUse + lnJ] != 0x2f
-							&& romData[byteToUse + lnJ] != 0x34 && romData[byteToUse + lnJ] != 0x32 && romData[byteToUse + lnJ] != 0x39)
-						{
-							romData[byteToUse2 + fieldSpells] = romData[byteToUse5 + fieldSpells] = romData[byteToUse + lnJ];
-							field.Add(romData[byteToUse + lnJ]);
-							fieldSpells++;
-						}
-						battle.Add(romData[byteToUse + lnJ]);
-					}
-				}
 
-				for (int lnJ = 0; lnJ < allSpells[lnI] - battleSpells[lnI]; lnJ++)
+				if (cboHeroSpells.SelectedIndex == 4)
 				{
-					bool dup = false;
-					romData[byteToUse2 + fieldSpells] = romData[byteToUse5 + fieldSpells] = (byte)((r1.Next() % 6) + 0x35);
-					if (romData[byteToUse2 + fieldSpells] == 0x39)
+					for (int lnJ = 0; lnJ < battleSpells[lnI]; lnJ++)
 					{
-						lnJ--;
-						continue;
-					}
-					for (int lnK = fieldSpells - 1; lnK >= 0; lnK--)
-					{
-						if (romData[byteToUse2 + fieldSpells] == romData[byteToUse2 + lnK])
+						bool dup = false;
+						romData[byteToUse + lnJ] = (byte)(r1.Next() % 0x35);
+						for (int lnK = lnJ - 1; lnK >= 0; lnK--)
 						{
-							dup = true;
-							lnJ--;
-							break;
+							if ((romData[byteToUse + lnJ] == romData[byteToUse + lnK]) ||
+								(romData[byteToUse + lnJ] >= 0x29 && (romData[byteToUse + lnJ] == 0x2d || romData[byteToUse + lnJ] == 0x2f
+								|| romData[byteToUse + lnJ] == 0x34 || romData[byteToUse + lnJ] == 0x39 || romData[byteToUse + lnJ] == 0x32 || fieldSpells >= fieldSpellLimit[lnI])))
+							{
+								dup = true;
+								lnJ--;
+								break;
+							}
+						}
+						if (!dup)
+						{
+							if (romData[byteToUse + lnJ] >= 0x29 && romData[byteToUse + lnJ] != 0x2d && romData[byteToUse + lnJ] != 0x2f
+								&& romData[byteToUse + lnJ] != 0x34 && romData[byteToUse + lnJ] != 0x32 && romData[byteToUse + lnJ] != 0x39)
+							{
+								romData[byteToUse2 + fieldSpells] = romData[byteToUse5 + fieldSpells] = romData[byteToUse + lnJ];
+								field.Add(romData[byteToUse + lnJ]);
+								fieldSpells++;
+							}
+							battle.Add(romData[byteToUse + lnJ]);
 						}
 					}
-					if (!dup)
+
+					for (int lnJ = 0; lnJ < allSpells[lnI] - battleSpells[lnI]; lnJ++)
 					{
-						//romData[byteToUse2 + fieldSpells] = romData[byteToUse + lnJ];
-						field.Add(romData[byteToUse2 + fieldSpells]);
-						fieldSpells++;
-						extraField++;
+						bool dup = false;
+						romData[byteToUse2 + fieldSpells] = romData[byteToUse5 + fieldSpells] = (byte)((r1.Next() % 6) + 0x35);
+						if (romData[byteToUse2 + fieldSpells] == 0x39)
+						{
+							lnJ--;
+							continue;
+						}
+						for (int lnK = fieldSpells - 1; lnK >= 0; lnK--)
+						{
+							if (romData[byteToUse2 + fieldSpells] == romData[byteToUse2 + lnK])
+							{
+								dup = true;
+								lnJ--;
+								break;
+							}
+						}
+						if (!dup)
+						{
+							//romData[byteToUse2 + fieldSpells] = romData[byteToUse + lnJ];
+							field.Add(romData[byteToUse2 + fieldSpells]);
+							fieldSpells++;
+							extraField++;
+						}
 					}
+				} else
+				{
+					int battleByte = 0x41129;
+					if (lnI > 0)
+						battleByte += 18 + ((lnI - 1) * 12);
+					for (int lnJ = 0; lnJ < (lnI == 0 ? 18 : 12); lnJ++)
+						battle.Add(romData[battleByte + lnJ]);
+
+					switch (lnI)
+					{
+						case 0:
+							field = new List<int> { 0x33, 0x2a, 0x3b, 0x35, 0x2b, 0x30 };
+							fieldSpells = 6;
+							break;
+						case 1:
+							field = new List<int> { 0x29, 0x3a, 0x2a, 0x30, 0x2b, 0x2c, 0x31 };
+							fieldSpells = 7;
+							break;
+						case 2:
+							field = new List<int> { 0x29, 0x2e, 0x2a, 0x30, 0x2b };
+							fieldSpells = 5;
+							break;
+						case 3:
+							field = new List<int> { 0x33, 0x35, 0x37 };
+							fieldSpells = 3;
+							break;
+						case 4:
+							field = new List<int> { 0x33, 0x35, 0x38, 0x36 };
+							fieldSpells = 4;
+							break;
+					}
+
+					for (int lnJ = 0; lnJ < fieldSpells; lnJ++)
+						romData[byteToUse2 + fieldSpells] = romData[byteToUse5 + fieldSpells] = (byte)field[lnJ];
 				}
 
 				int[] battle1 = battle.ToArray();
 				int[] field1 = field.ToArray();
 
 				int[] spellLearning = new int[allSpells[lnI]];
-				for (int lnJ = 0; lnJ < spellLearning.Length; lnJ++)
-					spellLearning[lnJ] = (r1.Next() % 31) + 1;
+				if (cboHeroSpells.SelectedIndex == 3 || cboHeroSpells.SelectedIndex == 4)
+				{
+					for (int lnJ = 0; lnJ < spellLearning.Length; lnJ++)
+						spellLearning[lnJ] = (r1.Next() % 40) + 1;
+				} else
+				{
+					for (int lnJ = 0; lnJ < spellLearning.Length; lnJ++)
+					{
+						spellLearning[lnJ] = romData[byteToUse4 + lnJ];
+						if (cboHeroSpells.SelectedIndex == 1)
+							spellLearning[lnJ] += r1.Next() % 5 - 2;
+						else if (cboHeroSpells.SelectedIndex == 2)
+							spellLearning[lnJ] += r1.Next() % 11 - 5;
+					}
+					switch (lnI)
+					{
+						case 0:
+							field = new List<int> { 0x33, 0x2a, 0x3b, 0x35, 0x2b, 0x30 };
+							fieldSpells = 6;
+							break;
+						case 1:
+							field = new List<int> { 0x29, 0x3a, 0x2a, 0x30, 0x2b, 0x2c, 0x31 };
+							fieldSpells = 7;
+							break;
+						case 2:
+							field = new List<int> { 0x29, 0x2e, 0x2a, 0x30, 0x2b };
+							fieldSpells = 5;
+							break;
+						case 3:
+							field = new List<int> { 0x33, 0x35, 0x37 };
+							fieldSpells = 3;
+							break;
+						case 4:
+							field = new List<int> { 0x33, 0x35, 0x38, 0x36 };
+							fieldSpells = 4;
+							break;
+					}
+				}
 
 				Array.Sort(spellLearning);
 				spellLearning[0] = 1;
@@ -1757,38 +2118,11 @@ namespace DW4RandoHacker
 			}
 		}
 
-		//private void overrideStats()
-		//{
-		//    for (int lnI = 0; lnI < 4; lnI++)
-		//        for (int lnJ = 0; lnJ < 6; lnJ++)
-		//        {
-		//            int byteToUse2 = 0x4a281 + (lnI * 6) + lnJ;
-		//            romData[byteToUse2] = 24;
-		//        }
-
-		//    int byteToUse = 0x4a15b;
-		//    // 48 bytes for strength, 48 bytes for agility, 48 bytes for intelligence, 48 bytes for luck, 30 bytes for mp, in that order.  NOT in character order, statistic order!
-		//    for (int lnJ = 0; lnJ < 6; lnJ++)
-		//    {
-		//        for (int lnI = 0; lnI < 8; lnI++)
-		//        {
-		//            // Do NOT run this randomization for the MP calculations of Taloon, Ragnar, and Alena.
-		//            if (lnJ == 5 && lnI >= 5)
-		//                continue;
-
-		//            romData[byteToUse + 0] = 144;
-		//            romData[byteToUse + 1] = 16;
-		//            romData[byteToUse + 2] = 16;
-		//            romData[byteToUse + 3] = 16;
-		//            romData[byteToUse + 4] = 99;
-		//            romData[byteToUse + 5] = 1;
-		//            byteToUse += 6;
-		//        }
-		//    }
-		//}
-
 		private void randomizeMonsterAttacks(Random r1)
 		{
+			if (cboMonsterAttacks.SelectedIndex == 0)
+				return;
+
 			int[] level1Moves = { 0x00, 0x07, 0x16, 0x1c, 0x1e, 0x25, 0x2a, 0x2d, 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x36, 0x47, 0x48 };
 			int[] level2Moves = { 0x00, 0x03, 0x07, 0x0a, 0x10, 0x12, 0x13, 0x16, 0x17, 0x1c, 0x1d, 0x1e, 0x22, 0x25, 0x2a, 0x2d, 0x30, 0x32, 0x32, 0x32, 0x32, 0x34, 0x35, 0x36, 0x38, 0x3c, 0x3f, 0x42, 0x43, 0x47, 0x48, 0x4b, 0x4c, 0x57, 0x58, 0x5f, 0x64 };
 			int[] level3Moves = { 0x00, 0x01, 0x03, 0x04, 0x07, 0x08, 0x0a, 0x0b, 0x0d, 0x10, 0x11, 0x12, 0x13, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x25, 0x26, 0x2d, 0x2e, 0x30, 0x32, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3c, 0x3d, 0x3f, 0x40, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x4f, 0x56, 0x58, 0x5d, 0x5e, 0x62, 0x63, 0x66 };
@@ -1802,23 +2136,23 @@ namespace DW4RandoHacker
 				int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
 				int randomType = 0;
 				int randomRandom = (r1.Next() % 4);
-				if (optMonsterLight.Checked)
+				if (cboMonsterAttacks.SelectedIndex == 1)
 					randomType = (randomRandom == 0 || randomRandom == 1 ? 0 : randomRandom == 2 ? 1 : 2);
-				if (optMonsterSilly.Checked)
+				if (cboMonsterAttacks.SelectedIndex == 2)
 					randomType = randomRandom;
-				if (optMonsterMedium.Checked)
+				if (cboMonsterAttacks.SelectedIndex == 3)
 					randomType = (randomRandom == 0 ? 1 : randomRandom == 1 ? 2 : 3);
-				if (optMonsterHeavy.Checked)
+				if (cboMonsterAttacks.SelectedIndex == 4)
 					randomType = 3;
 
 				// Force early chapter bosses and Tricksy Urchin to have no worse than level 2 moves. (part 1)
-				if (randomType == 3 && (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf ||
-					monsterRank[lnI] == 0xb0 || monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4 || monsterRank[lnI] == 0xc0))
+				// We now have to get the lnI value, not the monster in that slot, since monsters are now shuffled FF4FE style.
+				if (randomType == 3 && (lnI == 77 || lnI == 110 || lnI == 71 || lnI == 80 || lnI == 81 || lnI == 91 || lnI == 92 || lnI == 155 || lnI == 150))
 					randomType = 2;
 
 				if (randomType == 0)
 					continue;
-				if (randomType == 1 && monsterRank[lnI] != 0x5c && monsterRank[lnI] != 0x75 && monsterRank[lnI] != 0xa8)
+				if (randomType == 1 && lnI != 34 && lnI != 97 && lnI != 175)
 				{
 					if (r1.Next() % 2 == 1)
 						// weird attack pattern
@@ -1826,9 +2160,9 @@ namespace DW4RandoHacker
 						{
 							romData[byteToUse + 9 + lnJ] = (byte)weirdAttackMoves[r1.Next() % weirdAttackMoves.Length];
 							// Chapter 1-4 Bosses and Tricksy Urchin should not critical hit or paralyze
+							// We now have to get the lnI value, not the monster in that slot, since monsters are now shuffled FF4FE style.
 							if ((romData[byteToUse + 9 + lnJ] == 0x33 || romData[byteToUse + 9 + lnJ] == 0x34 || romData[byteToUse + 9 + lnJ] == 0x37) &&
-								(monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
-								  monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4 || monsterRank[lnI] == 0xc0))
+								(lnI == 77 || lnI == 110 || lnI == 71 || lnI == 80 || lnI == 81 || lnI == 91 || lnI == 92 || lnI == 155 || lnI == 150))
 								lnJ--;
 						}
 					else
@@ -1839,13 +2173,12 @@ namespace DW4RandoHacker
 				{
 					int moveLevel = (lnI < 38 ? 0 : lnI < 76 ? 1 : lnI < 114 ? 2 : lnI < 152 ? 3 : 4);
 					// Force early chapter bosses and Tricksy Urchin to have no worse than level 2 moves. (part 2)
-					if (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
-						monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4 || monsterRank[lnI] == 0xc0)
+					if (lnI == 77 || lnI == 110 || lnI == 71 || lnI == 80 || lnI == 81 || lnI == 91 || lnI == 92 || lnI == 155 || lnI == 150)
 						moveLevel = 5;
 
 					for (int lnJ = 0; lnJ < 6; lnJ++)
 					{
-						if (lnJ >= 0 && lnJ <= 2 && (monsterRank[lnI] == 0x5c || monsterRank[lnI] == 0x75 || monsterRank[lnI] == 0xa8))
+						if (lnJ >= 0 && lnJ <= 2 && (lnI == 34 || lnI == 97 || lnI == 175))
 							romData[byteToUse + 9 + lnJ] = 0x47;
 						else
 							romData[byteToUse + 9 + lnJ] = (byte)(moveLevel == 0 ? level1Moves[r1.Next() % level1Moves.Length] :
@@ -1864,7 +2197,7 @@ namespace DW4RandoHacker
 				{
 					for (int lnJ = 0; lnJ < 6; lnJ++)
 					{
-						if (lnJ >= 0 && lnJ <= 2 && (monsterRank[lnI] == 0x5c || monsterRank[lnI] == 0x75 || monsterRank[lnI] == 0xa8))
+						if (lnJ >= 0 && lnJ <= 2 && (lnI == 34 || lnI == 97 || lnI == 175))
 							romData[byteToUse + 9 + lnJ] = 0x47;
 						else if (r1.Next() % 2 == 1)
 							romData[byteToUse + 9 + lnJ] = (byte)(r1.Next() % 0x67);
@@ -1900,11 +2233,53 @@ namespace DW4RandoHacker
 						}
 					}
 				}
+
+				// If ludicrous is selected, change chances of double and triple attacks.
+				// But do not allow this if it's an early chapter boss monster.
+				if (cboMonsterAttacks.SelectedIndex == 4 && !(lnI == 77 || lnI == 110 || lnI == 71 || lnI == 80 || lnI == 81 || lnI == 91 || lnI == 92 || lnI == 155 || lnI == 150))
+				{
+					romData[byteToUse + 11] = (byte)(romData[byteToUse + 11] % 128);
+					romData[byteToUse + 12] = (byte)(romData[byteToUse + 12] % 128);
+
+					if (r1.Next() % 1000 <= lnI)
+					{
+						romData[byteToUse + 11] += 128;
+						romData[byteToUse + 12] += 128;
+					}
+					else if (r1.Next() % 1000 <= lnI)
+					{
+						romData[byteToUse + 12] += 128;
+					}
+					else if (r1.Next() % 1000 <= lnI)
+					{
+						romData[byteToUse + 11] += 128;
+					}
+
+					// If ludicrous is selected, change chances of regeneration.
+					romData[byteToUse + 13] = (byte)(romData[byteToUse + 13] % 128);
+					romData[byteToUse + 14] = (byte)(romData[byteToUse + 14] % 128);
+
+					if (r1.Next() % 1000 <= lnI)
+					{
+						romData[byteToUse + 13] += 128;
+						romData[byteToUse + 14] += 128;
+					}
+					else if (r1.Next() % 1000 <= lnI)
+					{
+						romData[byteToUse + 14] += 128;
+					}
+					else if (r1.Next() % 1000 <= lnI)
+					{
+						romData[byteToUse + 13] += 128;
+					}
+				}
 			}
 		}
 
 		private void randomizeMonsterStats(Random r1)
 		{
+			if (cboMonsterStats.SelectedIndex == 0)
+				return;
 
 			// If light is selected, 50% chance of maintaining same enemy pattern.  25% chance of changing it to attack only.  25% chance of the level moves above.
 			// If silly is selected, 25% chance of maintaining same enemy pattern, 25% chance of attack only, 25% chance of level moves above, 25% of completely random.
@@ -1918,33 +2293,21 @@ namespace DW4RandoHacker
 
 				int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
 
-				// If light is selected, maintain enemy resistances, HP, strength, defense, and agility.  Do not do this if a metal monster is involved...
-				if (!optMonsterLight.Checked && monsterRank[lnI] != 0x5c && monsterRank[lnI] != 0x75 && monsterRank[lnI] != 0xa8)
+				// Do not adjust stats if a metal monster is involved...
+				if (lnI != 34 && lnI != 97 && lnI != 175)
 				{
-					// If silly is selected, adjust HP, strength, defense, and agility by +/- 25%.
-					// If ridiculous is selected, adjust HP, strength, defense, and agility by +/- 50%.
-					// If ludicrous is selected, adjust HP, strength, defense, and agility by +/- 100%.
 					for (int lnJ = 2; lnJ <= 6; lnJ++)
 					{
+						// If a monster has 16 MP or less and "wins" a 50/50, then it will have anywhere between 0-16 MP.
 						if (lnJ == 3)
 						{
 							if (romData[byteToUse + 3] <= 16 && r1.Next() % 2 == 0)
 								romData[byteToUse + 3] = (byte)(r1.Next() % 16);
 							//lnJ++;
 						}
+
 						int stat = romData[byteToUse + lnJ] + (lnJ >= 4 ? (romData[byteToUse + lnJ + 11] % 4) * 256 : 0);
-						int randomModifier = (r1.Next() % 3);
-						try
-						{
-							if (randomModifier == 0)
-								stat -= (r1.Next() % (stat / (optMonsterSilly.Checked ? 4 : optMonsterMedium.Checked ? 2 : 1)));
-							else if (randomModifier == 2)
-								stat += (r1.Next() % (stat / (optMonsterSilly.Checked ? 4 : optMonsterMedium.Checked ? 2 : 1)));
-						}
-						catch (DivideByZeroException)
-						{
-							// skip error and do not adjust the stat.  Crash on all other exceptions.
-						}
+						stat = ScaleValue(stat, cboMonsterStats.SelectedIndex == 1 ? 1.5 : cboMonsterStats.SelectedIndex == 2 ? 2.0 : cboMonsterStats.SelectedIndex == 3 ? 3.0 : cboMonsterStats.SelectedIndex == 4 ? 4.0 : 1.0, 1.0, r1, false);
 
 						if (lnJ == 2 && stat > 255) stat = 255;
 						if (lnJ >= 4 && stat > 1020) stat = 1020;
@@ -1952,53 +2315,91 @@ namespace DW4RandoHacker
 						if (lnJ >= 4)
 							romData[byteToUse + lnJ + 11] = (byte)(romData[byteToUse + lnJ + 11] - (romData[byteToUse + lnJ + 11] % 4) + (stat / 256));
 					}
+				}
+			}
+		}
 
-					// If ludicrous is selected, change chances of double and triple attacks.
-					// But do not allow this if it's an early chapter boss monster.
-					if (optMonsterHeavy.Checked && !(monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
-						monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
+		private void randomizeMonsterDrops(Random r1)
+		{
+			if (cboMonsterDrops.SelectedIndex != 0)
+			{
+				for (int lnI = 0; lnI < monsterRank.Length; lnI++) // 0xc2 is not used; Necrosaro
+				{
+					int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
+
+					if (cboMonsterDrops.SelectedIndex == 1)
 					{
-						romData[byteToUse + 11] = (byte)(romData[byteToUse + 11] % 128);
-						romData[byteToUse + 12] = (byte)(romData[byteToUse + 12] % 128);
-
-						if (r1.Next() % 1000 <= lnI)
-						{
-							romData[byteToUse + 11] += 128;
-							romData[byteToUse + 12] += 128;
-						}
-						else if (r1.Next() % 1000 <= lnI)
-						{
-							romData[byteToUse + 12] += 128;
-						}
-						else if (r1.Next() % 1000 <= lnI)
-						{
-							romData[byteToUse + 11] += 128;
-						}
-
-						// If ludicrous is selected, change chances of regeneration.
-						romData[byteToUse + 13] = (byte)(romData[byteToUse + 13] % 128);
-						romData[byteToUse + 14] = (byte)(romData[byteToUse + 14] % 128);
-
-						if (r1.Next() % 1000 <= lnI)
-						{
-							romData[byteToUse + 13] += 128;
-							romData[byteToUse + 14] += 128;
-						}
-						else if (r1.Next() % 1000 <= lnI)
-						{
-							romData[byteToUse + 14] += 128;
-						}
-						else if (r1.Next() % 1000 <= lnI)
-						{
-							romData[byteToUse + 13] += 128;
-						}
+						if (r1.Next() % 2 == 0)
+							romData[byteToUse + 8] = 0x7f;
+						else
+							romData[byteToUse + 8] = L1234All[r1.Next() % L1234All.Count];
+					} else if (cboMonsterDrops.SelectedIndex == 2)
+					{
+						List<byte> drops;
+						if (r1.Next() % 5 != 4)
+							drops = new List<byte> { 0x53, 0x54, 0x55, 0x56, 0x58, 0x5a, 0x5e, 0x74, 0x79 };
+						else if (r1.Next() % 5 != 4)
+							drops = new List<byte> { 0x61, 0x62, 0x63, 0x64, 0x65 };
+						else
+							drops = new List<byte> { 0x50, 0x57, 0x59, 0x5b, 0x5d, 0x5f, 0x60, 0x67, 0x68, 0x69, 0x6a, 0x6b };
+						romData[byteToUse + 8] = drops[r1.Next() % drops.Count];
+					} else if (cboMonsterDrops.SelectedIndex == 3)
+					{
+						List<byte> drops;
+						drops = new List<byte> { 0x61, 0x62, 0x63, 0x64, 0x65 };
+						romData[byteToUse + 8] = drops[r1.Next() % drops.Count];
+					} else if (cboMonsterDrops.SelectedIndex == 4)
+					{
+						List<byte> drops;
+						drops = new List<byte> { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
+												 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
+												 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
+												 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f,
+												 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f };
+						romData[byteToUse + 8] = drops[r1.Next() % drops.Count];
+					} else if (cboMonsterDrops.SelectedIndex == 5)
+					{
+						romData[byteToUse + 8] = 0x7f;
 					}
+				}
+			}
+
+			if (cboMonsterDrops.SelectedIndex == 5)
+			{
+				for (int lnI = 0; lnI < monsterRank.Length; lnI++) // 0xc2 is not used; Necrosaro
+				{
+					int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
+
+					romData[byteToUse + 20] -= (byte)(romData[byteToUse + 20] % 8);
+					romData[byteToUse + 20] += 7;
+				}
+			}
+			if (cboMonsterDropChance.SelectedIndex != 0 && cboMonsterDrops.SelectedIndex != 5)
+			{
+				for (int lnI = 0; lnI < monsterRank.Length; lnI++) // 0xc2 is not used; Necrosaro
+				{
+					int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
+
+					if (cboMonsterDropChance.SelectedIndex == 1 && romData[byteToUse + 20] % 8 != 0)
+						romData[byteToUse + 20]--;
+					if (cboMonsterDropChance.SelectedIndex == 2 && romData[byteToUse + 20] % 8 != 7)
+						romData[byteToUse + 20]++;
+					if (cboMonsterDropChance.SelectedIndex == 3)
+					{
+						romData[byteToUse + 20] -= (byte)(romData[byteToUse + 20] % 8);
+						romData[byteToUse + 20] += (byte)(r1.Next() % 8);
+					}
+					if (cboMonsterDropChance.SelectedIndex == 4)
+						romData[byteToUse + 20] -= (byte)(romData[byteToUse + 20] % 8);
 				}
 			}
 		}
 
 		private void randomizeTreasures(Random r1)
 		{
+			if (cboTreasures.SelectedIndex == 0)
+				return;
+
 			int[] c1p1Treasure = {
 					0x7bf38, 0x7bf37, // Cave To Izmit
                     0x7bf15, 0x7bf16, 0x7bf17, 0x7bdb7, 0x7b936 }; // Old Well - Flying Shoes - 7
@@ -2009,8 +2410,8 @@ namespace DW4RandoHacker
                     0x560e8, // Foxville fox
                     0x7bf2d, 0x7bf2e, 0x7bf2f, 0x7bf30, 0x7bf31, 0x7bf32, 0x7bf33, 0x7bf34, 0x7bf35, 0x7bf36 }; // Silver Statuette Cave - Silver Statuette - 13 (35)
 			int[] c4p1Treasure = { 0x7beee, // Kievs
-                    0x7bf0a, 0x7bf0b, 0x7bf0c, 0x7ba05, 0x7bf0e, // Cave West of Kievs (couple 0x7ba05 with 0x7ba0a)
-                    0x7bef0, 0x7bef1, 0x7bef2 }; // Aktemto Mine - Gunpowder Jar and Sphere Of Silence - 9 (44)
+                    0x7bf0a, 0x7bf0b, 0x7bf0c, 0x7ba05, 0x7bf0e }; // Cave West of Kievs (couple 0x7ba05 with 0x7ba0a) - 6 (41)
+			int[] c4p2Treasure = { 0x7bef0, 0x7bef1, 0x7bef2 }; // Aktemto Mine - Gunpowder Jar and Sphere Of Silence - 3 (44)
 			int[] c5p1Treasure = { 
                     //0x7bf2c, // Cave Of Betrayal - Can't change this due to the way the cave works
                     0x7beef }; // Desert Inn - Symbol Of Faith - 1 (45)
@@ -2041,96 +2442,46 @@ namespace DW4RandoHacker
                     0x7bf1d, 0x7bf1e, 0x7bf1f, 0x7bf20, 0x7bf21, 0x7bf22, 0x7bf23, 0x7bf24, 0x7bf25, 0x7bf26, 0x7bf27, 0x7bf28, 0x7bf29, // Final Cave
                     0x7bf5c, // Radimvice Area
                     0x7bf5d, 0x7bf5d, 0x7bf5d, 0x7bf60 }; // Necrosaro's Palace - Baron's Horn & End Of Game - 23 (145)
-			int[] c5DeadZone = { 0x7bd1d, // Burland
-                                 0x7bd6a, // Izmit
-                                 0x7bd0f, 0x7bd16, // Santeem
-                                 0x7bdc7, // Tempe
-                                 0x7bd4e, 0x7bd55, // Bazaar
-                                 0x7bd08, // Santeem (Thief's Key)
-                                 0x7bd86, // Lakanaba
-                                 0x7bd7f, 0x7bd78, 0x7bdca, // Monbaraba
-                                 0x7bd8d, // Kievs
-                                 0x7bd71, 0x7bdc9, // Hometown
-                                 0x7b96a, 0x7b983, // Woodman's Shack
-                                 0x7bdc8, // Aneaux
-                                 0x7bdc6, // Mintos
-                                 0x7bdcc, // Shrine East Of Mintos
-                                 0x7bda9, // Old Man's Island House
-                                 0x7bdcb, 0x7b94b, // Seaside Village
-                                 0x7bd40, 0x7bd47, // Stancia Castle
-                                 0x7bdc5, // Riverton
-                                 0x7bda2, 0x7bd9b, // Konenber ships -> lost forevers,
-                                 0x7bdb0, // Cave West Of Kievs, hidden basement
-                                 0x7bd2b, // Endor (King's Drawer - Chapter 5)
-                                 0x7bd32, 0x7bd39, // Gardenbur Castle
-                                 0x7bd63, 0x7bd5c, // Haville
-                                 0x7bd24, 0x7bdc3, // Dire Palace
-                                 0x7bdc4, // Aktemto Bonus Round
-                                 0x7bd94, // Gottside
-                                 0x7bd01, // Zenithian Castle
-                                 0x7bdcd, // Gigademon Area
-                                 0x7bedc }; // Endor (Chapter 2/3) - 41 (186)
-
-			//int[] c1p1Treasure = { 0x7bd1d, // Burland
-			//        0x7bf38, 0x7bf37, // Cave To Izmit
-			//        0x7bd6a, // Izmit
-			//        0x7bf15, 0x7bf16, 0x7bf17, 0x7bdb7, 0x7b936 }; // Old Well - Flying Shoes - 9
-			//int[] c1p2Treasure = { 0x7bf47, 0x7bf48, 0x7bf49, 0x7bf4a, 0x7bf4b, 0x7bf4c }; // Loch Tower - End of C1 - 6 (15)
-			//int[] c2p1Treasure = { 0x7bd0f, 0x7bd16, // Santeem
-			//        0x7bdc7, // Tempe
-			//        0x7bf10, 0x7bf11, 0x7bf12, 0x7bf13, 0x7bf14, // Frenor 
-			//        0x7bd4e, 0x7bd55 }; //  Bazaar - Thief's Key - 10 (25)
-			//int[] c2p2Treasure = { 0x7bd08, // Santeem (Thief's Key)
-			//        0x7bf41, 0x7bf42, 0x7bf43, 0x7b901 }; // Birdsong Tower - Birdsong Nectar(0x7b8f4?) - 5 (30)
-			//int[] c3p1Treasure = {  0x7bd86, // Lakanaba
-			//        0x7bf2a, 0x7bf2b, // Iron Safe Cave
-			//        0x560e8, // Foxville fox
-			//        0x7bf2d, 0x7bf2e, 0x7bf2f, 0x7bf30, 0x7bf31, 0x7bf32, 0x7bf33, 0x7bf34, 0x7bf35, 0x7bf36 }; // Silver Statuette Cave - Silver Statuette - 14 (44)
-			//int[] c4p1Treasure = { 0x7bd7f, 0x7bd78, 0x7bdca, // Monbaraba
-			//        0x7bd8d, 0x7beee, // Kievs
-			//        0x7bf0a, 0x7bf0b, 0x7bf0c, 0x7ba05, 0x7bf0e, // Cave West of Kievs (couple 0x7ba05 with 0x7ba0a)
-			//        0x7bef0, 0x7bef1, 0x7bef2 }; // Aktemto Mine - Gunpowder Jar and Sphere Of Silence - 13 (57)
-			//int[] c5p1Treasure = { 0x7bd71, 0x7bdc9, // Hometown
-			//        0x7b96a, 0x7b983, // Woodman's Shack
-			//        //0x7bf2c, // Cave Of Betrayal - Can't change this due to the way the cave works
-			//        0x7beef }; // Desert Inn - Symbol Of Faith - 5 (62)
-			//int[] c5p2Treasure = { 0x7bdc8, // Aneaux
-			//        0x7bf4d, 0x7bf4e, 0x7bf4f, 0x7bf50, 0x7bf51, 0x7bf52, 0x7bf53, 0x7bf54, 0x7bf55 }; // Great Lighthouse - Fire Of Serenity - 10 (72)
-			//int[] c5p3Treasure = { 0x7bdc6, // Mintos
-			//        0x7bdcc, // Shrine East Of Mintos
-			//        0x7befe, 0x7beff, 0x7bf00, 0x7bf01, 0x7bf02, 0x7bf03, // Cave Of The Padequia
-			//        0x7bda9, // Old Man's Island House
-			//        0x7bdcb, 0x7b94b, // Seaside Village
-			//        0x7bd40, 0x7bd47, // Stancia Castle
-			//        0x7bdc5 }; // Riverton - Padequia Root - 14 (86)
-			//int[] c5p4Treasure = { 0x7bdb0, 0x7bf0f }; // Cave West Of Kievs - Pre-Magic Key - 2 (88)
-			//int[] c5p5Treasure = { 0x7becd, 0x7bece, 0x7becf, 0x7bed0, 0x7bed1, 0x7bed2, // Burland Castle
-			//        0x7beca, 0x7becb, 0x7becc, // Santeem Castle
-			//        0x7beda, 0x7bedb, 0x7bedd, 0x7bede, 0x7bd2b, // Endor
-			//        0x7befb, 0x7befc, 0x7befd }; // Shrine Of Breaking Waves - Pre-Magma Staff - 17 (105)
-			//int[] c5p6Treasure = { 0x7bd32, 0x7bd39, 0x7bee7, // Gardenbur Castle
-			//        0x7bf04, 0x7bf05, 0x7bf06, 0x7bf07, 0x7bf08, 0x7bf09 }; // Cave SE Of Gardenbur - Pre-Final Key - 9 (114)
-			//int[] c5p7Treasure = { 0x7beeb, 0x7beec, 0x7beed, // Lakanaba
-			//        0x7bee3, 0x7bee4, 0x7bee5, // Branca Castle
-			//        0x7bf56, // Konenber
-			//        0x7bee6, // Gardenbur Castle
-			//        0x7bf39, 0x7bf3a, 0x7bf3b, // Royal Crypt
-			//        0x7bd63, 0x7bd5c, // Haville
-			//        0x7bf64, 0x7bf65, 0x7bf66, 0x7bf67, 0x7bf68 }; // Colossus - Pre-Staff Of Transform - 18 (132)
-			//int[] c5p8Treasure = { 0x7bd24, 0x7bdc3, 0x7bed3, 0x7bed4, 0x7bed5, 0x7bed6, // Dire Palace
-			//        0x7bdc4, 0x7bef3, 0x7bef4, 0x7bef5, 0x7bef6, 0x7bef7, 0x7bef8, 0x7bef9, 0x7befa }; // Aktemto Bonus Round - Gas Canister & Stone Of Drought - 15 (147)
-			//int[] c5p9Treasure = { 0x7bf44, 0x7bf45, 0x7bf46, // World Tree
-			//        0x7bd94, // Gottside
-			//        0x7bf18, 0x7bf19, 0x7bf1a, 0x7bf1b, 0x7bf1c, // Cascade Cave
-			//        0x7bf61, 0x7bf63 }; // Shrine Of Horn - All Zenithian equipment - 11 (158)
-			//int[] c5p10Treasure = { 0x7bf3c, 0x7bf3d, 0x7bf3e, 0x7bf3f, 0x7bf40, // Zenithian Tower
-			//        0x7bd01, // Zenithian Castle
-			//        0x7bf1d, 0x7bf1e, 0x7bf1f, 0x7bf20, 0x7bf21, 0x7bf22, 0x7bf23, 0x7bf24, 0x7bf25, 0x7bf26, 0x7bf27, 0x7bf28, 0x7bf29, // Final Cave
-			//        0x7bdcd, // Gigademon Area
-			//        0x7bf5c, // Radimvice Area
-			//        0x7bf5d, 0x7bf5d, 0x7bf5d, 0x7bf60 }; // Necrosaro's Palace - Baron's Horn & End Of Game - 25 (183)
-			//int[] c5DeadZone = { 0x7bda2, 0x7bd9b, // Konenber ships -> lost forevers,
-			//                     0x7bedc }; // Endor (Chapter 2/3) - 3 (186)
+			int[] c5Deadp1 =
+			{
+				0x7bd1d, // Burland
+                0x7bd0f, 0x7bd16, // Santeem
+                0x7bdc7, // Tempe
+                0x7bd86, // Lakanaba
+                0x7bd7f, 0x7bd78, 0x7bdca, // Monbaraba
+                0x7bd8d, // Kievs
+                0x7bd71, 0x7bdc9, // Hometown
+                0x7b96a, 0x7b983 // Woodman's Shack - 13 (158)
+			};
+			int[] c5Deadp2 =
+			{
+				0x7bd6a, // Izmit
+                0x7bd4e, 0x7bd55, // Bazaar
+                0x7bd08, // Santeem (Thief's Key)
+                0x7bdc8, // Aneaux
+				0x7bedc // Endor (Chapter 2/3) - 6 (164)
+			};
+			int[] c5Deadp3 =
+			{
+				0x7bdc6, // Mintos
+                0x7bdcc, // Shrine East Of Mintos
+                0x7bda9, // Old Man's Island House
+                0x7bdcb, 0x7b94b, // Seaside Village
+                0x7bd40, 0x7bd47, // Stancia Castle
+                0x7bdc5, // Riverton
+                0x7bda2, 0x7bd9b, // Konenber ships -> lost forevers,
+                0x7bdb0, // Cave West Of Kievs, hidden basement
+                0x7bd2b, // Endor (King's Drawer - Chapter 5)
+                0x7bd32, 0x7bd39, // Gardenbur Castle
+                0x7bd63, 0x7bd5c // Haville - 16 (180)
+			};
+			int[] c5Deadp4 = { 
+                0x7bd24, 0x7bdc3, // Dire Palace
+                0x7bdc4, // Aktemto Bonus Round
+                0x7bd94, // Gottside
+                0x7bd01, // Zenithian Castle
+                0x7bdcd, // Gigademon Area - 6 (186)
+			}; 
 
 			List<int> allTreasureList = new List<int>();
 			allTreasureList = addTreasure(allTreasureList, c1p1Treasure);
@@ -2139,6 +2490,7 @@ namespace DW4RandoHacker
 			allTreasureList = addTreasure(allTreasureList, c2p2Treasure);
 			allTreasureList = addTreasure(allTreasureList, c3p1Treasure);
 			allTreasureList = addTreasure(allTreasureList, c4p1Treasure);
+			allTreasureList = addTreasure(allTreasureList, c4p2Treasure);
 			allTreasureList = addTreasure(allTreasureList, c5p1Treasure);
 			allTreasureList = addTreasure(allTreasureList, c5p2Treasure);
 			allTreasureList = addTreasure(allTreasureList, c5p3Treasure);
@@ -2149,7 +2501,10 @@ namespace DW4RandoHacker
 			allTreasureList = addTreasure(allTreasureList, c5p8Treasure);
 			allTreasureList = addTreasure(allTreasureList, c5p9Treasure);
 			allTreasureList = addTreasure(allTreasureList, c5p10Treasure);
-			allTreasureList = addTreasure(allTreasureList, c5DeadZone);
+			allTreasureList = addTreasure(allTreasureList, c5Deadp1);
+			allTreasureList = addTreasure(allTreasureList, c5Deadp2);
+			allTreasureList = addTreasure(allTreasureList, c5Deadp3);
+			allTreasureList = addTreasure(allTreasureList, c5Deadp4);
 
 			int[] allTreasure = allTreasureList.ToArray();
 
@@ -2167,17 +2522,97 @@ namespace DW4RandoHacker
 										 0x79, 0xfd, 0xfe };
 			int[] legalTreasures2 = { 0x53, 0x54, 0x55, 0x56, 0x58, 0x5a, 0x5e, 0x61, 0x62, 0x63, 0x64, 0x65, 0x74 };
 
+			int[] l1Treasure = c1p1Treasure.Concat(c2p1Treasure).Concat(c4p1Treasure).Concat(c5p1Treasure).Concat(c5Deadp1).ToArray();
+			int[] l2Treasure = c1p2Treasure.Concat(c2p2Treasure).Concat(c3p1Treasure).Concat(c4p2Treasure).Concat(c5p2Treasure).Concat(c5Deadp2).ToArray();
+			int[] l3Treasure = c5p3Treasure.Concat(c5p4Treasure).Concat(c5p5Treasure).Concat(c5p6Treasure).Concat(c5p7Treasure).Concat(c5p8Treasure).Concat(c5Deadp3).ToArray();
+			int[] l4Treasure = c5p9Treasure.Concat(c5p10Treasure).Concat(c5Deadp4).ToArray();
 
 			// Completely randomize treasures first.
 			foreach (int treasure in allTreasureList)
 			{
-				if (r1.Next() % 3 == 0)
-					romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
-				else if (r1.Next() % 3 == 0 && treasure >= 0x7bec9 && treasure <= 0x7bfff) // Give out gold.  You cannot give out gold in drawers, pots, or searchable spots.
-					romData[treasure] = (byte)(r1.Next() % 80 + 128);
-				else
-					romData[treasure] = (byte)legalTreasures2[r1.Next() % legalTreasures2.Length];
-				//romData[treasure] = (byte)legalTreasures[r1.Next() % legalTreasures.Length];
+				if (cboTreasures.SelectedIndex >= 1 && cboTreasures.SelectedIndex <= 3)
+				{
+					if (r1.Next() % 3 == 0)
+					{
+						if (cboTreasures.SelectedIndex == 1)
+						{
+							if (l1Treasure.Contains(treasure))
+								romData[treasure] = (byte)L1All[r1.Next() % L1All.Count];
+							else if (l2Treasure.Contains(treasure))
+								romData[treasure] = (byte)L2All[r1.Next() % L2All.Count];
+							else if (l3Treasure.Contains(treasure))
+								romData[treasure] = (byte)L3All[r1.Next() % L3All.Count];
+							else if (l4Treasure.Contains(treasure))
+								romData[treasure] = (byte)L4All[r1.Next() % L4All.Count];
+						}
+						else if (cboTreasures.SelectedIndex == 2)
+						{
+							if (l1Treasure.Contains(treasure))
+								romData[treasure] = (byte)L12All[r1.Next() % L12All.Count];
+							else if (l2Treasure.Contains(treasure))
+								romData[treasure] = (byte)L12All[r1.Next() % L12All.Count];
+							else if (l3Treasure.Contains(treasure))
+								romData[treasure] = (byte)L3All[r1.Next() % L3All.Count];
+							else if (l4Treasure.Contains(treasure))
+								romData[treasure] = (byte)L4All[r1.Next() % L4All.Count];
+						}
+						else if (cboTreasures.SelectedIndex == 3)
+						{
+							romData[treasure] = (byte)L1234All[r1.Next() % L1234All.Count];
+						}
+					}
+					else if (r1.Next() % 3 == 0 && treasure >= 0x7bec9 && treasure <= 0x7bfff) // Give out gold.  You cannot give out gold in drawers, pots, or searchable spots.
+					{
+						if (cboTreasures.SelectedIndex == 1)
+						{
+							if (l1Treasure.Contains(treasure))
+								romData[treasure] = (byte)(r1.Next() % 15 + 128);
+							else if (l2Treasure.Contains(treasure))
+								romData[treasure] = (byte)(r1.Next() % 30 + 128);
+							else if (l3Treasure.Contains(treasure))
+								romData[treasure] = (byte)(r1.Next() % 50 + 128);
+							else if (l4Treasure.Contains(treasure))
+								romData[treasure] = (byte)(r1.Next() % 80 + 128);
+						}
+						else if (cboTreasures.SelectedIndex == 2)
+						{
+							if (l1Treasure.Contains(treasure))
+								romData[treasure] = (byte)(r1.Next() % 30 + 128);
+							else if (l2Treasure.Contains(treasure))
+								romData[treasure] = (byte)(r1.Next() % 30 + 128);
+							else if (l3Treasure.Contains(treasure))
+								romData[treasure] = (byte)(r1.Next() % 50 + 128);
+							else if (l4Treasure.Contains(treasure))
+								romData[treasure] = (byte)(r1.Next() % 80 + 128);
+						}
+						else if (cboTreasures.SelectedIndex == 3)
+						{
+							romData[treasure] = (byte)(r1.Next() % 80 + 128);
+						}
+					}
+					else
+						romData[treasure] = (byte)legalTreasures2[r1.Next() % legalTreasures2.Length];
+				} else if (cboTreasures.SelectedIndex == 4)
+				{
+					romData[treasure] = (byte)(r1.Next() % 5 + 0x61);
+				} else if (cboTreasures.SelectedIndex == 5)
+				{
+					if (treasure >= 0x7bec9 && treasure <= 0x7bfff)
+						romData[treasure] = (byte)(r1.Next() % 80 + 128);
+					else
+						romData[treasure] = 0x7f;
+				}
+				else if (cboTreasures.SelectedIndex == 6)
+				{
+					romData[treasure] = (byte)(r1.Next() % 80);
+				} else if (cboTreasures.SelectedIndex == 7)
+				{
+					if (treasure >= 0x7bec9 && treasure <= 0x7bfff)
+						romData[treasure] = 0x80;
+					else
+						romData[treasure] = 0x7f;
+				}
+
 				if (treasure == 0x7b901)
 					romData[0x7b8f4] = romData[treasure];
 			}
@@ -2236,7 +2671,6 @@ namespace DW4RandoHacker
 				treasureOutput(writer, "c5p8", c5p8Treasure);
 				treasureOutput(writer, "c5p9", c5p9Treasure);
 				treasureOutput(writer, "c5p10", c5p10Treasure);
-				treasureOutput(writer, "c5dead", c5DeadZone);
 			}
 		}
 
@@ -2245,103 +2679,208 @@ namespace DW4RandoHacker
 			//// We first need to adjust the prices of all the items so that the casino and medal king stores sell at a proper price.
 			int[] prices = { 10, 30, 100, 1500, 550, 880, 2000, 5500, 500, 200, 1250, 350, 1600, 620, 50000, 1400,
 							 2500, 20000, 600, 3300, 0, 15000, 7500, 4300, 8000, 750, 10000, 20000, 30000, 4000, 0, 4000,
-							 6000, 0, 4000, 3500, 10, 70, 180, 350, 1200, 1500, 2300, 110, 400, 700, 15000, 600,
-							 250, 6300, 5200, 3000, 4400, 15000, 7500, 0, 9800, 6000, 870, 8800, 1000, 90, 180, 650,
-							 13000, 9000, 4700, 7100, 0, 50000, 65, 120, 1100, 3500, 280, 0, 8, 540, 15000, 50000,
+							 6000, 0, 4000, 3500, // SWORD END 0x23
+							 10, 70, 180, 350, 1200, 1500, 2300, 110, 400, 700, 15000, 600,
+							 250, 6300, 5200, 3000, 4400, 15000, 7500, 0, 9800, 6000, 870, 8800, 1000, // ARMOR END 0x3C
+							 90, 180, 650, 13000, 9000, 4700, 7100, 0, 50000, // SHIELD END 0x45
+						     65, 120, 1100, 3500, 280, 0, 8, 540, 15000, 50000, // HELMET END 0x4F
 							 5000, 1000, 0, 8, 10, 20, 25, 10000, 30, 6000, 500, 10000, 0, 0, 150, 0,
-							 0, 2000, 1500, 700, 2000, 3000, 5, 5, 0, 4000, 0, 0, 0, 0, 1000, 0,
-							 0, 0, 0, 0, 10, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0 };
+							 0, 120, 90, 70, 250, 550, 5, 5, 0, 4000, 0, 0, 0, 0, 1000, 0,
+							 0, 0, 0, 0, 10, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0 };			
 
 			//// Go through the prices and plug into the ROM.  If the price is 0, make sure that 0x10 is set in the first segment.
 			for (int lnI = 0; lnI < prices.Length; lnI++)
 			{
-				// Adjust prices based on random level...
-				int randomModifier = (r1.Next() % 2);
-				try
-				{
-					//prices[lnI] *= 2;
-					if (randomModifier == 0)
-						prices[lnI] -= (r1.Next() % (prices[lnI] / (optMonsterSilly.Checked ? 8 : optMonsterMedium.Checked ? 4 : 2)));
-					else
-						prices[lnI] += (r1.Next() % (prices[lnI] / (optMonsterSilly.Checked ? 4 : optMonsterMedium.Checked ? 2 : 1)));
-					//prices[lnI] /= 2;
-				}
-				catch (DivideByZeroException)
-				{
-					// skip error and do not adjust the stat.  Crash on all other exceptions.
-				}
-
+				if (cboStorePrices.SelectedIndex >= 1 && cboStorePrices.SelectedIndex <= 4)
+					prices[lnI] = ScaleValue(prices[lnI], cboStorePrices.SelectedIndex == 1 ? 1.5 : cboStorePrices.SelectedIndex == 2 ? 2.0 : cboStorePrices.SelectedIndex == 3 ? 3.0 : cboStorePrices.SelectedIndex == 4 ? 4.0 : 1.0, 1.0, r1, false);
+				else if (cboStorePrices.SelectedIndex == 5)
+					prices[lnI] = inverted_power_curve(1, 65500, 1, 0.25, r1)[0];
+				else if (cboStorePrices.SelectedIndex == 6)
+					prices[lnI] = 0;
 
 				int oldValue = romData[0x40cf4 + lnI];
-				bool noThrow = (oldValue % 32 >= 16);
+				bool noThrow = oldValue % 32 >= 16;
 				if (noThrow && prices[lnI] >= 1)
 					oldValue -= 16;
-				oldValue -= (oldValue % 4);
-				oldValue += (prices[lnI] >= 10000 ? 3 : prices[lnI] >= 1000 ? 2 : prices[lnI] >= 100 ? 1 : 0);
+				oldValue -= oldValue % 4;
+				oldValue += prices[lnI] >= 10000 ? 3 : prices[lnI] >= 1000 ? 2 : prices[lnI] >= 100 ? 1 : 0;
 				romData[0x40cf4 + lnI] = (byte)oldValue;
 
 				romData[0x40df2 + lnI] = (byte)(romData[0x40df2 + lnI] > 128 ? 128 : 0);
 				romData[0x40df2 + lnI] += (byte)(prices[lnI] / (prices[lnI] >= 10000 ? 1000 : prices[lnI] >= 1000 ? 100 : prices[lnI] >= 100 ? 10 : 1));
 			}
 
-			int[] lowGradeStores = { 0x6341f, 0x634a1, 0x63537, 0x63425, 0x634a9, 0x6353C,
-					0x63496, 0x634b1, 0x6345a, 0x63541, 0x6342c, 0x63549, 0x63433, 0x634b9, 0x63551, 0x634c1, 0x63558, 0x6343a, 0x63560,
-					0x63441, 0x634c9, 0x63569, 0x6356f, 0x63573, 0x63446, 0x634e8, 0x635c8,
-					0x6344d, 0x634d1, 0X63579, 0x63453, 0x634d8, 0x63581,
-					0x63462, 0x634e0, 0x63590, 0x63468, 0x634f0, 0x63596, 0x63470, 0x634f8, 0x6359d }; // 42
-			int[] highGradeStores = { 0x63564, 0x63477, 0x6348f, 0x63524, 0x635b3, 0x635ae, 0X63483, 0x63507, 0x635aa,
-					0x63530, 0x635ba, 0x6347f, 0x634ff, 0x635a4, 0x6350e, 0x63489, 0x63515, 0x6352c, 0x6351d, 0x635c0, 0x63588, 0x6349b}; // 22
-
-			byte[] legalLowGradeStoreItems = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x19, 0x23,
-					0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2f, 0x30, 0x33,
-					0x3d, 0x3e, 0x3f, 0x46, 0x47, 0x48, 0x4a, 0x4d, 0x53, 0x54, 0x55, 0x56, 0x58, 0x5a, 0x74 };
-			byte[] legalHighGradeStoreItems = { 0x06, 0x07, 0x0c, 0x0e, 0x0f, 0x10, 0x11, 0x15, 0x16, 0x17, 0x18, 0x1a, 0x1b, 0x1c, 0x1d, 0x20, 0x22, 0x23,
-					0x2a, 0x2e, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x38, 0x39, 0x3b,
-					0x40, 0x41, 0x42, 0x43, 0x45, 0x48, 0x49, 0x4d, 0x4e, 0x4f,
-					0x53, 0x54, 0x55, 0x56, 0x58, 0x59, 0x5a, 0x5b, 0x5e, 0x61, 0x62, 0x63, 0x64, 0x65, 0x69, 0x74 };
-
-			for (int lnI = 0; lnI < lowGradeStores.Length; lnI++)
+			List<int> level1WeaponStores = new List<int> // 7
 			{
-				List<int> store = new List<int> { };
+				0x6341f, // Burland
+				0x63496, // Surene
+				0x63441, 0x63446, // Lakanaba, Bonmalmo
+				0x63446, // Monbaraba
+				0x63462 // Branca
+			};
+			List<int> level1ArmorStores = new List<int> // 5
+			{
+				0x634a1, // Burland
+				0x634b1, // Surene
+				0x634c9, // Lakanaba
+				0x634d1, // Monbaraba
+				0x634e0 // Branca
+			};
+			List<int> level1ItemStores = new List<int> // 6
+			{
+				0x63537, // Burland
+				0x6345a, // Surene
+				0x63569, // Lakanaba
+				0x63446, // Bonmalmo
+				0x63581, // Haville
+				0x63590 // Branca
+			};
+			List<int> level1GeneralStores = new List<int> // 3
+			{
+				0x63541, 0x63549, // Tempe, Frenor
+				0x63579 // Kievs
+			};
+			List<int> level1Stores = level1WeaponStores.Concat(level1ArmorStores).Concat(level1ItemStores).Concat(level1GeneralStores).ToList();
+
+			List<int> level2WeaponStores = new List<int> // 6
+			{
+				0x63425, // Izmit
+				0x6342c, 0x63433, 0x6343a, // Frenor, Bazaar, Endor
+				0x63453, // Haville
+				0x63468, 0x63470 // Aneaux, Konenber
+			};
+			List<int> level2ArmorStores = new List<int> // 7
+			{
+				0x634a9, // Izmit
+				0x634b9, 0x634c1, // Bazaar, Endor
+				0x634d8, // Haville
+				0x634e8, 0x634f0, 0x634f8 // Bonmalmo (Chapter 5), Aneaux, Konenber
+			};
+			List<int> level2ItemStores = new List<int> // 6
+			{
+				0x6353c, // Izmit
+				0x63551, 0x63558, // Bazaar, Endor
+				0x63581, // Haville
+				0x63596, 0x6359d // Aneaux, Konenber
+			};
+			List<int> level2GeneralStores = new List<int> // 2
+			{
+				0x63560, // Tournament
+				0x635c8 // Random Traveller
+			};
+			List<int> level2Stores = level2WeaponStores.Concat(level2ArmorStores).Concat(level2ItemStores).Concat(level2GeneralStores).ToList();
+			List<int> lowGradeStores = level1Stores.Concat(level2Stores).ToList();
+			List<int> lowGradeWeapons = level1WeaponStores.Concat(level2WeaponStores).ToList();
+			List<int> lowGradeArmor = level1ArmorStores.Concat(level2ArmorStores).ToList();
+			List<int> lowGradeItems = level1ItemStores.Concat(level2ItemStores).ToList();
+			List<int> lowGradeGeneral = level1GeneralStores.Concat(level2GeneralStores).ToList();
+
+			List<int> level3WeaponStores = new List<int> // 5
+			{
+				0x6348f, 0x63483, 0x63530, 0x6347f, 0x63489
+			};
+			List<int> level3ArmorStores = new List<int> // 8
+			{
+				0x63524, 0x63507, 0x63530, 0x634ff, 0x6350e, 0x63515, 0x6351d, 0x6352c // Mintos, Rosaville, Seaside Village, Stancia, Gardenbur, Riverton, World Tree, Gottside
+			};
+			List<int> level3ItemStores = new List<int> // 6
+			{
+				0x635b3, 0x635ae, 0x635aa, 0x635ba, 0x635a4, 0x635c0 // Mintos, Soretta, Rosaville, Seaside Village, Stancia, Gottside
+			};
+			List<int> level3Stores = level3WeaponStores.Concat(level3ArmorStores).Concat(level3ItemStores).ToList();
+
+			List<int> level4GeneralStores = new List<int> // 3
+			{
+				0x63564, 0x63588, 0x6349b // Endor (Chapter 5), Endor Casino, Small medal king
+			};
+			List<int> highGradeStores = level3Stores.Concat(level4GeneralStores).ToList();
+
+			List<int> allWeaponStores = level1WeaponStores.Concat(level2WeaponStores).Concat(level3WeaponStores).ToList();
+			List<int> allArmorStores = level1ArmorStores.Concat(level2ArmorStores).Concat(level3ArmorStores).ToList();
+			List<int> allItemStores = level1ItemStores.Concat(level2ItemStores).Concat(level3ItemStores).ToList();
+			List<int> allStores = lowGradeStores.Concat(highGradeStores).ToList();
+
+			if (cboStoreAvailability.SelectedIndex == 1)
+			{
+				assignItems(level1WeaponStores, L1Weapons, prices, r1);
+				assignItems(level1ArmorStores, L1Armor, prices, r1);
+				assignItems(level1ItemStores, L1Items, prices, r1);
+				assignItems(level1GeneralStores, L1All, prices, r1);
+				assignItems(level2WeaponStores, L2Weapons, prices, r1);
+				assignItems(level2ArmorStores, L2Armor, prices, r1);
+				assignItems(level2ItemStores, L2Items, prices, r1);
+				assignItems(level2GeneralStores, L2All, prices, r1);
+				assignItems(level3WeaponStores, L3Weapons, prices, r1);
+				assignItems(level3ArmorStores, L3Armor, prices, r1);
+				assignItems(level3ItemStores, L3Items, prices, r1);
+				assignItems(level4GeneralStores, L4All, prices, r1);
+			}
+			else if (cboStoreAvailability.SelectedIndex == 2)
+			{
+				assignItems(lowGradeWeapons, L12Weapons, prices, r1);
+				assignItems(lowGradeArmor, L12Armor, prices, r1);
+				assignItems(lowGradeItems, L12Items, prices, r1);
+				assignItems(lowGradeGeneral, L12All, prices, r1);
+				assignItems(level3WeaponStores, L3Weapons, prices, r1);
+				assignItems(level3ArmorStores, L3Armor, prices, r1);
+				assignItems(level3ItemStores, L3Items, prices, r1);
+				assignItems(level4GeneralStores, L4All, prices, r1);
+			}
+			else if (cboStoreAvailability.SelectedIndex == 3)
+			{
+				assignItems(allWeaponStores, AllWeapons, prices, r1);
+				assignItems(allArmorStores, AllArmor, prices, r1);
+				assignItems(allItemStores, AllItems, prices, r1);
+				assignItems(level4GeneralStores, L4All, prices, r1);
+			}
+			else if (cboStoreAvailability.SelectedIndex == 4)
+			{
+				assignItems(allStores, L1234All, prices, r1);
+			}
+			else if (cboStoreAvailability.SelectedIndex == 5)
+			{
+				assignItems(allStores, AllItems, prices, r1);
+			}
+			else if (cboStoreAvailability.SelectedIndex == 6)
+			{
+				assignItems(allStores, new List<byte> { 0x61, 0x62, 0x63, 0x64, 0x65 }, prices, r1);
+			}
+			else if (cboStoreAvailability.SelectedIndex == 7)
+			{
+				assignItems(allStores, new List<byte> { 0x79 }, prices, r1);
+			}
+		}
+
+		private void assignItems(List<int> stores, List<byte> eligibleItems, int[] prices, Random r1)
+		{
+			if (chkStoreNoSeeds.Checked)
+			{
+				eligibleItems.Remove(0x61);
+				eligibleItems.Remove(0x62);
+				eligibleItems.Remove(0x63);
+				eligibleItems.Remove(0x64);
+				eligibleItems.Remove(0x65);
+			}
+			foreach (int byteToUse in stores)
+			{
 				bool lastItem = false;
-				int byteToUse = lowGradeStores[lnI];
 				int lnJ = 0;
+				int itemDups = 0;
+
 				do
 				{
+					// Force Wing of Wyvern at Bonmalmo item store so you can advance Chapter 3 plot
 					if (byteToUse == 0x63573 && lnJ == 0)
 					{
 						romData[byteToUse] = 0x56;
 						lnJ++;
 						continue;
 					}
+
 					if (romData[byteToUse + lnJ] >= 128)
 						lastItem = true;
-					romData[byteToUse + lnJ] = legalLowGradeStoreItems[r1.Next() % legalLowGradeStoreItems.Length];
-					bool failure = false;
-					for (int lnK = 0; lnK < lnJ; lnK++)
-						if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
-							failure = true;
-					if (lastItem)
-						romData[byteToUse + lnJ] += 128;
-					if (failure)
-					{
-						lastItem = false;
-						continue;
-					}
-					lnJ++;
-				} while (!lastItem);
-			}
-			for (int lnI = 0; lnI < highGradeStores.Length; lnI++)
-			{
-				List<int> store = new List<int> { };
-				bool lastItem = false;
-				int byteToUse = highGradeStores[lnI];
-				int lnJ = 0;
-				do
-				{
-					if (romData[byteToUse + lnJ] >= 128)
-						lastItem = true;
-					romData[byteToUse + lnJ] = legalHighGradeStoreItems[r1.Next() % legalHighGradeStoreItems.Length];
+					romData[byteToUse + lnJ] = eligibleItems[r1.Next() % eligibleItems.Count];
+
 					// Casino adjustment
 					if (byteToUse == 0x63588)
 					{
@@ -2367,9 +2906,26 @@ namespace DW4RandoHacker
 						}
 					}
 
-					for (int lnK = 0; lnK < lnJ; lnK++)
-						if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
-							continue;
+					if (itemDups < 20)
+					{
+						bool dupFound = false;
+						for (int lnK = 0; lnK < lnJ; lnK++)
+						{
+							if (romData[byteToUse + lnJ] == romData[byteToUse + lnK])
+							{
+								itemDups++;
+								dupFound = true;
+								if (lastItem) romData[byteToUse + lnJ] += 128; // To reset lastItem = true
+								lastItem = false;
+								break;
+							}
+						}
+						if (dupFound) continue; else itemDups = 0;
+					}
+					else
+					{
+						itemDups = 0;
+					}
 					if (lastItem)
 						romData[byteToUse + lnJ] += 128;
 					lnJ++;
@@ -2379,6 +2935,7 @@ namespace DW4RandoHacker
 
 		private void randomizeHeroEquipment(Random r1)
 		{
+			if (cboEquipChances.SelectedIndex == 0) return;
 			int[] minWeapon = { 255, 255, 255, 255, 255, 255, 255, 255 };
 			int[] minArmor = { 255, 255, 255, 255, 255, 255, 255, 255 };
 			int[] totalChances = { 35, 25, 9, 10 };
@@ -2389,7 +2946,7 @@ namespace DW4RandoHacker
 
 			for (int lnI = 0; lnI < 80; lnI++)
 			{
-				if (lnI == 0x21)
+				if (lnI == 0x21) // Leave the enhanced Zenithian sword alone.
 					continue;
 				// Totals - 35/25/9/10
 				//if ((string)cboSoloHero.SelectedItem == "Hero") power = 0; - 18/18/8/8 - subtract 1 from each because of Zenithian equipment
@@ -2408,13 +2965,25 @@ namespace DW4RandoHacker
 					// Hero must be able to equip the Zenithian equipment
 					if (lnJ == 0 && (lnI == 0x14 || lnI == 0x37 || lnI == 0x44 || lnI == 0x4b))
 						equippable = true;
-					else if (r1.Next() % totalChances[lnK] < (equipChances[lnJ, lnK] * (lnI == 0x00 || lnI == 0x01 || lnI == 0x02 ||
-																						lnI == 0x24 || lnI == 0x25 || lnI == 0x26 ||
-																						lnI == 0x3d || lnI == 0x3e ||
-																						lnI == 0x46 || lnI == 0x47 ? 2 : 1)))
-						equippable = true;
 					else
-						equippable = false;
+					{
+						if (cboEquipChances.SelectedIndex == 1)
+						{
+							if (r1.Next() % totalChances[lnK] < (equipChances[lnJ, lnK] * (lnI == 0x00 || lnI == 0x01 || lnI == 0x02 ||
+																								lnI == 0x24 || lnI == 0x25 || lnI == 0x26 ||
+																								lnI == 0x3d || lnI == 0x3e ||
+																								lnI == 0x46 || lnI == 0x47 ? 2 : 1)))
+								equippable = true;
+							else
+								equippable = false;
+						}
+						else if (cboEquipChances.SelectedIndex == 2)
+							equippable = false;
+						else if (cboEquipChances.SelectedIndex == 6)
+							equippable = true;
+						else if (cboEquipChances.SelectedIndex >= 3 && cboEquipChances.SelectedIndex <= 5)
+							equippable = r1.Next() % 4 < cboEquipChances.SelectedIndex - 2;
+					}
 
 					if (equippable)
 					{
@@ -2479,8 +3048,29 @@ namespace DW4RandoHacker
 			}
 		}
 
+		private void randomizeEquipmentPowers(Random r1)
+		{
+			if (cboEquipPowers.SelectedIndex == 0)
+				return;
+
+			for (int lnI = 0x41df0; lnI <= 0x41e3f; lnI++)
+			{
+				int power = romData[lnI];
+				int scaleIndex = cboEquipPowers.SelectedIndex;
+				if (scaleIndex >= 1 && scaleIndex <= 4)
+					power = ScaleValue(power, scaleIndex == 1 ? 1.5 : scaleIndex == 2 ? 2.0 : scaleIndex == 3 ? 3.0 : 4.0, 1.0, r1);
+				else if (scaleIndex == 5)
+					power = inverted_power_curve(0, (lnI <= 0x41e13 ? 200 : lnI <= 0x41e2c ? 100 : lnI <= 0x41e35 ? 70 : 60), 1, 0.25, r1)[0];
+
+				romData[lnI] = (byte)power;
+			}
+		}
+
 		private void randomizeMonsterZones(Random r1)
 		{
+			if (cboMonsterZones.SelectedIndex == 0)
+				return;
+
 			// How monster zones are formed: ($6E45-8 is the monster, $6E49-C is the number of monsters in that group)
 			// Load byte 0 of zone.  Bytes 5-7 are encouter rate adjustments from 25-200% (usually 100%; 60-7F)
 			// Bytes 2-4 are AND $07, so there are eight possible "zone possibilities".
@@ -2571,17 +3161,54 @@ namespace DW4RandoHacker
 				// Byte 14-15 - Special fights (make FF for now)
 				for (int lnJ = 0; lnJ < 16; lnJ++)
 				{
-					if (lnJ == 0)
+					if (cboMonsterZones.SelectedIndex == 1)
 					{
-						romData[byteToUse + lnJ] -= (byte)(romData[byteToUse + lnJ] % 32);
-						romData[byteToUse + lnJ] += 0x1c; // This should ensure that we get to see nearly all of the monsters programmed.
-						continue;
+						if (lnJ == 0)
+						{
+							romData[byteToUse + lnJ] -= (byte)(romData[byteToUse + lnJ] % 32);
+							romData[byteToUse + lnJ] += (byte)(r1.Next() % 32); // Scramble the encounter groups
+							continue;
+						}
 					}
-					if (lnJ == 1) continue;
-					romData[byteToUse + lnJ] = (byte)(monsterRank[(r1.Next() % (maxMonster[lnI] - minMonster[lnI])) + minMonster[lnI]]);
-					// Redo randomization if Linguar or Imposter are in the proceedings, due to graphical glitches, except the last byte... the solo encounter.
-					if (lnJ != 13 && (romData[byteToUse + lnJ] == 0xba || romData[byteToUse + lnJ] == 0x99)) lnJ--;
-					if (lnJ >= 14) romData[byteToUse + lnJ] = 0xff;
+					if (cboMonsterZones.SelectedIndex == 2)
+					{
+						if (lnJ == 0 || lnJ == 1) continue;
+						romData[byteToUse + lnJ] = (byte)(monsterRank[(r1.Next() % (maxMonster[lnI] - minMonster[lnI])) + minMonster[lnI]]);
+						// Redo randomization if Linguar or Imposter are in the proceedings, due to graphical glitches, except the last byte... the solo encounter.
+						if (lnJ != 13 && (romData[byteToUse + lnJ] == 0xba || romData[byteToUse + lnJ] == 0x99)) lnJ--;
+						if (lnJ >= 14) romData[byteToUse + lnJ] = 0xff;
+					}
+					if (cboMonsterZones.SelectedIndex == 3)
+					{
+						if (lnJ == 0)
+						{
+							romData[byteToUse + lnJ] -= (byte)(romData[byteToUse + lnJ] % 32);
+							romData[byteToUse + lnJ] += 0x1c; // This should ensure that we get to see nearly all of the monsters programmed.
+							continue;
+						}
+						if (lnJ == 1) continue;
+						romData[byteToUse + lnJ] = (byte)(monsterRank[(r1.Next() % (maxMonster[lnI] - minMonster[lnI])) + minMonster[lnI]]);
+						// Redo randomization if Linguar or Imposter are in the proceedings, due to graphical glitches, except the last byte... the solo encounter.
+						if (lnJ != 13 && (romData[byteToUse + lnJ] == 0xba || romData[byteToUse + lnJ] == 0x99)) lnJ--;
+						if (lnJ >= 14) romData[byteToUse + lnJ] = 0xff;
+					}
+					if (cboMonsterZones.SelectedIndex == 4)
+					{
+						if (lnJ == 0)
+						{
+							romData[byteToUse + lnJ] -= (byte)(romData[byteToUse + lnJ] % 32);
+							romData[byteToUse + lnJ] += (byte)(r1.Next() % 32); // This should ensure that we get to see nearly all of the monsters programmed.
+							continue;
+						}
+						if (lnJ == 1) continue;
+						if (lnI == 4 || lnI == 7 || lnI == 13 || lnI == 20 || lnI == 24) // Normal first zone each chapter...
+							romData[byteToUse + lnJ] = (byte)monsterRank[(r1.Next() % (maxMonster[lnI] - minMonster[lnI])) + minMonster[lnI]];
+						else
+							romData[byteToUse + lnJ] = (byte)monsterRank[r1.Next() % 0xbd]; // Chaotic for all the others!
+						// Redo randomization if Linguar or Imposter are in the proceedings, due to graphical glitches, except the last byte... the solo encounter.
+						if (lnJ != 13 && (romData[byteToUse + lnJ] == 0xba || romData[byteToUse + lnJ] == 0x99)) lnJ--;
+						if (lnJ >= 14) romData[byteToUse + lnJ] = 0xff;
+					}
 				}
 			}
 
@@ -2613,35 +3240,67 @@ namespace DW4RandoHacker
 				for (int lnJ = 4; lnJ < 8; lnJ++)
 					romData[byteToUse + lnJ] = 0;
 
-				// Figure out how many groups of monsters will be involved.
-				int groups = (r1.Next() % 4);
-				for (int lnJ = 0; lnJ < groups + 1; lnJ++)
+				if (cboMonsterZones.SelectedIndex == 2)
 				{
-					if (lnJ == 0 && firstMonster[lnI] >= 0)
-						romData[byteToUse + 0] = (byte)firstMonster[lnI];
-					else
+					for (int lnJ = 0; lnJ < 4; lnJ++)
 					{
-						romData[byteToUse + lnJ] = (byte)(monsterRank[r1.Next() % (maxBossLimit[lnI] - minBossLimit[lnI]) + minBossLimit[lnI]]);
-						// Redo randomization if Linguar or Imposter are in the proceedings due to graphical glitches.
-						if (romData[byteToUse + lnJ] == 0xba || romData[byteToUse + lnJ] == 0x99) lnJ--;
-
-						if ((lnI == 12 || lnI == 26) && optMonsterHeavy.Checked && chkRandomMonsterAttacks.Checked)
+						if (lnJ == 0 && firstMonster[lnI] >= 0)
+							romData[byteToUse + 0] = (byte)firstMonster[lnI];
+						else if (romData[byteToUse + lnJ] != 0xff)
 						{
-							// Limit Cave Of Betrayal bosses to level 2 moves only.
-							int byteToUse2 = 0x60056 + (romData[byteToUse + lnJ] * 22);
-							int[] earlyBossMoves = { 0x00, 0x03, 0x07, 0x0a, 0x10, 0x16, 0x17, 0x18, 0x22, 0x25, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32,
-								0x35, 0x38, 0x3c, 0x3f, 0x42, 0x45, 0x47, 0x4b, 0x4c, 0x4f, 0x58, 0x5e, 0x5f, 0x61, 0x62, 0x64 };
-							for (int lnK = 0; lnK < 6; lnK++)
-								romData[byteToUse2 + 9 + lnK] = (byte)(earlyBossMoves[r1.Next() % earlyBossMoves.Length]);
+							int helperRank = 0;
+							// Determine monster rank of current monster
+							for (int lnK = 0; lnK < monsterRank.Length; lnK++)
+								if (romData[byteToUse + lnJ] == monsterRank[lnK])
+								{
+									helperRank = lnK;
+									break;
+								}
+							// Make the randomization of the other monsters +/- 10%.  Do not exceed 189 (0xbd)
+							int monster = romData[byteToUse + lnJ];
+							int random = monster / 10;
+							monster = monster - random + (r1.Next() % (random * 2));
+							romData[byteToUse + lnJ] = (byte)Math.Min(monster, 189);
 						}
 					}
-					romData[byteToUse + lnJ + 4] = (byte)(lnJ == groups ? 8 : 1);
+				} else if (cboMonsterZones.SelectedIndex >= 3)
+				{
+					// Figure out how many groups of monsters will be involved.
+					int groups = r1.Next() % 4;
+					for (int lnJ = 0; lnJ < groups + 1; lnJ++)
+					{
+						if (lnJ == 0 && firstMonster[lnI] >= 0)
+							romData[byteToUse + 0] = (byte)firstMonster[lnI];
+						else
+						{
+							if (cboMonsterZones.SelectedIndex == 2) // Make the randomization +/- 10%.  Do not exceed 189 (0xbd)
+								romData[byteToUse + lnJ] = (byte)(monsterRank[r1.Next() % (maxBossLimit[lnI] - minBossLimit[lnI]) + minBossLimit[lnI]]);
+							else if (cboMonsterZones.SelectedIndex >= 3)
+								romData[byteToUse + lnJ] = (byte)(monsterRank[r1.Next() % (maxBossLimit[lnI] - minBossLimit[lnI]) + minBossLimit[lnI]]);
+
+							// Redo randomization if Linguar or Imposter are in the proceedings due to graphical glitches.
+							if (romData[byteToUse + lnJ] == 0xba || romData[byteToUse + lnJ] == 0x99) lnJ--;
+
+							if ((lnI == 12 || lnI == 26) && cboMonsterAttacks.SelectedIndex >= 3)
+							{
+								// Limit Cave Of Betrayal bosses to level 2 moves only.
+								int byteToUse2 = 0x60056 + (romData[byteToUse + lnJ] * 22);
+								int[] earlyBossMoves = { 0x00, 0x03, 0x07, 0x0a, 0x10, 0x16, 0x17, 0x18, 0x22, 0x25, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32,
+								0x35, 0x38, 0x3c, 0x3f, 0x42, 0x45, 0x47, 0x4b, 0x4c, 0x4f, 0x58, 0x5e, 0x5f, 0x61, 0x62, 0x64 };
+								for (int lnK = 0; lnK < 6; lnK++)
+									romData[byteToUse2 + 9 + lnK] = (byte)(earlyBossMoves[r1.Next() % earlyBossMoves.Length]);
+							}
+						}
+						romData[byteToUse + lnJ + 4] = (byte)(lnJ == groups ? 8 : 1);
+					}
 				}
 			}
 		}
 
 		private void randomizeMonsterResistances(Random r1)
 		{
+			if (cboMonsterResistances.SelectedIndex == 0)
+				return;
 			for (int lnI = 0; lnI < 190; lnI++) // <= 0xc2
 			{
 				// do not randomize Necrosaro or the metal monsters.
@@ -2656,17 +3315,17 @@ namespace DW4RandoHacker
 				{
 					int res1 = (romData[byteToUse + 15 + lnJ] / 8) % 4;
 					int res2 = romData[byteToUse + 15 + lnJ] / 64;
-					if ((chkC14Random.Checked || chkSoloHero.Checked) && (monsterRank[lnI] == 0xb3 || monsterRank[lnI] == 0x12 || monsterRank[lnI] == 0xaf || monsterRank[lnI] == 0xb0 ||
-						monsterRank[lnI] == 0xb1 || monsterRank[lnI] == 0xb2 || monsterRank[lnI] == 0xba || monsterRank[lnI] == 0xb4))
+					// Make early bosses have no resistances if heroes are randomized or the solo hero challenge is selected.
+					if ((chkC14Random.Checked || chkSoloHero.Checked) && (lnI == 77 || lnI == 110 || lnI == 71 || lnI == 80 || lnI == 81 || lnI == 91 || lnI == 92 || lnI == 155 || lnI == 150))
 					{
 						res1 = res2 = 0;
 					}
-					else if (optMonsterSilly.Checked)
+					else if (cboMonsterResistances.SelectedIndex == 1)
 					{
 						res1 += (r1.Next() % 3) - 1;
 						res2 += (r1.Next() % 3) - 1;
 					}
-					else if (optMonsterMedium.Checked)
+					else if (cboMonsterResistances.SelectedIndex == 2)
 					{
 						if (r1.Next() % 3 != 0)
 						{
@@ -2674,7 +3333,7 @@ namespace DW4RandoHacker
 							res2 += (r1.Next() % 5) - 2;
 						}
 					}
-					else if (optMonsterHeavy.Checked)
+					else if (cboMonsterResistances.SelectedIndex == 3)
 					{
 						res1 = (r1.Next() % 4);
 						res2 = (r1.Next() % 4);
@@ -2823,40 +3482,6 @@ namespace DW4RandoHacker
 			for (int lnI = 0; lnI < treasureData.Length; lnI++)
 				currentList.Add(treasureData[lnI]);
 			return currentList;
-		}
-
-		private void shuffle(int[] treasureData, Random r1, bool keyItemAvoidance = false)
-		{
-			// Do not exceed these zones defined for the key items, or you're going to be stuck!
-			int[] keyZoneMax = { 13, 13, 23, 40, 45, 53 }; // Cloak of wind, Mirror Of Ra, Golden Key, Jailor's Key, Moon Fragment, Eye Of Malroth
-			List<byte> keyItems = new List<byte> { 0x2b, 0x2e, 0x37, 0x39, 0x26, 0x28 }; // When we reach insane randomness, we'll want to know what the key items are so we place them in the appropriate zones...
-
-			// Shuffle each zone 15 times the length of the array for randomness.
-			for (int lnI = 0; lnI < 15 * treasureData.Length; lnI++)
-			{
-				int swap1 = r1.Next() % treasureData.Length;
-				int swap2 = r1.Next() % treasureData.Length;
-
-				// Don't shuffle if key items would be swapped into inaccessible areas.
-				if (keyItemAvoidance)
-				{
-					int position1 = keyItems.IndexOf(romData[treasureData[swap1]]);
-					int position2 = keyItems.IndexOf(romData[treasureData[swap2]]);
-					if (position1 > -1 && swap2 > keyZoneMax[position1])
-						continue;
-					if (position2 > -1 && swap1 > keyZoneMax[position2])
-						continue;
-				}
-
-				swap(treasureData[swap1], treasureData[swap2]);
-			}
-		}
-
-		private void swap(int firstAddress, int secondAddress)
-		{
-			byte holdAddress = romData[secondAddress];
-			romData[secondAddress] = romData[firstAddress];
-			romData[firstAddress] = holdAddress;
 		}
 
 		private int[] swapArray(int[] array, int first, int second)
@@ -3072,21 +3697,52 @@ namespace DW4RandoHacker
 		private void chkSoloHero_CheckedChanged(object sender, EventArgs e)
 		{
 			cboSoloHero.Enabled = chkSoloHero.Checked;
-			chkSoloCanEquipAll.Enabled = chkSoloHero.Checked;
 			chkC14Random.Enabled = !chkSoloHero.Checked;
 			determineFlags(null, null);
 		}
 
 		private void chkShop1_CheckedChanged(object sender, EventArgs e)
 		{
-			if (chkShop1.Checked) chkShop25K.Checked = false;
+			if (chkCh3Shop1.Checked) chkCh3Shop25K.Checked = false;
 			determineFlags(null, null);
 		}
 
 		private void chkShop25K_CheckedChanged(object sender, EventArgs e)
 		{
-			if (chkShop25K.Checked) chkShop1.Checked = false;
+			if (chkCh3Shop25K.Checked) chkCh3Shop1.Checked = false;
 			determineFlags(null, null);
+		}
+
+		private int ScaleValue(double value, double scale, double adjustment, Random r1, bool min100 = false)
+		{
+			double exponent = (double)r1.Next() / int.MaxValue;
+			exponent = (min100 ? exponent : exponent * 2.0 - 1.0);
+			var adjustedScale = 1.0 + adjustment * (scale - 1.0);
+
+			return (int)Math.Round(Math.Pow(adjustedScale, exponent) * value, MidpointRounding.AwayFromZero);
+		}
+
+		private double ScaleValueDouble(double value, double scale, double adjustment, Random r1, bool min100 = false)
+		{
+			double exponent = (double)r1.Next() / int.MaxValue;
+			exponent = (min100 ? exponent : exponent * 2.0 - 1.0);
+			var adjustedScale = 1.0 + adjustment * (scale - 1.0);
+
+			return Math.Pow(adjustedScale, exponent) * value;
+		}
+
+		private int[] inverted_power_curve(int min, int max, int arraySize, double powToUse, Random r1)
+		{
+			int range = max - min;
+			double p_range = Math.Pow(range, 1 / powToUse);
+			int[] points = new int[arraySize];
+			for (int i = 0; i < arraySize; i++)
+			{
+				double section = (double)r1.Next() / int.MaxValue;
+				points[i] = (int)Math.Round(max - Math.Pow(section * p_range, powToUse));
+			}
+			Array.Sort(points);
+			return points;
 		}
 
 		private void cmdStatOutput_Click(object sender, EventArgs e)
@@ -3127,158 +3783,105 @@ namespace DW4RandoHacker
 			if (loading) return;
 
 			string flags = "";
-			int number = 0;
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh1InstantWell, chkCh1FlyingShoes, chkCh1Moat })); // Chapter 1
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh2InstantWallKick, chkCh2EndorEntry, chkCh2AwardXPTournament })); // Chapter 2
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh3Shop1, chkCh3Shop25K, chkCh3Tunnel1, chkCh3BuildBridges, chkCh3BuildTunnel })); // Chapter 3
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh4GunpowderJar, chkCh4GunpowderJar })); // Chapter 4
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh5BlowUpHometown, chkCh5SymbolOfFaith, chkCh5ControlAllChars, chkInstantFinalCave, chkSwapMonsterStats, chkSwapBossStats })); // Chapter 5/Monsters
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkRandomizeMap, chkSmallMap, chkSoloHero, chkC14Random, chkStoreNoSeeds, chkRandomizeNPCs })); // General/Adjustments
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkSpeedUpBattles, chkSpeedUpMusic, chkDoubleWalking, chkSpeedyText, chkChapter5Start })); // Adjustments
 
-			number += cboSoloHero.SelectedIndex;
-			number += (chkSoloHero.Checked ? 8 : 0);
-			number += (chkSoloCanEquipAll.Checked ? 16 : 0);
-			number += (chkC14Random.Checked ? 32 : 0);
-			flags += convertIntToChar(number);
-			number = 0;
-
-			number += cboXPAdjustment.SelectedIndex;
-			number += (chkXPRandom.Checked ? 8 : 0);
-			number += (chkRandomizeMap.Checked ? 16 : 0);
-			number += (chkSmallMap.Checked ? 32 : 0);
-			flags += convertIntToChar(number);
-			number = 0;
-
-			number += cboGoldAdjustment.SelectedIndex;
-			number += (chkGoldRandom.Checked ? 8 : 0);
-			flags += convertIntToChar(number);
-			number = 0;
-
-			number += cboEncounterRate.SelectedIndex;
-			flags += convertIntToChar(number);
-			number = 0;
-
-			number += (chkRandomMonsterZones.Checked ? 1 : 0);
-			number += (chkSpeedUpBattles.Checked ? 2 : 0);
-			number += (chkRandomHeroEquip.Checked ? 4 : 0);
-			number += (chkRandomMonsterStats.Checked ? 8 : 0);
-			number += (chkRandomTreasures.Checked ? 16 : 0);
-			number += (chkRandomMonsterResistances.Checked ? 32 : 0);
-			flags += convertIntToChar(number);
-			number = 0;
-
-			number += (chkRandomStores.Checked ? 1 : 0);
-			number += (chkRandomHeroStats.Checked ? 2 : 0);
-			number += (chkC5ControlAllChars.Checked ? 4 : 0);
-			number += (chkRandomMonsterAttacks.Checked ? 8 : 0);
-			number += (chkRandomizeHeroSpells.Checked ? 16 : 0);
-			number += (chkScaleNPCs.Checked ? 32 : 0);
-			flags += convertIntToChar(number);
-			number = 0;
-
-			number += (optMonsterLight.Checked ? 1 : 0);
-			number += (optMonsterSilly.Checked ? 2 : 0);
-			number += (optMonsterMedium.Checked ? 3 : 0);
-			number += (optMonsterHeavy.Checked ? 4 : 0);
-			number += (chkDoubleWalking.Checked ? 8 : 0);
-			number += (chkSpeedyText.Checked ? 16 : 0);
-			number += (chkSpeedUpMusic.Checked ? 32 : 0);
-			flags += convertIntToChar(number);
-			number = 0;
-
-			number += (chkCh1InstantWell.Checked ? 1 : 0);
-			number += (chkCh2AwardXPTournament.Checked ? 2 : 0);
-			number += (chkCh2EndorEntry.Checked ? 4 : 0);
-			number += (chkCh2InstantWallKick.Checked ? 8 : 0);
-			flags += convertIntToChar(number);
-			number = 0;
-
-			number += (chkShop1.Checked ? 1 : 0);
-			number += (chkShop25K.Checked ? 2 : 0);
-			number += (chkTunnel1.Checked ? 4 : 0);
-			number += (chkCh3BuildBridges.Checked ? 8 : 0);
-			number += (chkCh3BuildTunnel.Checked ? 16 : 0);
-			number += (chkCh4BoardingPass.Checked ? 32 : 0);
-			flags += convertIntToChar(number);
-			number = 0;
-
-			number += (chkCh5BlowUpHometown.Checked ? 1 : 0);
-			number += (chkCh5SymbolOfFaith.Checked ? 2 : 0);
-			number += (chkInstantFinalCave.Checked ? 4 : 0);
-			number += (chkCh4GunpowderJar.Checked ? 8 : 0);
-			number += (chkChapter5Start.Checked ? 16 : 0);
-			flags += convertIntToChar(number);
-			number = 0;
+			// Combo boxes time...
+			flags += convertIntToChar(cboStoreAvailability.SelectedIndex + (8 * cboStorePrices.SelectedIndex));
+			flags += convertIntToChar(cboHeroStats.SelectedIndex + (8 * cboHeroSpells.SelectedIndex));
+			flags += convertIntToChar(cboTreasures.SelectedIndex + (8 * cboEquipChances.SelectedIndex));
+			flags += convertIntToChar(cboEquipPowers.SelectedIndex + (8 * cboNPCs.SelectedIndex));
+			flags += convertIntToChar(cboSoloHero.SelectedIndex + (8 * cboCriticalHitChance.SelectedIndex));
+			flags += convertIntToChar(cboTaloonInsanity.SelectedIndex + (8 * cboTaloonInsanityChance.SelectedIndex));
+			flags += convertIntToChar(cboMonsterStats.SelectedIndex + (8 * cboMonsterAttacks.SelectedIndex));
+			flags += convertIntToChar(cboMonsterZones.SelectedIndex + (8 * cboMonsterResistances.SelectedIndex));
+			flags += convertIntToChar(cboXPBoost.SelectedIndex + (8 * cboXPRandom.SelectedIndex));
+			flags += convertIntToChar(cboGoldBoost.SelectedIndex + (8 * cboGoldRandom.SelectedIndex));
+			flags += convertIntToChar(cboEncounterRate.SelectedIndex + (8 * cboTaloonInsanityMoves.SelectedIndex));
+			flags += convertIntToChar(cboLevelCrit.SelectedIndex);
+			flags += convertIntToChar(cboMonsterDrops.SelectedIndex + (8 * cboMonsterDropChance.SelectedIndex));
 
 			txtFlags.Text = flags;
 		}
 
 		private void determineChecks(object sender, EventArgs e)
 		{
-			string flags = txtFlags.Text;
+			if (loading && txtFlags.Text.Length < 20)
+				txtFlags.Text = "000000000008e0022300";
 
 			loading = true;
 
-			int number = convertChartoInt(Convert.ToChar(flags.Substring(0, 1)));
-			chkSoloHero.Checked = (number % 16 >= 8);
-			cboSoloHero.SelectedIndex = (number % 8);
-			chkSoloCanEquipAll.Checked = (number % 32 >= 16);
-			chkC14Random.Checked = (number % 64 >= 32);
+			string flags = txtFlags.Text;
 
-			number = convertChartoInt(Convert.ToChar(flags.Substring(1, 1)));
-			cboXPAdjustment.SelectedIndex = (number % 8);
-			chkXPRandom.Checked = (number % 16 >= 8);
-			chkRandomizeMap.Checked = (number % 32 >= 16);
-			chkSmallMap.Checked = (number % 64 >= 32);
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(0, 1))), new CheckBox[] { chkCh1InstantWell, chkCh1FlyingShoes, chkCh1Moat }); // Chapter 1
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(1, 1))), new CheckBox[] { chkCh2InstantWallKick, chkCh2EndorEntry, chkCh2AwardXPTournament });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(2, 1))), new CheckBox[] { chkCh3Shop1, chkCh3Shop25K, chkCh3Tunnel1, chkCh3BuildBridges, chkCh3BuildTunnel });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(3, 1))), new CheckBox[] { chkCh4GunpowderJar, chkCh4GunpowderJar });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(4, 1))), new CheckBox[] { chkCh5BlowUpHometown, chkCh5SymbolOfFaith, chkCh5ControlAllChars, chkInstantFinalCave, chkSwapMonsterStats, chkSwapBossStats });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(5, 1))), new CheckBox[] { chkRandomizeMap, chkSmallMap, chkSoloHero, chkC14Random, chkStoreNoSeeds, chkRandomizeNPCs });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(6, 1))), new CheckBox[] { chkSpeedUpBattles, chkSpeedUpMusic, chkDoubleWalking, chkSpeedyText, chkChapter5Start });
 
-			number = convertChartoInt(Convert.ToChar(flags.Substring(2, 1)));
-			cboGoldAdjustment.SelectedIndex = (number % 8);
-			chkGoldRandom.Checked = (number % 16 >= 8);
+			cboStoreAvailability.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(7, 1))) % 8;
+			cboStorePrices.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(7, 1))) / 8;
 
-			number = convertChartoInt(Convert.ToChar(flags.Substring(3, 1)));
-			cboEncounterRate.SelectedIndex = (number % 8);
+			cboHeroStats.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(8, 1))) % 8;
+			cboHeroSpells.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(8, 1))) / 8;
 
-			number = convertChartoInt(Convert.ToChar(flags.Substring(4, 1)));
-			chkRandomMonsterZones.Checked = (number % 2 == 1);
-			chkSpeedUpBattles.Checked = (number % 4 >= 2);
-			chkRandomHeroEquip.Checked = (number % 8 >= 4);
-			chkRandomMonsterStats.Checked = (number % 16 >= 8);
-			chkRandomTreasures.Checked = (number % 32 >= 16);
-			chkRandomMonsterResistances.Checked = (number % 64 >= 32);
+			cboTreasures.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(9, 1))) % 8;
+			cboEquipChances.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(9, 1))) / 8;
 
-			number = convertChartoInt(Convert.ToChar(flags.Substring(5, 1)));
-			chkRandomStores.Checked = (number % 2 == 1);
-			chkRandomHeroStats.Checked = (number % 4 >= 2);
-			chkC5ControlAllChars.Checked = (number % 8 >= 4);
-			chkRandomMonsterAttacks.Checked = (number % 16 >= 8);
-			chkRandomizeHeroSpells.Checked = (number % 32 >= 16);
-			chkScaleNPCs.Checked = (number % 64 >= 32);
+			cboEquipPowers.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(10, 1))) % 8;
+			cboNPCs.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(10, 1))) / 8;
 
-			number = convertChartoInt(Convert.ToChar(flags.Substring(6, 1)));
-			optMonsterLight.Checked = (number % 8 == 1);
-			optMonsterSilly.Checked = (number % 8 == 2);
-			optMonsterMedium.Checked = (number % 8 == 3);
-			optMonsterHeavy.Checked = (number % 8 == 4);
-			chkDoubleWalking.Checked = (number % 16 >= 8);
-			chkSpeedyText.Checked = (number % 32 >= 16);
-			chkSpeedUpMusic.Checked = (number % 64 >= 32);
+			cboSoloHero.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(11, 1))) % 8;
+			cboCriticalHitChance.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(11, 1))) / 8;
 
-			number = convertChartoInt(Convert.ToChar(flags.Substring(7, 1)));
-			chkCh1InstantWell.Checked = (number % 2 == 1);
-			chkCh2AwardXPTournament.Checked = (number % 4 >= 2);
-			chkCh2EndorEntry.Checked = (number % 8 >= 4);
-			chkCh2InstantWallKick.Checked = (number % 16 >= 8);
+			cboTaloonInsanity.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(12, 1))) % 8; // 0x47309, 0x472A6 - Chapter #
+			cboTaloonInsanityChance.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(12, 1))) / 8; // 0x472A6 - Insanity Chance.  Default:  AND $#03
 
-			number = convertChartoInt(Convert.ToChar(flags.Substring(8, 1)));
-			chkShop1.Checked = (number % 2 == 1);
-			chkShop25K.Checked = (number % 4 >= 2);
-			chkTunnel1.Checked = (number % 8 >= 4);
-			chkCh3BuildBridges.Checked = (number % 16 >= 8);
-			chkCh3BuildTunnel.Checked = (number % 32 >= 16);
-			chkCh4BoardingPass.Checked = (number % 64 >= 32);
+			cboMonsterStats.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(13, 1))) % 8;
+			cboMonsterAttacks.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(13, 1))) / 8;
 
-			number = convertChartoInt(Convert.ToChar(flags.Substring(9, 1)));
-			chkCh5BlowUpHometown.Checked = (number % 2 == 1);
-			chkCh5SymbolOfFaith.Checked = (number % 4 >= 2);
-			chkInstantFinalCave.Checked = (number % 8 >= 4);
-			chkCh4GunpowderJar.Checked = (number % 16 >= 8);
-			chkChapter5Start.Checked = (number % 32 >= 16);
+			cboMonsterZones.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(14, 1))) % 8;
+			cboMonsterResistances.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(14, 1))) / 8;
+
+			cboXPBoost.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(15, 1))) % 8;
+			cboXPRandom.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(15, 1))) / 8;
+
+			cboGoldBoost.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(16, 1))) % 8;
+			cboGoldRandom.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(16, 1))) / 8;
+
+			cboEncounterRate.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(17, 1))) % 8;
+			cboTaloonInsanityMoves.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(17, 1))) / 8;
+
+			cboLevelCrit.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(18, 1))) % 8;
+
+			cboMonsterDrops.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(19, 1))) % 8;
+			cboMonsterDropChance.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(19, 1))) / 8;
 
 			loading = false;
+		}
+
+		private int checkboxesToNumber(CheckBox[] boxes)
+		{
+			int number = 0;
+			for (int lnI = 0; lnI < Math.Min(boxes.Length, 6); lnI++)
+				number += boxes[lnI].Checked ? (int)Math.Pow(2, lnI) : 0;
+
+			return number;
+		}
+
+		private int numberToCheckboxes(int number, CheckBox[] boxes)
+		{
+			for (int lnI = 0; lnI < Math.Min(boxes.Length, 6); lnI++)
+				boxes[lnI].Checked = number % ((int)Math.Pow(2, lnI + 1)) >= (int)Math.Pow(2, lnI);
+
+			return number;
 		}
 
 		private string convertIntToChar(int number)
@@ -3411,17 +4014,6 @@ namespace DW4RandoHacker
 					&& createZone(10000, 25, false, r1, 9000) // Konenbear
 					&& createZone(8000, 20, false, r1)) // Monbarara
 					zonesCreated = true;
-
-				using (StreamWriter writer = File.CreateText(Path.Combine(Path.GetDirectoryName(txtFileName.Text), "zones.txt")))
-				{
-					for (int lnY = 0; lnY < 16; lnY++)
-					{
-						string output = "";
-						for (int lnX = 0; lnX < 16; lnX++)
-							output += zone[lnY, lnX].ToString().PadLeft(6);
-						writer.WriteLine(output);
-					}
-				}
 			}
 
 			markZoneSides();
@@ -3444,34 +4036,11 @@ namespace DW4RandoHacker
 			resetIslands();
 
 			connectLikeIslands(r1);
-
-			using (StreamWriter writer = File.CreateText(Path.Combine(Path.GetDirectoryName(txtFileName.Text), "island.txt")))
-			{
-				for (int lnY = 0; lnY < 256; lnY++)
-				{
-					string output = "";
-					for (int lnX = 0; lnX < 256; lnX++)
-						output += island[lnY, lnX].ToString().PadLeft(6);
-					writer.WriteLine(output);
-				}
-			}
-
 			// Go vertically first, then go horizontally once off island 3, then vertically onto island 4
 			if (!connectIslands(r1, 3, 4, true)) return false;
 			if (!connectIslands(r1, 5, 6, false)) return false;
 			if (!connectIslands(r1, 5, 7, false)) return false;
 			if (!connectIslands(r1, 9, 10, true)) return false;
-
-			using (StreamWriter writer = File.CreateText(Path.Combine(Path.GetDirectoryName(txtFileName.Text), "island2.txt")))
-			{
-				for (int lnY = 0; lnY < 256; lnY++)
-				{
-					string output = "";
-					for (int lnX = 0; lnX < 256; lnX++)
-						output += island[lnY, lnX].ToString().PadLeft(6);
-					writer.WriteLine(output);
-				}
-			}
 
 			// We should mark islands and inaccessible land...
 			int lakeNumber = 256;
@@ -3721,7 +4290,7 @@ namespace DW4RandoHacker
                                   // (40) Medal King Castle, Shrine to Endor North, Woodman's Shack, Desert Inn, Shrine to Endor South, Shrine W of Haville, Shrine E of Mintos, Royal Crypt, Shrine NW of Riverton,
                                   "S", "S", "S", "X", "S", "S", "S", "S", "S", 
                                   // (49) Loch Tower, Colossus Shrine North, Colossus Shrine South, Lighthouse Tower, Birdsong Tower, Elfville, Old Man's Island House, Bazaar, Well, Cave SE of Gardenbur, Gottside (59)
-                                  "W", "X", "X", "W", "W", "?", "?", "?", "?", "V", "?" };
+                                  "?", "X", "X", "W", "W", "?", "?", "?", "?", "V", "?" };
 
 			int[] locIslands = { 99, 1, 3, 9, 6, 99, 5, 8, 99, 99,
 								 2, 4, 6, 99, 3, 3, 6, 9, 99, 99, 10, 10, 99, 8, 8, 8, 8, 99,
@@ -3993,6 +4562,45 @@ namespace DW4RandoHacker
 							else
 								lnI--;
 						}
+						else if (lnI == 49) // Loch Tower
+						{
+							if (validPlot(y, x, 4, 1, locIslands[lnI] <= 10 ? new int[] { maxIsland[locIslands[lnI]] } : islands.ToArray()) && reachable(y, x, !landLocs.Contains(lnI),
+								locIslands[lnI] <= 10 ? midenX[locIslands[lnI]] : midenX[10], locIslands[lnI] <= 10 ? midenY[locIslands[lnI]] : midenY[10], maxLake, false))
+							{
+								bool baramosLegal = true;
+								for (int lnY = -2; lnY < 2; lnY++)
+									for (int lnX = -2; lnX < 2; lnX++)
+									{
+										if (map[y + lnY, x + lnX] >= 0xe8)
+											baramosLegal = false;
+									}
+								if (baramosLegal)
+								{
+									if (!chkCh1Moat.Checked)
+									{
+										map[y + 0, x - 1] = map[y + 1, x - 1] = 0x01;
+										map[y + 0, x - 2] = map[y + 1, x - 2] = 0x00;
+										map[y + 0, x + 1] = map[y + 1, x + 1] = 0x00;
+										map[y + 0, x - 3] = map[y + 1, x - 3] = map[y - 1, x - 3] = map[y + 2, x - 3] = 0x01;
+										map[y + 0, x + 2] = map[y + 1, x + 2] = map[y - 1, x + 2] = map[y + 2, x + 2] = 0x01;
+										map[y - 1, x - 2] = map[y - 1, x - 1] = map[y - 1, x] = map[y - 1, x + 1] = 0x00;
+										map[y + 2, x - 2] = map[y + 2, x - 1] = map[y + 2, x] = map[y + 2, x + 1] = 0x00;
+									}
+									map[y + 0, x + 0] = 0xed;
+									map[y + 1, x + 0] = 0xf1;
+
+									int byteToUse = 0x3be1c + (3 * lnI);
+									romData[byteToUse] = (byte)x;
+									romData[byteToUse + 1] = (byte)(y + 1);
+
+									// Return spot via Flying Shoes
+									romData[0x7afea] = (byte)x;
+									romData[0x7afeb] = (byte)y;
+								}
+							}
+							else
+								lnI--;
+						}
 						else if (lnI == 54) // Elfville
 						{
 							if (validPlot(y, x, 3, 3, islands.ToArray()) && reachable(y, x, true, midenX[10], midenY[10], maxLake, false))
@@ -4065,20 +4673,21 @@ namespace DW4RandoHacker
 						}
 						else if (lnI == 57) // Well
 						{
-							if (validPlot(y, x, 3, 3, new int[] { maxIsland[locIslands[lnI]] }) && reachable(y, x, false, midenX[2], midenY[2], maxLake, false))
+							if (validPlot(y, x, 1, 1, new int[] { maxIsland[locIslands[lnI]] }) && reachable(y, x, false, midenX[2], midenY[2], maxLake, false) && y >= 8 && x >= 8 && map[y - 4, x - 4] < 0xe8)
 							{
-								for (int lnJ = 0; lnJ <= 2; lnJ++)
-									for (int lnK = 0; lnK <= 2; lnK++)
-										map[y + lnJ, x + lnK] = 0x04;
+								//for (int lnJ = 0; lnJ <= 2; lnJ++)
+								//	for (int lnK = 0; lnK <= 2; lnK++)
+								//		map[y + lnJ, x + lnK] = 0x04;
 
-								map[y + 1, x + 1] = 0x03;
+								//map[y, x] = 0x03;
+								map[y - 4, x - 4] = 0xf5;
 
 								int byteToUse = 0x3be1c + (3 * lnI);
-								romData[byteToUse] = (byte)(x + 1);
-								romData[byteToUse + 1] = (byte)(y + 1);
+								romData[byteToUse] = (byte)x;
+								romData[byteToUse + 1] = (byte)y;
 
-								romData[0x23e83] = romData[0x2365b] = (byte)(x + 1); // Second romData:  Needed for comparison to make sure you did the Alex thing
-								romData[0x23e84] = romData[0x23661] = (byte)(y + 1);
+								romData[0x23e83] = romData[0x2365b] = (byte)x; // Second romData:  Needed for comparison to make sure you did the Alex thing
+								romData[0x23e84] = romData[0x23661] = (byte)y;
 							}
 							else
 								lnI--;
@@ -5903,7 +6512,8 @@ namespace DW4RandoHacker
 					romData[0x72ee5] = (byte)finalY1;
 
 					setReturnPlacement(finalX1, finalY1 < finalY2 ? finalY1 - 1 : finalY1 + 1, 15);
-				} else if (island1 == 9)
+				}
+				else if (island1 == 9)
 				{
 					int byteToUse = 0x3be1c + (3 * 43);
 					romData[byteToUse] = (byte)finalX1;
@@ -6027,5 +6637,4 @@ namespace DW4RandoHacker
 			}
 		}
 	}
-
 }

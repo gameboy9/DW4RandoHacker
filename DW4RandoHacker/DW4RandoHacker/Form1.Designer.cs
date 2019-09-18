@@ -1453,7 +1453,7 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.txtFileName);
 			this.Name = "Form1";
-			this.Text = "Dragon Warrior IV RandoHacker 2.0.4";
+			this.Text = "Dragon Warrior IV RandoHacker 2.0.11";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.tabShortcuts.ResumeLayout(false);
