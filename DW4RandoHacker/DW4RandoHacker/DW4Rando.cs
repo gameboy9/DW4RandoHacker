@@ -933,7 +933,7 @@ namespace DW4RandoHacker
 				}
 				else
 				{
-					xp = inverted_power_curve(1, (int)(12000 * xpBoost == 0 ? 0 : xpBoost == 1 ? .5 : xpBoost == 2 ? 1.0 : xpBoost == 3 ? 1.5 : xpBoost == 4 ? 2.0 : xpBoost == 5 ? 3.0 : xpBoost == 6 ? 4.0 : 5.0), 1, 0.25, r1)[0];
+					xp = inverted_power_curve(1, (int)(12000 * (xpBoost == 0 ? 0 : xpBoost == 1 ? .5 : xpBoost == 2 ? 1.0 : xpBoost == 3 ? 1.5 : xpBoost == 4 ? 2.0 : xpBoost == 5 ? 3.0 : xpBoost == 6 ? 4.0 : 5.0)), 1, 0.05, r1)[0];
 				}
 
 				int xpTrue = (int)Math.Round(xp);
@@ -960,7 +960,7 @@ namespace DW4RandoHacker
 				}
 				else
 				{
-					xp = inverted_power_curve(1, (int)(200 * xpBoost == 0 ? 0 : xpBoost == 1 ? .5 : xpBoost == 2 ? 1.0 : xpBoost == 3 ? 1.5 : xpBoost == 4 ? 2.0 : xpBoost == 5 ? 3.0 : xpBoost == 6 ? 4.0 : 5.0), 1, 0.5, r1)[0];
+					xp = inverted_power_curve(1, (int)(200 * (xpBoost == 0 ? 0 : xpBoost == 1 ? .5 : xpBoost == 2 ? 1.0 : xpBoost == 3 ? 1.5 : xpBoost == 4 ? 2.0 : xpBoost == 5 ? 3.0 : xpBoost == 6 ? 4.0 : 5.0)), 1, 0.1, r1)[0];
 				}
 
 				int xpTrue = (int)Math.Round(xp);
@@ -2293,21 +2293,41 @@ namespace DW4RandoHacker
 
 				int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
 
-				// Do not adjust stats if a metal monster is involved...
-				if (lnI != 34 && lnI != 97 && lnI != 175)
+				if (cboMonsterStats.SelectedIndex <= 4)
+				{
+					// Do not adjust stats if a metal monster is involved...
+					if (lnI != 34 && lnI != 97 && lnI != 175)
+					{
+						for (int lnJ = 2; lnJ <= 6; lnJ++)
+						{
+							// If a monster has 16 MP or less and "wins" a 50/50, then it will have anywhere between 0-16 MP.
+							if (lnJ == 3)
+							{
+								if (romData[byteToUse + 3] <= 16 && r1.Next() % 2 == 0)
+									romData[byteToUse + 3] = (byte)(r1.Next() % 16);
+								//lnJ++;
+							}
+
+							int stat = romData[byteToUse + lnJ] + (lnJ >= 4 ? (romData[byteToUse + lnJ + 11] % 4) * 256 : 0);
+							stat = ScaleValue(stat, cboMonsterStats.SelectedIndex == 1 ? 1.5 : cboMonsterStats.SelectedIndex == 2 ? 2.0 : cboMonsterStats.SelectedIndex == 3 ? 3.0 : cboMonsterStats.SelectedIndex == 4 ? 4.0 : 1.0, 1.0, r1, false);
+
+							if (lnJ == 2 && stat > 255) stat = 255;
+							if (lnJ >= 4 && stat > 1020) stat = 1020;
+							romData[byteToUse + lnJ] = (byte)(stat % 256);
+							if (lnJ >= 4)
+								romData[byteToUse + lnJ + 11] = (byte)(romData[byteToUse + lnJ + 11] - (romData[byteToUse + lnJ + 11] % 4) + (stat / 256));
+						}
+					}
+				}
+				else
 				{
 					for (int lnJ = 2; lnJ <= 6; lnJ++)
 					{
-						// If a monster has 16 MP or less and "wins" a 50/50, then it will have anywhere between 0-16 MP.
-						if (lnJ == 3)
-						{
-							if (romData[byteToUse + 3] <= 16 && r1.Next() % 2 == 0)
-								romData[byteToUse + 3] = (byte)(r1.Next() % 16);
-							//lnJ++;
-						}
-
-						int stat = romData[byteToUse + lnJ] + (lnJ >= 4 ? (romData[byteToUse + lnJ + 11] % 4) * 256 : 0);
-						stat = ScaleValue(stat, cboMonsterStats.SelectedIndex == 1 ? 1.5 : cboMonsterStats.SelectedIndex == 2 ? 2.0 : cboMonsterStats.SelectedIndex == 3 ? 3.0 : cboMonsterStats.SelectedIndex == 4 ? 4.0 : 1.0, 1.0, r1, false);
+						int stat;
+						if (lnJ <= 3)
+							stat = inverted_power_curve(1, 255, 1, .25, r1)[0];
+						else
+							stat = inverted_power_curve(1, 1020, 1, .1, r1)[0];
 
 						if (lnJ == 2 && stat > 255) stat = 255;
 						if (lnJ >= 4 && stat > 1020) stat = 1020;
@@ -3237,8 +3257,6 @@ namespace DW4RandoHacker
 
 				for (int lnJ = 0; lnJ < 4; lnJ++)
 					romData[byteToUse + lnJ] = 255;
-				for (int lnJ = 4; lnJ < 8; lnJ++)
-					romData[byteToUse + lnJ] = 0;
 
 				if (cboMonsterZones.SelectedIndex == 2)
 				{
@@ -3265,6 +3283,9 @@ namespace DW4RandoHacker
 					}
 				} else if (cboMonsterZones.SelectedIndex >= 3)
 				{
+					for (int lnJ = 4; lnJ < 8; lnJ++)
+						romData[byteToUse + lnJ] = 0;
+
 					// Figure out how many groups of monsters will be involved.
 					int groups = r1.Next() % 4;
 					for (int lnJ = 0; lnJ < groups + 1; lnJ++)
@@ -4315,7 +4336,6 @@ namespace DW4RandoHacker
 
 			for (int lnI = 0; lnI < locTypes.Length; lnI++)
 			{
-				//if (locIslands[lnI] < 0) continue;
 				int x = 300;
 				int y = 300;
 				if (lnI == 1) { x = midenX[1]; y = midenY[1]; } // Burland
@@ -4597,6 +4617,8 @@ namespace DW4RandoHacker
 									romData[0x7afea] = (byte)x;
 									romData[0x7afeb] = (byte)y;
 								}
+								else
+									lnI--;
 							}
 							else
 								lnI--;
