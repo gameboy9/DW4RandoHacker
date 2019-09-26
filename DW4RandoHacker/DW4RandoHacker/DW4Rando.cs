@@ -1728,6 +1728,7 @@ namespace DW4RandoHacker
 					if (lnJ == 5 && lnI >= 5)
 						continue;
 
+					// Adjust base stat by an amount if Silly or Ridiculous difficulty is chosen.
 					if (cboHeroStats.SelectedIndex == 2 || cboHeroStats.SelectedIndex == 3)
 					{
 						int randomDir = (r1.Next() % 3);
@@ -1737,6 +1738,7 @@ namespace DW4RandoHacker
 						if (randomDir == 1)
 							heroL41Gains[lnI, lnJ] += (r1.Next() % difference);
 					}
+					// Ludicrous is totally random
 					if (cboHeroStats.SelectedIndex == 4)
 					{
 						if (lnJ == 2)
@@ -1756,6 +1758,7 @@ namespace DW4RandoHacker
 						if (romData[byteToUse + lnK] >= 128)
 							baseStat += (lnK == 0 ? 1 : lnK == 1 ? 2 : lnK == 2 ? 4 : lnK == 3 ? 8 : 16);
 					}
+					// Base stat is +/- their stat / 4 or 2 for silly or ridiculous difficulty
 					if (cboHeroStats.SelectedIndex == 2 || cboHeroStats.SelectedIndex == 3)
 					{
 						int randomDir = r1.Next() % 3;
@@ -1765,13 +1768,16 @@ namespace DW4RandoHacker
 						if (randomDir == 1 && difference >= 2)
 							baseStat += r1.Next() % difference;
 					}
+					// Ludicrous difficulty is just a random number from 0-31.
 					else if (cboHeroStats.SelectedIndex == 4)
 						baseStat = r1.Next() % 32;
 
+					// Five randomization of levels from 0-49
 					int[] levels = { 0, 0, 0, 0 };
 					for (int lnK = 0; lnK < 4; lnK++)
 						levels[lnK] = (byte)(r1.Next() % 50);
 					Array.Sort(levels);
+					// Implement with the base stat.
 					for (int lnK = 0; lnK < 4; lnK++)
 					{
 						if ((lnK == 0 && baseStat % 2 == 1) || (lnK == 1 && baseStat % 4 >= 2) || (lnK == 2 && baseStat % 8 >= 4) || (lnK == 3 && baseStat % 16 >= 8))
@@ -1780,6 +1786,7 @@ namespace DW4RandoHacker
 							romData[byteToUse + lnK] = (byte)(levels[lnK]);
 					}
 
+					// Always make the last level 99.
 					if (baseStat >= 16)
 						romData[byteToUse + 4] = 99 + 128;
 					else
@@ -2292,6 +2299,7 @@ namespace DW4RandoHacker
 				//if (lnI == 0xae) continue;
 
 				int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
+				byte[] bosses = new byte[] { 0xb3, 0x12, 0xa4, 0xb0, 0xb1, 0xb2, 0xb4, 0xba, 0xc0, 0xbf, 0xbe, 0xb5, 0xc2, 0xc1, 0xbc, 0xb6, 0xb7, 0xb8, 0xb9, 0x91, 0x59, 0x62 };
 
 				if (cboMonsterStats.SelectedIndex <= 4)
 				{
@@ -2308,8 +2316,13 @@ namespace DW4RandoHacker
 								//lnJ++;
 							}
 
+							double scale = cboMonsterStats.SelectedIndex == 1 ? 1.5 : cboMonsterStats.SelectedIndex == 2 ? 2.0 : cboMonsterStats.SelectedIndex == 3 ? 3.0 : cboMonsterStats.SelectedIndex == 4 ? 4.0 : 1.0;
+							// Limit early bosses to half the selected stat randomization.
+							if (lnI == 77 || lnI == 110 || lnI == 71 || lnI == 80 || lnI == 81 || lnI == 91 || lnI == 92 || lnI == 155 || lnI == 150)
+								scale /= 2.0;
+
 							int stat = romData[byteToUse + lnJ] + (lnJ >= 4 ? (romData[byteToUse + lnJ + 11] % 4) * 256 : 0);
-							stat = ScaleValue(stat, cboMonsterStats.SelectedIndex == 1 ? 1.5 : cboMonsterStats.SelectedIndex == 2 ? 2.0 : cboMonsterStats.SelectedIndex == 3 ? 3.0 : cboMonsterStats.SelectedIndex == 4 ? 4.0 : 1.0, 1.0, r1, false);
+							stat = ScaleValue(stat, scale, 1.0, r1, false);
 
 							if (lnJ == 2 && stat > 255) stat = 255;
 							if (lnJ >= 4 && stat > 1020) stat = 1020;
@@ -4584,8 +4597,8 @@ namespace DW4RandoHacker
 						}
 						else if (lnI == 49) // Loch Tower
 						{
-							if (validPlot(y, x, 4, 1, locIslands[lnI] <= 10 ? new int[] { maxIsland[locIslands[lnI]] } : islands.ToArray()) && reachable(y, x, !landLocs.Contains(lnI),
-								locIslands[lnI] <= 10 ? midenX[locIslands[lnI]] : midenX[10], locIslands[lnI] <= 10 ? midenY[locIslands[lnI]] : midenY[10], maxLake, false))
+							if (validPlot(y - 2, x, 6, 1, new int[] { maxIsland[1], maxIsland[2] }) 
+								&& (reachable(y, x, !landLocs.Contains(lnI), midenX[0], midenY[0], maxLake, false) || reachable(y, x, !landLocs.Contains(lnI), midenX[1], midenY[1], maxLake, false)))
 							{
 								bool baramosLegal = true;
 								for (int lnY = -2; lnY < 2; lnY++)
@@ -4594,7 +4607,7 @@ namespace DW4RandoHacker
 										if (map[y + lnY, x + lnX] >= 0xe8)
 											baramosLegal = false;
 									}
-								if (baramosLegal)
+								if (baramosLegal && ((island[y, x - 3] != maxIsland[1] && island[y, x + 3] != maxIsland[1]) || (island[y, x - 3] != maxIsland[2] && island[y, x + 3] != maxIsland[2])))
 								{
 									if (!chkCh1Moat.Checked)
 									{
@@ -4605,6 +4618,8 @@ namespace DW4RandoHacker
 										map[y + 0, x + 2] = map[y + 1, x + 2] = map[y - 1, x + 2] = map[y + 2, x + 2] = 0x01;
 										map[y - 1, x - 2] = map[y - 1, x - 1] = map[y - 1, x] = map[y - 1, x + 1] = 0x00;
 										map[y + 2, x - 2] = map[y + 2, x - 1] = map[y + 2, x] = map[y + 2, x + 1] = 0x00;
+										map[y - 2, x - 3] = map[y - 2, x - 2] = map[y - 2, x - 1] = map[y - 2, x] = map[y - 2, x + 1] = map[y - 2, x + 2] = 0x01;
+										map[y + 3, x - 3] = map[y + 3, x - 2] = map[y + 3, x - 1] = map[y + 3, x] = map[y + 3, x + 1] = map[y + 3, x + 2] = 0x01;
 									}
 									map[y + 0, x + 0] = 0xed;
 									map[y + 1, x + 0] = 0xf1;
@@ -6384,7 +6399,7 @@ namespace DW4RandoHacker
 			for (int x = 0; x < 256; x++)
 				for (int y = 0; y < 256; y++)
 				{
-					if (island[y, x] == maxIsland[island1] && map[y, x] != 0x00 && map[y - 1, x] != 0x06 &&
+					if (island[y, x] == maxIsland[island1] && map[y, x] != 0x00 && (island1 == 5 ? map[y, x - 1] != 0x06 : map[y - 1, x] != 0x06) &&
 						(map[y - 1, x] == 0x00 || map[y - 1, x] == 0x06 ||
 						map[y, x - 1] == 0x00 || map[y, x - 1] == 0x06 ||
 						map[y + 1, x] == 0x00 || map[y + 1, x] == 0x06 ||
@@ -6393,7 +6408,7 @@ namespace DW4RandoHacker
 						id1++;
 						links1.Add(new SuperIslandLinks { island = island1, id = id1, x = x, y = y });
 					}
-					if (island[y, x] == maxIsland[island2] && map[y, x] != 0x00 && map[y - 1, x] != 0x06 &&
+					if (island[y, x] == maxIsland[island2] && map[y, x] != 0x00 && (island1 == 5 ? map[y, x - 1] != 0x06 : map[y - 1, x] != 0x06) &&
 						(map[y - 1, x] == 0x00 || map[y - 1, x] == 0x06 ||
 						map[y, x - 1] == 0x00 || map[y, x - 1] == 0x06 ||
 						map[y + 1, x] == 0x00 || map[y + 1, x] == 0x06 ||
@@ -6586,7 +6601,7 @@ namespace DW4RandoHacker
 
 					if (lnI == finalX2 - 1 && island1 == 5)
 						map[island1 == 5 ? finalY1 : finalY2, lnI] = 0xf6;
-					if (island1 == 5) //  && lnI != finalX2
+					if (island1 == 5 && lnI != finalX2) //  && lnI != finalX2
 					{
 						map[finalY1 - 1, lnI] = 0x00;
 						map[finalY1 + 1, lnI] = 0x00;
@@ -6612,7 +6627,7 @@ namespace DW4RandoHacker
 
 					if (lnI == finalX2 + 1 && island1 == 5)
 						map[island1 == 5 ? finalY1 : finalY2, lnI] = 0xf6;
-					if (island1 == 5) //  && lnI != finalX2
+					if (island1 == 5 && lnI != finalX2) //  && lnI != finalX2
 					{
 						map[finalY1 - 1, lnI] = 0x00;
 						map[finalY1 + 1, lnI] = 0x00;
