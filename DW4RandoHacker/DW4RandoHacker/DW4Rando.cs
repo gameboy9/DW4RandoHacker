@@ -389,9 +389,19 @@ namespace DW4RandoHacker
 				}
 				if (chkCh5SymbolOfFaith.Checked)
 				{
-					int byteToUse = (power == 0 ? 0x491a5 : power == 1 ? 0x491ab : power == 2 ? 0x491b3 : power == 3 ? 0x491ba : power == 4 ? 0x491c3 : power == 5 ? 0x491cb : power == 6 ? 0x491d3 : 0x491da);
-					byteToUse += 2;
-					romData[byteToUse] = 0x6f;
+					int byteToUse = (power == 0 ? 0x491a1 : power == 1 ? 0x491a9 : power == 2 ? 0x491b1 : power == 3 ? 0x491b9 : power == 4 ? 0x491c1 : power == 5 ? 0x491c9 : power == 6 ? 0x491d1 : 0x491d9);
+					int lnI = 0;
+					while (romData[byteToUse] != 0xff)
+						lnI++;
+					romData[byteToUse + 1] = 0x6f;
+				}
+				if (chkCh5GasCanister.Checked)
+				{
+					int byteToUse = (power == 0 ? 0x491a1 : power == 1 ? 0x491a9 : power == 2 ? 0x491b1 : power == 3 ? 0x491b9 : power == 4 ? 0x491c1 : power == 5 ? 0x491c9 : power == 6 ? 0x491d1 : 0x491d9);
+					int lnI = 0;
+					while (romData[byteToUse] != 0xff)
+						lnI++;
+					romData[byteToUse + 1] = 0x7d;
 				}
 			}
 
@@ -1020,8 +1030,8 @@ namespace DW4RandoHacker
 				romData[0x62350 + lnI] = (byte)encounterRate;
 			}
 
-			randomizeHeroEquipment(r1);
 			randomizeEquipmentPowers(r1);
+			randomizeHeroEquipment(r1);
 			randomizeMonsterZones(r1);
 			randomizeStores(r1);
 			randomizeHeroStats(r1);
@@ -2015,7 +2025,7 @@ namespace DW4RandoHacker
 					}
 
 					for (int lnJ = 0; lnJ < fieldSpells; lnJ++)
-						romData[byteToUse2 + fieldSpells] = romData[byteToUse5 + fieldSpells] = (byte)field[lnJ];
+						romData[byteToUse2 + lnJ] = romData[byteToUse5 + lnJ] = (byte)field[lnJ];
 				}
 
 				int[] battle1 = battle.ToArray();
@@ -2721,6 +2731,16 @@ namespace DW4RandoHacker
 							 0, 120, 90, 70, 250, 550, 5, 5, 0, 4000, 0, 0, 0, 0, 1000, 0,
 							 0, 0, 0, 0, 10, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0 };			
 
+			if (chkBasePriceOnPower.Checked && cboStorePrices.SelectedIndex != 5)
+			{
+				for (int lnI = 0; lnI <= 0x4f; lnI++)
+				{
+					if (prices[lnI] == 0) continue; // Skip priceless equipment
+					prices[lnI] = (int)Math.Pow(powerLookup(lnI, false), lnI <= 0x23 ? 2.1 : lnI <= 0x3c ? 2.4 : lnI <= 45 ? 2.6 : 2.7);
+					if (prices[lnI] <= 0) prices[lnI] = 1;
+				}
+			}
+
 			//// Go through the prices and plug into the ROM.  If the price is 0, make sure that 0x10 is set in the first segment.
 			for (int lnI = 0; lnI < prices.Length; lnI++)
 			{
@@ -2968,71 +2988,69 @@ namespace DW4RandoHacker
 
 		private void randomizeHeroEquipment(Random r1)
 		{
-			if (cboEquipChances.SelectedIndex == 0) return;
+			if (cboEquipChances.SelectedIndex == 0 && cboEquipPowers.SelectedIndex == 0) return;
 			int[] minWeapon = { 255, 255, 255, 255, 255, 255, 255, 255 };
 			int[] minArmor = { 255, 255, 255, 255, 255, 255, 255, 255 };
 			int[] totalChances = { 35, 25, 9, 10 };
 			int[,] equipChances = { { 17, 17, 7, 7 }, { 16, 11, 6, 6 }, { 17, 14, 4, 7 }, { 12, 12, 1, 5 }, { 10, 7, 3, 3 }, { 13, 9, 4, 5 }, { 19, 13, 7, 6 }, { 7, 12, 0, 5 } };
+			int[] overallChance = { 48, 39, 42, 30, 23, 31, 45, 24 };
 
-			for (int lnI = 0; lnI < 80; lnI++)
-				romData[0x40c75 + lnI] = 0;
-
-			for (int lnI = 0; lnI < 80; lnI++)
+			if (cboEquipChances.SelectedIndex != 0)
 			{
-				if (lnI == 0x21) // Leave the enhanced Zenithian sword alone.
-					continue;
-				// Totals - 35/25/9/10
-				//if ((string)cboSoloHero.SelectedItem == "Hero") power = 0; - 18/18/8/8 - subtract 1 from each because of Zenithian equipment
-				//if ((string)cboSoloHero.SelectedItem == "Cristo") power = 1; - 16/11/6/6
-				//if ((string)cboSoloHero.SelectedItem == "Nara") power = 2; - 17/14/4/7
-				//if ((string)cboSoloHero.SelectedItem == "Mara") power = 3; - 12/12/1/5
-				//if ((string)cboSoloHero.SelectedItem == "Brey") power = 4; - 10/7/3/3
-				//if ((string)cboSoloHero.SelectedItem == "Taloon") power = 5; - 13/9/4/5
-				//if ((string)cboSoloHero.SelectedItem == "Ragnar") power = 6; - 19/13/7/6
-				//if ((string)cboSoloHero.SelectedItem == "Alena") power = 7; - 7/12/0/5
+				for (int lnI = 0; lnI < 80; lnI++)
+					romData[0x40c75 + lnI] = 0;
 
-				for (int lnJ = 0; lnJ < 8; lnJ++)
+				for (int lnI = 0; lnI < 80; lnI++)
 				{
-					int lnK = (lnI < 36 ? 0 : lnI < 61 ? 1 : lnI < 70 ? 2 : 3);
-					bool equippable = false;
-					// Hero must be able to equip the Zenithian equipment
-					if (lnJ == 0 && (lnI == 0x14 || lnI == 0x37 || lnI == 0x44 || lnI == 0x4b))
-						equippable = true;
-					else
-					{
-						if (cboEquipChances.SelectedIndex == 1)
-						{
-							if (r1.Next() % totalChances[lnK] < (equipChances[lnJ, lnK] * (lnI == 0x00 || lnI == 0x01 || lnI == 0x02 ||
-																								lnI == 0x24 || lnI == 0x25 || lnI == 0x26 ||
-																								lnI == 0x3d || lnI == 0x3e ||
-																								lnI == 0x46 || lnI == 0x47 ? 2 : 1)))
-								equippable = true;
-							else
-								equippable = false;
-						}
-						else if (cboEquipChances.SelectedIndex == 2)
-							equippable = false;
-						else if (cboEquipChances.SelectedIndex == 6)
-							equippable = true;
-						else if (cboEquipChances.SelectedIndex >= 3 && cboEquipChances.SelectedIndex <= 5)
-							equippable = r1.Next() % 4 < cboEquipChances.SelectedIndex - 2;
-					}
+					if (lnI == 0x21) // Leave the enhanced Zenithian sword alone.
+						continue;
+					// Totals - 35/25/9/10
+					//if ((string)cboSoloHero.SelectedItem == "Hero") power = 0; - 18/18/8/8 - subtract 1 from each because of Zenithian equipment
+					//if ((string)cboSoloHero.SelectedItem == "Cristo") power = 1; - 16/11/6/6
+					//if ((string)cboSoloHero.SelectedItem == "Nara") power = 2; - 17/14/4/7
+					//if ((string)cboSoloHero.SelectedItem == "Mara") power = 3; - 12/12/1/5
+					//if ((string)cboSoloHero.SelectedItem == "Brey") power = 4; - 10/7/3/3
+					//if ((string)cboSoloHero.SelectedItem == "Taloon") power = 5; - 13/9/4/5
+					//if ((string)cboSoloHero.SelectedItem == "Ragnar") power = 6; - 19/13/7/6
+					//if ((string)cboSoloHero.SelectedItem == "Alena") power = 7; - 7/12/0/5
 
-					if (equippable)
+					for (int lnJ = 0; lnJ < 8; lnJ++)
 					{
-						romData[0x40c75 + lnI] += (byte)Math.Pow(2, lnJ);
-						// If you can equip the weak Zenithian Sword, you can equip the strong Zenithian Sword.
-						if (lnI == 0x14)
-							romData[0x40c75 + 0x21] += (byte)Math.Pow(2, lnJ);
-						if (minWeapon[lnJ] == 255 && lnK == 0)
+						int lnK = (lnI < 36 ? 0 : lnI < 61 ? 1 : lnI < 70 ? 2 : 3);
+						bool equippable = false;
+						// Hero must be able to equip the Zenithian equipment
+						if (lnJ == 0 && (lnI == 0x14 || lnI == 0x37 || lnI == 0x44 || lnI == 0x4b))
+							equippable = true;
+						else
 						{
-							minWeapon[lnJ] = lnI;
-							romData[0x491a1 + (lnJ * 8) + 0] = (byte)(0x80 + lnI);
+							if (cboEquipChances.SelectedIndex == 1)
+								equippable = r1.Next() % totalChances[lnK] < equipChances[lnJ, lnK];
+							else if (cboEquipChances.SelectedIndex == 2)
+								equippable = r1.Next() % 79 < overallChance[lnJ];
+							else if (cboEquipChances.SelectedIndex == 3)
+								equippable = false;
+							else if (cboEquipChances.SelectedIndex == 7)
+								equippable = true;
+							else if (cboEquipChances.SelectedIndex >= 4 && cboEquipChances.SelectedIndex <= 6)
+								equippable = r1.Next() % 4 < cboEquipChances.SelectedIndex - 3;
 						}
-						if (minArmor[lnJ] == 255 && lnK == 1)
+
+						if (equippable)
 						{
-							minArmor[lnJ] = lnI;
-							romData[0x491a1 + (lnJ * 8) + 1] = (byte)(0x80 + lnI);
+							romData[0x40c75 + lnI] += (byte)Math.Pow(2, lnJ);
+							// If you can equip the weak Zenithian Sword, you can equip the strong Zenithian Sword.
+							if (lnI == 0x14)
+								romData[0x40c75 + 0x21] += (byte)Math.Pow(2, lnJ);
+							if (minWeapon[lnJ] == 255 && lnK == 0)
+							{
+								minWeapon[lnJ] = lnI;
+								romData[0x491a1 + (lnJ * 8) + 0] = (byte)(0x80 + lnI);
+							}
+							if (minArmor[lnJ] == 255 && lnK == 1)
+							{
+								minArmor[lnJ] = lnI;
+								romData[0x491a1 + (lnJ * 8) + 1] = (byte)(0x80 + lnI);
+							}
 						}
 					}
 				}
@@ -3040,44 +3058,143 @@ namespace DW4RandoHacker
 
 			for (int lnI = 0; lnI < 8; lnI++)
 			{
-				if (minWeapon[lnI] != 0x00 && minWeapon[lnI] != 0x01 && minWeapon[lnI] != 0x02)
+				// Find weakest equippable weapon
+				int weak1 = 0;
+				int weak2 = 0;
+				int weak3 = 0;
+				int weakPower1 = 255;
+				int weakPower2 = 255;
+				int weakPower3 = 255;
+				for (int lnJ = 0; lnJ < 36; lnJ++)
 				{
-					int rEquip = r1.Next() % 100;
-					if (rEquip >= 55)
+					if ((int)romData[0x40c75 + lnJ] % Math.Pow(2, lnI + 1) >= Math.Pow(2, lnI))
 					{
-						romData[0x491a1 + (lnI * 8) + 0] = 0x80;
-						romData[0x40c75 + 0x00] += (byte)Math.Pow(2, lnI);
-					}
-					else if (rEquip >= 20)
-					{
-						romData[0x491a1 + (lnI * 8) + 0] = 0x81;
-						romData[0x40c75 + 0x01] += (byte)Math.Pow(2, lnI);
-					}
-					else
-					{
-						romData[0x491a1 + (lnI * 8) + 0] = 0x82;
-						romData[0x40c75 + 0x02] += (byte)Math.Pow(2, lnI);
+						if (powerLookup(lnJ, true) < weakPower1)
+						{
+							weak3 = weak2;
+							weakPower3 = weakPower2;
+							weak2 = weak1;
+							weakPower2 = weakPower1;
+							weak1 = lnJ;
+							weakPower1 = powerLookup(lnJ, true);
+						} else if (powerLookup(lnJ, true) < weakPower2)
+						{
+							weak3 = weak2;
+							weakPower3 = weakPower2;
+							weak2 = lnJ;
+							weakPower2 = powerLookup(lnJ, true);
+						} else if (powerLookup(lnJ, true) < weakPower3)
+						{
+							weak3 = lnJ;
+							weakPower3 = powerLookup(lnJ, true);
+						}
 					}
 				}
-				if (minArmor[lnI] != 0x24 && minArmor[lnI] != 0x25 && minArmor[lnI] != 0x26)
+
+				if (lnI == 0 || lnI == 2 || lnI == 6)
+					romData[0x491a1 + (lnI * 8) + 0] = (byte)(0x80 + weak3);
+				else if (lnI == 1)
+					romData[0x491a1 + (lnI * 8) + 0] = (byte)(0x80 + weak2);
+				else if (lnI == 4)
+					romData[0x491a1 + (lnI * 8) + 0] = (byte)(0x80 + weak1);
+
+				weakPower1 = weakPower2 = weakPower3 = 255;
+				for (int lnJ = 36; lnJ < 61; lnJ++)
 				{
-					int rEquip = r1.Next() % 100;
-					if (rEquip >= 55)
+					if ((int)romData[0x40c75 + lnJ] % Math.Pow(2, lnI + 1) >= Math.Pow(2, lnI))
 					{
-						romData[0x491a1 + (lnI * 8) + 1] = 0xa4;
-						romData[0x40c75 + 0x24] += (byte)Math.Pow(2, lnI);
-					}
-					else if (rEquip >= 20)
-					{
-						romData[0x491a1 + (lnI * 8) + 1] = 0xa5;
-						romData[0x40c75 + 0x25] += (byte)Math.Pow(2, lnI);
-					}
-					else
-					{
-						romData[0x491a1 + (lnI * 8) + 1] = 0xa6;
-						romData[0x40c75 + 0x26] += (byte)Math.Pow(2, lnI);
+						if (powerLookup(lnJ, true) < weakPower1)
+						{
+							weak3 = weak2;
+							weakPower3 = weakPower2;
+							weak2 = weak1;
+							weakPower2 = weakPower1;
+							weak1 = lnJ;
+							weakPower1 = powerLookup(lnJ, true);
+						}
+						else if (powerLookup(lnJ, true) < weakPower2)
+						{
+							weak3 = weak2;
+							weakPower3 = weakPower2;
+							weak2 = lnJ;
+							weakPower2 = powerLookup(lnJ, true);
+						}
+						else if (powerLookup(lnJ, true) < weakPower3)
+						{
+							weak3 = lnJ;
+							weakPower3 = powerLookup(lnJ, true);
+						}
 					}
 				}
+
+				if (lnI == 2 || lnI == 6)
+					romData[0x491a1 + (lnI * 8) + 1] = (byte)(0x80 + weak3);
+				else if (lnI == 7)
+					romData[0x491a1 + (lnI * 8) + 0] = (byte)(0x80 + weak3);
+				else if (lnI == 1)
+					romData[0x491a1 + (lnI * 8) + 1] = (byte)(0x80 + weak2);
+				else if (lnI == 3)
+					romData[0x491a1 + (lnI * 8) + 0] = (byte)(0x80 + weak2);
+				else if (lnI == 0 || lnI == 4)
+					romData[0x491a1 + (lnI * 8) + 1] = (byte)(0x80 + weak1);
+				else
+					romData[0x491a1 + (lnI * 8) + 0] = (byte)(0x80 + weak1);
+
+				weakPower1 = 255;
+				for (int lnJ = 70; lnJ < 80; lnJ++)
+				{
+					if ((int)romData[0x40c75 + lnJ] % Math.Pow(2, lnI + 1) >= Math.Pow(2, lnI))
+					{
+						if (powerLookup(lnJ, true) < weakPower1)
+						{
+							weak1 = lnJ;
+							weakPower1 = powerLookup(lnJ, true);
+						}
+					}
+
+				}
+
+				if (lnI == 0)
+					romData[0x491a1 + (lnI * 8) + 2] = (byte)(0x80 + weak1);
+
+				//if (minWeapon[lnI] != 0x00 && minWeapon[lnI] != 0x01 && minWeapon[lnI] != 0x02)
+				//{
+				//	int rEquip = r1.Next() % 100;
+				//	if (rEquip >= 55)
+				//	{
+				//		romData[0x491a1 + (lnI * 8) + 0] = 0x80;
+				//		romData[0x40c75 + 0x00] += (byte)Math.Pow(2, lnI);
+				//	}
+				//	else if (rEquip >= 20)
+				//	{
+				//		romData[0x491a1 + (lnI * 8) + 0] = 0x81;
+				//		romData[0x40c75 + 0x01] += (byte)Math.Pow(2, lnI);
+				//	}
+				//	else
+				//	{
+				//		romData[0x491a1 + (lnI * 8) + 0] = 0x82;
+				//		romData[0x40c75 + 0x02] += (byte)Math.Pow(2, lnI);
+				//	}
+				//}
+				//if (minArmor[lnI] != 0x24 && minArmor[lnI] != 0x25 && minArmor[lnI] != 0x26)
+				//{
+				//	int rEquip = r1.Next() % 100;
+				//	if (rEquip >= 55)
+				//	{
+				//		romData[0x491a1 + (lnI * 8) + 1] = 0xa4;
+				//		romData[0x40c75 + 0x24] += (byte)Math.Pow(2, lnI);
+				//	}
+				//	else if (rEquip >= 20)
+				//	{
+				//		romData[0x491a1 + (lnI * 8) + 1] = 0xa5;
+				//		romData[0x40c75 + 0x25] += (byte)Math.Pow(2, lnI);
+				//	}
+				//	else
+				//	{
+				//		romData[0x491a1 + (lnI * 8) + 1] = 0xa6;
+				//		romData[0x40c75 + 0x26] += (byte)Math.Pow(2, lnI);
+				//	}
+				//}
 			}
 		}
 
@@ -3097,6 +3214,18 @@ namespace DW4RandoHacker
 
 				romData[lnI] = (byte)power;
 			}
+		}
+
+		private int powerLookup(int lnI, bool noCurse)
+		{
+			int[] bonus = { 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 5, 0, 5, 40,
+							-10, 50, -20, -30, 9999, 5, 100, 40, 80, 25, 40, 40, 10, 10, 20, 0,
+							40,	9999, 40, 15,
+							0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 20, 20, 10, 9999, 20, 20, -30, 0, -15,
+							0, 0, 0, 20, 20, 5, 10, 9999, 5,
+							0, 0, 0, 0, 0, 9999, -40, 0, 10, 0 };
+			if (noCurse && (lnI == 0x12 || lnI == 0x13 || lnI == 0x1f || lnI == 0x3a || lnI == 0x3c || lnI == 0x4c)) return 9999;
+			return romData[0x41df0 + lnI] + bonus[lnI];
 		}
 
 		private void randomizeMonsterZones(Random r1)
@@ -3820,10 +3949,10 @@ namespace DW4RandoHacker
 			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh1InstantWell, chkCh1FlyingShoes, chkCh1Moat })); // Chapter 1
 			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh2InstantWallKick, chkCh2EndorEntry, chkCh2AwardXPTournament })); // Chapter 2
 			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh3Shop1, chkCh3Shop25K, chkCh3Tunnel1, chkCh3BuildBridges, chkCh3BuildTunnel })); // Chapter 3
-			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh4GunpowderJar, chkCh4GunpowderJar })); // Chapter 4
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh4GunpowderJar, chkCh4GunpowderJar, chkBasePriceOnPower })); // Chapter 4/Pricing
 			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh5BlowUpHometown, chkCh5SymbolOfFaith, chkCh5ControlAllChars, chkInstantFinalCave, chkSwapMonsterStats, chkSwapBossStats })); // Chapter 5/Monsters
 			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkRandomizeMap, chkSmallMap, chkSoloHero, chkC14Random, chkStoreNoSeeds, chkRandomizeNPCs })); // General/Adjustments
-			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkSpeedUpBattles, chkSpeedUpMusic, chkDoubleWalking, chkSpeedyText, chkChapter5Start })); // Adjustments
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkSpeedUpBattles, chkSpeedUpMusic, chkDoubleWalking, chkSpeedyText, chkChapter5Start, chkCh5GasCanister })); // Adjustments
 
 			// Combo boxes time...
 			flags += convertIntToChar(cboStoreAvailability.SelectedIndex + (8 * cboStorePrices.SelectedIndex));
@@ -3855,10 +3984,10 @@ namespace DW4RandoHacker
 			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(0, 1))), new CheckBox[] { chkCh1InstantWell, chkCh1FlyingShoes, chkCh1Moat }); // Chapter 1
 			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(1, 1))), new CheckBox[] { chkCh2InstantWallKick, chkCh2EndorEntry, chkCh2AwardXPTournament });
 			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(2, 1))), new CheckBox[] { chkCh3Shop1, chkCh3Shop25K, chkCh3Tunnel1, chkCh3BuildBridges, chkCh3BuildTunnel });
-			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(3, 1))), new CheckBox[] { chkCh4GunpowderJar, chkCh4GunpowderJar });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(3, 1))), new CheckBox[] { chkCh4GunpowderJar, chkCh4GunpowderJar, chkBasePriceOnPower });
 			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(4, 1))), new CheckBox[] { chkCh5BlowUpHometown, chkCh5SymbolOfFaith, chkCh5ControlAllChars, chkInstantFinalCave, chkSwapMonsterStats, chkSwapBossStats });
 			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(5, 1))), new CheckBox[] { chkRandomizeMap, chkSmallMap, chkSoloHero, chkC14Random, chkStoreNoSeeds, chkRandomizeNPCs });
-			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(6, 1))), new CheckBox[] { chkSpeedUpBattles, chkSpeedUpMusic, chkDoubleWalking, chkSpeedyText, chkChapter5Start });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(6, 1))), new CheckBox[] { chkSpeedUpBattles, chkSpeedUpMusic, chkDoubleWalking, chkSpeedyText, chkChapter5Start, chkCh5GasCanister });
 
 			cboStoreAvailability.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(7, 1))) % 8;
 			cboStorePrices.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(7, 1))) / 8;

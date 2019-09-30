@@ -53,6 +53,10 @@
 			this.cmdStatOutput = new System.Windows.Forms.Button();
 			this.btnMonsterOutput = new System.Windows.Forms.Button();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.cboMonsterDropChance = new System.Windows.Forms.ComboBox();
+			this.label46 = new System.Windows.Forms.Label();
+			this.cboMonsterDrops = new System.Windows.Forms.ComboBox();
+			this.label45 = new System.Windows.Forms.Label();
 			this.cboGoldRandom = new System.Windows.Forms.ComboBox();
 			this.label36 = new System.Windows.Forms.Label();
 			this.cboXPRandom = new System.Windows.Forms.ComboBox();
@@ -74,6 +78,7 @@
 			this.label9 = new System.Windows.Forms.Label();
 			this.chkSwapMonsterStats = new System.Windows.Forms.CheckBox();
 			this.tabPage4 = new System.Windows.Forms.TabPage();
+			this.chkBasePriceOnPower = new System.Windows.Forms.CheckBox();
 			this.chkStoreNoSeeds = new System.Windows.Forms.CheckBox();
 			this.cboStorePrices = new System.Windows.Forms.ComboBox();
 			this.label42 = new System.Windows.Forms.Label();
@@ -135,6 +140,7 @@
 			this.txtC4Name2 = new System.Windows.Forms.TextBox();
 			this.txtC4Name1 = new System.Windows.Forms.TextBox();
 			this.tabPage9 = new System.Windows.Forms.TabPage();
+			this.chkCh5GasCanister = new System.Windows.Forms.CheckBox();
 			this.chkInstantFinalCave = new System.Windows.Forms.CheckBox();
 			this.chkCh5SymbolOfFaith = new System.Windows.Forms.CheckBox();
 			this.chkCh5BlowUpHometown = new System.Windows.Forms.CheckBox();
@@ -168,10 +174,6 @@
 			this.chkSpeedyText = new System.Windows.Forms.CheckBox();
 			this.chkDoubleWalking = new System.Windows.Forms.CheckBox();
 			this.chkSpeedUpBattles = new System.Windows.Forms.CheckBox();
-			this.cboMonsterDrops = new System.Windows.Forms.ComboBox();
-			this.label45 = new System.Windows.Forms.Label();
-			this.cboMonsterDropChance = new System.Windows.Forms.ComboBox();
-			this.label46 = new System.Windows.Forms.Label();
 			this.tabShortcuts.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage4.SuspendLayout();
@@ -379,7 +381,7 @@
 			this.tabShortcuts.Controls.Add(this.btnMonsterOutput);
 			this.tabShortcuts.Location = new System.Drawing.Point(4, 22);
 			this.tabShortcuts.Name = "tabShortcuts";
-			this.tabShortcuts.Size = new System.Drawing.Size(500, 301);
+			this.tabShortcuts.Size = new System.Drawing.Size(524, 301);
 			this.tabShortcuts.TabIndex = 3;
 			this.tabShortcuts.Text = "Shortcuts/Misc";
 			this.tabShortcuts.UseVisualStyleBackColor = true;
@@ -432,10 +434,61 @@
 			this.tabPage1.Controls.Add(this.chkSwapMonsterStats);
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Size = new System.Drawing.Size(500, 301);
+			this.tabPage1.Size = new System.Drawing.Size(524, 301);
 			this.tabPage1.TabIndex = 5;
 			this.tabPage1.Text = "Monsters";
 			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// cboMonsterDropChance
+			// 
+			this.cboMonsterDropChance.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cboMonsterDropChance.FormattingEnabled = true;
+			this.cboMonsterDropChance.Items.AddRange(new object[] {
+            "No Randomization",
+            "One step higher",
+            "One step lower",
+            "CHAOS",
+            "Always 100% chance"});
+			this.cboMonsterDropChance.Location = new System.Drawing.Point(124, 150);
+			this.cboMonsterDropChance.Name = "cboMonsterDropChance";
+			this.cboMonsterDropChance.Size = new System.Drawing.Size(363, 21);
+			this.cboMonsterDropChance.TabIndex = 85;
+			this.cboMonsterDropChance.SelectedIndexChanged += new System.EventHandler(this.determineFlags);
+			// 
+			// label46
+			// 
+			this.label46.AutoSize = true;
+			this.label46.Location = new System.Drawing.Point(2, 153);
+			this.label46.Name = "label46";
+			this.label46.Size = new System.Drawing.Size(111, 13);
+			this.label46.TabIndex = 84;
+			this.label46.Text = "Monster Drop Chance";
+			// 
+			// cboMonsterDrops
+			// 
+			this.cboMonsterDrops.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cboMonsterDrops.FormattingEnabled = true;
+			this.cboMonsterDrops.Items.AddRange(new object[] {
+            "No Randomization",
+            "CHAOS (Completely random)",
+            "All normal items",
+            "All seeds",
+            "All equipment",
+            "No drops"});
+			this.cboMonsterDrops.Location = new System.Drawing.Point(124, 126);
+			this.cboMonsterDrops.Name = "cboMonsterDrops";
+			this.cboMonsterDrops.Size = new System.Drawing.Size(363, 21);
+			this.cboMonsterDrops.TabIndex = 83;
+			this.cboMonsterDrops.SelectedIndexChanged += new System.EventHandler(this.determineFlags);
+			// 
+			// label45
+			// 
+			this.label45.AutoSize = true;
+			this.label45.Location = new System.Drawing.Point(2, 129);
+			this.label45.Name = "label45";
+			this.label45.Size = new System.Drawing.Size(76, 13);
+			this.label45.TabIndex = 82;
+			this.label45.Text = "Monster Drops";
 			// 
 			// cboGoldRandom
 			// 
@@ -699,6 +752,7 @@
 			// 
 			// tabPage4
 			// 
+			this.tabPage4.Controls.Add(this.chkBasePriceOnPower);
 			this.tabPage4.Controls.Add(this.chkStoreNoSeeds);
 			this.tabPage4.Controls.Add(this.cboStorePrices);
 			this.tabPage4.Controls.Add(this.label42);
@@ -721,15 +775,26 @@
 			this.tabPage4.Location = new System.Drawing.Point(4, 22);
 			this.tabPage4.Name = "tabPage4";
 			this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage4.Size = new System.Drawing.Size(500, 301);
+			this.tabPage4.Size = new System.Drawing.Size(524, 301);
 			this.tabPage4.TabIndex = 4;
 			this.tabPage4.Text = "General";
 			this.tabPage4.UseVisualStyleBackColor = true;
 			// 
+			// chkBasePriceOnPower
+			// 
+			this.chkBasePriceOnPower.AutoSize = true;
+			this.chkBasePriceOnPower.Location = new System.Drawing.Point(419, 39);
+			this.chkBasePriceOnPower.Name = "chkBasePriceOnPower";
+			this.chkBasePriceOnPower.Size = new System.Drawing.Size(97, 17);
+			this.chkBasePriceOnPower.TabIndex = 67;
+			this.chkBasePriceOnPower.Text = "Base on power";
+			this.chkBasePriceOnPower.UseVisualStyleBackColor = true;
+			this.chkBasePriceOnPower.CheckedChanged += new System.EventHandler(this.determineFlags);
+			// 
 			// chkStoreNoSeeds
 			// 
 			this.chkStoreNoSeeds.AutoSize = true;
-			this.chkStoreNoSeeds.Location = new System.Drawing.Point(423, 16);
+			this.chkStoreNoSeeds.Location = new System.Drawing.Point(419, 16);
 			this.chkStoreNoSeeds.Name = "chkStoreNoSeeds";
 			this.chkStoreNoSeeds.Size = new System.Drawing.Size(71, 17);
 			this.chkStoreNoSeeds.TabIndex = 66;
@@ -824,6 +889,7 @@
 			this.cboEquipChances.Items.AddRange(new object[] {
             "No change",
             "Each character has same equip chances per equip type",
+            "Each character has same overall equip chance",
             "All characters can\'t equip anything",
             "All characters have 25% equip chance",
             "All characters have 50% equip chance",
@@ -978,7 +1044,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(500, 301);
+			this.tabPage2.Size = new System.Drawing.Size(524, 301);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Chapter Setup";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -1412,6 +1478,7 @@
 			// 
 			// tabPage9
 			// 
+			this.tabPage9.Controls.Add(this.chkCh5GasCanister);
 			this.tabPage9.Controls.Add(this.chkInstantFinalCave);
 			this.tabPage9.Controls.Add(this.chkCh5SymbolOfFaith);
 			this.tabPage9.Controls.Add(this.chkCh5BlowUpHometown);
@@ -1430,6 +1497,17 @@
 			this.tabPage9.TabIndex = 4;
 			this.tabPage9.Text = "Chapter 5";
 			this.tabPage9.UseVisualStyleBackColor = true;
+			// 
+			// chkCh5GasCanister
+			// 
+			this.chkCh5GasCanister.AutoSize = true;
+			this.chkCh5GasCanister.Location = new System.Drawing.Point(11, 28);
+			this.chkCh5GasCanister.Name = "chkCh5GasCanister";
+			this.chkCh5GasCanister.Size = new System.Drawing.Size(133, 17);
+			this.chkCh5GasCanister.TabIndex = 39;
+			this.chkCh5GasCanister.Text = "Start with Gas Canister";
+			this.chkCh5GasCanister.UseVisualStyleBackColor = true;
+			this.chkCh5GasCanister.CheckedChanged += new System.EventHandler(this.determineFlags);
 			// 
 			// chkInstantFinalCave
 			// 
@@ -1456,7 +1534,7 @@
 			// chkCh5BlowUpHometown
 			// 
 			this.chkCh5BlowUpHometown.AutoSize = true;
-			this.chkCh5BlowUpHometown.Location = new System.Drawing.Point(11, 28);
+			this.chkCh5BlowUpHometown.Location = new System.Drawing.Point(202, 28);
 			this.chkCh5BlowUpHometown.Name = "chkCh5BlowUpHometown";
 			this.chkCh5BlowUpHometown.Size = new System.Drawing.Size(141, 17);
 			this.chkCh5BlowUpHometown.TabIndex = 36;
@@ -1539,7 +1617,7 @@
 			// chkCh5ControlAllChars
 			// 
 			this.chkCh5ControlAllChars.AutoSize = true;
-			this.chkCh5ControlAllChars.Location = new System.Drawing.Point(11, 51);
+			this.chkCh5ControlAllChars.Location = new System.Drawing.Point(202, 51);
 			this.chkCh5ControlAllChars.Name = "chkCh5ControlAllChars";
 			this.chkCh5ControlAllChars.Size = new System.Drawing.Size(125, 17);
 			this.chkCh5ControlAllChars.TabIndex = 27;
@@ -1554,10 +1632,10 @@
 			this.tabControl1.Controls.Add(this.tabPage3);
 			this.tabControl1.Controls.Add(this.tabPage1);
 			this.tabControl1.Controls.Add(this.tabShortcuts);
-			this.tabControl1.Location = new System.Drawing.Point(15, 171);
+			this.tabControl1.Location = new System.Drawing.Point(8, 171);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(508, 327);
+			this.tabControl1.Size = new System.Drawing.Size(532, 327);
 			this.tabControl1.TabIndex = 8;
 			// 
 			// tabPage3
@@ -1583,7 +1661,7 @@
 			this.tabPage3.Controls.Add(this.chkSpeedUpBattles);
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Size = new System.Drawing.Size(500, 301);
+			this.tabPage3.Size = new System.Drawing.Size(524, 301);
 			this.tabPage3.TabIndex = 6;
 			this.tabPage3.Text = "Adjustments";
 			this.tabPage3.UseVisualStyleBackColor = true;
@@ -1826,57 +1904,6 @@
 			this.chkSpeedUpBattles.UseVisualStyleBackColor = true;
 			this.chkSpeedUpBattles.CheckedChanged += new System.EventHandler(this.determineFlags);
 			// 
-			// cboMonsterDrops
-			// 
-			this.cboMonsterDrops.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cboMonsterDrops.FormattingEnabled = true;
-			this.cboMonsterDrops.Items.AddRange(new object[] {
-            "No Randomization",
-            "CHAOS (Completely random)",
-            "All normal items",
-            "All seeds",
-            "All equipment",
-            "No drops"});
-			this.cboMonsterDrops.Location = new System.Drawing.Point(124, 126);
-			this.cboMonsterDrops.Name = "cboMonsterDrops";
-			this.cboMonsterDrops.Size = new System.Drawing.Size(363, 21);
-			this.cboMonsterDrops.TabIndex = 83;
-			this.cboMonsterDrops.SelectedIndexChanged += new System.EventHandler(this.determineFlags);
-			// 
-			// label45
-			// 
-			this.label45.AutoSize = true;
-			this.label45.Location = new System.Drawing.Point(2, 129);
-			this.label45.Name = "label45";
-			this.label45.Size = new System.Drawing.Size(76, 13);
-			this.label45.TabIndex = 82;
-			this.label45.Text = "Monster Drops";
-			// 
-			// cboMonsterDropChance
-			// 
-			this.cboMonsterDropChance.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cboMonsterDropChance.FormattingEnabled = true;
-			this.cboMonsterDropChance.Items.AddRange(new object[] {
-            "No Randomization",
-            "One step higher",
-            "One step lower",
-            "CHAOS",
-            "Always 100% chance"});
-			this.cboMonsterDropChance.Location = new System.Drawing.Point(124, 150);
-			this.cboMonsterDropChance.Name = "cboMonsterDropChance";
-			this.cboMonsterDropChance.Size = new System.Drawing.Size(363, 21);
-			this.cboMonsterDropChance.TabIndex = 85;
-			this.cboMonsterDropChance.SelectedIndexChanged += new System.EventHandler(this.determineFlags);
-			// 
-			// label46
-			// 
-			this.label46.AutoSize = true;
-			this.label46.Location = new System.Drawing.Point(2, 153);
-			this.label46.Name = "label46";
-			this.label46.Size = new System.Drawing.Size(111, 13);
-			this.label46.TabIndex = 84;
-			this.label46.Text = "Monster Drop Chance";
-			// 
 			// DW4Rando
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2079,6 +2106,8 @@
 		private System.Windows.Forms.Label label46;
 		private System.Windows.Forms.ComboBox cboMonsterDrops;
 		private System.Windows.Forms.Label label45;
+		private System.Windows.Forms.CheckBox chkCh5GasCanister;
+		private System.Windows.Forms.CheckBox chkBasePriceOnPower;
 	}
 }
 
