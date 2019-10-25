@@ -3428,6 +3428,11 @@ namespace DW4RandoHacker
 					for (int lnJ = 4; lnJ < 8; lnJ++)
 						romData[byteToUse + lnJ] = 0;
 
+					// Limit the number of monsters to 2 in Saro's Shadow and Cave of Betrayal Part 1, 3 in Chamelion Humanoid and Balzack, and 4 in Cave of Betrayal Part 2 and Lighthouse Bengal
+					int maxMonsters = (lnI == 5 || lnI == 26 ? 2 : 
+									   lnI == 2 || lnI == 4 ? 3 : 
+									   lnI == 12 || lnI == 13 ? 4 : 16);
+
 					// Figure out how many groups of monsters will be involved.
 					int groups = r1.Next() % 4;
 					for (int lnJ = 0; lnJ < groups + 1; lnJ++)
@@ -3454,7 +3459,9 @@ namespace DW4RandoHacker
 									romData[byteToUse2 + 9 + lnK] = (byte)(earlyBossMoves[r1.Next() % earlyBossMoves.Length]);
 							}
 						}
-						romData[byteToUse + lnJ + 4] = (byte)(lnJ == groups ? 8 : 1);
+						romData[byteToUse + lnJ + 4] = (byte)(lnJ == groups ? Math.Min(maxMonsters, 8) : 1);
+						maxMonsters--;
+						if (maxMonsters == 0) break;
 					}
 				}
 			}
@@ -4729,11 +4736,14 @@ namespace DW4RandoHacker
 							if (validPlot(y - 2, x, 6, 1, new int[] { maxIsland[1], maxIsland[2] }) 
 								&& (reachable(y, x, !landLocs.Contains(lnI), midenX[0], midenY[0], maxLake, false) || reachable(y, x, !landLocs.Contains(lnI), midenX[1], midenY[1], maxLake, false)))
 							{
+								int zoneSegment = (chkSmallMap.Checked ? 8 : 16);
 								bool baramosLegal = true;
-								for (int lnY = -2; lnY < 2; lnY++)
-									for (int lnX = -2; lnX < 2; lnX++)
+								for (int lnY = -2; lnY <= 3; lnY++)
+									for (int lnX = -3; lnX <= 2; lnX++)
 									{
 										if (map[y + lnY, x + lnX] >= 0xe8)
+											baramosLegal = false;
+										if (zone[(y + lnY) / zoneSegment, (x + lnX) / zoneSegment] / 1000 != 1 && zone[(y + lnY) / zoneSegment, (x + lnX) / zoneSegment] / 1000 != 2)
 											baramosLegal = false;
 									}
 								if (baramosLegal && ((island[y, x - 3] != maxIsland[1] && island[y, x + 3] != maxIsland[1]) || (island[y, x - 3] != maxIsland[2] && island[y, x + 3] != maxIsland[2])))
@@ -6518,199 +6528,206 @@ namespace DW4RandoHacker
 		private bool connectIslands(Random r1, int island1, int island2, bool mountains)
 		{
 			// First connect like-islands together until no more links can be made.
+			try
+			{
+				List<SuperIslandLinks> links1 = new List<SuperIslandLinks>();
+				List<SuperIslandLinks> links2 = new List<SuperIslandLinks>();
 
-			List<SuperIslandLinks> links1 = new List<SuperIslandLinks>();
-			List<SuperIslandLinks> links2 = new List<SuperIslandLinks>();
+				int id1 = 0;
+				int id2 = 0;
 
-			int id1 = 0;
-			int id2 = 0;
-
-			for (int x = 0; x < 256; x++)
-				for (int y = 0; y < 256; y++)
-				{
-					if (island[y, x] == maxIsland[island1] && map[y, x] != 0x00 && (island1 == 5 ? map[y, x - 1] != 0x06 : map[y - 1, x] != 0x06) &&
-						(map[y - 1, x] == 0x00 || map[y - 1, x] == 0x06 ||
-						map[y, x - 1] == 0x00 || map[y, x - 1] == 0x06 ||
-						map[y + 1, x] == 0x00 || map[y + 1, x] == 0x06 ||
-						map[y, x + 1] == 0x00 || map[y, x + 1] == 0x06))
+				for (int x = 0; x < 256; x++)
+					for (int y = 0; y < 256; y++)
 					{
-						id1++;
-						links1.Add(new SuperIslandLinks { island = island1, id = id1, x = x, y = y });
-					}
-					if (island[y, x] == maxIsland[island2] && map[y, x] != 0x00 && (island1 == 5 ? map[y, x - 1] != 0x06 : map[y - 1, x] != 0x06) &&
-						(map[y - 1, x] == 0x00 || map[y - 1, x] == 0x06 ||
-						map[y, x - 1] == 0x00 || map[y, x - 1] == 0x06 ||
-						map[y + 1, x] == 0x00 || map[y + 1, x] == 0x06 ||
-						map[y, x + 1] == 0x00 || map[y, x + 1] == 0x06))
-					{
-						id2++;
-						links2.Add(new SuperIslandLinks { island = island2, id = id2, x = x, y = y });
-					}
-				}
-
-			int minDistance = 9999;
-			int finalX1 = -1;
-			int finalX2 = -1;
-			int finalY1 = -1;
-			int finalY2 = -1;
-
-			foreach(SuperIslandLinks link in links1)
-				foreach(SuperIslandLinks link2 in links2)
-				{
-					if (Math.Abs(link.x - link2.x) + Math.Abs(link.y - link2.y) < minDistance 
-					  && (island1 == 5 || Math.Abs(link.y - link2.y) > 1))
-						if (island1 == 3 || island1 == 9 || (island1 == 5 && Math.Abs(link.x - link2.x) > 1))
+						if (island[y, x] == maxIsland[island1] && map[y, x] != 0x00 && (island1 == 5 ? map[y, x - 1] != 0x06 : map[y - 1, x] != 0x06) &&
+							(map[y - 1, x] == 0x00 || map[y - 1, x] == 0x06 ||
+							map[y, x - 1] == 0x00 || map[y, x - 1] == 0x06 ||
+							map[y + 1, x] == 0x00 || map[y + 1, x] == 0x06 ||
+							map[y, x + 1] == 0x00 || map[y, x + 1] == 0x06))
 						{
-							// Disqualify a link if it would go through a different zone
-							bool disqualified = false;
-							int segment = (chkSmallMap.Checked ? 8 : 16);
-
-							if (island1 == 5)
-							{
-								if (link.x != link2.x)
-								{
-									if (link.x < link2.x)
-									{
-										for (int lnJ = link.x + 1; lnJ <= link2.x; lnJ++)
-											if (zone[link.y / segment, lnJ / segment] / 1000 != island1 && zone[link.y / segment, lnJ / segment] / 1000 != island2)
-												disqualified = true;
-									}
-									else
-									{
-										for (int lnJ = link.x - 1; lnJ >= link2.x; lnJ--)
-											if (zone[link.y / segment, lnJ / segment] / 1000 != island1 && zone[link.y / segment, lnJ / segment] / 1000 != island2)
-												disqualified = true;
-									}
-								}
-
-								if (link.y != link2.y)
-								{
-									if (link.y < link2.y)
-									{
-										for (int lnJ = link.y + 1; lnJ <= link2.y; lnJ++)
-											if (zone[lnJ / segment, link2.x / segment] / 1000 != island1 && zone[lnJ / segment, link2.x / segment] / 1000 != island2)
-												disqualified = true;
-									}
-									else
-									{
-										for (int lnJ = link.y - 1; lnJ >= link2.y; lnJ--)
-											if (zone[lnJ / segment, link2.x / segment] / 1000 != island1 && zone[lnJ / segment, link2.x / segment] / 1000 != island2)
-												disqualified = true;
-									}
-								}
-							}
-							else
-							{
-								if (link.y != link2.y)
-								{
-									if (link.y < link2.y)
-									{
-										for (int lnJ = link.y + 1; lnJ <= link2.y; lnJ++)
-											if (zone[lnJ / segment, link.x / segment] / 1000 != island1 && zone[lnJ / segment, link.x / segment] / 1000 != island2)
-												disqualified = true;
-									}
-									else
-									{
-										for (int lnJ = link.y - 1; lnJ >= link2.y; lnJ--)
-											if (zone[lnJ / segment, link.x / segment] / 1000 != island1 && zone[lnJ / segment, link.x / segment] / 1000 != island2)
-												disqualified = true;
-									}
-								}
-
-								if (link.x != link2.x)
-								{
-									if (link.x < link2.x)
-									{
-										for (int lnJ = link.x + 1; lnJ <= link2.x; lnJ++)
-											if (zone[link2.y / segment, lnJ / segment] / 1000 != island1 && zone[link2.y / segment, lnJ / segment] / 1000 != island2)
-												disqualified = true;
-									}
-									else
-									{
-										for (int lnJ = link.x - 1; lnJ >= link2.x; lnJ--)
-											if (zone[link2.y / segment, lnJ / segment] / 1000 != island1 && zone[link2.y / segment, lnJ / segment] / 1000 != island2)
-												disqualified = true;
-									}
-								}
-							}
-
-							if (!disqualified)
-							{
-								finalX1 = link.x;
-								finalX2 = link2.x;
-								finalY1 = link.y;
-								finalY2 = link2.y;
-
-								minDistance = Math.Abs(link.x - link2.x) + Math.Abs(link.y - link2.y);
-							}
+							id1++;
+							links1.Add(new SuperIslandLinks { island = island1, id = id1, x = x, y = y });
 						}
+						if (island[y, x] == maxIsland[island2] && map[y, x] != 0x00 && (island1 == 5 ? map[y, x - 1] != 0x06 : map[y - 1, x] != 0x06) &&
+							(map[y - 1, x] == 0x00 || map[y - 1, x] == 0x06 ||
+							map[y, x - 1] == 0x00 || map[y, x - 1] == 0x06 ||
+							map[y + 1, x] == 0x00 || map[y + 1, x] == 0x06 ||
+							map[y, x + 1] == 0x00 || map[y, x + 1] == 0x06))
+						{
+							id2++;
+							links2.Add(new SuperIslandLinks { island = island2, id = id2, x = x, y = y });
+						}
+					}
+
+				int minDistance = 9999;
+				int finalX1 = -1;
+				int finalX2 = -1;
+				int finalY1 = -1;
+				int finalY2 = -1;
+
+				foreach (SuperIslandLinks link in links1)
+					foreach (SuperIslandLinks link2 in links2)
+					{
+						if (Math.Abs(link.x - link2.x) + Math.Abs(link.y - link2.y) < minDistance
+						  && (island1 == 5 || Math.Abs(link.y - link2.y) > 1))
+							if (island1 == 3 || island1 == 9 || (island1 == 5 && Math.Abs(link.x - link2.x) > 1))
+							{
+								// Disqualify a link if it would go through a different zone
+								bool disqualified = false;
+								int segment = (chkSmallMap.Checked ? 8 : 16);
+
+								if (island1 == 5)
+								{
+									if (link.x != link2.x)
+									{
+										if (link.x < link2.x)
+										{
+											for (int lnJ = link.x + 1; lnJ <= link2.x; lnJ++)
+												if (zone[link.y / segment, lnJ / segment] / 1000 != island1 && zone[link.y / segment, lnJ / segment] / 1000 != island2)
+													disqualified = true;
+										}
+										else
+										{
+											for (int lnJ = link.x - 1; lnJ >= link2.x; lnJ--)
+												if (zone[link.y / segment, lnJ / segment] / 1000 != island1 && zone[link.y / segment, lnJ / segment] / 1000 != island2)
+													disqualified = true;
+										}
+									}
+
+									if (link.y != link2.y)
+									{
+										if (link.y < link2.y)
+										{
+											for (int lnJ = link.y + 1; lnJ <= link2.y; lnJ++)
+												if (zone[lnJ / segment, link2.x / segment] / 1000 != island1 && zone[lnJ / segment, link2.x / segment] / 1000 != island2)
+													disqualified = true;
+										}
+										else
+										{
+											for (int lnJ = link.y - 1; lnJ >= link2.y; lnJ--)
+												if (zone[lnJ / segment, link2.x / segment] / 1000 != island1 && zone[lnJ / segment, link2.x / segment] / 1000 != island2)
+													disqualified = true;
+										}
+									}
+								}
+								else
+								{
+									if (link.y != link2.y)
+									{
+										if (link.y < link2.y)
+										{
+											for (int lnJ = link.y + 1; lnJ <= link2.y; lnJ++)
+												if (zone[lnJ / segment, link.x / segment] / 1000 != island1 && zone[lnJ / segment, link.x / segment] / 1000 != island2)
+													disqualified = true;
+										}
+										else
+										{
+											for (int lnJ = link.y - 1; lnJ >= link2.y; lnJ--)
+												if (zone[lnJ / segment, link.x / segment] / 1000 != island1 && zone[lnJ / segment, link.x / segment] / 1000 != island2)
+													disqualified = true;
+										}
+									}
+
+									if (link.x != link2.x)
+									{
+										if (link.x < link2.x)
+										{
+											for (int lnJ = link.x + 1; lnJ <= link2.x; lnJ++)
+												if (zone[link2.y / segment, lnJ / segment] / 1000 != island1 && zone[link2.y / segment, lnJ / segment] / 1000 != island2)
+													disqualified = true;
+										}
+										else
+										{
+											for (int lnJ = link.x - 1; lnJ >= link2.x; lnJ--)
+												if (zone[link2.y / segment, lnJ / segment] / 1000 != island1 && zone[link2.y / segment, lnJ / segment] / 1000 != island2)
+													disqualified = true;
+										}
+									}
+								}
+
+								if (!disqualified)
+								{
+									finalX1 = link.x;
+									finalX2 = link2.x;
+									finalY1 = link.y;
+									finalY2 = link2.y;
+
+									minDistance = Math.Abs(link.x - link2.x) + Math.Abs(link.y - link2.y);
+								}
+							}
+					}
+
+				if (finalX1 == -1) return false;
+
+				byte prevTile;
+
+				// Now that it's established, we need to build the land bridge and possibly set town coordinates (island1 = 3, island2 = 4)
+				// Go N/S, then E/W
+				if (island1 == 3 || island1 == 9)
+				{
+					map[finalY1, finalX1] = island1 == 3 ? 0xf0 : 0xec;
+					if (finalY1 < finalY2)
+					{
+						prevTile = (byte)(map[finalY1 - 1, finalX1 - 2] == 0x00 || map[finalY1 - 1, finalX1 - 2] == 0x06 ? 0x02 : map[finalY1 - 1, finalX1 - 2]);
+						map[finalY1 - 1, finalX1] = map[finalY1 - 1, finalX1 - 1] = map[finalY1 - 1, finalX1 + 1] = prevTile;
+						island[finalY1 - 1, finalX1] = island[finalY1 - 1, finalX1 - 1] = island[finalY1 - 1, finalX1 + 1] = maxIsland[island1];
+					}
+					if (finalY1 > finalY2)
+					{
+						prevTile = (byte)(map[finalY1 + 1, finalX1 - 2] == 0x00 || map[finalY1 + 1, finalX1 - 2] == 0x06 ? 0x02 : map[finalY1 + 1, finalX1 - 2]);
+						island[finalY1 + 1, finalX1] = island[finalY1 + 1, finalX1 - 1] = island[finalY1 + 1, finalX1 + 1] = maxIsland[island1];
+					}
+
+					if (island1 == 3)
+					{
+						int byteToUse = 0x3be1c + (3 * 14);
+						romData[byteToUse] = (byte)finalX1;
+						romData[byteToUse + 1] = (byte)finalY1;
+
+						// Need to replace X and Y to new Tempe Location
+						romData[0x72ee1] = (byte)finalX1;
+						romData[0x72ee5] = (byte)finalY1;
+
+						setReturnPlacement(finalX1, finalY1 < finalY2 ? finalY1 - 1 : finalY1 + 1, 15);
+					}
+					else if (island1 == 9)
+					{
+						int byteToUse = 0x3be1c + (3 * 43);
+						romData[byteToUse] = (byte)finalX1;
+						romData[byteToUse + 1] = (byte)finalY1;
+					}
+
+					if (finalY1 < finalY2 && island1 == 3)
+					{
+						romData[0x230b5] = 0xe6; // Increment instead of decrement
+						romData[0x230d8] = 0xc6; // Decrement instead of increment
+						romData[0x22f80] = 0x00; // Need to move up instead of down
+					}
+					if (finalY1 > finalY2 && island1 == 9)
+					{
+						romData[0x23134] = 0xe6; // Increment instead of decrement
+						romData[0x2313d] = 0xc6; // Decrement instead of increment
+					}
 				}
 
-			if (finalX1 == -1) return false;
+				byte randomLand = (byte)((r1.Next() % 5) + 1);
 
-			byte prevTile;
-
-			// Now that it's established, we need to build the land bridge and possibly set town coordinates (island1 = 3, island2 = 4)
-			// Go N/S, then E/W
-			if (island1 == 3 || island1 == 9)
-			{
-				map[finalY1, finalX1] = island1 == 3 ? 0xf0 : 0xec;
-				if (finalY1 < finalY2)
+				if (island1 == 5)
 				{
-					prevTile = (byte)(map[finalY1 - 1, finalX1 - 2] == 0x00 || map[finalY1 - 1, finalX1 - 2] == 0x06 ? 0x02 : map[finalY1 - 1, finalX1 - 2]);
-					map[finalY1 - 1, finalX1] = map[finalY1 - 1, finalX1 - 1] = map[finalY1 - 1, finalX1 + 1] = prevTile;
-					island[finalY1 - 1, finalX1] = island[finalY1 - 1, finalX1 - 1] = island[finalY1 - 1, finalX1 + 1] = maxIsland[island1];
+					connectXIslands(finalX1, finalX2, finalY1, finalY2, island1, randomLand);
+					connectYIslands(finalX1, finalX2, finalY1, finalY2, island1, island2, mountains, randomLand);
 				}
-				if (finalY1 > finalY2)
+				else
 				{
-					prevTile = (byte)(map[finalY1 + 1, finalX1 - 2] == 0x00 || map[finalY1 + 1, finalX1 - 2] == 0x06 ? 0x02 : map[finalY1 + 1, finalX1 - 2]);
-					island[finalY1 + 1, finalX1] = island[finalY1 + 1, finalX1 - 1] = island[finalY1 + 1, finalX1 + 1] = maxIsland[island1];
-				}
-
-				if (island1 == 3)
-				{
-					int byteToUse = 0x3be1c + (3 * 14);
-					romData[byteToUse] = (byte)finalX1;
-					romData[byteToUse + 1] = (byte)finalY1;
-
-					// Need to replace X and Y to new Tempe Location
-					romData[0x72ee1] = (byte)finalX1;
-					romData[0x72ee5] = (byte)finalY1;
-
-					setReturnPlacement(finalX1, finalY1 < finalY2 ? finalY1 - 1 : finalY1 + 1, 15);
-				}
-				else if (island1 == 9)
-				{
-					int byteToUse = 0x3be1c + (3 * 43);
-					romData[byteToUse] = (byte)finalX1;
-					romData[byteToUse + 1] = (byte)finalY1;
-				}
-
-				if (finalY1 < finalY2 && island1 == 3)
-				{
-					romData[0x230b5] = 0xe6; // Increment instead of decrement
-					romData[0x230d8] = 0xc6; // Decrement instead of increment
-					romData[0x22f80] = 0x00; // Need to move up instead of down
-				}
-				if (finalY1 > finalY2 && island1 == 9)
-				{
-					romData[0x23134] = 0xe6; // Increment instead of decrement
-					romData[0x2313d] = 0xc6; // Decrement instead of increment
+					connectYIslands(finalX1, finalX2, finalY1, finalY2, island1, island2, mountains, randomLand);
+					connectXIslands(finalX1, finalX2, finalY1, finalY2, island1, randomLand);
 				}
 			}
-
-			byte randomLand = (byte)((r1.Next() % 5) + 1);
-
-			if (island1 == 5)
+			catch (Exception ex)
 			{
-				connectXIslands(finalX1, finalX2, finalY1, finalY2, island1, randomLand);
-				connectYIslands(finalX1, finalX2, finalY1, finalY2, island1, island2, mountains, randomLand);
+				MessageBox.Show(ex.Message);
 			}
-			else
-			{
-				connectYIslands(finalX1, finalX2, finalY1, finalY2, island1, island2, mountains, randomLand);
-				connectXIslands(finalX1, finalX2, finalY1, finalY2, island1, randomLand);
-			}
+
 
 			return true;
 		}
