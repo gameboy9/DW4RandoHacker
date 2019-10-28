@@ -1318,6 +1318,10 @@ namespace DW4RandoHacker
 				romData[0x56641] = 0x00;
 				romData[0x56645] = 0x01;
 			}
+
+			// Sell all items from the store by not doing the comparison.
+			romData[0x55fb0] = 0xea;
+			romData[0x55fb1] = 0xea;
 		}
 
 		private void chapter4Adjustments()
@@ -2145,7 +2149,10 @@ namespace DW4RandoHacker
 			int[] level3Moves = { 0x00, 0x01, 0x03, 0x04, 0x07, 0x08, 0x0a, 0x0b, 0x0d, 0x10, 0x11, 0x12, 0x13, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x25, 0x26, 0x2d, 0x2e, 0x30, 0x32, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3c, 0x3d, 0x3f, 0x40, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4d, 0x4e, 0x4f, 0x56, 0x58, 0x5d, 0x5e, 0x62, 0x63, 0x66 };
 			int[] level4Moves = { 0x01, 0x02, 0x04, 0x05, 0x08, 0x09, 0x0b, 0x0c, 0x0d, 0x0e, 0x10, 0x14, 0x17, 0x1a, 0x1d, 0x1f, 0x20, 0x21, 0x23, 0x24, 0x26, 0x27, 0x28, 0x2e, 0x31, 0x32, 0x34, 0x37, 0x39, 0x3a, 0x3d, 0x3e, 0x40, 0x41, 0x42, 0x44, 0x45, 0x49, 0x4a, 0x4d, 0x50, 0x51, 0x53, 0x54, 0x56, 0x58, 0x59, 0x5a, 0x5d, 0x60, 0x62, 0x63 };
 			int[] level5Moves = { 0x02, 0x05, 0x06, 0x09, 0x0c, 0x0e, 0x10, 0x17, 0x1a, 0x1d, 0x24, 0x27, 0x28, 0x29, 0x31, 0x32, 0x34, 0x37, 0x3a, 0x3e, 0x41, 0x44, 0x49, 0x4a, 0x52, 0x53, 0x56, 0x59, 0x5a, 0x60 };
-			int[] earlyBossMoves = { 0x00, 0x03, 0x07, 0x0a, 0x10, 0x16, 0x17, 0x18, 0x22, 0x25, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x35, 0x38, 0x3c, 0x3f, 0x42, 0x45, 0x47, 0x4b, 0x4c, 0x4f, 0x58, 0x5e, 0x5f, 0x61, 0x62, 0x64 };
+			int[] earlyBossMoves1 = { 0x00, 0x03, 0x07, 0x0a, 0x17, 0x18, 0x22, 0x25, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x30,
+									0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32,
+									0x38, 0x3c, 0x3f, 0x47, 0x4b, 0x4c, 0x58, 0x5e, 0x5f, 0x61, 0x64 };
+			int[] earlyBossMoves2 = { 0x00, 0x03, 0x07, 0x0a, 0x10, 0x16, 0x17, 0x18, 0x22, 0x25, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x35, 0x38, 0x3c, 0x3f, 0x42, 0x45, 0x47, 0x4b, 0x4c, 0x4f, 0x58, 0x5e, 0x5f, 0x61, 0x62, 0x64 };
 			int[] weirdAttackMoves = { 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37 };
 
 			for (int lnI = 0; lnI < monsterRank.Length; lnI++) // 0xc2 is not used; Necrosaro
@@ -2190,7 +2197,10 @@ namespace DW4RandoHacker
 				{
 					int moveLevel = (lnI < 38 ? 0 : lnI < 76 ? 1 : lnI < 114 ? 2 : lnI < 152 ? 3 : 4);
 					// Force early chapter bosses and Tricksy Urchin to have no worse than level 2 moves. (part 2)
-					if (lnI == 77 || lnI == 110 || lnI == 71 || lnI == 80 || lnI == 81 || lnI == 91 || lnI == 92 || lnI == 155 || lnI == 150)
+					if (lnI == 77 || lnI == 110 || lnI == 155)
+						moveLevel = 6;
+					// With no sleep attacks in Chapter 1, the C2 tournament, and Chapter 5
+					if (lnI == 77 || lnI == 71 || lnI == 80 || lnI == 81 || lnI == 91 || lnI == 92 || lnI == 150)
 						moveLevel = 5;
 
 					for (int lnJ = 0; lnJ < 6; lnJ++)
@@ -2203,7 +2213,8 @@ namespace DW4RandoHacker
 																  moveLevel == 2 ? level3Moves[r1.Next() % level3Moves.Length] :
 																  moveLevel == 3 ? level4Moves[r1.Next() % level4Moves.Length] :
 																  moveLevel == 4 ? level5Moves[r1.Next() % level5Moves.Length] :
-																  earlyBossMoves[r1.Next() % earlyBossMoves.Length]);
+																  moveLevel == 5 ? earlyBossMoves1[r1.Next() % earlyBossMoves1.Length] : 
+																				   earlyBossMoves2[r1.Next() % earlyBossMoves2.Length]);
 
 						// Linguar is not allowed to heal
 						if (monsterRank[lnI] == 0xba && (romData[byteToUse + 9 + lnJ] == 0x22 || romData[byteToUse + 9 + lnJ] == 0x25 || romData[byteToUse + 9 + lnJ] == 0x5f))
@@ -2251,7 +2262,7 @@ namespace DW4RandoHacker
 					}
 				}
 
-				// If ludicrous is selected, change chances of double and triple attacks.
+				// If ludicrous is selected, change chances of double and triple attacks, as well as regeneration.
 				// But do not allow this if it's an early chapter boss monster.
 				if (cboMonsterAttacks.SelectedIndex == 4 && !(lnI == 77 || lnI == 110 || lnI == 71 || lnI == 80 || lnI == 81 || lnI == 91 || lnI == 92 || lnI == 155 || lnI == 150))
 				{
@@ -2276,18 +2287,22 @@ namespace DW4RandoHacker
 					romData[byteToUse + 13] = (byte)(romData[byteToUse + 13] % 128);
 					romData[byteToUse + 14] = (byte)(romData[byteToUse + 14] % 128);
 
-					if (r1.Next() % 1000 <= lnI)
+					// But no regeneration is allowed if a monster has less than 50 HP
+					if (romData[byteToUse + 2] >= 50 || romData[byteToUse + 21] % 3 >= 1)
 					{
-						romData[byteToUse + 13] += 128;
-						romData[byteToUse + 14] += 128;
-					}
-					else if (r1.Next() % 1000 <= lnI)
-					{
-						romData[byteToUse + 14] += 128;
-					}
-					else if (r1.Next() % 1000 <= lnI)
-					{
-						romData[byteToUse + 13] += 128;
+						if (r1.Next() % 1000 <= lnI) // 100 HP / turn
+						{
+							romData[byteToUse + 13] += 128;
+							romData[byteToUse + 14] += 128;
+						}
+						else if (r1.Next() % 1000 <= lnI) // 50 HP / turn
+						{
+							romData[byteToUse + 14] += 128;
+						}
+						else if (r1.Next() % 1000 <= lnI) // 25 HP / turn
+						{
+							romData[byteToUse + 13] += 128;
+						}
 					}
 				}
 			}
@@ -2368,6 +2383,10 @@ namespace DW4RandoHacker
 			{
 				for (int lnI = 0; lnI < monsterRank.Length; lnI++) // 0xc2 is not used; Necrosaro
 				{
+					// Do not change the Chapter 2 tournament bosses drops.  They should still be herbs.
+					if (lnI == 71 || lnI == 80 || lnI == 81 || lnI == 91)
+						continue;
+
 					int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
 
 					if (cboMonsterDrops.SelectedIndex == 1)
@@ -2411,6 +2430,10 @@ namespace DW4RandoHacker
 			{
 				for (int lnI = 0; lnI < monsterRank.Length; lnI++) // 0xc2 is not used; Necrosaro
 				{
+					// Do not change the Chapter 2 tournament bosses drops.  They should still be herbs.
+					if (lnI == 71 || lnI == 80 || lnI == 81 || lnI == 91)
+						continue;
+
 					int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
 
 					romData[byteToUse + 20] -= (byte)(romData[byteToUse + 20] % 8);
@@ -2421,6 +2444,10 @@ namespace DW4RandoHacker
 			{
 				for (int lnI = 0; lnI < monsterRank.Length; lnI++) // 0xc2 is not used; Necrosaro
 				{
+					// Do not change the Chapter 2 tournament bosses drops.  They should still be 100% drop rate.
+					if (lnI == 71 || lnI == 80 || lnI == 81 || lnI == 91)
+						continue;
+
 					int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
 
 					if (cboMonsterDropChance.SelectedIndex == 1 && romData[byteToUse + 20] % 8 != 0)
@@ -3041,16 +3068,16 @@ namespace DW4RandoHacker
 							// If you can equip the weak Zenithian Sword, you can equip the strong Zenithian Sword.
 							if (lnI == 0x14)
 								romData[0x40c75 + 0x21] += (byte)Math.Pow(2, lnJ);
-							if (minWeapon[lnJ] == 255 && lnK == 0)
-							{
-								minWeapon[lnJ] = lnI;
-								romData[0x491a1 + (lnJ * 8) + 0] = (byte)(0x80 + lnI);
-							}
-							if (minArmor[lnJ] == 255 && lnK == 1)
-							{
-								minArmor[lnJ] = lnI;
-								romData[0x491a1 + (lnJ * 8) + 1] = (byte)(0x80 + lnI);
-							}
+							//if (minWeapon[lnJ] == 255 && lnK == 0)
+							//{
+							//	minWeapon[lnJ] = lnI;
+							//	romData[0x491a1 + (lnJ * 8) + 0] = (byte)(0x80 + lnI);
+							//}
+							//if (minArmor[lnJ] == 255 && lnK == 1)
+							//{
+							//	minArmor[lnJ] = lnI;
+							//	romData[0x491a1 + (lnJ * 8) + 1] = (byte)(0x80 + lnI);
+							//}
 						}
 					}
 				}
@@ -3098,6 +3125,7 @@ namespace DW4RandoHacker
 				else if (lnI == 4)
 					romData[0x491a1 + (lnI * 8) + 0] = (byte)(0x80 + weak1);
 
+				// Repeat for armor
 				weakPower1 = weakPower2 = weakPower3 = 255;
 				for (int lnJ = 36; lnJ < 61; lnJ++)
 				{
@@ -3451,10 +3479,11 @@ namespace DW4RandoHacker
 
 							if ((lnI == 12 || lnI == 26) && cboMonsterAttacks.SelectedIndex >= 3)
 							{
-								// Limit Cave Of Betrayal bosses to level 2 moves only.
+								// Limit Cave Of Betrayal bosses to level 2 moves only.  Sleep attacks not allowed.
 								int byteToUse2 = 0x60056 + (romData[byteToUse + lnJ] * 22);
-								int[] earlyBossMoves = { 0x00, 0x03, 0x07, 0x0a, 0x10, 0x16, 0x17, 0x18, 0x22, 0x25, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x30, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32,
-								0x35, 0x38, 0x3c, 0x3f, 0x42, 0x45, 0x47, 0x4b, 0x4c, 0x4f, 0x58, 0x5e, 0x5f, 0x61, 0x62, 0x64 };
+								int[] earlyBossMoves = { 0x00, 0x03, 0x07, 0x0a, 0x17, 0x18, 0x22, 0x25, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x30, 
+									0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32, 0x32,
+									0x38, 0x3c, 0x3f, 0x47, 0x4b, 0x4c, 0x58, 0x5e, 0x5f, 0x61, 0x64 };
 								for (int lnK = 0; lnK < 6; lnK++)
 									romData[byteToUse2 + 9 + lnK] = (byte)(earlyBossMoves[r1.Next() % earlyBossMoves.Length]);
 							}
