@@ -983,7 +983,15 @@ namespace DW4RandoHacker
 
 			criticalHits(r1);
 			taloonInsanity(r1);
-			if (chkRandomizeMap.Checked) randomizeMapv5(r1);
+			if (chkRandomizeMap.Checked)
+				// If the map is forced to revert to the original map, revert the Ch2 and Ch5 town warp locations.
+				if (!randomizeMapv5(r1))
+				{
+					romData[0x3be1c + (3 * 14) + 0] = 0x47;
+					romData[0x3be1c + (3 * 14) + 1] = 0x39;
+					romData[0x3be1c + (3 * 43) + 0] = 0xb2;
+					romData[0x3be1c + (3 * 43) + 1] = 0x4d;
+				}
 			swapMonsters(r1);
 			randomizeMonsterStats(r1);
 			randomizeMonsterDrops(r1);
@@ -4608,7 +4616,7 @@ namespace DW4RandoHacker
 						break;
 					case "V": // Cave
 						if (validPlot(y - 1, x - 1, 3, 3, locIslands[lnI] <= 10 ? new int[] { maxIsland[locIslands[lnI]] } : islands.ToArray()) && reachable(y, x, !landLocs.Contains(lnI),
-							locIslands[lnI] <= 10 ? midenX[locIslands[lnI]] : midenX[10], locIslands[lnI] <= 10 ? midenY[locIslands[lnI]] : midenY[10], maxLake, false))
+							locIslands[lnI] <= 10 ? midenX[locIslands[lnI]] : midenX[10], locIslands[lnI] <= 10 ? midenY[locIslands[lnI]] : midenY[10], maxLake, false) && (lnI != 58 || towerCheck(y, x)))
 						{
 							map[y, x] = 0xeb;
 
@@ -4836,7 +4844,7 @@ namespace DW4RandoHacker
 										baramosLegal = false;
 								}
 
-							if (baramosLegal)
+							if (baramosLegal && towerCheck(y, x))
 							{
 								for (int lnJ = -1; lnJ <= 1; lnJ++)
 									for (int lnK = -1; lnK <= 1; lnK++)
@@ -4856,7 +4864,7 @@ namespace DW4RandoHacker
 						}
 						else if (lnI == 56) // Bazaar
 						{
-							if (validPlot(y, x, 3, 3, new int[] { maxIsland[locIslands[lnI]] }) && reachable(y, x, false, midenX[4], midenY[4], maxLake, false))
+							if (validPlot(y, x, 3, 3, new int[] { maxIsland[locIslands[lnI]] }) && reachable(y, x, false, midenX[4], midenY[4], maxLake, false) && towerCheck(y, x))
 							{
 								for (int lnJ = 0; lnJ <= 2; lnJ++)
 									for (int lnK = 0; lnK <= 2; lnK++)
@@ -4878,7 +4886,7 @@ namespace DW4RandoHacker
 						}
 						else if (lnI == 57) // Well
 						{
-							if (validPlot(y, x, 1, 1, new int[] { maxIsland[locIslands[lnI]] }) && reachable(y, x, false, midenX[2], midenY[2], maxLake, false) && y >= 8 && x >= 8 && map[y - 4, x - 4] < 0xe8)
+							if (validPlot(y, x, 1, 1, new int[] { maxIsland[locIslands[lnI]] }) && reachable(y, x, false, midenX[2], midenY[2], maxLake, false) && y >= 8 && x >= 8 && map[y - 4, x - 4] < 0xe8 && towerCheck(y, x))
 							{
 								//for (int lnJ = 0; lnJ <= 2; lnJ++)
 								//	for (int lnK = 0; lnK <= 2; lnK++)
@@ -4907,7 +4915,7 @@ namespace DW4RandoHacker
 										baramosLegal = false;
 								}
 
-							if (baramosLegal)
+							if (baramosLegal && towerCheck(y, x))
 							{
 								for (int lnJ = -2; lnJ <= 2; lnJ++)
 									for (int lnK = -2; lnK <= 2; lnK++)
@@ -6097,6 +6105,27 @@ namespace DW4RandoHacker
 
 				}
 
+			for (int lnI = -2; lnI <= 2; lnI++)
+				for (int lnJ = -2; lnJ <= 2; lnJ++)
+				{
+					if (y + lnI >= (chkSmallMap.Checked ? 128 : 256) || x + lnJ >= (chkSmallMap.Checked ? 128 : 256)) return false;
+
+					int legalY = (y + lnI >= 256 ? y - 256 + lnI : y + lnI);
+					int legalX = (x + lnJ >= 256 ? x - 256 + lnJ : x + lnJ);
+
+					// Make sure that the location isn't near a tower... to avoid falling... cascading into an entrance... which cascades into a hardlock.
+					if (map[legalY, legalX] == 0xed || map[legalY, legalX] == 0xf1)
+						return false;
+				}
+
+			return true;
+		}
+
+		private bool towerCheck(int y, int x)
+		{
+			if (Math.Abs(romData[0x23e86] - x) <= 2 && Math.Abs(romData[0x23e87] - y) <= 2)
+				return false;
+
 			return true;
 		}
 
@@ -6598,8 +6627,8 @@ namespace DW4RandoHacker
 					foreach (SuperIslandLinks link2 in links2)
 					{
 						if (Math.Abs(link.x - link2.x) + Math.Abs(link.y - link2.y) < minDistance
-						  && (island1 == 5 || Math.Abs(link.y - link2.y) > 1))
-							if (island1 == 3 || island1 == 9 || (island1 == 5 && Math.Abs(link.x - link2.x) > 1))
+						  && Math.Abs(link.y - link2.y) > 1)  // (island1 == 5 || Math.Abs(link.y - link2.y) > 1))
+							//if (island1 == 3 || island1 == 9 || (island1 == 5 && Math.Abs(link.x - link2.x) > 1))
 							{
 								// Disqualify a link if it would go through a different zone
 								bool disqualified = false;
@@ -6699,11 +6728,27 @@ namespace DW4RandoHacker
 					{
 						prevTile = (byte)(map[finalY1 - 1, finalX1 - 2] == 0x00 || map[finalY1 - 1, finalX1 - 2] == 0x06 ? 0x02 : map[finalY1 - 1, finalX1 - 2]);
 						map[finalY1 - 1, finalX1] = map[finalY1 - 1, finalX1 - 1] = map[finalY1 - 1, finalX1 + 1] = prevTile;
+						// Sometimes there's an awkward placement that blocks off the path to the location...
+						if ((map[finalY1, finalX1 - 1] == 0x00 || map[finalY1, finalX1 - 2] == 0x00) && (map[finalY1, finalX1 + 1] == 0x00 || map[finalY1, finalX1 + 2] == 0x00))
+						{
+							if (map[finalY1 + 1, finalX1 + 2] != 0x00)
+								map[finalY1, finalX1 + 2] = prevTile;
+							else
+								map[finalY1, finalX1 - 2] = prevTile;
+						}
 						island[finalY1 - 1, finalX1] = island[finalY1 - 1, finalX1 - 1] = island[finalY1 - 1, finalX1 + 1] = maxIsland[island1];
 					}
 					if (finalY1 > finalY2)
 					{
 						prevTile = (byte)(map[finalY1 + 1, finalX1 - 2] == 0x00 || map[finalY1 + 1, finalX1 - 2] == 0x06 ? 0x02 : map[finalY1 + 1, finalX1 - 2]);
+						map[finalY1 + 1, finalX1] = map[finalY1 + 1, finalX1 - 1] = map[finalY1 + 1, finalX1 + 1] = prevTile;
+						if ((map[finalY1, finalX1 - 1] == 0x00 || map[finalY1, finalX1 - 2] == 0x00) && (map[finalY1, finalX1 + 1] == 0x00 || map[finalY1, finalX1 + 2] == 0x00))
+						{
+							if (map[finalY1 - 1, finalX1 + 2] != 0x00)
+								map[finalY1, finalX1 + 2] = prevTile;
+							else
+								map[finalY1, finalX1 - 2] = prevTile;
+						}
 						island[finalY1 + 1, finalX1] = island[finalY1 + 1, finalX1 - 1] = island[finalY1 + 1, finalX1 + 1] = maxIsland[island1];
 					}
 
@@ -6741,16 +6786,16 @@ namespace DW4RandoHacker
 
 				byte randomLand = (byte)((r1.Next() % 5) + 1);
 
-				if (island1 == 5)
-				{
-					connectXIslands(finalX1, finalX2, finalY1, finalY2, island1, randomLand);
-					connectYIslands(finalX1, finalX2, finalY1, finalY2, island1, island2, mountains, randomLand);
-				}
-				else
-				{
-					connectYIslands(finalX1, finalX2, finalY1, finalY2, island1, island2, mountains, randomLand);
-					connectXIslands(finalX1, finalX2, finalY1, finalY2, island1, randomLand);
-				}
+				//if (island1 == 5)
+				//{
+				//	connectXIslands(finalX1, finalX2, finalY1, finalY2, island1, randomLand);
+				//	connectYIslands(finalX1, finalX2, finalY1, finalY2, island1, island2, mountains, randomLand);
+				//}
+				//else
+				//{
+				connectYIslands(finalX1, finalX2, finalY1, finalY2, island1, island2, mountains, randomLand);
+				connectXIslands(finalX1, finalX2, finalY1, finalY2, island1, island2, randomLand);
+				//}
 			}
 			catch (Exception ex)
 			{
@@ -6761,7 +6806,7 @@ namespace DW4RandoHacker
 			return true;
 		}
 
-		private void connectXIslands(int finalX1, int finalX2, int finalY1, int finalY2, int island1, int randomLand)
+		private void connectXIslands(int finalX1, int finalX2, int finalY1, int finalY2, int island1, int island2, int randomLand)
 		{
 			if (finalX1 < finalX2)
 			{
@@ -6771,23 +6816,27 @@ namespace DW4RandoHacker
 
 				for (int lnI = finalX1 + 1; lnI <= finalX2; lnI++)
 				{
-					map[island1 == 5 ? finalY1 : finalY2, lnI] = randomLand;
-					//island[lnI, finalX1] = (island1 == 5 ? maxIsland[island1] : maxIsland[island2]);
+					map[finalY2, lnI] = randomLand; // island1 == 5 ? finalY1 : 
+													//island[lnI, finalX1] = (island1 == 5 ? maxIsland[island1] : maxIsland[island2]);
 
-					if (lnI == finalX2 - 1 && island1 == 5)
-						map[island1 == 5 ? finalY1 : finalY2, lnI] = 0xf6;
-					if (island1 == 5 && lnI != finalX2) //  && lnI != finalX2
-					{
-						map[finalY1 - 1, lnI] = 0x00;
-						map[finalY1 + 1, lnI] = 0x00;
-						//if (finalY1 > finalY2)
-						//	map[finalY1 - 2, lnI + 1] = randomLand;
-						//else
-						//	map[finalY1 + 2, lnI + 1] = randomLand;
-					}
+					//if (lnI == finalX2 - 1 && island1 == 5)
+					//{
+					//	map[finalY1, lnI] = 0xf6;
+					//	map[finalY1 - 1, lnI] = 0x00;
+					//	map[finalY1 + 1, lnI] = 0x00;
+					//}
+					//if (island1 == 5 && lnI != finalX2) //  && lnI != finalX2
+					//{
+					//	map[finalY1 - 1, lnI] = 0x00;
+					//	map[finalY1 + 1, lnI] = 0x00;
+					//	//if (finalY1 > finalY2)
+					//	//	map[finalY1 - 2, lnI + 1] = randomLand;
+					//	//else
+					//	//	map[finalY1 + 2, lnI + 1] = randomLand;
+					//}
 				}
 
-				if (finalY1 != finalY2 && island1 == 5) { map[finalY1, finalX2 + 1] = 0x00; }
+				//if (finalY1 != finalY2 && island1 == 5) { map[finalY1, finalX2 + 1] = 0x00; }
 			}
 			else if (finalX1 > finalX2)
 			{
@@ -6797,55 +6846,127 @@ namespace DW4RandoHacker
 
 				for (int lnI = finalX1 - 1; lnI >= finalX2; lnI--)
 				{
-					map[island1 == 5 ? finalY1 : finalY2, lnI] = randomLand;
-					//island[lnI, finalX1] = (island1 == 5 ? maxIsland[island1] : maxIsland[island2]);
+					map[finalY2, lnI] = randomLand; // island1 == 5 ? finalY1 : 
+													//island[lnI, finalX1] = (island1 == 5 ? maxIsland[island1] : maxIsland[island2]);
 
-					if (lnI == finalX2 + 1 && island1 == 5)
-						map[island1 == 5 ? finalY1 : finalY2, lnI] = 0xf6;
-					if (island1 == 5 && lnI != finalX2) //  && lnI != finalX2
-					{
-						map[finalY1 - 1, lnI] = 0x00;
-						map[finalY1 + 1, lnI] = 0x00;
+					//if (lnI == finalX2 + 1 && island1 == 5)
+					//{
+					//	map[finalY1, lnI] = 0xf6;
+					//	map[finalY1 - 1, lnI] = 0x00;
+					//	map[finalY1 + 1, lnI] = 0x00;
+					//}
+					//if (island1 == 5 && lnI != finalX2) //  && lnI != finalX2
+					//{
+						//map[finalY1 - 1, lnI] = 0x00;
+						//map[finalY1 + 1, lnI] = 0x00;
 						//if (finalY1 > finalY2)
 						//	map[finalY1 - 2, lnI - 1] = randomLand;
 						//else
 						//	map[finalY1 + 2, lnI - 1] = randomLand;
-					}
+					//}
 				}
 
-				if (finalY1 != finalY2 && island1 == 5) { map[finalY1, finalX2 - 1] = 0x00; }
+				//if (finalY1 != finalY2 && island1 == 5) { map[finalY1, finalX2 - 1] = 0x00; }
+			}
+
+			// Create a bridge if necessary
+			if (island1 == 5)
+			{
+				if (finalX1 == finalX2)
+				{
+					// If the connecting island was south of the originating island...
+					if (finalY2 > finalY1)
+					{
+						if ((map[finalY2, finalX2 + 2] != 0x00 && island[finalY2, finalX2 + 2] == island2) || finalX2 % (chkSmallMap.Checked ? 8 : 16) <= 2)
+						{
+							map[finalY2, finalX2 + 1] = 0xf6;
+							map[finalY2, finalX2 - 1] = 0x00;
+							map[finalY2 + 1, finalX2 - 1] = map[finalY2 + 1, finalX2] = map[finalY2 + 1, finalX2 + 1] = 0x00;
+							map[finalY2, finalX2 + 2] = map[finalY2 + 1, finalX2 + 2] = map[finalY2 + 2, finalX2 + 2] = randomLand;
+							map[finalY2 + 2, finalX2 - 1] = map[finalY2 + 2, finalX2] = map[finalY2 + 2, finalX2 + 1] = randomLand;
+						}
+						else
+						{
+							map[finalY2, finalX2 - 1] = 0xf6;
+							map[finalY2, finalX2 + 1] = 0x00;
+							map[finalY2 + 1, finalX2 + 1] = map[finalY2 + 1, finalX2] = map[finalY2 + 1, finalX2 - 1] = 0x00;
+							map[finalY2, finalX2 - 2] = map[finalY2 + 1, finalX2 - 2] = map[finalY2 + 2, finalX2 - 2] = randomLand;
+							map[finalY2 + 2, finalX2 + 1] = map[finalY2 + 2, finalX2] = map[finalY2 + 2, finalX2 - 1] = randomLand;
+						}
+					}
+					else if (finalY2 < finalY1)
+					{
+						if (map[finalY2, finalX2 + 2] != 0x00 && island[finalY2, finalX2 + 2] == island2 || finalX2 % (chkSmallMap.Checked ? 8 : 16) <= 2)
+						{
+							map[finalY2, finalX2 + 1] = 0xf6;
+							map[finalY2, finalX2 - 1] = 0x00;
+							map[finalY2 - 1, finalX2 - 1] = map[finalY2 - 1, finalX2] = map[finalY2 - 1, finalX2 + 1] = 0x00;
+							map[finalY2, finalX2 + 2] = map[finalY2 - 1, finalX2 + 2] = map[finalY2 - 2, finalX2 + 2] = randomLand;
+							map[finalY2 - 2, finalX2 - 1] = map[finalY2 - 2, finalX2] = map[finalY2 - 2, finalX2 + 1] = randomLand;
+						}
+						else
+						{
+							map[finalY2, finalX2 - 1] = 0xf6;
+							map[finalY2, finalX2 + 1] = 0x00;
+							map[finalY2 - 1, finalX2 + 1] = map[finalY2 - 1, finalX2] = map[finalY2 - 1, finalX2 - 1] = 0x00;
+							map[finalY2, finalX2 - 2] = map[finalY2 - 1, finalX2 - 2] = map[finalY2 - 2, finalX2 - 2] = randomLand;
+							map[finalY2 - 2, finalX2 + 1] = map[finalY2 - 2, finalX2] = map[finalY2 - 2, finalX2 - 1] = randomLand;
+						}
+					}
+				} else if (finalX1 < finalX2)
+				{
+					map[finalY2, finalX2] = 0xf6;
+					map[finalY2 - 1, finalX2] = 0x00;
+					map[finalY2 + 1, finalX2] = 0x00;
+					if (finalX2 - finalX1 >= 2)
+					{
+						map[finalY2 - 1, finalX2 - 1] = 0x00;
+						map[finalY2 + 1, finalX2 - 1] = 0x00;
+					}
+				} else
+				{
+					map[finalY2, finalX2] = 0xf6;
+					map[finalY2 - 1, finalX2] = 0x00;
+					map[finalY2 + 1, finalX2] = 0x00;
+					if (finalX1 - finalX2 >= 2)
+					{
+						map[finalY2 - 1, finalX2 + 1] = 0x00;
+						map[finalY2 + 1, finalX2 + 1] = 0x00;
+					}
+				}
 			}
 		}
 
 		private void connectYIslands(int finalX1, int finalX2, int finalY1, int finalY2, int island1, int island2, bool mountains, int randomLand)
 		{
+			// If island1 is north of island2...
 			if (finalY1 < finalY2)
 			{
 				for (int lnI = finalY1 + 1; lnI <= finalY2; lnI++)
 				{
-					map[lnI, island1 == 5 ? finalX2 : finalX1] = randomLand;
-					//island[lnI, finalX1] = (island1 == 5 ? maxIsland[island1] : maxIsland[island2]);
+					map[lnI, finalX1] = randomLand; // island1 == 5 ? finalX2 : 
+													//island[lnI, finalX1] = (island1 == 5 ? maxIsland[island1] : maxIsland[island2]);
 
-					if (mountains && lnI != finalY2 && map[lnI, island1 == 5 ? finalX2 - 1 : finalX1 - 1] != 0x00 && island[lnI, island1 == 5 ? finalX2 - 1 : finalX1 - 1] / 1000 != island2)
-						map[lnI, island1 == 5 ? finalX2 - 1 : finalX1 - 1] = 0x06;
-					if (mountains && lnI != finalY2 && map[lnI, island1 == 5 ? finalX2 + 1 : finalX1 + 1] != 0x00 && island[lnI, island1 == 5 ? finalX2 + 1 : finalX1 + 1] / 1000 != island2)
-						map[lnI, island1 == 5 ? finalX2 + 1 : finalX1 + 1] = 0x06;
+					if (mountains && lnI != finalY2 && map[lnI, finalX1 - 1] != 0x00 && island[lnI, finalX1 - 1] / 1000 != island2) // island1 == 5 ? finalX2 - 1 : 
+						map[lnI, finalX1 - 1] = 0x06; // island1 == 5 ? finalX2 - 1 : 
+					if (mountains && lnI != finalY2 && map[lnI, finalX1 + 1] != 0x00 && island[lnI, finalX1 + 1] / 1000 != island2) // island1 == 5 ? finalX2 + 1 : 
+						map[lnI, finalX1 + 1] = 0x06; // island1 == 5 ? finalX2 + 1 : 
 				}
-				if (finalX1 != finalX2 && island1 != 5) { map[finalY2 + 1, finalX1] = 0x00; }
+				if (finalX1 != finalX2) { map[finalY2 + 1, finalX1] = 0x00; } //  && island1 != 5
 			}
 			else
 			{
 				for (int lnI = finalY1 - 1; lnI >= finalY2; lnI--)
 				{
-					map[lnI, island1 == 5 ? finalX2 : finalX1] = randomLand;
-					//island[lnI, finalX1] = (island1 == 5 ? maxIsland[island1] : maxIsland[island2]);
+					map[lnI, finalX1] = randomLand; // island1 == 5 ? finalX2 : 
+													//island[lnI, finalX1] = (island1 == 5 ? maxIsland[island1] : maxIsland[island2]);
 
-					if (mountains && lnI != finalY2 && map[lnI, island1 == 5 ? finalX2 - 1 : finalX1 - 1] != 0x00 && island[lnI, island1 == 5 ? finalX2 - 1 : finalX1 - 1] / 1000 != island2)
-						map[lnI, island1 == 5 ? finalX2 - 1 : finalX1 - 1] = 0x06;
-					if (mountains && lnI != finalY2 && map[lnI, island1 == 5 ? finalX2 + 1 : finalX1 + 1] != 0x00 && island[lnI, island1 == 5 ? finalX2 + 1 : finalX1 + 1] / 1000 != island2)
-						map[lnI, island1 == 5 ? finalX2 + 1 : finalX1 + 1] = 0x06;
+					if (mountains && lnI != finalY2 && map[lnI, finalX1 - 1] != 0x00 && island[lnI, finalX1 - 1] / 1000 != island2) // island1 == 5 ? finalX2 - 1 : 
+						map[lnI, finalX1 - 1] = 0x06; // island1 == 5 ? finalX2 - 1 : 
+					if (mountains && lnI != finalY2 && map[lnI, finalX1 + 1] != 0x00 && island[lnI, finalX1 + 1] / 1000 != island2) // island1 == 5 ? finalX2 + 1 : 
+						map[lnI, finalX1 + 1] = 0x06; // island1 == 5 ? finalX2 + 1 : 
 				}
-				if (finalX1 != finalX2 && island1 != 5) { map[finalY2 - 1, finalX1] = 0x00; }
+				if (finalX1 != finalX2) { map[finalY2 - 1, finalX1] = 0x00; } //  && island1 != 5
 			}
 		}
 	}
