@@ -4,6 +4,8 @@ using System.Security.Cryptography;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms.Design;
+using System.Security.Policy;
 
 namespace DW4RandoHacker
 {
@@ -333,6 +335,8 @@ namespace DW4RandoHacker
 				// We'll replace the first treasure chest in the Aktemto Mine with the Magic Key.
 				//romData[0x7bef1] = 0x72;
 				romData[0x7b399] = power;
+				// This should allow the door to be opened by the solo hero.  Change from CMP #$09 to CMP #$00, since there are no NPCs in solo hero.
+				romData[0x40ea0] = 0x00;
 
 				// Force Nara to solo hero in Chapter 5
 				romData[0x77903] = power;
@@ -4643,27 +4647,6 @@ namespace DW4RandoHacker
 							lnI--;
 
 						break;
-					case "W": // Tower
-						if (validPlot(y - 1, x - 1, 3, 3, locIslands[lnI] <= 10 ? new int[] { maxIsland[locIslands[lnI]] } : islands.ToArray()) && reachable(y, x, !landLocs.Contains(lnI),
-							locIslands[lnI] <= 10 ? midenX[locIslands[lnI]] : midenX[10], locIslands[lnI] <= 10 ? midenY[locIslands[lnI]] : midenY[10], maxLake, false))
-						{
-							map[y + 0, x + 0] = 0xed;
-							map[y + 1, x + 0] = 0xf1;
-
-							int byteToUse = 0x3be1c + (3 * lnI);
-							romData[byteToUse] = (byte)x;
-							romData[byteToUse + 1] = (byte)(y + 1);
-
-							if (lnI == 49)
-							{
-								romData[0x7afea] = (byte)x;
-								romData[0x7afeb] = (byte)y;
-							}
-						}
-						else
-							lnI--;
-
-						break;
 					case "?":
 						if (lnI == 18) // Riverton
 						{
@@ -4764,72 +4747,6 @@ namespace DW4RandoHacker
 
 								romData[0x7afff] = romData[0x3be73];
 								romData[0x7b006] = (byte)(romData[0x3be74] + 1);
-							}
-							else
-								lnI--;
-						}
-						else if (lnI == 49) // Loch Tower
-						{
-							if (validPlot(y - 2, x, 6, 1, new int[] { maxIsland[1], maxIsland[2] }) 
-								&& (reachable(y, x, !landLocs.Contains(lnI), midenX[0], midenY[0], maxLake, false) || reachable(y, x, !landLocs.Contains(lnI), midenX[1], midenY[1], maxLake, false)))
-							{
-								int zoneSegment = (chkSmallMap.Checked ? 8 : 16);
-								bool baramosLegal = true;
-								for (int lnY = -2; lnY <= 3; lnY++)
-									for (int lnX = -3; lnX <= 2; lnX++)
-									{
-										if (map[y + lnY, x + lnX] >= 0xe8)
-											baramosLegal = false;
-										if (zone[(y + lnY) / zoneSegment, (x + lnX) / zoneSegment] / 1000 != 1 && zone[(y + lnY) / zoneSegment, (x + lnX) / zoneSegment] / 1000 != 2)
-											baramosLegal = false;
-									}
-								if (baramosLegal && ((island[y, x - 3] != maxIsland[1] && island[y, x + 3] != maxIsland[1]) || (island[y, x - 3] != maxIsland[2] && island[y, x + 3] != maxIsland[2])))
-								{
-									if (!chkCh1Moat.Checked)
-									{
-										map[y + 0, x - 1] = map[y + 1, x - 1] = 0x01;
-										map[y + 0, x - 2] = map[y + 1, x - 2] = 0x00;
-										map[y + 0, x + 1] = map[y + 1, x + 1] = 0x00;
-										map[y + 0, x - 3] = map[y + 1, x - 3] = map[y - 1, x - 3] = map[y + 2, x - 3] = 0x01;
-										map[y + 0, x + 2] = map[y + 1, x + 2] = map[y - 1, x + 2] = map[y + 2, x + 2] = 0x01;
-										map[y - 1, x - 2] = map[y - 1, x - 1] = map[y - 1, x] = map[y - 1, x + 1] = 0x00;
-										map[y + 2, x - 2] = map[y + 2, x - 1] = map[y + 2, x] = map[y + 2, x + 1] = 0x00;
-										map[y - 2, x - 3] = map[y - 2, x - 2] = map[y - 2, x - 1] = map[y - 2, x] = map[y - 2, x + 1] = map[y - 2, x + 2] = 0x01;
-										map[y + 3, x - 3] = map[y + 3, x - 2] = map[y + 3, x - 1] = map[y + 3, x] = map[y + 3, x + 1] = map[y + 3, x + 2] = 0x01;
-									}
-									map[y + 0, x + 0] = 0xed;
-									map[y + 1, x + 0] = 0xf1;
-
-									int byteToUse = 0x3be1c + (3 * lnI);
-									romData[byteToUse] = (byte)x;
-									romData[byteToUse + 1] = (byte)(y + 1);
-
-									// Return spot via Flying Shoes
-									romData[0x7afea] = (byte)x;
-									romData[0x7afeb] = (byte)y;
-								}
-								else
-									lnI--;
-							}
-							else
-								lnI--;
-						}
-						else if (lnI == 54) // Elfville
-						{
-							if (validPlot(y, x, 3, 3, islands.ToArray()) && reachable(y, x, true, midenX[10], midenY[10], maxLake, false))
-							{
-								for (int lnJ = 0; lnJ <= 2; lnJ++)
-									for (int lnK = 0; lnK <= 2; lnK++)
-										map[y + lnJ, x + lnK] = 0x05;
-
-								map[y + 1, x + 1] = 0x04;
-
-								int byteToUse = 0x3be1c + (3 * lnI);
-								romData[byteToUse] = (byte)(x + 1);
-								romData[byteToUse + 1] = (byte)(y + 1);
-
-								romData[0x23e86] = (byte)(x + 1);
-								romData[0x23e87] = (byte)(y + 1);
 							}
 							else
 								lnI--;
@@ -4948,9 +4865,129 @@ namespace DW4RandoHacker
 				}
 			}
 
+			for (int lnI = 0; lnI < locTypes.Length; lnI++)
+			{
+				int x = 300;
+				int y = 300;
+				if (lnI == 1) { x = midenX[1]; y = midenY[1]; } // Burland
+				else if (lnI == 2) { x = midenX[3]; y = midenY[3]; } // Santeem
+				else if (lnI == 3) { x = midenX[9]; y = midenY[9]; } // Branca
+				else if (lnI == 6) { x = midenX[5]; y = midenY[5]; } // Endor
+				else if (lnI == 10) { x = midenX[2]; y = midenY[2]; } // Izmit
+				else if (lnI == 11) { x = midenX[4]; y = midenY[4]; } // Frenor
+				else if (lnI == 12) { x = midenX[6]; y = midenY[6]; } // Lakanaba
+				else if (lnI == 21) { x = midenX[10]; y = midenY[10]; } // Konenbur
+				else if (lnI == 26) { x = midenX[8]; y = midenY[8]; } // Monbaraba
+				else if (lnI == 28) { x = midenX[7]; y = midenY[7]; } // Silver Statuette Cave
+				else if (locIslands[lnI] == -100)
+				{
+					continue;
+				}
+				else
+				{
+					// Subtract 6 for room
+					x = 6 + r1.Next() % (chkSmallMap.Checked ? 128 - 6 - 6 : 256 - 6 - 6);
+					y = 6 + r1.Next() % (chkSmallMap.Checked ? 128 - 6 - 6 : 256 - 6 - 6);
+				}
+
+				switch (locTypes[lnI])
+				{
+					case "W": // Tower
+						if (validPlot(y - 1, x - 1, 4, 3, locIslands[lnI] <= 10 ? new int[] { maxIsland[locIslands[lnI]] } : islands.ToArray()) && reachable(y, x, !landLocs.Contains(lnI),
+							locIslands[lnI] <= 10 ? midenX[locIslands[lnI]] : midenX[10], locIslands[lnI] <= 10 ? midenY[locIslands[lnI]] : midenY[10], maxLake, false))
+						{
+							map[y + 0, x + 0] = 0xed;
+							map[y + 1, x + 0] = 0xf1;
+
+							int byteToUse = 0x3be1c + (3 * lnI);
+							romData[byteToUse] = (byte)x;
+							romData[byteToUse + 1] = (byte)(y + 1);
+
+							if (lnI == 49)
+							{
+								romData[0x7afea] = (byte)x;
+								romData[0x7afeb] = (byte)y;
+							}
+						}
+						else
+							lnI--;
+
+						break;
+					case "?":
+						if (lnI == 49) // Loch Tower
+						{
+							if (validPlot(y - 2, x, 6, 1, new int[] { maxIsland[1], maxIsland[2] })
+								&& (reachable(y, x, !landLocs.Contains(lnI), midenX[0], midenY[0], maxLake, false) || reachable(y, x, !landLocs.Contains(lnI), midenX[1], midenY[1], maxLake, false)))
+							{
+								int zoneSegment = (chkSmallMap.Checked ? 8 : 16);
+								bool baramosLegal = true;
+								for (int lnY = -2; lnY <= 3; lnY++)
+									for (int lnX = -3; lnX <= 2; lnX++)
+									{
+										if (map[y + lnY, x + lnX] >= 0xe8)
+											baramosLegal = false;
+										if (zone[(y + lnY) / zoneSegment, (x + lnX) / zoneSegment] / 1000 != 1 && zone[(y + lnY) / zoneSegment, (x + lnX) / zoneSegment] / 1000 != 2)
+											baramosLegal = false;
+									}
+								if (baramosLegal && ((island[y, x - 3] != maxIsland[1] && island[y, x + 3] != maxIsland[1]) || (island[y, x - 3] != maxIsland[2] && island[y, x + 3] != maxIsland[2])))
+								{
+									if (!chkCh1Moat.Checked)
+									{
+										map[y + 0, x - 1] = map[y + 1, x - 1] = 0x01;
+										map[y + 0, x - 2] = map[y + 1, x - 2] = 0x00;
+										map[y + 0, x + 1] = map[y + 1, x + 1] = 0x00;
+										map[y + 0, x - 3] = map[y + 1, x - 3] = map[y - 1, x - 3] = map[y + 2, x - 3] = 0x01;
+										map[y + 0, x + 2] = map[y + 1, x + 2] = map[y - 1, x + 2] = map[y + 2, x + 2] = 0x01;
+										map[y - 1, x - 2] = map[y - 1, x - 1] = map[y - 1, x] = map[y - 1, x + 1] = 0x00;
+										map[y + 2, x - 2] = map[y + 2, x - 1] = map[y + 2, x] = map[y + 2, x + 1] = 0x00;
+										map[y - 2, x - 3] = map[y - 2, x - 2] = map[y - 2, x - 1] = map[y - 2, x] = map[y - 2, x + 1] = map[y - 2, x + 2] = 0x01;
+										map[y + 3, x - 3] = map[y + 3, x - 2] = map[y + 3, x - 1] = map[y + 3, x] = map[y + 3, x + 1] = map[y + 3, x + 2] = 0x01;
+									}
+									map[y + 0, x + 0] = 0xed;
+									map[y + 1, x + 0] = 0xf1;
+
+									int byteToUse = 0x3be1c + (3 * lnI);
+									romData[byteToUse] = (byte)x;
+									romData[byteToUse + 1] = (byte)(y + 1);
+
+									// Return spot via Flying Shoes
+									romData[0x7afea] = (byte)x;
+									romData[0x7afeb] = (byte)y;
+								}
+								else
+									lnI--;
+							}
+							else
+								lnI--;
+						}
+						else if (lnI == 54) // Elfville
+						{
+							if (validPlot(y, x, 5, 5, islands.ToArray()) && reachable(y, x, true, midenX[10], midenY[10], maxLake, false))
+							{
+								for (int lnJ = 1; lnJ <= 3; lnJ++)
+									for (int lnK = 1; lnK <= 3; lnK++)
+										map[y + lnJ, x + lnK] = 0x05;
+
+								map[y + 2, x + 2] = 0x04;
+
+								int byteToUse = 0x3be1c + (3 * lnI);
+								romData[byteToUse] = (byte)(x + 1);
+								romData[byteToUse + 1] = (byte)(y + 1);
+
+								romData[0x23e86] = (byte)(x + 1);
+								romData[0x23e87] = (byte)(y + 1);
+							}
+							else
+								lnI--;
+						}
+
+						break;
+				}
+			}
+
 			// Stop the "The Ship Arrived In Endor!" in Chapter 4.
 			for (int lnI = 0; lnI < 7; lnI++)
-				romData[0x7cf5e + lnI] = 0xea;
+			romData[0x7cf5e + lnI] = 0xea;
 			romData[0x6eb8e] = 0x11; // Skip the ship ride by making the location comparison Haville instead of Endor upon entering a location.  It runs as soon as the ship leaves town.
 
 			List<int> part1 = new List<int>() { 4 };
@@ -6877,41 +6914,47 @@ namespace DW4RandoHacker
 					// If the connecting island was south of the originating island...
 					if (finalY2 > finalY1)
 					{
-						if ((map[finalY2, finalX2 + 2] != 0x00 && island[finalY2, finalX2 + 2] == island2) || finalX2 % (chkSmallMap.Checked ? 8 : 16) <= 2)
+						map[finalY2, finalX2 + 1] = 0xf6;
+						map[finalY2, finalX2 - 1] = 0xf6;
+						map[finalY2 + 1, finalX2 - 1] = map[finalY2 + 1, finalX2] = map[finalY2 + 1, finalX2 + 1] = 0x00;
+						for (int iy = 0; iy <= 2; iy++)
 						{
-							map[finalY2, finalX2 + 1] = 0xf6;
-							map[finalY2, finalX2 - 1] = 0x00;
-							map[finalY2 + 1, finalX2 - 1] = map[finalY2 + 1, finalX2] = map[finalY2 + 1, finalX2 + 1] = 0x00;
-							map[finalY2, finalX2 + 2] = map[finalY2 + 1, finalX2 + 2] = map[finalY2 + 2, finalX2 + 2] = randomLand;
-							map[finalY2 + 2, finalX2 - 1] = map[finalY2 + 2, finalX2] = map[finalY2 + 2, finalX2 + 1] = randomLand;
+							map[finalY2 + iy, finalX2 - 2] = (map[finalY2 + iy, finalX2 - 3] >= 0x01 && map[finalY2 + iy, finalX2 - 3] <= 0x05 ? map[finalY2 + iy, finalX2 - 3] : randomLand);
+							map[finalY2 + iy, finalX2 + 2] = (map[finalY2 + iy, finalX2 + 3] >= 0x01 && map[finalY2 + iy, finalX2 + 3] <= 0x05 ? map[finalY2 + iy, finalX2 + 3] : randomLand);
 						}
-						else
-						{
-							map[finalY2, finalX2 - 1] = 0xf6;
-							map[finalY2, finalX2 + 1] = 0x00;
-							map[finalY2 + 1, finalX2 + 1] = map[finalY2 + 1, finalX2] = map[finalY2 + 1, finalX2 - 1] = 0x00;
-							map[finalY2, finalX2 - 2] = map[finalY2 + 1, finalX2 - 2] = map[finalY2 + 2, finalX2 - 2] = randomLand;
-							map[finalY2 + 2, finalX2 + 1] = map[finalY2 + 2, finalX2] = map[finalY2 + 2, finalX2 - 1] = randomLand;
-						}
+						map[finalY2 + 2, finalX2 - 2] = map[finalY2 + 2, finalX2 - 1] = map[finalY2 + 2, finalX2] = map[finalY2 + 2, finalX2 + 1] = map[finalY2 + 2, finalX2 + 2] = 
+							(map[finalY2 + 2, finalX2 - 3] >= 0x01 && map[finalY2 + 2, finalX2 - 3] <= 0x05 ? map[finalY2 + 2, finalX2 - 3] : randomLand);
 					}
 					else if (finalY2 < finalY1)
 					{
-						if (map[finalY2, finalX2 + 2] != 0x00 && island[finalY2, finalX2 + 2] == island2 || finalX2 % (chkSmallMap.Checked ? 8 : 16) <= 2)
+						map[finalY2, finalX2 + 1] = 0xf6;
+						map[finalY2, finalX2 - 1] = 0xf6;
+						map[finalY2 - 1, finalX2 - 1] = map[finalY2 - 1, finalX2] = map[finalY2 - 1, finalX2 + 1] = 0x00;
+						for (int iy = 0; iy <= 2; iy++)
 						{
-							map[finalY2, finalX2 + 1] = 0xf6;
-							map[finalY2, finalX2 - 1] = 0x00;
-							map[finalY2 - 1, finalX2 - 1] = map[finalY2 - 1, finalX2] = map[finalY2 - 1, finalX2 + 1] = 0x00;
-							map[finalY2, finalX2 + 2] = map[finalY2 - 1, finalX2 + 2] = map[finalY2 - 2, finalX2 + 2] = randomLand;
-							map[finalY2 - 2, finalX2 - 1] = map[finalY2 - 2, finalX2] = map[finalY2 - 2, finalX2 + 1] = randomLand;
+							map[finalY2 - iy, finalX2 - 2] = (map[finalY2 - iy, finalX2 - 3] >= 0x01 && map[finalY2 - iy, finalX2 - 3] <= 0x05 ? map[finalY2 - iy, finalX2 - 3] : randomLand);
+							map[finalY2 - iy, finalX2 + 2] = (map[finalY2 - iy, finalX2 + 3] >= 0x01 && map[finalY2 - iy, finalX2 + 3] <= 0x05 ? map[finalY2 - iy, finalX2 + 3] : randomLand);
 						}
-						else
-						{
-							map[finalY2, finalX2 - 1] = 0xf6;
-							map[finalY2, finalX2 + 1] = 0x00;
-							map[finalY2 - 1, finalX2 + 1] = map[finalY2 - 1, finalX2] = map[finalY2 - 1, finalX2 - 1] = 0x00;
-							map[finalY2, finalX2 - 2] = map[finalY2 - 1, finalX2 - 2] = map[finalY2 - 2, finalX2 - 2] = randomLand;
-							map[finalY2 - 2, finalX2 + 1] = map[finalY2 - 2, finalX2] = map[finalY2 - 2, finalX2 - 1] = randomLand;
-						}
+						map[finalY2 - 2, finalX2 - 2] = map[finalY2 - 2, finalX2 - 1] = map[finalY2 - 2, finalX2] = map[finalY2 - 2, finalX2 + 1] = map[finalY2 - 2, finalX2 + 2] =
+							(map[finalY2 - 2, finalX2 - 3] >= 0x01 && map[finalY2 - 2, finalX2 - 3] <= 0x05 ? map[finalY2 - 2, finalX2 - 3] : randomLand);
+
+						//if (map[finalY2, finalX2 + 2] != 0x00 && island[finalY2, finalX2 + 2] == island2 || finalX2 % (chkSmallMap.Checked ? 8 : 16) <= 2)
+						//{
+						//	map[finalY2, finalX2 + 1] = 0xf6;
+						//	map[finalY2, finalX2 - 1] = 0x00;
+						//	map[finalY2 - 1, finalX2 - 1] = map[finalY2 - 1, finalX2] = map[finalY2 - 1, finalX2 + 1] = 0x00;
+
+						//	map[finalY2, finalX2 + 2] = map[finalY2 - 1, finalX2 + 2] = map[finalY2 - 2, finalX2 + 2] = randomLand;
+						//	map[finalY2 - 2, finalX2 - 1] = map[finalY2 - 2, finalX2] = map[finalY2 - 2, finalX2 + 1] = randomLand;
+						//}
+						//else
+						//{
+						//	map[finalY2, finalX2 - 1] = 0xf6;
+						//	map[finalY2, finalX2 + 1] = 0x00;
+						//	map[finalY2 - 1, finalX2 + 1] = map[finalY2 - 1, finalX2] = map[finalY2 - 1, finalX2 - 1] = 0x00;
+						//	map[finalY2, finalX2 - 2] = map[finalY2 - 1, finalX2 - 2] = map[finalY2 - 2, finalX2 - 2] = randomLand;
+						//	map[finalY2 - 2, finalX2 + 1] = map[finalY2 - 2, finalX2] = map[finalY2 - 2, finalX2 - 1] = randomLand;
+						//}
 					}
 				} else if (finalX1 < finalX2)
 				{
@@ -6923,7 +6966,7 @@ namespace DW4RandoHacker
 						map[finalY2 - 1, finalX2 - 1] = 0x00;
 						map[finalY2 + 1, finalX2 - 1] = 0x00;
 					}
-				} else
+				} else // finalX1 > finalX2
 				{
 					map[finalY2, finalX2] = 0xf6;
 					map[finalY2 - 1, finalX2] = 0x00;
