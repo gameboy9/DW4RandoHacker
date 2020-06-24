@@ -530,12 +530,8 @@ namespace DW4RandoHacker
 				// Turn Nara into the solo hero in Chapter 4!
 				romData[0x76b3c] = power;
 
-				// You have to gain the magic key because having Orin in the party destroys the solo hero concept.  
-				// We'll replace the first treasure chest in the Aktemto Mine with the Magic Key.
-				//romData[0x7bef1] = 0x72;
+				// This will make sure that the Hero can bash the door.
 				romData[0x7b399] = power;
-				// This should allow the door to be opened by the solo hero.  Change from CMP #$09 to CMP #$00, since there are no NPCs in solo hero.
-				romData[0x403a0] = 0x00; // Not 40ea0...
 
 				// Force Nara to solo hero in Chapter 5
 				romData[0x77903] = power;
@@ -777,7 +773,7 @@ namespace DW4RandoHacker
 							romData[0x79574] = (byte)(heroes[lnI] + 8);
 						if (npcs[npcMark] == 0x778fd)
 							romData[0x7957c] = (byte)(heroes[lnI] + 8);
-						if (npcs[npcMark] == 0x778f1)
+						if (npcs[npcMark] == 0x778f1 && !oSoloHero) // Make sure the correct NPC smashes the Chapter 4 Keeleon door.  Make sure you're not in solo hero mode!
 							romData[0x7b399] = (byte)(heroes[lnI] + 8);
 						if (npcs[npcMark] == 0x73678)
 							romData[0x79597] = (byte)(heroes[lnI] + 8);
@@ -3826,7 +3822,7 @@ namespace DW4RandoHacker
 
 		private void saveRom(bool calcChecksum)
 		{
-			string finalFile = Path.Combine(Path.GetDirectoryName(txtFileName.Text), "DW4RH_" + txtSeed.Text + "_" + txtFlags.Text + ".nes");
+			string finalFile = Path.Combine(Path.GetDirectoryName(txtFileName.Text), "DW4RH_" + txtSeed.Text + "_" + (chkRandomFlags.Checked ? "RANDOM" : txtFlags.Text) + ".nes");
 			File.WriteAllBytes(finalFile, romData);
 			lblIntensityDesc.Text = "ROM hacking complete!  (" + finalFile + ")";
 			txtCompare.Text = finalFile;
@@ -7138,47 +7134,38 @@ namespace DW4RandoHacker
 					// If the connecting island was south of the originating island...
 					if (finalY2 > finalY1)
 					{
-						map[finalY2, finalX2 + 1] = 0xf6;
-						map[finalY2, finalX2 - 1] = 0xf6;
-						map[finalY2 + 1, finalX2 - 1] = map[finalY2 + 1, finalX2] = map[finalY2 + 1, finalX2 + 1] = 0x00;
-						for (int iy = 0; iy <= 2; iy++)
+						// Place bridges on both sides...
+						if (island[finalY2, finalX2 + 3] != maxIsland[5])
 						{
-							map[finalY2 + iy, finalX2 - 2] = (map[finalY2 + iy, finalX2 - 3] >= 0x01 && map[finalY2 + iy, finalX2 - 3] <= 0x05 ? map[finalY2 + iy, finalX2 - 3] : randomLand);
-							map[finalY2 + iy, finalX2 + 2] = (map[finalY2 + iy, finalX2 + 3] >= 0x01 && map[finalY2 + iy, finalX2 + 3] <= 0x05 ? map[finalY2 + iy, finalX2 + 3] : randomLand);
+							map[finalY2, finalX2 + 1] = 0xf6;
+							for (int iy = 0; iy <= 2; iy++)
+								map[finalY2 + iy, finalX2 + 2] = randomLand;
 						}
-						map[finalY2 + 2, finalX2 - 2] = map[finalY2 + 2, finalX2 - 1] = map[finalY2 + 2, finalX2] = map[finalY2 + 2, finalX2 + 1] = map[finalY2 + 2, finalX2 + 2] = 
-							(map[finalY2 + 2, finalX2 - 3] >= 0x01 && map[finalY2 + 2, finalX2 - 3] <= 0x05 ? map[finalY2 + 2, finalX2 - 3] : randomLand);
+						if (island[finalY2, finalX2 - 3] != maxIsland[5])
+						{
+							map[finalY2, finalX2 - 1] = 0xf6;
+							for (int iy = 0; iy <= 2; iy++)
+								map[finalY2 + iy, finalX2 - 2] = randomLand;
+						}
+						map[finalY2 + 1, finalX2 - 1] = map[finalY2 + 1, finalX2] = map[finalY2 + 1, finalX2 + 1] = 0x00;
+						map[finalY2 + 2, finalX2 - 1] = map[finalY2 + 2, finalX2] = map[finalY2 + 2, finalX2 + 1] = randomLand;
 					}
 					else if (finalY2 < finalY1)
 					{
-						map[finalY2, finalX2 + 1] = 0xf6;
-						map[finalY2, finalX2 - 1] = 0xf6;
-						map[finalY2 - 1, finalX2 - 1] = map[finalY2 - 1, finalX2] = map[finalY2 - 1, finalX2 + 1] = 0x00;
-						for (int iy = 0; iy <= 2; iy++)
+						if (island[finalY2, finalX2 + 3] != maxIsland[5])
 						{
-							map[finalY2 - iy, finalX2 - 2] = (map[finalY2 - iy, finalX2 - 3] >= 0x01 && map[finalY2 - iy, finalX2 - 3] <= 0x05 ? map[finalY2 - iy, finalX2 - 3] : randomLand);
-							map[finalY2 - iy, finalX2 + 2] = (map[finalY2 - iy, finalX2 + 3] >= 0x01 && map[finalY2 - iy, finalX2 + 3] <= 0x05 ? map[finalY2 - iy, finalX2 + 3] : randomLand);
+							map[finalY2, finalX2 + 1] = 0xf6;
+							for (int iy = 0; iy <= 2; iy++)
+								map[finalY2 - iy, finalX2 + 2] = randomLand;
 						}
-						map[finalY2 - 2, finalX2 - 2] = map[finalY2 - 2, finalX2 - 1] = map[finalY2 - 2, finalX2] = map[finalY2 - 2, finalX2 + 1] = map[finalY2 - 2, finalX2 + 2] =
-							(map[finalY2 - 2, finalX2 - 3] >= 0x01 && map[finalY2 - 2, finalX2 - 3] <= 0x05 ? map[finalY2 - 2, finalX2 - 3] : randomLand);
-
-						//if (map[finalY2, finalX2 + 2] != 0x00 && island[finalY2, finalX2 + 2] == island2 || finalX2 % (oSmallMap ? 8 : 16) <= 2)
-						//{
-						//	map[finalY2, finalX2 + 1] = 0xf6;
-						//	map[finalY2, finalX2 - 1] = 0x00;
-						//	map[finalY2 - 1, finalX2 - 1] = map[finalY2 - 1, finalX2] = map[finalY2 - 1, finalX2 + 1] = 0x00;
-
-						//	map[finalY2, finalX2 + 2] = map[finalY2 - 1, finalX2 + 2] = map[finalY2 - 2, finalX2 + 2] = randomLand;
-						//	map[finalY2 - 2, finalX2 - 1] = map[finalY2 - 2, finalX2] = map[finalY2 - 2, finalX2 + 1] = randomLand;
-						//}
-						//else
-						//{
-						//	map[finalY2, finalX2 - 1] = 0xf6;
-						//	map[finalY2, finalX2 + 1] = 0x00;
-						//	map[finalY2 - 1, finalX2 + 1] = map[finalY2 - 1, finalX2] = map[finalY2 - 1, finalX2 - 1] = 0x00;
-						//	map[finalY2, finalX2 - 2] = map[finalY2 - 1, finalX2 - 2] = map[finalY2 - 2, finalX2 - 2] = randomLand;
-						//	map[finalY2 - 2, finalX2 + 1] = map[finalY2 - 2, finalX2] = map[finalY2 - 2, finalX2 - 1] = randomLand;
-						//}
+						if (island[finalY2, finalX2 - 3] != maxIsland[5])
+						{
+							map[finalY2, finalX2 - 1] = 0xf6;
+							for (int iy = 0; iy <= 2; iy++)
+								map[finalY2 - iy, finalX2 - 2] = randomLand;
+						}
+						map[finalY2 - 1, finalX2 - 1] = map[finalY2 - 1, finalX2] = map[finalY2 - 1, finalX2 + 1] = 0x00;
+						map[finalY2 - 2, finalX2 - 1] = map[finalY2 - 2, finalX2] = map[finalY2 - 2, finalX2 + 1] = randomLand;
 					}
 				} else if (finalX1 < finalX2)
 				{
