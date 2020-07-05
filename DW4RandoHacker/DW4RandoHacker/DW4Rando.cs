@@ -480,13 +480,13 @@ namespace DW4RandoHacker
 
 				// Double the HP gain
 				romData[0x49e22] = 0x20; // JSR to an unused portion of the rom
-				romData[0x49e23] = 0x68;
+				romData[0x49e23] = 0x71;
 				romData[0x49e24] = 0xbf;
-				romData[0x4bf78] = 0x0a; // Arithmetic shift left... multipling the vitality gain by 4 instead of 2
-				romData[0x4bf79] = 0x8d; // Store accumulator absolute -> 6e09
-				romData[0x4bf7a] = 0x09;
-				romData[0x4bf7b] = 0x6e;
-				romData[0x4bf7c] = 0x60; // end subroutine
+				romData[0x4bf81] = 0x0a; // Arithmetic shift left... multipling the vitality gain by 4 instead of 2
+				romData[0x4bf82] = 0x8d; // Store accumulator absolute -> 6e09
+				romData[0x4bf83] = 0x09;
+				romData[0x4bf84] = 0x6e;
+				romData[0x4bf85] = 0x60; // end subroutine
 
 				// Remove baseline - otherwise, you can't double HP(until I figure out how to double the HP baseline...)
 				romData[0x49df6] = 0xb0;
@@ -1218,12 +1218,20 @@ namespace DW4RandoHacker
 			{
 				double encounterRate = (romData[0x6228b + lnI]);
 				if (oEncounterRate == 0) encounterRate = Math.Round(encounterRate / 4);
-				if (oEncounterRate == 1) encounterRate = Math.Round(encounterRate / 2);
-				if (oEncounterRate == 2) encounterRate = Math.Round(encounterRate * 3 / 4);
-				if (oEncounterRate == 4) encounterRate = Math.Round(encounterRate * 3 / 2);
-				if (oEncounterRate == 5) encounterRate = Math.Round(encounterRate * 2);
-				if (oEncounterRate == 6) encounterRate = Math.Round(encounterRate * 3);
-				if (oEncounterRate == 7) encounterRate = Math.Round(encounterRate * 4);
+				if (oEncounterRate == 1) encounterRate = Math.Round(encounterRate * 3 / 8);
+				if (oEncounterRate == 2) encounterRate = Math.Round(encounterRate / 2);
+				if (oEncounterRate == 3) encounterRate = Math.Round(encounterRate * 3 / 4);
+				if (oEncounterRate == 5) encounterRate = Math.Round(encounterRate * 3 / 2);
+				if (oEncounterRate == 6) encounterRate = Math.Round(encounterRate * 2);
+				if (oEncounterRate == 7)
+				{
+					encounterRate = r1.Next() % 32;
+					if (encounterRate > 16)
+						encounterRate = r1.Next() % 32;
+
+					if (encounterRate < 4)
+						encounterRate = 4;
+				}
 				romData[0x6228b + lnI] = (byte)encounterRate;
 			}
 
@@ -1231,12 +1239,20 @@ namespace DW4RandoHacker
 			{
 				double encounterRate = (romData[0x62350 + lnI]);
 				if (oEncounterRate == 0) encounterRate = Math.Round(encounterRate / 4);
-				if (oEncounterRate == 1) encounterRate = Math.Round(encounterRate / 2);
-				if (oEncounterRate == 2) encounterRate = Math.Round(encounterRate * 3 / 4);
-				if (oEncounterRate == 4) encounterRate = Math.Round(encounterRate * 3 / 2);
-				if (oEncounterRate == 5) encounterRate = Math.Round(encounterRate * 2);
-				if (oEncounterRate == 6) encounterRate = Math.Round(encounterRate * 3);
-				if (oEncounterRate == 7) encounterRate = Math.Round(encounterRate * 4);
+				if (oEncounterRate == 1) encounterRate = Math.Round(encounterRate * 3 / 8);
+				if (oEncounterRate == 2) encounterRate = Math.Round(encounterRate / 2);
+				if (oEncounterRate == 3) encounterRate = Math.Round(encounterRate * 3 / 4);
+				if (oEncounterRate == 5) encounterRate = Math.Round(encounterRate * 3 / 2);
+				if (oEncounterRate == 6) encounterRate = Math.Round(encounterRate * 2);
+				if (oEncounterRate == 7)
+				{
+					encounterRate = r1.Next() % 32;
+					if (encounterRate > 16)
+						encounterRate = r1.Next() % 32;
+
+					if (encounterRate < 4)
+						encounterRate = 4;
+				}
 				romData[0x62350 + lnI] = (byte)encounterRate;
 			}
 

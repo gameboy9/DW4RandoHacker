@@ -593,13 +593,13 @@
 			this.cboEncounterRate.FormattingEnabled = true;
 			this.cboEncounterRate.Items.AddRange(new object[] {
             "1/4",
+            "3/8",
             "1/2",
             "3/4",
             "x1",
             "x1.5",
             "x2",
-            "x3",
-            "x4"});
+            "CHAOS"});
 			this.cboEncounterRate.Location = new System.Drawing.Point(165, 340);
 			this.cboEncounterRate.Margin = new System.Windows.Forms.Padding(4);
 			this.cboEncounterRate.Name = "cboEncounterRate";
