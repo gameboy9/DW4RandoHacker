@@ -42,7 +42,7 @@ namespace DW4RandoHacker
 		List<byte> L1Weapons = new List<byte> { 0x00, 0x01, 0x02, 0x04, 0x09, 0x0b };
 		List<byte> L2Weapons = new List<byte> { 0x03, 0x04, 0x05, 0x06, 0x08, 0x0a, 0x0b, 0x0c, 0x0d, 0x19, 0x23 };
 		List<byte> L3Weapons = new List<byte> { 0x06, 0x07, 0x0c, 0x0f, 0x10, 0x11, 0x15, 0x16, 0x17, 0x18, 0x22, 0x23 };
-		List<byte> L4Weapons = new List<byte> { 0x0e, 0x1a, 0x1b, 0x1c, 0x1d, 0x20 };
+		List<byte> L4Weapons = new List<byte> { 0x0e, 0x1a, 0x1b, 0x1c, 0x1d, 0x1f, 0x20 };
 		List<byte> L12Weapons;
 		List<byte> L34Weapons;
 		List<byte> AllWeapons;
@@ -58,7 +58,7 @@ namespace DW4RandoHacker
 		List<byte> L1Items = new List<byte> { 0x53, 0x54, 0x55, 0x56, 0x58 };
 		List<byte> L2Items = new List<byte> { 0x53, 0x54, 0x55, 0x56, 0x58, 0x5e, 0x74 };
 		List<byte> L3Items = new List<byte> { 0x53, 0x54, 0x55, 0x56, 0x58, 0x5a, 0x5e, 0x74 };
-		List<byte> L4Items = new List<byte> { 0x59, 0x5a, 0x5b, 0x61, 0x62, 0x63, 0x64, 0x65 };
+		List<byte> L4Items = new List<byte> { 0x59, 0x5a, 0x5b, 0x61, 0x62, 0x63, 0x64, 0x65, 0x59, 0x5a, 0x5b, 0x61, 0x62, 0x63, 0x64, 0x65, 0x50 };
 		List<byte> L12Items;
 		List<byte> L34Items;
 		List<byte> AllItems;
@@ -93,6 +93,8 @@ namespace DW4RandoHacker
 		bool oCh5GasCanister;
 		bool oInstantFinalCave;
 		bool oCh5SymbolOfFaith;
+		bool oCh5NoZGear;
+		bool oCh5AneauxNecro;
 		bool oCh5BlowUpHometown;
 		bool oCh5ControlAllChars;
 		bool oRandomizeNPCs;
@@ -113,6 +115,7 @@ namespace DW4RandoHacker
 		int oMonsterZones;
 		int oMonsterAttacks;
 		int oMonsterStats;
+		int oNecroDifficulty;
 		int oEquipChances;
 		int oTreasures;
 		int oHeroSpells;
@@ -232,6 +235,7 @@ namespace DW4RandoHacker
 			}
 			catch
 			{
+				txtFlags.Text = "000000000008e0022300";
 				// ignore error
 				if (!namesRead)
 				{
@@ -252,6 +256,7 @@ namespace DW4RandoHacker
 					txtC5Name4.Text = "Doran";
 				}
 				loading = false;
+				determineChecks(null, null);
 			}
 		}
 
@@ -317,6 +322,8 @@ namespace DW4RandoHacker
 					oCh5GasCanister = (r1.Next() % 2 == 1);
 					oInstantFinalCave = (r1.Next() % 2 == 1);
 					oCh5SymbolOfFaith = (r1.Next() % 2 == 1);
+					oCh5NoZGear = (r1.Next() % 2 == 1);
+					oCh5AneauxNecro = (r1.Next() % 2 == 1);
 					oCh5BlowUpHometown = (r1.Next() % 2 == 1);
 					oCh5ControlAllChars = (r1.Next() % 2 == 1);
 					oRandomizeNPCs = (r1.Next() % 2 == 1);
@@ -333,6 +340,7 @@ namespace DW4RandoHacker
 					oMonsterZones = (r1.Next() % 5);
 					oMonsterAttacks = (r1.Next() % 5);
 					oMonsterStats = (r1.Next() % 6);
+					oNecroDifficulty = (r1.Next() % cboNecroDifficulty.Items.Count);
 					oEquipChances = (r1.Next() % 8);
 					oTreasures = (r1.Next() % 8);
 					oHeroSpells = (r1.Next() % 5);
@@ -389,6 +397,8 @@ namespace DW4RandoHacker
 				oCh5GasCanister = chkCh5GasCanister.Checked;
 				oInstantFinalCave = chkInstantFinalCave.Checked;
 				oCh5SymbolOfFaith = chkCh5SymbolOfFaith.Checked;
+				oCh5NoZGear = chkCh5NoZGear.Checked;
+				oCh5AneauxNecro = chkCh5AneauxNecro.Checked;
 				oCh5BlowUpHometown = chkCh5BlowUpHometown.Checked;
 				oCh5ControlAllChars = chkCh5ControlAllChars.Checked;
 				oRandomizeNPCs = chkRandomizeNPCs.Checked;
@@ -405,6 +415,7 @@ namespace DW4RandoHacker
 				oMonsterZones = cboMonsterZones.SelectedIndex;
 				oMonsterAttacks = cboMonsterAttacks.SelectedIndex;
 				oMonsterStats = cboMonsterStats.SelectedIndex;
+				oNecroDifficulty = cboNecroDifficulty.SelectedIndex;
 				oEquipChances = cboEquipChances.SelectedIndex;
 				oTreasures = cboTreasures.SelectedIndex;
 				oHeroSpells = cboHeroSpells.SelectedIndex;
@@ -581,7 +592,7 @@ namespace DW4RandoHacker
 					int lnI = 0;
 					while (romData[byteToUse + lnI] != 0xff)
 						lnI++;
-					romData[byteToUse] = 0x7a;
+					romData[byteToUse + lnI] = 0x7a;
 				}
 				if (oCh4GunpowderJar)
 				{
@@ -589,7 +600,7 @@ namespace DW4RandoHacker
 					int lnI = 0;
 					while (romData[byteToUse + lnI] != 0xff)
 						lnI++;
-					romData[byteToUse] = 0x70;
+					romData[byteToUse + lnI] = 0x70;
 				}
 				if (oCh5SymbolOfFaith)
 				{
@@ -597,7 +608,7 @@ namespace DW4RandoHacker
 					int lnI = 0;
 					while (romData[byteToUse + lnI] != 0xff)
 						lnI++;
-					romData[byteToUse] = 0x6f;
+					romData[byteToUse + lnI] = 0x6f;
 				}
 				if (oCh5GasCanister)
 				{
@@ -605,7 +616,7 @@ namespace DW4RandoHacker
 					int lnI = 0;
 					while (romData[byteToUse + lnI] != 0xff)
 						lnI++;
-					romData[byteToUse] = 0x7d;
+					romData[byteToUse + lnI] = 0x7d;
 				}
 			}
 
@@ -624,8 +635,26 @@ namespace DW4RandoHacker
 					heroes[numberToSwap2] = swappy;
 				}
 
+				//// The hero must start Chapter 5 if Necrosaro's Mountain is replacing Aneaux.
+				//// The game will crash after the Dragon rescues the hero if the Hero isn't participating in the party.
+				//if (oCh5AneauxNecro)
+				//{
+				//	for (int lnI = 0; lnI < 7; lnI++)
+				//	{
+				//		if (heroes[lnI] == 0)
+				//		{
+				//			int numberToSwap1 = lnI;
+				//			int numberToSwap2 = 4;
+				//			int swappy = heroes[numberToSwap1];
+				//			heroes[numberToSwap1] = heroes[numberToSwap2];
+				//			heroes[numberToSwap2] = swappy;
+				//		}
+				//	}
+				//}
+
+				// This will set the starting hero for each chapter.
 				for (int lnI = 0; lnI < 5; lnI++)
-					romData[0x4914d + lnI] = (byte)(128 + heroes[lnI]); // This will ensure the same character starts each chapter.
+					romData[0x4914d + lnI] = (byte)(128 + heroes[lnI]);
 
 				// If Mara is the Chapter 1 or Chapter 2-Tournament hero...
 				if (heroes[0] == 2 || heroes[1] == 2)
@@ -669,19 +698,35 @@ namespace DW4RandoHacker
 
 				if (oCh4BoardingPass)
 				{
-					int byteToUse = (heroes[3] == 0 ? 0x491a5 : heroes[3] == 1 ? 0x491ab : heroes[3] == 2 ? 0x491b3 : heroes[3] == 3 ? 0x491ba : heroes[3] == 4 ? 0x491c3 : heroes[3] == 5 ? 0x491cb : heroes[3] == 6 ? 0x491d3 : 0x491da);
-					romData[byteToUse] = 0x7a;
+					int byteToUse = (heroes[3] == 0 ? 0x491a1 : heroes[3] == 1 ? 0x491a9 : heroes[3] == 2 ? 0x491b1 : heroes[3] == 3 ? 0x491b9 : heroes[3] == 4 ? 0x491c1 : heroes[3] == 5 ? 0x491c9 : heroes[3] == 6 ? 0x491d1 : 0x491d9);
+					int lnI = 0;
+					while (romData[byteToUse + lnI] != 0xff)
+						lnI++;
+					romData[byteToUse + lnI] = 0x7a;
 				}
 				if (oCh4GunpowderJar)
 				{
-					int byteToUse = (heroes[3] == 0 ? 0x491a5 : heroes[3] == 1 ? 0x491ab : heroes[3] == 2 ? 0x491b3 : heroes[3] == 3 ? 0x491ba : heroes[3] == 4 ? 0x491c3 : heroes[3] == 5 ? 0x491cb : heroes[3] == 6 ? 0x491d3 : 0x491da);
-					byteToUse++;
-					romData[byteToUse] = 0x70;
+					int byteToUse = (heroes[3] == 0 ? 0x491a1 : heroes[3] == 1 ? 0x491a9 : heroes[3] == 2 ? 0x491b1 : heroes[3] == 3 ? 0x491b9 : heroes[3] == 4 ? 0x491c1 : heroes[3] == 5 ? 0x491c9 : heroes[3] == 6 ? 0x491d1 : 0x491d9);
+					int lnI = 0;
+					while (romData[byteToUse + lnI] != 0xff)
+						lnI++;
+					romData[byteToUse + lnI] = 0x70;
 				}
 				if (oCh5SymbolOfFaith)
 				{
-					int byteToUse = (heroes[4] == 0 ? 0x491a5 : heroes[4] == 1 ? 0x491ab : heroes[4] == 2 ? 0x491b3 : heroes[4] == 3 ? 0x491ba : heroes[4] == 4 ? 0x491c3 : heroes[4] == 5 ? 0x491cb : heroes[4] == 6 ? 0x491d3 : 0x491da);
-					romData[byteToUse] = 0x6f;
+					int byteToUse = (heroes[4] == 0 ? 0x491a1 : heroes[4] == 1 ? 0x491a9 : heroes[4] == 2 ? 0x491b1 : heroes[4] == 3 ? 0x491b9 : heroes[4] == 4 ? 0x491c1 : heroes[4] == 5 ? 0x491c9 : heroes[4] == 6 ? 0x491d1 : 0x491d9);
+					int lnI = 0;
+					while (romData[byteToUse + lnI] != 0xff)
+						lnI++;
+					romData[byteToUse + lnI] = 0x6f;
+				}
+				if (oCh5GasCanister)
+				{
+					int byteToUse = (heroes[4] == 0 ? 0x491a1 : heroes[4] == 1 ? 0x491a9 : heroes[4] == 2 ? 0x491b1 : heroes[4] == 3 ? 0x491b9 : heroes[4] == 4 ? 0x491c1 : heroes[4] == 5 ? 0x491c9 : heroes[4] == 6 ? 0x491d1 : 0x491d9);
+					int lnI = 0;
+					while (romData[byteToUse + lnI] != 0xff)
+						lnI++;
+					romData[byteToUse + lnI] = 0x7d;
 				}
 
 				// Give the Thief's Key to the Chapter 5 hero to prevent a potential unwinnable condition.
@@ -1262,6 +1307,7 @@ namespace DW4RandoHacker
 			randomizeStores(r1);
 			randomizeHeroStats(r1);
 			randomizeHeroSpells(r1);
+			randomizeNecrosaro(r1);
 
 			if (oSpeedUpBattles)
 			{
@@ -1432,6 +1478,11 @@ namespace DW4RandoHacker
 					
 				}
 			}
+
+			if (oSwapMonsterStats)
+			{
+
+			}
 		}
 
 		private byte[] shuffle(byte[] treasureData, Random r1)
@@ -1570,8 +1621,19 @@ namespace DW4RandoHacker
 		{
 			if (oCh5SymbolOfFaith && !oC14Random && !oSoloHero)
 			{
-				int byteToUse = 0x491a5; // Hero
-				romData[byteToUse] = 0x6f;
+				int byteToUse = 0x491a1; // Hero
+				int lnI = 0;
+				while (romData[byteToUse + lnI] != 0xff)
+					lnI++;
+				romData[byteToUse + lnI] = 0x6f;
+			}
+			if (oCh5GasCanister && !oC14Random && !oSoloHero)
+			{
+				int byteToUse = 0x491a1; // Hero
+				int lnI = 0;
+				while (romData[byteToUse + lnI] != 0xff)
+					lnI++;
+				romData[byteToUse + lnI] = 0x7d;
 			}
 
 			if (oCh5BlowUpHometown)
@@ -1582,6 +1644,22 @@ namespace DW4RandoHacker
 
 			if (oInstantFinalCave)
 				romData[0x2ea19] = 0x85;
+
+			if (oCh5AneauxNecro)
+			{
+				romData[0x2385a] = 0xe0;
+				romData[0x2385b] = 0x15;
+				romData[0x2385c] = 0x25;
+				romData[0x2385d] = 0x14;
+				romData[0x3be57] = 0x3c;
+			}
+
+			if (oCh5NoZGear)
+			{
+				romData[0x17634] = 0x14; // Instead of 0x13, the check at the tower
+				romData[0x23773] = 0xf0; // Force a skip of a Zenithian Gear check to enter the castle itself.
+				romData[0x23774] = 0x34; // BEQ +34 instead
+			}
 
 			if (oChapter5Start)
 			{
@@ -2362,6 +2440,120 @@ namespace DW4RandoHacker
 				romData[0x40f84 + lnI] = (byte)fieldSpells;
 				for (int lnJ = 0; lnJ < gapData.Length; lnJ++)
 					romData[gapByte + lnJ] = (byte)gapData[lnJ];
+			}
+		}
+
+		private void randomizeNecrosaro(Random r1)
+		{
+			int[,] necroStats = new int[7, 5];
+			necroStats = new int[,] { { 800, 255, 70, 210, 250 }, { 650, 255, 60, 190, 220 }, { 1023, 255, 50, 100, 180 }, { 700, 255, 60, 100, 200 }, { 800, 255, 70, 230, 220 }, { 700, 255, 80, 290, 230 }, { 1350, 255, 80, 290, 230 } };
+			int[,] necroAttacks = new int[7, 6];
+			necroAttacks = new int[,] { { 0x32, 0x32, 0x32, 0x32, 0x32, 0x32 }, { 0x32, 0x32, 0x32, 0x32, 0x32, 0x32 }, { 0x04, 0x42, 0x08, 0x0d, 0x1d, 0x32 }, { 0x2f, 0x3e, 0x5e, 0x32, 0x3e, 0x3d }, { 0x32, 0x32, 0x3d, 0x32, 0x3d, 0x3d }, { 0x32, 0x3d, 0x32, 0x32, 0x3d, 0x32 }, { 0x5e, 0x3e, 0x5e, 0x32, 0x41, 0x32 } };
+			switch (oNecroDifficulty)
+			{
+				case 0: // Very Easy
+					for (int i = 0; i < 7; i++)
+						for (int j = 0; j < 5; j++)
+							necroStats[i, j] /= 10;
+					necroAttacks = new int[,] { { 0x32, 0x32, 0x32, 0x32, 0x32, 0x32 }, { 0x32, 0x32, 0x32, 0x32, 0x32, 0x32 }, { 0x00, 0x43, 0x07, 0x18, 0x1d, 0x32 }, { 0x2f, 0x3c, 0x5e, 0x32, 0x3c, 0x3f }, { 0x32, 0x32, 0x3c, 0x32, 0x3c, 0x3c }, { 0x32, 0x3c, 0x32, 0x32, 0x3c, 0x32 }, { 0x5e, 0x3c, 0x5e, 0x32, 0x3f, 0x32 } };
+					break;
+				case 1: // Easy
+					for (int i = 0; i < 7; i++)
+						for (int j = 0; j < 5; j++)
+							necroStats[i, j] /= 5;
+					necroAttacks = new int[,] { { 0x32, 0x32, 0x32, 0xb2, 0x32, 0x32 }, { 0x32, 0x32, 0x32, 0x32, 0x32, 0x32 }, { 0x03, 0x42, 0x08, 0x0d, 0x1d, 0x32 }, { 0x2f, 0x3c, 0x5e, 0x32, 0x3c, 0x3f }, { 0x32, 0x32, 0x3c, 0x32, 0x3c, 0x3c }, { 0x32, 0x32, 0x32, 0xb2, 0x3d, 0x32 }, { 0x5e, 0x3d, 0x3d, 0xb2, 0x40, 0x32 } };
+					break;
+				case 2: // Default
+					break;
+				case 3: // Normal
+					break;
+				case 4: // Hard
+					for (int i = 0; i < 7; i++)
+						for (int j = 0; j < 5; j++)
+							necroStats[i, j] = necroStats[i, j] * 3 / 2;
+					necroAttacks = new int[,] { { 0x32, 0x32, 0x32, 0xb2, 0x32, 0x32 }, { 0x32, 0x32, 0x32, 0x32, 0x32, 0x32 }, { 0x04, 0x42, 0x09, 0x8e, 0x1c, 0x32 }, { 0x2f, 0x3e, 0x5e, 0xb2, 0x3e, 0x3e }, { 0x32, 0x32, 0x3d, 0xb2, 0x3e, 0x3e }, { 0x32, 0x3e, 0x32, 0xb2, 0x3e, 0x32 }, { 0x5e, 0x3e, 0x3e, 0xb2, 0x41, 0x32 } };
+					break;
+				case 5: // Very Hard
+					for (int i = 0; i < 7; i++)
+						for (int j = 0; j < 5; j++)
+							necroStats[i, j] = necroStats[i, j] * 2;
+					necroAttacks = new int[,] { { 0x32, 0x32, 0xb2, 0xb2, 0x32, 0x32 }, { 0x32, 0x32, 0x32, 0xb2, 0x32, 0x32 }, { 0x05, 0x44, 0x09, 0x8e, 0x1c, 0x02 }, { 0x2f, 0x3e, 0x5e, 0xb2, 0x3e, 0x41 }, { 0x32, 0x32, 0x3e, 0xb2, 0x3e, 0x41 }, { 0x32, 0x3e, 0xb2, 0xb2, 0x3e, 0x41 }, { 0x5e, 0x41, 0xbe, 0xb2, 0x41, 0x32 } };
+					break;
+				case 6: // Chaos
+					for (int i = 0; i < 7; i++)
+					{
+						necroStats[i, 0] = 1501 - inverted_power_curve(0, 2000, 1, 0.5, r1)[0];
+						necroStats[i, 1] = 255 - inverted_power_curve(0, 255, 1, 0.5, r1)[0];
+						necroStats[i, 2] = 255 - inverted_power_curve(0, 255, 1, 2, r1)[0];
+						necroStats[i, 3] = 500 - inverted_power_curve(0, 500, 1, 0.5, r1)[0];
+						necroStats[i, 4] = 500 - inverted_power_curve(0, 500, 1, 0.5, r1)[0];
+
+						for (int lnJ = 0; lnJ < 6; lnJ++)
+						{
+							if (r1.Next() % 2 == 1)
+								necroAttacks[i, lnJ] = (byte)(r1.Next() % 0x67);
+							else
+								necroAttacks[i, lnJ] = 0x32;
+							if (necroAttacks[i, lnJ] == 0x15 || necroAttacks[i, lnJ] == 0x55)
+								lnJ--; // redo randomization.  Transform and super slime is a bad idea to use here.
+						}
+
+						if (r1.Next() % 2 == 1)
+							necroAttacks[i, 2] += 0x80;
+						if (r1.Next() % 3 >= 1)
+							necroAttacks[i, 3] += 0x80;
+					}
+
+
+					break;
+			}
+			if (oNecroDifficulty != 2 && oNecroDifficulty != 6)
+			{
+				double scale = oMonsterStats == 1 ? 1.5 : oMonsterStats == 2 ? 2.0 : oMonsterStats == 3 ? 3.0 : oMonsterStats == 4 ? 4.0 : 1.0;
+
+				for (int i = 0; i < 7; i++)
+					for (int j = 0; j < 5; j++)
+					{
+						int stat = necroStats[i, j];
+						necroStats[i, j] = ScaleValue(stat, scale, 1.0, r1, false);
+					}
+			}
+
+			if (oNecroDifficulty != 2)
+			{
+				for (int i = 0; i < 7; i++)
+				{
+					int byteToUse = (i == 0 ? 0x60056 + (0xae * 22) : 0x611f4 + (22 * (i - 1)));
+
+					for (int j = 0; j < 6; j++)
+						romData[byteToUse + 9 + j] = (byte)necroAttacks[i, j];
+
+					for (int j = 0; j < 5; j++)
+					{
+						if (j == 0 || j == 3 || j == 4)
+						{
+							int byteToUse2 = (j == 0 ? 4 : j == 3 ? 5 : 6);
+							int byteToUse3 = (j == 0 ? 15 : j == 3 ? 16 : 17);
+							romData[byteToUse + byteToUse2] = (byte)(necroStats[i, j] % 256);
+							romData[byteToUse + byteToUse3] = (byte)(romData[byteToUse + byteToUse3] - (romData[byteToUse + byteToUse3] % 4) + (necroStats[i, j] / 256));
+							if (j == 0)
+							{
+								romData[byteToUse + 13] -= (byte)(romData[byteToUse + 13] >= 128 ? 128 : 0);
+								romData[byteToUse + 14] -= (byte)(romData[byteToUse + 14] >= 128 ? 128 : 0);
+								if (necroStats[i, 0] > 1450) { romData[byteToUse + 13] += 128; romData[byteToUse + 14] += 128; }
+								else if (necroStats[i, 0] > 1300)
+									romData[byteToUse + 14] += 128;
+								else if (necroStats[i, 0] > 1150)
+									romData[byteToUse + 13] += 128;
+							}
+						}
+						else
+						{
+							int byteToUse2 = (j == 1 ? 3 : 2);
+							romData[byteToUse + byteToUse2] = (byte)(necroStats[i, j]);
+						}
+					}
+				}
 			}
 		}
 
@@ -3648,7 +3840,7 @@ namespace DW4RandoHacker
 				int byteToUse = 0x6235c + (8 * lnI);
 
 				// 10% chance to keep the battle the way it is now... if there is more than one group involved.
-				if (romData[byteToUse + 4 + 1] >= 1 && r1.Next() % 10 == 0)
+				if ((romData[byteToUse + 4 + 1] >= 1 && r1.Next() % 10 == 0) || oMonsterZones <= 1)
 					continue;
 
 				for (int lnJ = 0; lnJ < 4; lnJ++)
@@ -4212,7 +4404,8 @@ namespace DW4RandoHacker
 			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh2InstantWallKick, chkCh2EndorEntry, chkCh2AwardXPTournament })); // Chapter 2
 			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh3Shop1, chkCh3Shop25K, chkCh3Tunnel1, chkCh3BuildBridges, chkCh3BuildTunnel })); // Chapter 3
 			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh4GunpowderJar, chkCh4GunpowderJar, chkBasePriceOnPower })); // Chapter 4/Pricing
-			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh5BlowUpHometown, chkCh5SymbolOfFaith, chkCh5ControlAllChars, chkInstantFinalCave, chkSwapMonsterStats, chkSwapBossStats })); // Chapter 5/Monsters
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkCh5BlowUpHometown, chkCh5SymbolOfFaith, chkCh5ControlAllChars, chkInstantFinalCave, chkCh5NoZGear, chkCh5AneauxNecro })); // Chapter 5/Monsters
+			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkSwapMonsterStats, chkSwapBossStats })); // Monsters
 			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkRandomizeMap, chkSmallMap, chkSoloHero, chkC14Random, chkStoreNoSeeds, chkRandomizeNPCs })); // General/Adjustments
 			flags += convertIntToChar(checkboxesToNumber(new CheckBox[] { chkSpeedUpBattles, chkSpeedUpMusic, chkDoubleWalking, chkSpeedyText, chkChapter5Start, chkCh5GasCanister })); // Adjustments
 
@@ -4228,7 +4421,7 @@ namespace DW4RandoHacker
 			flags += convertIntToChar(cboXPBoost.SelectedIndex + (8 * cboXPRandom.SelectedIndex));
 			flags += convertIntToChar(cboGoldBoost.SelectedIndex + (8 * cboGoldRandom.SelectedIndex));
 			flags += convertIntToChar(cboEncounterRate.SelectedIndex + (8 * cboTaloonInsanityMoves.SelectedIndex));
-			flags += convertIntToChar(cboLevelCrit.SelectedIndex);
+			flags += convertIntToChar(cboLevelCrit.SelectedIndex) + (8 * cboNecroDifficulty.SelectedIndex);
 			flags += convertIntToChar(cboMonsterDrops.SelectedIndex + (8 * cboMonsterDropChance.SelectedIndex));
 
 			txtFlags.Text = flags;
@@ -4236,8 +4429,10 @@ namespace DW4RandoHacker
 
 		private void determineChecks(object sender, EventArgs e)
 		{
-			if (loading && txtFlags.Text.Length < 20)
-				txtFlags.Text = "000000000008e0022300";
+			if (loading && txtFlags.Text.Length < 21)
+				txtFlags.Text = "0000000000008e0022300";
+			else if (txtFlags.Text.Length < 21)
+				return;
 
 			loading = true;
 
@@ -4247,47 +4442,49 @@ namespace DW4RandoHacker
 			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(1, 1))), new CheckBox[] { chkCh2InstantWallKick, chkCh2EndorEntry, chkCh2AwardXPTournament });
 			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(2, 1))), new CheckBox[] { chkCh3Shop1, chkCh3Shop25K, chkCh3Tunnel1, chkCh3BuildBridges, chkCh3BuildTunnel });
 			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(3, 1))), new CheckBox[] { chkCh4GunpowderJar, chkCh4GunpowderJar, chkBasePriceOnPower });
-			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(4, 1))), new CheckBox[] { chkCh5BlowUpHometown, chkCh5SymbolOfFaith, chkCh5ControlAllChars, chkInstantFinalCave, chkSwapMonsterStats, chkSwapBossStats });
-			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(5, 1))), new CheckBox[] { chkRandomizeMap, chkSmallMap, chkSoloHero, chkC14Random, chkStoreNoSeeds, chkRandomizeNPCs });
-			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(6, 1))), new CheckBox[] { chkSpeedUpBattles, chkSpeedUpMusic, chkDoubleWalking, chkSpeedyText, chkChapter5Start, chkCh5GasCanister });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(4, 1))), new CheckBox[] { chkCh5BlowUpHometown, chkCh5SymbolOfFaith, chkCh5ControlAllChars, chkInstantFinalCave, chkCh5NoZGear, chkCh5AneauxNecro });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(5, 1))), new CheckBox[] { chkSwapMonsterStats, chkSwapBossStats });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(6, 1))), new CheckBox[] { chkRandomizeMap, chkSmallMap, chkSoloHero, chkC14Random, chkStoreNoSeeds, chkRandomizeNPCs });
+			numberToCheckboxes(convertChartoInt(Convert.ToChar(flags.Substring(7, 1))), new CheckBox[] { chkSpeedUpBattles, chkSpeedUpMusic, chkDoubleWalking, chkSpeedyText, chkChapter5Start, chkCh5GasCanister });
 
-			cboStoreAvailability.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(7, 1))) % 8;
-			cboStorePrices.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(7, 1))) / 8;
+			cboStoreAvailability.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(8, 1))) % 8;
+			cboStorePrices.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(8, 1))) / 8;
 
-			cboHeroStats.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(8, 1))) % 8;
-			cboHeroSpells.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(8, 1))) / 8;
+			cboHeroStats.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(9, 1))) % 8;
+			cboHeroSpells.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(9, 1))) / 8;
 
-			cboTreasures.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(9, 1))) % 8;
-			cboEquipChances.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(9, 1))) / 8;
+			cboTreasures.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(10, 1))) % 8;
+			cboEquipChances.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(10, 1))) / 8;
 
-			cboEquipPowers.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(10, 1))) % 8;
-			cboNPCs.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(10, 1))) / 8;
+			cboEquipPowers.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(11, 1))) % 8;
+			cboNPCs.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(11, 1))) / 8;
 
-			cboSoloHero.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(11, 1))) % 8;
-			cboCriticalHitChance.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(11, 1))) / 8;
+			cboSoloHero.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(12, 1))) % 8;
+			cboCriticalHitChance.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(12, 1))) / 8;
 
-			cboTaloonInsanity.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(12, 1))) % 8; // 0x47309, 0x472A6 - Chapter #
-			cboTaloonInsanityChance.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(12, 1))) / 8; // 0x472A6 - Insanity Chance.  Default:  AND $#03
+			cboTaloonInsanity.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(13, 1))) % 8; // 0x47309, 0x472A6 - Chapter #
+			cboTaloonInsanityChance.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(13, 1))) / 8; // 0x472A6 - Insanity Chance.  Default:  AND $#03
 
-			cboMonsterStats.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(13, 1))) % 8;
-			cboMonsterAttacks.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(13, 1))) / 8;
+			cboMonsterStats.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(14, 1))) % 8;
+			cboMonsterAttacks.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(14, 1))) / 8;
 
-			cboMonsterZones.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(14, 1))) % 8;
-			cboMonsterResistances.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(14, 1))) / 8;
+			cboMonsterZones.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(15, 1))) % 8;
+			cboMonsterResistances.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(15, 1))) / 8;
 
-			cboXPBoost.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(15, 1))) % 8;
-			cboXPRandom.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(15, 1))) / 8;
+			cboXPBoost.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(16, 1))) % 8;
+			cboXPRandom.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(16, 1))) / 8;
 
-			cboGoldBoost.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(16, 1))) % 8;
-			cboGoldRandom.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(16, 1))) / 8;
+			cboGoldBoost.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(17, 1))) % 8;
+			cboGoldRandom.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(17, 1))) / 8;
 
-			cboEncounterRate.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(17, 1))) % 8;
-			cboTaloonInsanityMoves.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(17, 1))) / 8;
+			cboEncounterRate.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(18, 1))) % 8;
+			cboTaloonInsanityMoves.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(18, 1))) / 8;
 
-			cboLevelCrit.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(18, 1))) % 8;
+			cboLevelCrit.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(19, 1))) % 8;
+			cboNecroDifficulty.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(19, 1))) / 8;
 
-			cboMonsterDrops.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(19, 1))) % 8;
-			cboMonsterDropChance.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(19, 1))) / 8;
+			cboMonsterDrops.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(20, 1))) % 8;
+			cboMonsterDropChance.SelectedIndex = convertChartoInt(Convert.ToChar(flags.Substring(20, 1))) / 8;
 
 			loading = false;
 		}
@@ -4763,6 +4960,7 @@ namespace DW4RandoHacker
 					y = 6 + r1.Next() % (oSmallMap ? 128 - 6 - 6 : 256 - 6 - 6);
 				}
 
+				if (lnI == 30) lnI = lnI;
 				// TODO:  Ship return points, human return points, bird return points
 				// If branches on locTypes, possibly a case.
 				switch (locTypes[lnI])
@@ -5028,7 +5226,8 @@ namespace DW4RandoHacker
 											for (int signX1 = x - 5; signX1 <= x - 3; signX1++)
 												for (int signY1 = y - 5; signY1 <= y - 3; signY1++)
 												{
-													map[signY1, signX1] = map[signY, signX];
+													if (map[signY1, signX1] <= 0xea || map[signY1, signX1] >= 0xf4)
+														map[signY1, signX1] = map[signY, signX];
 													island[signY1, signX1] = island[signY, signX];
 												}
 											break;
@@ -5261,9 +5460,9 @@ namespace DW4RandoHacker
 			for (int mzX = 0; mzX < 16; mzX++)
 				for (int mzY = 0; mzY < 16; mzY++)
 				{
-					if (zone[mzY, mzX] / 1000 == 9)
+					if (zone[mzY, mzX] / 1000 == 9 || zone[mzY, mzX] / 1000 == 5)
 						monsterZones2[mzY, mzX] = part9[r1.Next() % part9.Count];
-					else if (zone[mzY, mzX] / 1000 == 10)
+					else if (zone[mzY, mzX] / 1000 == 10 || zone[mzY, mzX] / 1000 == 6)
 						monsterZones2[mzY, mzX] = part10[r1.Next() % part10.Count];
 					else
 						monsterZones2[mzY, mzX] = part11[r1.Next() % part11.Count];

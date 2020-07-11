@@ -54,6 +54,8 @@
 			this.cmdStatOutput = new System.Windows.Forms.Button();
 			this.btnMonsterOutput = new System.Windows.Forms.Button();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.cboNecroDifficulty = new System.Windows.Forms.ComboBox();
+			this.label47 = new System.Windows.Forms.Label();
 			this.cboMonsterDropChance = new System.Windows.Forms.ComboBox();
 			this.label46 = new System.Windows.Forms.Label();
 			this.cboMonsterDrops = new System.Windows.Forms.ComboBox();
@@ -141,6 +143,8 @@
 			this.txtC4Name2 = new System.Windows.Forms.TextBox();
 			this.txtC4Name1 = new System.Windows.Forms.TextBox();
 			this.tabPage9 = new System.Windows.Forms.TabPage();
+			this.chkCh5AneauxNecro = new System.Windows.Forms.CheckBox();
+			this.chkCh5NoZGear = new System.Windows.Forms.CheckBox();
 			this.chkCh5GasCanister = new System.Windows.Forms.CheckBox();
 			this.chkInstantFinalCave = new System.Windows.Forms.CheckBox();
 			this.chkCh5SymbolOfFaith = new System.Windows.Forms.CheckBox();
@@ -444,6 +448,8 @@
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.cboNecroDifficulty);
+			this.tabPage1.Controls.Add(this.label47);
 			this.tabPage1.Controls.Add(this.cboMonsterDropChance);
 			this.tabPage1.Controls.Add(this.label46);
 			this.tabPage1.Controls.Add(this.cboMonsterDrops);
@@ -475,6 +481,35 @@
 			this.tabPage1.TabIndex = 5;
 			this.tabPage1.Text = "Monsters";
 			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// cboNecroDifficulty
+			// 
+			this.cboNecroDifficulty.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cboNecroDifficulty.FormattingEnabled = true;
+			this.cboNecroDifficulty.Items.AddRange(new object[] {
+            "V. Easy (Speedy rando)",
+            "Easy (For C1-4 runs)",
+            "Default",
+            "Normal",
+            "Hard",
+            "V. Hard",
+            "CHAOS"});
+			this.cboNecroDifficulty.Location = new System.Drawing.Point(488, 222);
+			this.cboNecroDifficulty.Margin = new System.Windows.Forms.Padding(4);
+			this.cboNecroDifficulty.Name = "cboNecroDifficulty";
+			this.cboNecroDifficulty.Size = new System.Drawing.Size(160, 24);
+			this.cboNecroDifficulty.TabIndex = 87;
+			this.cboNecroDifficulty.SelectedIndexChanged += new System.EventHandler(this.determineFlags);
+			// 
+			// label47
+			// 
+			this.label47.AutoSize = true;
+			this.label47.Location = new System.Drawing.Point(348, 225);
+			this.label47.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+			this.label47.Name = "label47";
+			this.label47.Size = new System.Drawing.Size(131, 17);
+			this.label47.TabIndex = 86;
+			this.label47.Text = "Necrosaro Difficulty";
 			// 
 			// cboMonsterDropChance
 			// 
@@ -1601,6 +1636,8 @@
 			// 
 			// tabPage9
 			// 
+			this.tabPage9.Controls.Add(this.chkCh5AneauxNecro);
+			this.tabPage9.Controls.Add(this.chkCh5NoZGear);
 			this.tabPage9.Controls.Add(this.chkCh5GasCanister);
 			this.tabPage9.Controls.Add(this.chkInstantFinalCave);
 			this.tabPage9.Controls.Add(this.chkCh5SymbolOfFaith);
@@ -1621,6 +1658,30 @@
 			this.tabPage9.TabIndex = 4;
 			this.tabPage9.Text = "Chapter 5";
 			this.tabPage9.UseVisualStyleBackColor = true;
+			// 
+			// chkCh5AneauxNecro
+			// 
+			this.chkCh5AneauxNecro.AutoSize = true;
+			this.chkCh5AneauxNecro.Location = new System.Drawing.Point(269, 92);
+			this.chkCh5AneauxNecro.Margin = new System.Windows.Forms.Padding(4);
+			this.chkCh5AneauxNecro.Name = "chkCh5AneauxNecro";
+			this.chkCh5AneauxNecro.Size = new System.Drawing.Size(280, 21);
+			this.chkCh5AneauxNecro.TabIndex = 41;
+			this.chkCh5AneauxNecro.Text = "Turn Aneaux into Necrosaro\'s Mountain";
+			this.chkCh5AneauxNecro.UseVisualStyleBackColor = true;
+			this.chkCh5AneauxNecro.CheckedChanged += new System.EventHandler(this.determineFlags);
+			// 
+			// chkCh5NoZGear
+			// 
+			this.chkCh5NoZGear.AutoSize = true;
+			this.chkCh5NoZGear.Location = new System.Drawing.Point(15, 63);
+			this.chkCh5NoZGear.Margin = new System.Windows.Forms.Padding(4);
+			this.chkCh5NoZGear.Name = "chkCh5NoZGear";
+			this.chkCh5NoZGear.Size = new System.Drawing.Size(217, 21);
+			this.chkCh5NoZGear.TabIndex = 40;
+			this.chkCh5NoZGear.Text = "Do not require Zenithian gear";
+			this.chkCh5NoZGear.UseVisualStyleBackColor = true;
+			this.chkCh5NoZGear.CheckedChanged += new System.EventHandler(this.determineFlags);
 			// 
 			// chkCh5GasCanister
 			// 
@@ -2091,7 +2152,7 @@
 			this.Controls.Add(this.txtFileName);
 			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "DW4Rando";
-			this.Text = "Dragon Warrior IV RandoHacker 3.2";
+			this.Text = "Dragon Warrior IV RandoHacker 3.2.1";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.tabShortcuts.ResumeLayout(false);
@@ -2269,6 +2330,10 @@
 		private System.Windows.Forms.CheckBox chkCh5GasCanister;
 		private System.Windows.Forms.CheckBox chkBasePriceOnPower;
 		private System.Windows.Forms.CheckBox chkRandomFlags;
+		private System.Windows.Forms.CheckBox chkCh5AneauxNecro;
+		private System.Windows.Forms.CheckBox chkCh5NoZGear;
+		private System.Windows.Forms.ComboBox cboNecroDifficulty;
+		private System.Windows.Forms.Label label47;
 	}
 }
 
