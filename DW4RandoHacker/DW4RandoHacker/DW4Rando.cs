@@ -30,6 +30,9 @@ namespace DW4RandoHacker
 					0x92, 0x9d, 0xa2, 0x94, 0x9e, 0x91, 0x8f, 0xa1, 0xa9, 0x9b, 0xa0, 0xa6, 0xaa, 0xac, 0x65, 0xa8, // 160-175
 					0xb8, 0xa3, 0xa4, 0xa5, 0xa7, 0xbf, 0xb9, 0xbe, 0xb7, 0xb6, 0xb5, 0xc1, 0xc2, 0xbc // 15000 - bosses start at 0xb5 - 176-189
             };
+		int[] firstMonster = { 0x62, 0x91, 0x12, 0xbb, 0xb4, 0xb3, 0x91, 0xaf, 0xb0, 0xb1, 0xb2, 0xba, 0xc0, 0xbf,
+					0xbe, -2, 0xb5, 0xc1, 0xc2, 0x9b, 0xbc, 0xb9, 0xb8, 0xb7, 0xb6, 0xae, -2,
+					0x59, -2, -2, -2, -2, -2, -2 };
 
 		int[,] map = new int[256, 256];
 		int[,] map2 = new int[139, 158];
@@ -439,9 +442,9 @@ namespace DW4RandoHacker
 			oDoubleWalking = chkDoubleWalking.Checked;
 			oSpeedUpBattles = chkSpeedUpBattles.Checked;
 
-			if (oDoubleWalking)
-				if (MessageBox.Show(this, "WARNING:  Double walking speed will cause graphical errors with other characters, but actual gameplay should not be affected.  Continue?", "DW4 RandoHacker", MessageBoxButtons.YesNo) == DialogResult.No)
-					return false;
+			//if (oDoubleWalking)
+			//	if (MessageBox.Show(this, "WARNING:  Double walking speed will cause graphical errors with other characters, but actual gameplay should not be affected.  Continue?", "DW4 RandoHacker", MessageBoxButtons.YesNo) == DialogResult.No)
+			//		return false;
 
 			//expandRom();
 
@@ -459,15 +462,7 @@ namespace DW4RandoHacker
 			if (oSoloHero)
 			{
 				byte power = 0;
-				power = (byte)cboSoloHero.SelectedIndex;
-				//if ((string)cboSoloHero.SelectedItem == "Hero") power = 0;
-				//if ((string)cboSoloHero.SelectedItem == "Cristo") power = 1;
-				//if ((string)cboSoloHero.SelectedItem == "Nara") power = 2;
-				//if ((string)cboSoloHero.SelectedItem == "Mara") power = 3;
-				//if ((string)cboSoloHero.SelectedItem == "Brey") power = 4;
-				//if ((string)cboSoloHero.SelectedItem == "Taloon") power = 5;
-				//if ((string)cboSoloHero.SelectedItem == "Ragnar") power = 6;
-				//if ((string)cboSoloHero.SelectedItem == "Alena") power = 7;
+				power = (byte)oSoloHeroSelection;
 
 				// Have to allow equipping of the Zenethian equipment so you can get through the tower and castle...
 				romData[0x40c75 + 0x14] = (byte)Math.Pow(2, power);
@@ -796,7 +791,7 @@ namespace DW4RandoHacker
 
 				// 0x778df (8), 0x778f1 (9), 0x778f7 (a), 0x778fd (b), 0x73678 (c), 0x7364e (d), 0x7790f (e) + 0x77573, 0x73b30 (f)
 				romData[0x57169] = romData[0x57157] = 0x20; // Prevent Healie and Doran from being called a monster when talking to anyone.  Mainly in case one is acting as Panon.
-				
+
 				if (oRandomizeNPCs)
 				{
 					// Randomize NPCs
@@ -1176,6 +1171,24 @@ namespace DW4RandoHacker
 			chapter4Adjustments();
 			chapter5Adjustments();
 
+			criticalHits(r1);
+			taloonInsanity(r1);
+			if (oRandomizeMap)
+				// If the map is forced to revert to the original map, revert the Ch2 and Ch5 town warp locations.
+				if (!randomizeMapv5(r1))
+				{
+					romData[0x3be1c + (3 * 14) + 0] = 0x47;
+					romData[0x3be1c + (3 * 14) + 1] = 0x39;
+					romData[0x3be1c + (3 * 43) + 0] = 0xb2;
+					romData[0x3be1c + (3 * 43) + 1] = 0x4d;
+				}
+			//swapMonsters(r1);
+			randomizeMonsterStats(r1);
+			randomizeMonsterDrops(r1);
+			randomizeMonsterAttacks(r1);
+			randomizeMonsterResistances(r1);
+			randomizeTreasures(r1);
+
 			int xpBoost = oXPBoost;
 			int xpRandom = oXPRandom;
 
@@ -1230,23 +1243,6 @@ namespace DW4RandoHacker
 				romData[0x60056 + (lnI * 22) + 7] = (byte)(xpTrue % 256);
 			}
 
-			criticalHits(r1);
-			taloonInsanity(r1);
-			if (oRandomizeMap)
-				// If the map is forced to revert to the original map, revert the Ch2 and Ch5 town warp locations.
-				if (!randomizeMapv5(r1))
-				{
-					romData[0x3be1c + (3 * 14) + 0] = 0x47;
-					romData[0x3be1c + (3 * 14) + 1] = 0x39;
-					romData[0x3be1c + (3 * 43) + 0] = 0xb2;
-					romData[0x3be1c + (3 * 43) + 1] = 0x4d;
-				}
-			swapMonsters(r1);
-			randomizeMonsterStats(r1);
-			randomizeMonsterDrops(r1);
-			randomizeMonsterAttacks(r1);
-			randomizeMonsterResistances(r1);
-			randomizeTreasures(r1);
 
 			// Finally, the encounter rate.  I've noticed that the encounter rate by default is VARIABLE!
 			// 25% of normal = Branca Castle, north to the Heroes' Hometown, the approach to Necrosaro itself, and the Gardenbur Cave.  (the later two is guaranteed 1/64)
@@ -1475,7 +1471,7 @@ namespace DW4RandoHacker
 					for (int lnJ = 5; lnJ < 8; lnJ++)
 						romData[byteToUse + lnJ] = 0x00;
 
-					
+
 				}
 			}
 
@@ -1715,12 +1711,24 @@ namespace DW4RandoHacker
 
 			if (oTaloonInsanityMoves >= 1)
 			{
-				byte[] badMoves = { 0x3c, 0x3d, 0x4d, 0x50, 0x53, 0x56, 0x57, 0x59, 0x5a, 0x68, 0x73, 0x75, 0x77, 0x78, 0x79, 0x7a, 0x7b, 0x7c, 0x7f, 0x82, 0x85, 0x86, 0x87, 0x89, 0x8a, 0x8b, 0x8d, 0x8e, 0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x9b, 0x9c, 0x9e,
-					0xa0, 0xa3, 0xa5, 0xa6, 0xa8, 0xaa, 0xab, 0xac, 0xad, 0xae, 0xb0, 0xb1, 0xb2, 0xb3, 0xb5, 0xb6, 0xb7, 0xb8, 0xb9, 0xba, 0xbb, 0xbc, 0xbd, 0xbf, 0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xcb, 0xcc, 0xcd, 0xce, 0xcf,
-					0xd0, 0xd1, 0xd2, 0xd6, 0xd7, 0xd8, 0xd9, 0xdb, 0xdc, 0xe1, 0xe4, 0xe6, 0xe7, 0xe8, 0xe9, 0xea, 0xeb, 0xec, 0xed, 0xef, 0xf3, 0xf4, 0xf5, 0xf7, 0xf8, 0xf9, 0xfa, 0xfc, 0xfe };
-				byte[] goodMoves = { 0x4e, 0x4f, 0x51, 0x52, 0x55, 0x67, 0x6d, 0x6e, 0x6f, 0x70, 0x71, 0x74, 0x76, 0x7d, 0x7e, 0x80, 0x83, 0x84, 0x8c, 0x8f, 0xa1, 0xa2, 0xa4, 0xa9, 0xbe, 0xca, 0xd4, 0xd5, 0xdd, 0xdf, 0xe0, 0xe2, 0xe3, 0xe5, 0xee, 0xf0, 0xf1, 0xf2, 0xf6, 0xfd, 0x3e };
-				byte[] excellentMoves = { 0x4f, 0x52, 0x6e, 0x7d, 0x80, 0xa1, 0xa2, 0xa4, 0xa9, 0xdd, 0xdf, 0xe0, 0xe2, 0xe3, 0xf1, 0x3e };
-				byte[] whoaMoves = { 0xa9, 0xa9, 0x7d, 0x7d, 0xa9, 0xa9, 0x7d, 0x7d, 0x45, 0x3e };
+				byte[] badMoves = { 0x3c, 0x3d, 0x4d, 0x50, 0x53, 0x56, 0x57, 0x59, 0x5a, 0x68,
+									0x73, 0x75, 0x77, 0x78, 0x79, 0x7a, 0x7b, 0x7c, 0x7f, 0x82,
+									0x85, 0x86, 0x87, 0x89, 0x8a, 0x8b, 0x8d, 0x8e, 0x90, 0x91,
+									0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x9b, 0x9c, 0x9e, 0xa0,
+									0xa3, 0xa5, 0xa6, 0xa8, 0xaa, 0xab, 0xac, 0xad, 0xae, 0xb0,
+									0xb1, 0xb2, 0xb3, 0xb5, 0xb6, 0xb7, 0xb8, 0xb9, 0xba, 0xbb,
+									0xbc, 0xbd, 0xbf, 0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6,
+									0xc7, 0xc8, 0xc9, 0xcb, 0xcc, 0xcd, 0xce, 0xcf, 0xd0, 0xd1,
+									0xd2, 0xd6, 0xd7, 0xd8, 0xd9, 0xdb, 0xdc, 0xe1, 0xe4, 0xe6,
+									0xe7, 0xe8, 0xe9, 0xea, 0xeb, 0xec, 0xed, 0xef, 0xf3, 0xf4,
+									0xf5, 0xf7, 0xf8, 0xf9, 0xfa, 0xfc, 0xfe }; // 107
+				byte[] goodMoves = { 0x4e, 0x4f, 0x51, 0x52, 0x55, 0x67, 0x6d, 0x6e, 0x6f, 0x70,
+									 0x71, 0x74, 0x76, 0x7d, 0x7e, 0x80, 0x83, 0x84, 0x8c, 0x8f,
+									 0xa1, 0xa2, 0xa4, 0xa9, 0xbe, 0xca, 0xd4, 0xd5, 0xdd, 0xdf,
+									 0xe0, 0xe2, 0xe3, 0xe5, 0xee, 0xf0, 0xf1, 0xf2, 0xf6, 0xfd,
+									 0x3e }; // 41
+				byte[] excellentMoves = { 0x4f, 0x52, 0x6e, 0x7d, 0x80, 0xa1, 0xa2, 0xa4, 0xa9, 0xdd, 0xdf, 0xe0, 0xe2, 0xe3, 0xf1, 0x3e }; // 16
+				byte[] whoaMoves = { 0xa9, 0xa9, 0x7d, 0x7d, 0xa9, 0xa9, 0x7d, 0x7d, 0x45, 0x3e }; // 10
 
 				for (int lnI = 0; lnI < 13; lnI++)
 				{
@@ -2631,7 +2639,7 @@ namespace DW4RandoHacker
 																  moveLevel == 2 ? level3Moves[r1.Next() % level3Moves.Length] :
 																  moveLevel == 3 ? level4Moves[r1.Next() % level4Moves.Length] :
 																  moveLevel == 4 ? level5Moves[r1.Next() % level5Moves.Length] :
-																  moveLevel == 5 ? earlyBossMoves1[r1.Next() % earlyBossMoves1.Length] : 
+																  moveLevel == 5 ? earlyBossMoves1[r1.Next() % earlyBossMoves1.Length] :
 																				   earlyBossMoves2[r1.Next() % earlyBossMoves2.Length]);
 
 						// Linguar is not allowed to heal
@@ -2781,9 +2789,9 @@ namespace DW4RandoHacker
 					{
 						int stat;
 						if (lnJ <= 3)
-							stat = inverted_power_curve(1, 255, 1, .25, r1)[0];
+							stat = inverted_power_curve(8, 255, 1, .25, r1)[0];
 						else
-							stat = inverted_power_curve(1, 1020, 1, .1, r1)[0];
+							stat = inverted_power_curve(8, 1020, 1, .1, r1)[0];
 
 						if (lnJ == 2 && stat > 255) stat = 255;
 						if (lnJ >= 4 && stat > 1020) stat = 1020;
@@ -2792,6 +2800,201 @@ namespace DW4RandoHacker
 							romData[byteToUse + lnJ + 11] = (byte)(romData[byteToUse + lnJ + 11] - (romData[byteToUse + lnJ + 11] % 4) + (stat / 256));
 					}
 				}
+			}
+
+			if (oMonsterStats == 5)
+			{
+				// Rerank all monsters, then rezone them with the equivalent monster rank.
+				int[] newMonsterRank = // after 0x55, 0x??????, - bisonhawk unknown
+				{
+							0x01, 0x00, 0x03, 0x02, 0x05, 0x08, 0x07, 0x09, 0x06, 0x0b, 0x0e, 0x0a, 0x11, 0x0d, 0x0f, 0x14, // 6 XP - 0-15
+							0x0c, 0x1c, 0x1a, 0x18, 0x13, 0x10, 0x1f, 0x26, 0x16, 0x1e, 0x19, 0x17, 0x24, 0x1b, 0x22, 0x23, // 15 XP - 16-31
+							0x15, 0x1d, 0x5c, 0x2a, 0x20, 0x27, 0x25, 0x21, 0x43, 0x28, 0x2f, 0x04, 0x31, 0x2c, 0x3c, 0x29, // 27 XP - 32-47
+							0x3d, 0x2d, 0x36, 0x45, 0x2e, 0x38, 0x39, 0x33, 0x42, 0x3e, 0x58, 0x4d, 0x40, 0x4a, 0x32, 0x47, // 45 XP - 48-63
+							0x2b, 0x35, 0x52, 0x48, 0x46, 0x37, 0x4c, 0xaf, 0x34, 0x5e, 0x3a, 0x4f, 0x66, 0xb3, 0x3b, 0x49, // 77 XP - 64-79
+							0xb0, 0xb1, 0x56, 0x41, 0x51, 0x50, 0x55, 0x57, 0x44, 0x5a, 0x3f, 0xb2, 0xba, 0x30, 0x53, 0x60, // 104 XP - 80-95
+							0x5b, 0x75, 0x5f, 0x4b, 0x68, 0x63, 0x5d, 0x54, 0x6b, 0x61, 0x67, 0x6e, 0x6a, 0x76, 0x12, 0x69, // 96-111
+							0x70, 0x59, 0x78, 0x72, 0xab, 0x7c, 0x7d, 0x73, 0x71, 0x6c, 0x6f, 0x7f, 0x77, 0x74, 0x64, 0x86, // 112-127
+							0x7a, 0x6d, 0x79, 0x7b, 0x80, 0x81, 0x7e, 0x87, 0x83, 0x88, 0x85, 0x82, 0x84, 0x62, 0x8c, 0x97, // 128-143
+							0x89, 0x8a, 0x8d, 0x8b, 0x93, 0x90, 0xc0, 0x9c, 0x8e, 0x98, 0x95, 0xb4, 0x96, 0x9f, 0x9a, 0x99, // 144-159
+							0x92, 0x9d, 0xa2, 0x94, 0x9e, 0x91, 0x8f, 0xa1, 0xa9, 0x9b, 0xa0, 0xa6, 0xaa, 0xac, 0x65, 0xa8, // 160-175
+							0xb8, 0xa3, 0xa4, 0xa5, 0xa7, 0xbf, 0xb9, 0xbe, 0xb7, 0xb6, 0xb5, 0xc1, 0xc2, 0xbc // 15000 - bosses start at 0xb5 - 176-189
+					};
+
+				double[] monsterStats = new double[newMonsterRank.Length];
+				for (int lnJ = 0; lnJ < monsterStats.Length; lnJ++)
+					monsterStats[lnJ] = 0.0f;
+
+				for (int lnI = 0; lnI < monsterRank.Length; lnI++) // 0xc2 is not used; Necrosaro
+				{
+					// Do not randomize Necrosaro nor Chapter 4 Keeleon stats.
+					if (monsterRank[lnI] == 0xae || monsterRank[lnI] == 0xbb) continue;
+
+					int byteToUse = 0x60056 + (monsterRank[lnI] * 22);
+					double hp = romData[byteToUse + 4] + ((romData[byteToUse + 15] % 4) * 256);
+					double atk = romData[byteToUse + 5] + ((romData[byteToUse + 16] % 4) * 256);
+					double defense = romData[byteToUse + 6] + ((romData[byteToUse + 17] % 4) * 256);
+					// Maximum result:  14
+					// Max XP needed:  about 12,000 base
+					monsterStats[lnI] = (((double)romData[byteToUse + 2] / 510.0f) + ((double)romData[byteToUse + 3] / 255.0f) +
+						(hp / 255.0f) + (atk / 255.0f) + (defense / 255.0f)) + 1;
+
+					double xp = Math.Max(Math.Pow(monsterStats[lnI], 3.55), 1);
+					double gp = Math.Max(Math.Pow(monsterStats[lnI], 2.55), 1);
+
+					romData[byteToUse + 0] = (byte)((int)xp % 256);
+					romData[byteToUse + 1] = (byte)((int)xp / 256);
+
+					romData[byteToUse + 7] = (byte)((int)gp % 256);
+					romData[byteToUse + 18] -= (byte)(romData[byteToUse + 18] % 4);
+					romData[byteToUse + 18] += (byte)((int)gp / 256);
+				}
+
+				// Bubble sort the monster stats.  Can't just sort the array directly since two things have to trace...
+				bool swapped = true;
+				while (swapped)
+				{
+					swapped = false;
+					for (int lnI = 0; lnI < monsterRank.Length - 1; lnI++)
+					{
+						if (monsterStats[lnI] > monsterStats[lnI + 1])
+						{
+							swapped = true;
+							double statHold = monsterStats[lnI];
+							monsterStats[lnI] = monsterStats[lnI + 1];
+							monsterStats[lnI + 1] = statHold;
+
+							int rankHold = newMonsterRank[lnI];
+							newMonsterRank[lnI] = newMonsterRank[lnI + 1];
+							newMonsterRank[lnI + 1] = rankHold;
+						}
+					}
+				}
+
+				// Weaken the lowest scored monsters in case they have a whack stat.  Reduce the weakness as we go along.
+				// Do not reduce MP.
+				for (int lnI = 0; lnI < 40; lnI++)
+				{
+					int byteToUse = 0x60056 + (newMonsterRank[lnI] * 22);
+					double mp = romData[byteToUse + 3];
+					double hp = romData[byteToUse + 4] + ((romData[byteToUse + 15] % 4) * 256);
+					double atk = romData[byteToUse + 5] + ((romData[byteToUse + 16] % 4) * 256);
+					double defense = romData[byteToUse + 6] + ((romData[byteToUse + 17] % 4) * 256);
+					mp = Math.Pow(mp, 0.5 + (lnI * .0125));
+					hp = Math.Pow(hp, 0.5 + (lnI * .0125)) + 8;
+					atk = Math.Pow(atk, 0.5 + (lnI * .0125)) + 8;
+					defense = Math.Pow(defense, 0.5 + (lnI * .0125)) + 4;
+
+					romData[byteToUse + 3] = (byte)mp;
+					romData[byteToUse + 4] = (byte)((int)hp % 256);
+					romData[byteToUse + 15] -= (byte)(romData[byteToUse + 15] % 4);
+					romData[byteToUse + 15] += (byte)((int)hp / 256);
+					romData[byteToUse + 5] = (byte)((int)atk % 256);
+					romData[byteToUse + 16] -= (byte)(romData[byteToUse + 16] % 4);
+					romData[byteToUse + 16] += (byte)((int)atk / 256);
+					romData[byteToUse + 6] = (byte)((int)defense % 256);
+					romData[byteToUse + 17] -= (byte)(romData[byteToUse + 17] % 4);
+					romData[byteToUse + 17] += (byte)((int)defense / 256);
+
+					// Monster score:  [0-(0.5 + 1.0 + 4.0 + 4.0 + 4.0)] + 1 - AKA 1-14.5
+					monsterStats[lnI] = (((double)romData[byteToUse + 2] / 510.0f) + ((double)romData[byteToUse + 3] / 255.0f) +
+						(hp / 255.0f) + (atk / 255.0f) + (defense / 255.0f)) + 1;
+
+					double xp = Math.Max(Math.Pow(monsterStats[lnI], 3.5), 1);
+
+					romData[byteToUse + 0] = (byte)((int)xp % 256);
+					romData[byteToUse + 1] = (byte)((int)xp / 256);
+
+					double gp = Math.Max(Math.Pow(monsterStats[lnI], 2.55), 1);
+
+					romData[byteToUse + 7] = (byte)((int)gp % 256);
+					romData[byteToUse + 18] -= (byte)(romData[byteToUse + 18] % 4);
+					romData[byteToUse + 18] += (byte)((int)gp / 256);
+				}
+
+				// Go through all of the monster zones and replace the old monster with the new.
+				List<int> test = monsterRank.ToList();
+				for (int lnI = 0; lnI <= 0x64; lnI++)
+				{
+					int byteToUse = 0x612ba + (lnI * 16);
+					for (int lnJ = 2; lnJ <= 13; lnJ++)
+					{
+						// Determine the old monster rank
+						int oldRank = test.IndexOf(newMonsterRank[lnI]);
+						int newMonster = newMonsterRank[oldRank];
+						// Don't bring in Linguar and Imposter unless it's a single monster.
+						while (lnJ != 13 && (newMonster == 0xba || newMonster == 0x99))
+							newMonster = newMonsterRank[oldRank + 1];
+						romData[byteToUse + lnJ] = (byte)newMonster;
+					}
+				}
+
+				// Go through all of the boss fights and replace the old monster with the new.
+				//int[] firstMonster = { 0x62, 0x91, 0x12, 0xbb, 0xb4, 0xb3, 0x91, 0xaf, 0xb0, 0xb1, 0xb2, 0xba, 0xc0, 0xbf,
+				//	0xbe, -2, 0xb5, 0xc1, 0xc2, 0x9b, 0xbc, 0xb9, 0xb8, 0xb7, 0xb6, 0xae, -2,
+				//	0x59, -2, -2, -2, -2, -2, -2 };
+
+				int[] HPLimit = { -1, -1, 80, -1, 500, 500, -1, 100, 140, 140, 140, 160, 55, 150,
+					-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+					-1, -1, -1, -1, -1, -1, -1 };
+				int[] AtkLimit = { -1, -1, 60, -1, 120, 80, -1, 70, 75, 55, 85, 90, 55, 130,
+					-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+					-1, -1, -1, -1, -1, -1, -1 };
+				int[] DefLimit = { -1, -1, 60, -1, 70, 50, -1, 100, 120, 100, 140, 150, 50, 160,
+					-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+					-1, -1, -1, -1, -1, -1, -1 };
+				for (int lnI = 0; lnI < 34; lnI++)
+				{
+					int byteToUse = 0x6235c + (8 * lnI);
+					for (int lnJ = 0; lnJ < 4; lnJ++)
+					{
+						// Do not swap Chapter 4 Keeleon or Necrosaro or blank (0xff)
+						if (romData[byteToUse + lnJ] == 0xbb || romData[byteToUse + lnJ] == 0xae || romData[byteToUse + lnJ] == 0xff)
+							continue;
+
+						if (HPLimit[lnI] != -1)
+						{
+							// Determine the old monster rank
+							int oldRank = test.IndexOf(romData[byteToUse + lnJ]);
+							int newMonster = newMonsterRank[oldRank];
+							// Don't bring in Linguar and Imposter unless it's a single monster.
+							while ((newMonster == 0xba || newMonster == 0x99) && (lnJ >= 1 || romData[byteToUse + 1] != 0xff || romData[byteToUse + 2] != 0xff || romData[byteToUse + 3] != 0xff))
+								newMonster = newMonsterRank[oldRank + 1];
+							romData[byteToUse + lnJ] = (byte)newMonster;
+							if (lnJ == 0 || byteToUse == 0x6236d || byteToUse == 0x623c5)
+								firstMonster[lnI] = newMonster;
+
+							if (HPLimit[lnI] != -1)
+							{
+								int byteToUse2 = 0x60056 + (newMonsterRank[lnI] * 22);
+
+								int hp = romData[byteToUse2 + 4] + (256 * (romData[byteToUse2 + 15] % 4));
+								int atk = romData[byteToUse2 + 5] + (256 * (romData[byteToUse2 + 16] % 4));
+								int def = romData[byteToUse2 + 6] + (256 * (romData[byteToUse2 + 17] % 4));
+								if (hp > HPLimit[lnI])
+								{
+									romData[byteToUse2 + 4] = (byte)(HPLimit[lnI] % 256);
+									romData[byteToUse2 + 15] -= (byte)(romData[byteToUse + 15] % 4);
+									romData[byteToUse2 + 15] = (byte)(HPLimit[lnI] / 256);
+								}
+								if (atk > AtkLimit[lnI])
+								{
+									romData[byteToUse2 + 5] = (byte)(AtkLimit[lnI] % 256);
+									romData[byteToUse2 + 16] -= (byte)(romData[byteToUse + 16] % 4);
+									romData[byteToUse2 + 16] = (byte)(AtkLimit[lnI] / 256);
+								}
+								if (def > DefLimit[lnI])
+								{
+									romData[byteToUse2 + 6] = (byte)(DefLimit[lnI] % 256);
+									romData[byteToUse2 + 17] -= (byte)(romData[byteToUse + 17] % 4);
+									romData[byteToUse2 + 17] = (byte)(DefLimit[lnI] / 256);
+								}
+							}
+						}
+					}
+				}
+
+				monsterRank = newMonsterRank;
 			}
 		}
 
@@ -3830,13 +4033,10 @@ namespace DW4RandoHacker
 			int[] minBossLimit = { 0, 148, 5, 148, 20, 15, 148, -1, -1, -1, -1, -1, 20, 20, // 14
                     0, 106, 0, 0, 0, 106, 106, 148, 148, 148, 148, 148, 20, // 13
                     0, 106, 106, 106, 106, 106, 0 }; // 7
-			int[] firstMonster = { 0x62, 0x91, 0x12, 0xbb, 0xb4, 0xb3, 0x91, 0xaf, 0xb0, 0xb1, 0xb2, 0xba, 0xc0, 0xbf,
-					0xbe, -2, 0xb5, 0xc1, 0xc2, 0x9b, 0xbc, 0xb9, 0xb8, 0xb7, 0xb6, 0xae, -2,
-					0x59, -2, -2, -2, -2, -2, -2 };
 			for (int lnI = 0; lnI < 34; lnI++)
 			{
 				if (maxBossLimit[lnI] == -1)
-					continue;
+					 continue;
 				int byteToUse = 0x6235c + (8 * lnI);
 
 				// 10% chance to keep the battle the way it is now... if there is more than one group involved.
@@ -3852,6 +4052,8 @@ namespace DW4RandoHacker
 					{
 						if (lnJ == 0 && firstMonster[lnI] >= 0)
 							romData[byteToUse + 0] = (byte)firstMonster[lnI];
+						else if (lnJ == 0)
+							romData[byteToUse + 0] = (byte)(monsterRank[r1.Next() % (maxBossLimit[lnI] - minBossLimit[lnI]) + minBossLimit[lnI]]);
 						else if (romData[byteToUse + lnJ] != 0xff)
 						{
 							int helperRank = 0;
@@ -3887,10 +4089,7 @@ namespace DW4RandoHacker
 							romData[byteToUse + 0] = (byte)firstMonster[lnI];
 						else
 						{
-							if (oMonsterZones == 2) // Make the randomization +/- 10%.  Do not exceed 189 (0xbd)
-								romData[byteToUse + lnJ] = (byte)(monsterRank[r1.Next() % (maxBossLimit[lnI] - minBossLimit[lnI]) + minBossLimit[lnI]]);
-							else if (oMonsterZones >= 3)
-								romData[byteToUse + lnJ] = (byte)(monsterRank[r1.Next() % (maxBossLimit[lnI] - minBossLimit[lnI]) + minBossLimit[lnI]]);
+							romData[byteToUse + lnJ] = (byte)(monsterRank[r1.Next() % (maxBossLimit[lnI] - minBossLimit[lnI]) + minBossLimit[lnI]]);
 
 							// Redo randomization if Linguar or Imposter are in the proceedings due to graphical glitches.
 							if (romData[byteToUse + lnJ] == 0xba || romData[byteToUse + lnJ] == 0x99) lnJ--;
@@ -4047,7 +4246,7 @@ namespace DW4RandoHacker
 						}
 					}
 				}
-				catch
+				catch (Exception ex)
 				{
 					lblNewChecksum.Text = "????????????????????????????????????????";
 				}
@@ -4421,7 +4620,7 @@ namespace DW4RandoHacker
 			flags += convertIntToChar(cboXPBoost.SelectedIndex + (8 * cboXPRandom.SelectedIndex));
 			flags += convertIntToChar(cboGoldBoost.SelectedIndex + (8 * cboGoldRandom.SelectedIndex));
 			flags += convertIntToChar(cboEncounterRate.SelectedIndex + (8 * cboTaloonInsanityMoves.SelectedIndex));
-			flags += convertIntToChar(cboLevelCrit.SelectedIndex) + (8 * cboNecroDifficulty.SelectedIndex);
+			flags += convertIntToChar(cboLevelCrit.SelectedIndex + (8 * cboNecroDifficulty.SelectedIndex));
 			flags += convertIntToChar(cboMonsterDrops.SelectedIndex + (8 * cboMonsterDropChance.SelectedIndex));
 
 			txtFlags.Text = flags;

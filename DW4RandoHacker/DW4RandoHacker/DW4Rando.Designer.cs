@@ -2152,7 +2152,7 @@
 			this.Controls.Add(this.txtFileName);
 			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "DW4Rando";
-			this.Text = "Dragon Warrior IV RandoHacker 3.2.1";
+			this.Text = "Dragon Warrior IV RandoHacker 3.3.1";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.tabShortcuts.ResumeLayout(false);
